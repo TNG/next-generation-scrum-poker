@@ -1,3 +1,4 @@
 phases:
   install:
-    nodejs: 12
+    runtime-versions:
+      nodejs: 12
