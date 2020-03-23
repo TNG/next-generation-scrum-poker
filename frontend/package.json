@@ -1,0 +1,27 @@
+{
+  "name": "next-generation-scrum-poker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p . --outDir dist",
+    "start": "servor --reload --browse",
+    "watch": "npm run build -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukastaegert/next-generation-scrum-poker.git"
+  },
+  "author": "TNG",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/lukastaegert/next-generation-scrum-poker/issues"
+  },
+  "homepage": "https://github.com/lukastaegert/next-generation-scrum-poker#readme",
+  "devDependencies": {
+    "servor": "^3.2.0",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {}
+}
