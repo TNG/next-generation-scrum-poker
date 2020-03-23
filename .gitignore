@@ -1,3 +1,4 @@
 .idea
 *.iml
 frontend/dist
+node_modules
