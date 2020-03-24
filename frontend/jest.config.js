@@ -1,3 +1,10 @@
 module.exports = {
-  testEnvironment: 'node',
+  moduleFileExtensions: ["js", "json", "ts", 'mjs'],
+  transformIgnorePatterns: [],
+  "moduleNameMapper": {
+    "^(.*)\\.js": "$1"
+  },
+  transform: {
+    '.*': require.resolve('babel-jest')
+  }
 };

@@ -1,4 +1,4 @@
-import {React} from '../node_modules/es-react/index.js';
+import {React} from '../node_modules/es-react/dev/index.js';
 // @ts-ignore
 import htm from '../node_modules/htm/dist/htm.mjs';
 
