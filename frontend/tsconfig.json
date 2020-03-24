@@ -2,6 +2,13 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext",
-    "sourceMap": true
-  }
+    "sourceMap": true,
+    "types" : ["node"]
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/**/*.test.ts"
+  ]
 }
