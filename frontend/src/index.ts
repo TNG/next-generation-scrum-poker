@@ -1,5 +1,5 @@
 import {ReactDOM} from '../node_modules/es-react/dev/index.js';
-import {html} from "./html.js";
+import {html} from './html.js';
 
 const App = () => html`<div>hi!</div>`;
 
