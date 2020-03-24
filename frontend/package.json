@@ -20,8 +20,16 @@
   },
   "homepage": "https://github.com/lukastaegert/next-generation-scrum-poker#readme",
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/jest": "^25.1.4",
+    "@types/node": "^13.9.3",
+    "babel-jest": "^25.1.0",
     "htm": "^3.0.3",
+    "jest": "^25.1.0",
     "servor": "^3.2.0",
+    "ts-jest": "^25.2.1",
     "typescript": "^3.8.3"
   },
   "dependencies": {
