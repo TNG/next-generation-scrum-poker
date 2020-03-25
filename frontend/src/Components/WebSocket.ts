@@ -4,19 +4,30 @@ import {CardValue, WebSocketApi} from "../types/WebSocket.js";
 
 const WebSocketContext = React.createContext('defaultValue');
 
+const DUMMY_LOGIN_REQUEST = {
+    "type": "login",
+    "payload": {
+        "user": "new user",
+        "session": "my-awesome-session"
+    }
+};
+
 export const WebSocketProvider = ({children}) => {
-    const socket = new WebSocket('ws://localhost:4000')
-    socket.onopen = (e) => {console.log('socket opened with ', e)}
-    socket.onmessage = (event) => {console.log('message received with ', event)}
+    const initialState = {resultsVisible: false, votes: {}};
+    const [state, setState] = React.useState(initialState);
+    let socket: WebSocket;
+    React.useEffect(() => {
+        socket = new WebSocket('ws://localhost:4000');
+        socket.onopen = () => {
+            socket.send(JSON.stringify(DUMMY_LOGIN_REQUEST));
+        };
+        socket.onmessage = (event) => {
+            setState(JSON.parse(event.data))
+        };
+    },[]);
 
     const value: WebSocketApi = {
-        state: {
-            resultsVisible: false,
-            votes: {
-                happyUser: "not-voted",
-                otherUser: "3"
-            }
-        },
+        state,
         setVote: (vote: CardValue): void => {},
         revealVotes: (): void => {},
         resetVotes: (): void => {}
