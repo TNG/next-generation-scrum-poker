@@ -5,6 +5,10 @@ import {CardValue, WebSocketApi} from "../types/WebSocket.js";
 const WebSocketContext = React.createContext('defaultValue');
 
 export const WebSocketProvider = ({children}) => {
+    const socket = new WebSocket('ws://localhost:4000')
+    socket.onopen = (e) => {console.log('socket opened with ', e)}
+    socket.onmessage = (event) => {console.log('message received with ', event)}
+
     const value: WebSocketApi = {
         state: {
             resultsVisible: false,
