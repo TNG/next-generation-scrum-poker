@@ -46,7 +46,8 @@ const styling = css`
   .user-input {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
-    padding: 0px 5px ${BORDER_RADIUS};
+    padding: 0px 5px;
+    ${BORDER_RADIUS};
   }
 
   .session-label {
@@ -59,7 +60,8 @@ const styling = css`
   .session-input {
     grid-column: 2 / 3;
     grid-row: 3 / 4;
-    padding: 0px 5px ${BORDER_RADIUS};
+    padding: 0px 5px;
+    ${BORDER_RADIUS};
   }
 
   .submit {
