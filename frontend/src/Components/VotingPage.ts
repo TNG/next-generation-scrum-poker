@@ -1,7 +1,7 @@
+import { css } from '../css.js';
 import { html } from '../html.js';
 import { CardValue } from '../types/WebSocket.js';
-import { css } from '../css.js';
-import { WebSocketConsumer } from './WebSocket.js';
+import { connectToWebSocket } from './WebSocket.js';
 
 const card = css`
   display: flex;
@@ -36,10 +36,7 @@ const votingPageStyle = css`
   display: flex;
   flex-wrap: wrap;
 `;
-export const VotingPage = () =>
-  html`<${WebSocketConsumer}
-    >${(value) =>
-      html`<div className=${votingPageStyle}>
-        ${CARD_VALUES.map((cardValue) => Card(cardValue, value.setVote))}
-      </div>`}<//
-  >`;
+export const VotingPage =
+  connectToWebSocket(({socket}) => html`<div className=${votingPageStyle}>
+        ${CARD_VALUES.map((cardValue) => Card(cardValue, socket.setVote))}
+      </div>`);
