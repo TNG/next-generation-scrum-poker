@@ -3,7 +3,9 @@
     "module": "ESNext",
     "target": "ESNext",
     "sourceMap": true,
-    "types": ["node"]
+    "types": ["node"],
+    "strict": true,
+    "noImplicitAny": false
   },
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test.ts"]

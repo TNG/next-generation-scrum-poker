@@ -53,3 +53,8 @@ export const WebSocketProvider = ({ children }) => {
 };
 
 export const WebSocketConsumer = WebSocketContext.Consumer;
+
+export const connectToWebSocket = (Component) => (...props) =>
+  html`<${WebSocketConsumer}
+    >${(socket: WebSocketApi) => html`<${Component} socket=${socket} ...${props} />`}<//
+  >`;
