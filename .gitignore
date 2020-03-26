@@ -2,3 +2,5 @@
 *.iml
 frontend/dist
 node_modules
+backend/aws.config
+backend/packaged.yaml
