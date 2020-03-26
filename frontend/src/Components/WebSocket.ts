@@ -1,4 +1,4 @@
-import { React } from '../../node_modules/es-react/dev/index.js';
+import React from '../../node_modules/es-react/dev/react.js';
 import { html } from '../html.js';
 import {
   getLoginRequest,
