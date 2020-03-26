@@ -11,5 +11,5 @@ const styling=css`
 `;
 
 export const Results = () => html`<${WebSocketConsumer}>${
-    value => html`<div className=${styling}><span className="button">We</span> got: ${JSON.stringify(value.state)}</div>`
+    value => html`<div className=${styling}><button className="button" onClick=${()=> {value.setVote('20')}} >We</button> got: ${JSON.stringify(value.state)}</div>`
 }<//>`;
