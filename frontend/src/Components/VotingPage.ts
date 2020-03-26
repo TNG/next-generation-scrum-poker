@@ -3,7 +3,7 @@ import { html } from '../html.js';
 import { CardValue } from '../types/WebSocket.js';
 import { connectToWebSocket } from './WebSocket.js';
 
-const card = css`
+const cardStyle = css`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,6 +16,7 @@ const card = css`
   margin: 10px;
   :hover {
     background: #e1e1e1;
+    cursor: pointer;
   }
   :active {
     background: green;
@@ -24,7 +25,7 @@ const card = css`
 const CARD_VALUES: Array<CardValue> = ['coffee', '1', '2', '3', '5', '8', '13', '20'];
 const Card = (cardValue: CardValue, setVote: (vote: CardValue) => void) =>
   html`<div
-    className=${card}
+    className=${cardStyle}
     onClick=${() => {
       setVote(cardValue);
     }}
@@ -34,9 +35,17 @@ const Card = (cardValue: CardValue, setVote: (vote: CardValue) => void) =>
 
 const votingPageStyle = css`
   display: flex;
+  flex-direction: column;
+`;
+const cardCollectionStyle = css`
+  display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
 `;
 export const VotingPage =
   connectToWebSocket(({socket}) => html`<div className=${votingPageStyle}>
+        <div className=${cardCollectionStyle}>
         ${CARD_VALUES.map((cardValue) => Card(cardValue, socket.setVote))}
+        </div>
+        <button onClick=${() => socket.revealVotes()}>Reveal Votes</button>
       </div>`);
