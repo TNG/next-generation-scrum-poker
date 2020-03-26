@@ -1,10 +1,11 @@
 module.exports = {
-  moduleFileExtensions: ["js", "json", "ts", 'mjs'],
+  moduleFileExtensions: ['js', 'json', 'ts', 'mjs'],
   transformIgnorePatterns: [],
-  "moduleNameMapper": {
-    "^(.*)\\.js": "$1"
+  moduleNameMapper: {
+    '^(.*)\\.js': '$1',
   },
+
   transform: {
-    '.*': require.resolve('babel-jest')
-  }
+    '.*': require.resolve('babel-jest'),
+  },
 };

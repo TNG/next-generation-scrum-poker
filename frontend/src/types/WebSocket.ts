@@ -1,16 +1,16 @@
 export type CardValue = 'not-voted' | 'coffee' | '1' | '2' | '3' | '5';
 
 export interface WebSocketState {
-    resultsVisible: boolean,
-    votes: {
-        [userId: string]: CardValue
-    }
+  resultsVisible: boolean;
+  votes: {
+    [userId: string]: CardValue;
+  };
 }
 
 export interface WebSocketApi {
-    state: WebSocketState,
+  state: WebSocketState;
 
-    setVote(vote: CardValue): void
-    revealVotes(): void,
-    resetVotes(): void
+  setVote(vote: CardValue): void;
+  revealVotes(): void;
+  resetVotes(): void;
 }

@@ -2,7 +2,6 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 
-
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
@@ -10,17 +9,16 @@ const wss = new WebSocket.Server({ server });
 const state = {
   resultsVisible: false,
   votes: {
-    happyUser: "not-voted",
-    otherUser: "3"
-  }
-}
+    happyUser: 'not-voted',
+    otherUser: '3',
+  },
+};
 
-
-wss.on('connection', ws => {
+wss.on('connection', (ws) => {
   console.log('connection', ws.readyState);
-  ws.on('message', rawMessage => {
-    const message = JSON.parse(rawMessage)
-    console.log(message)
+  ws.on('message', (rawMessage) => {
+    const message = JSON.parse(rawMessage);
+    console.log(message);
     switch (message.type) {
       case 'login':
         state.votes[message.payload.user] = 'not-voted';
@@ -33,7 +31,7 @@ wss.on('connection', ws => {
         break;
       case 'reset-votes':
         state.resultsVisible = false;
-        Object.keys(state.votes).forEach(user => state.votes[user] = 'not-voted')
+        Object.keys(state.votes).forEach((user) => (state.votes[user] = 'not-voted'));
     }
 
     for (const client of wss.clients) {
