@@ -19,12 +19,12 @@ wss.on('connection', (ws) => {
   ws.on('message', (rawMessage) => {
     const message = JSON.parse(rawMessage);
     console.log(message);
-    switch (message.type) {
+    switch (message.data.type) {
       case 'login':
-        state.votes[message.payload.user] = 'not-voted';
+        state.votes[message.data.payload.user] = 'not-voted';
         break;
       case 'set-vote':
-        state.votes[message.payload.user] = message.payload.vote;
+        state.votes['frontend-user'] = message.data.payload.vote;
         break;
       case 'reveal-votes':
         state.resultsVisible = true;
