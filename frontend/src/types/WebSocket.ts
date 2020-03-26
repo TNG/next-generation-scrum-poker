@@ -9,7 +9,9 @@ export interface WebSocketState {
 
 export interface WebSocketApi {
   state: WebSocketState;
+  loginData: null | { user: string; session: string };
 
+  login(user: string, session: string): void;
   setVote(vote: CardValue): void;
   revealVotes(): void;
   resetVotes(): void;
