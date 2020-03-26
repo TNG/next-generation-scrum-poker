@@ -83,8 +83,14 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
   const [session, setSession] = React.useState('');
   React.useEffect(() => firstInputRef.current.focus(), []);
 
-  return html`<form className=${styling}>
-    <heading className="heading">NEXT GENERATION<br />SCRUM POKER</heading>
+  return html`<form
+    className=${styling}
+    onSubmit=${(event) => {
+      event.preventDefault();
+      socket.login(user, session);
+    }}
+  >
+    <div className="heading">NEXT GENERATION<br />SCRUM POKER</div>
     <label htmlFor="user" className="user-label">Name:</label>
     <input
       id="user"
@@ -107,7 +113,6 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       value="Login"
       className="submit"
       disabled=${user.length === 0 || session.length < 2}
-      onClick=${() => socket.login(user, session)}
     />
     <img src="img/tng.svg" alt="TNG Logo" className="logo" />
   </form>`;
