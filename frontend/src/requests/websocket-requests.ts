@@ -1,6 +1,6 @@
 import { CardValue } from "../types/WebSocket";
 
-export const getLoginRequest = (user: string, session: string) => JSON.stringify({
+export const getLoginRequest = (user: string, session: string) => buildRequest({
   type: "login",
   payload: {
     user,
@@ -8,17 +8,20 @@ export const getLoginRequest = (user: string, session: string) => JSON.stringify
   }
 });
 
-export const getSetVoteRequest = (vote: CardValue) => JSON.stringify({
+export const getSetVoteRequest = (vote: CardValue) => buildRequest({
   type: 'set-vote',
   payload: {
     vote: vote
   }
 });
 
-export const getRevealVotesRequest = () => JSON.stringify({
+export const getRevealVotesRequest = () => buildRequest({
   type: 'reveal-votes'
 });
 
-export const getResetVotesRequest = () => JSON.stringify({
+export const getResetVotesRequest = () => buildRequest({
   type: 'reset-votes'
 });
+
+const buildRequest = (data) =>
+    JSON.stringify({"message": "sendmessage", data});
