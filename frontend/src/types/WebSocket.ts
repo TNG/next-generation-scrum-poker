@@ -1,4 +1,17 @@
-export type CardValue = 'not-voted' | 'coffee' | '1' | '2' | '3' | '5' | '8' | '13' | '20';
+export type CardValue =
+  | 'not-voted'
+  | 'coffee'
+  | '0'
+  | '0.5'
+  | '1'
+  | '2'
+  | '3'
+  | '5'
+  | '8'
+  | '13'
+  | '20'
+  | '40'
+  | '100';
 
 export interface WebSocketState {
   resultsVisible: boolean;

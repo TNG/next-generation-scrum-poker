@@ -16,7 +16,7 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
     <button
       className="button"
       onClick=${() => {
-        socket.setVote('20');
+        socket.resetVotes();
       }}
     >
       We

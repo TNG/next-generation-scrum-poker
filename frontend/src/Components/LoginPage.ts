@@ -4,9 +4,9 @@ import { WebSocketApi } from '../types/WebSocket.js';
 import React from '../../node_modules/es-react/dev/react.js';
 import { css } from '../css.js';
 
-const BORDER_RADIUS = 'border-radius: 5px;';
-const TNG_BLUE = 'rgb(5,99,165)';
-const TNG_GRAY = 'rgb(161,166,174)';
+export const BORDER_RADIUS = 'border-radius: 5px;';
+export const TNG_BLUE = 'rgb(5,99,165)';
+export const TNG_GRAY = 'rgb(161,166,174)';
 
 const styling = css`
   position: absolute;
