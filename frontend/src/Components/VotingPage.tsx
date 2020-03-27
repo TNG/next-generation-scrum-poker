@@ -1,6 +1,6 @@
-import React from '../../node_modules/es-react/dev/react.js';
 import { CARD_VALUES } from '../config.js';
 import { css } from '../css.js';
+import React from '../react.js';
 import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
 import { WebSocketApi } from '../types/WebSocket.js';
 import { connectToWebSocket } from './WebSocket.js';

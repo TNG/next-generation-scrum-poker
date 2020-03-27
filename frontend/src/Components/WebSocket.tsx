@@ -1,5 +1,5 @@
-import React from '../../node_modules/es-react/dev/react.js';
 import { WEBSOCKET_URL } from '../config.js';
+import React from '../react.js';
 import { getLoginRequest, getResetVotesRequest, getRevealVotesRequest, getSetVoteRequest } from '../requests/websocket-requests.js';
 import { CardValue, WebSocketApi, WebsocketMessage } from '../types/WebSocket.js';
 

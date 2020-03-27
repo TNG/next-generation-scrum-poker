@@ -1,4 +1,4 @@
-import React from '../../node_modules/es-react/dev/react.js';
+import React from '../react.js';
 import { WebSocketApi } from '../types/WebSocket.js';
 import { LoginPage } from './LoginPage.js';
 import { ResultsPage } from './ResultsPage.js';
