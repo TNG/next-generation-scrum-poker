@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "npx jest",
-    "build": "tsc -p . --outDir dist",
+    "build:tsc": "tsc -p . --outDir build",
     "start": "run-p watch serve",
     "serve": "servor --reload --browse",
-    "watch": "npm run build -- --watch"
+    "watch": "npm run build:tsc -- --watch"
   },
   "repository": {
     "type": "git",
