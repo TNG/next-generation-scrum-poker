@@ -13,11 +13,13 @@ export type CardValue =
   | '40'
   | '100';
 
+export interface Votes {
+  [userId: string]: CardValue;
+}
+
 export interface WebSocketState {
   resultsVisible: boolean;
-  votes: {
-    [userId: string]: CardValue;
-  };
+  votes: Votes;
 }
 
 export interface WebSocketApi {
