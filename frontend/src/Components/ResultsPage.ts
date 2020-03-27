@@ -5,12 +5,25 @@ import { WebSocketApi } from '../types/WebSocket.js';
 import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from './LoginPage.js';
 
 const styling = css`
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  align-content: center;
+  justify-content: center;
+ 
   .heading {
-      color: ${TNG_BLUE};
-      font-size: 20px;
-      text-align: center;
-      line-height: 1.2;
+    color: ${TNG_BLUE};
+    font-size: 20px;
+    text-align: center;
+    line-height: 1.2;
   }
+  
   .table {
     text-align: left;
     padding: 15px;
@@ -18,21 +31,20 @@ const styling = css`
     border-style: solid;
     border-color: ${TNG_BLUE};
     ${BORDER_RADIUS};
+    margin: 10px;
   }
-  .td {
+  
+  .header-row {
+    color: ${TNG_BLUE};
     padding 25px;
   }
-  .th {
-        color: ${TNG_BLUE};
-        padding 25px;
-  }
+  
   .button {
     border: none;
     color: white;
     cursor: pointer;
     background: ${TNG_BLUE};
     ${BORDER_RADIUS}
-    margin: 10px;
     height: 50px;
     width: 150px;
   }
@@ -42,18 +54,20 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
   html`<div className=${styling}>
     <div className="heading">RESULTS</div>
     <table className="table">
-      <tr className="th">
-        <th>Name</th>
-        <th>Vote</th>
-      </tr>
-      ${socket.state.votes.map((userAndVote) => {
-        const userName = Object.keys(userAndVote)[0];
-        const userVote = userAndVote[userName];
-        return html` <tr>
-          <td>${Object.keys(userAndVote)[0]}</td>
-          <td>${userVote}</td>
-        </tr>`;
-      })}
+      <thead>
+        <tr className="header-row">
+          <th>Name</th>
+          <th>Vote</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${Object.keys(socket.state.votes).map((user) => {
+          return html`<tr key=${user}>
+            <td>${user}</td>
+            <td>${socket.state.votes[user]}</td>
+          </tr>`;
+        })}
+      </tbody>
     </table>
     <button
       className="button"

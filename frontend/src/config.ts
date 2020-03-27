@@ -1,6 +1,6 @@
-import { CardValue } from './types/WebSocket';
+import { CardValue } from './types/WebSocket.js';
 
-export const WEBSOCKET_URL = 'wss://scrum-poker.playground.aws.tngtech.com ';
+export const WEBSOCKET_URL = 'wss://1a7v8l13vk.execute-api.eu-central-1.amazonaws.com/Prod';
 
 export const CARD_VALUES: Array<CardValue> = [
   'coffee',
