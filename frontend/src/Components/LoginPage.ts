@@ -3,10 +3,8 @@ import { connectToWebSocket } from './WebSocket.js';
 import { WebSocketApi } from '../types/WebSocket.js';
 import React from '../../node_modules/es-react/dev/react.js';
 import { css } from '../css.js';
-
-export const BORDER_RADIUS = 'border-radius: 5px;';
-export const TNG_BLUE = 'rgb(5,99,165)';
-export const TNG_GRAY = 'rgb(161,166,174)';
+import { ASSET_TNG_LOGO } from '../assets.js';
+import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
 
 const styling = css`
   position: absolute;
@@ -116,7 +114,7 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       className="submit"
       disabled=${user.length === 0 || session.length < 2}
     />
-    <img src="img/tng.svg" alt="TNG Logo" className="logo" />
+    <img src=${ASSET_TNG_LOGO} alt="TNG Logo" className="logo" />
   </form>`;
 };
 

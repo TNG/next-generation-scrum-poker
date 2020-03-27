@@ -1,8 +1,8 @@
 import { html } from '../html.js';
-import { connectToWebSocket, WebSocketConsumer } from './WebSocket.js';
+import { connectToWebSocket } from './WebSocket.js';
 import { css } from '../css.js';
 import { WebSocketApi } from '../types/WebSocket.js';
-import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from './LoginPage.js';
+import { BORDER_RADIUS, TNG_BLUE } from '../styles.js';
 
 const styling = css`
   display: flex;

@@ -3,8 +3,8 @@ import { CARD_VALUES } from '../config.js';
 import { css } from '../css.js';
 import { html } from '../html.js';
 import { WebSocketApi } from '../types/WebSocket.js';
-import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from './LoginPage.js';
 import { connectToWebSocket } from './WebSocket.js';
+import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
 
 const votingPageStyle = css`
   display: flex;

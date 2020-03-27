@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "npx jest",
+    "build": "run-s build:tsc build:rollup",
     "build:tsc": "tsc -p . --outDir build",
+    "build:rollup": "rollup -c",
     "start": "run-p watch serve",
     "serve": "servor --reload --browse",
     "watch": "npm run build:tsc -- --watch"
@@ -22,17 +24,21 @@
   "homepage": "https://github.com/lukastaegert/next-generation-scrum-poker#readme",
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-syntax-import-meta": "^7.8.3",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-typescript": "^7.9.0",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.3",
     "babel-jest": "^25.1.0",
+    "babel-plugin-htm": "^3.0.0",
     "jest": "^25.1.0",
     "libxmljs2": "^0.25.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.2.0",
+    "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-terser": "^5.3.0",
     "servor": "^3.2.0",
     "typescript": "^3.8.3"
