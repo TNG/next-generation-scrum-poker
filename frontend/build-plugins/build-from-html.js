@@ -2,14 +2,13 @@ import * as fs from 'fs';
 import { parseHtml } from 'libxmljs2';
 
 export const buildFromHtml = (htmlFileName) => {
-  const doc = parseHtml(fs.readFileSync(htmlFileName));
-  const scriptTags = doc.find('//script');
+  const doc = parseHtml(fs.readFileSync(htmlFileName, 'utf8'));
   let scriptTagsWithInputReferences;
 
   return {
     name: 'generate-html',
     buildStart() {
-      scriptTagsWithInputReferences = scriptTags.map((tag) => ({
+      scriptTagsWithInputReferences = doc.find('//script').map((tag) => ({
         tag,
         referenceId: this.emitFile({ type: 'chunk', id: tag.attr('src').value() }),
       }));

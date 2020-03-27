@@ -2,7 +2,7 @@ import babel from '@babel/core';
 import fs from 'fs';
 import path from 'path';
 
-export const emitAssets = (assetsFile) => {
+export const emitAssetsFromFile = (assetsFile) => {
   const fileName = path.resolve(assetsFile);
   let assetFileFound = false;
   return {

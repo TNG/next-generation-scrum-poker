@@ -22,7 +22,6 @@ export const WebSocketProvider = ({ children }) => {
     socket.onopen = () => setSocket(socket);
     socket.onmessage = (event) => {
       const message: WebsocketMessage = JSON.parse(event.data);
-      console.log('WS message', message);
       if (message.type === 'state') {
         setState(message.payload);
       }
@@ -58,7 +57,6 @@ export const WebSocketProvider = ({ children }) => {
     revealVotes,
     resetVotes,
   };
-  console.log(value);
   return html`<${WebSocketContext.Provider} value=${value} key="provider">${children}<//> `;
 };
 
