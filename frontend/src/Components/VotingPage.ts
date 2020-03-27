@@ -2,6 +2,7 @@ import React from '../../node_modules/es-react/dev/react.js';
 import { CARD_VALUES } from '../config.js';
 import { css } from '../css.js';
 import { html } from '../html.js';
+import { WebSocketApi } from '../types/WebSocket.js';
 import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from './LoginPage.js';
 import { connectToWebSocket } from './WebSocket.js';
 
@@ -42,6 +43,10 @@ const votingPageStyle = css`
       color: white;
     }
   }
+  .selected-card {
+    background: ${TNG_BLUE};
+    color: white;
+  }
   .button {
     border: none;
     color: white;
@@ -55,15 +60,18 @@ const votingPageStyle = css`
     }
   }
 `;
-export const VotingPage = connectToWebSocket(
-  ({ socket }) => html`<div className=${votingPageStyle}>
+const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
+  const [selectedCard, setSelectedCard] = React.useState(null);
+  return html`<div className=${votingPageStyle}>
     <div className="heading">SELECT A CARD</div>
     <div className="card-collection">
       ${CARD_VALUES.map(
         (cardValue) =>
           html`<div
-            className="card"
+            key=${cardValue}
+            className=${cardValue === selectedCard ? 'card selected-card' : 'card'}
             onClick=${() => {
+              setSelectedCard(cardValue);
               socket.setVote(cardValue);
             }}
           >
@@ -74,5 +82,7 @@ export const VotingPage = connectToWebSocket(
     <button className="button" onClick=${() => socket.revealVotes()}>
       Reveal Votes
     </button>
-  </div>`
-);
+  </div>`;
+};
+
+export const VotingPage = connectToWebSocket(ProtoVotingPage);
