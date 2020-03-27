@@ -13,6 +13,9 @@ aws.config
 stackname="[your-stack]"
 bucketname="[your-bucket]"
 dynamoname="[your-bucket]"
+basedomainname="[your-basedomain]"
+subdomainname="[your-subdomain]"
+certificate="[subdomain-certificate]"
 ```
 
 The S3 bucket has to be created manually via UI.

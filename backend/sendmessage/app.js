@@ -16,7 +16,7 @@ const { TABLE_NAME } = process.env;
 exports.handler = async (event) => {
   const apigwManagementApi = new AWS.ApiGatewayManagementApi({
     apiVersion: '2018-11-29',
-    endpoint: event.requestContext.domainName + '/' + event.requestContext.stage,
+    endpoint: event.requestContext.domainName,
   });
   const connectionId = event.requestContext.connectionId;
   const { type, payload } = JSON.parse(event.body).data;
