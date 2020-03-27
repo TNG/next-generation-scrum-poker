@@ -2,7 +2,7 @@
 
 Prototype for a new Scrum Poker
 
-# config file
+# Config file
 
 Create a file with your custom aws settings. This allows you to deploy
 your own stack for testing purposes.
@@ -31,7 +31,7 @@ npm start
 
 This will launch TypeScript in watch mode and a server that automatically reloads when any code is edited.
 
-Note that except for TypeScript, which has really fast incremental builds, no further build step is required in production. This is possible due to the use of ES modules in the browser but has some consequences:
+Note that except for TypeScript, which has really fast incremental builds, no further build step is required during development. This is possible due to the use of ES modules in the browser but has some consequences:
 
 - Imports of TypeScript files need to have `.js`(!!) extensions. This is very confusing but the reason is that ES modules need extensions to work and in the created output, the files will have `.js` extensions, not `.ts(x)`. I.e. to import `./Component.tsx`, you write
 
