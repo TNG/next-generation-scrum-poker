@@ -13,13 +13,9 @@ aws.config
 stackname="[your-stack]"
 bucketname="[your-bucket]"
 dynamoname="[your-bucket]"
-
-export stackname
-export bucketname
-export dynamoname
 ```
 
-THe S3 bucket has to be created manually via UI.
+The S3 bucket has to be created manually via UI.
 
 ## License
 
