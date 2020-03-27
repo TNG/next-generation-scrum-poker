@@ -50,6 +50,28 @@ const styling = css`
   }
 `;
 
+function getSortedResultsArray(unsortedResults) {
+    var dataArray = Object.entries(unsortedResults)
+    const noNumbers = ["not-voted","coffee"];
+    return dataArray.sort( function (vote1, vote2) {
+        // put not-voted last, wait if both are equal
+        if (vote1[1] == "not-voted" && vote2[1] != "not-voted") return 1;
+        if (vote1[1] != "not-voted" && vote2[1] == "not-voted") return -1;
+
+        // put coffee after all numbers but before not-voted, wait if both are equal
+        if (vote1[1] == "coffee" && vote2[1] != "coffee") return 1;
+        if (vote1[1] != "coffee" && vote2[1] == "coffee") return -1;
+
+        // sort numbers
+        if (Number(vote1[1]) > Number(vote2[1])) return 1;
+        if (Number(vote1[1]) < Number(vote2[1])) return -1;
+
+        // for two equal votes, sort by name of user
+        if (vote1[0] > vote2[0]) return 1;
+        if (vote1[0] < vote2[0]) return -1;
+    })
+}
+
 const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
   html`<div className=${styling}>
     <div className="heading">RESULTS</div>
@@ -61,10 +83,11 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
         </tr>
       </thead>
       <tbody>
-        ${Object.keys(socket.state.votes).map((user) => {
-          return html`<tr key=${user}>
-            <td>${user}</td>
-            <td>${socket.state.votes[user]}</td>
+        ${getSortedResultsArray(socket.state.votes).map((userAndVote) => {
+      getSortedResultsArray(socket.state.votes);
+          return html`<tr key=${userAndVote[0]}>
+            <td>${userAndVote[0]}</td>
+            <td>${userAndVote[1]}</td>
           </tr>`;
         })}
       </tbody>
