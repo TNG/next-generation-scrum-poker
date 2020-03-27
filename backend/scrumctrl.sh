@@ -4,7 +4,7 @@ display_usage() {
     echo ""
     echo "If no --prod flag is given your stack will be deploy based on your custom aws.config."
     echo ""
-    echo "scrumsctrl [--deploy] [-d|--delete] [--prod] [-h|--help]"
+    echo "scrumctrl [--deploy] [-d|--delete] [--prod] [-h|--help]"
     echo "  -h|--help              Displays this help."
     echo "  --prod                 Target production environment."
     echo "  --deploy               Deploys the current code. Can be combined with --prod."
