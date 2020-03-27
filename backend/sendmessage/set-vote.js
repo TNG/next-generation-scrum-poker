@@ -1,21 +1,29 @@
-function setVote(vote, connectionId, tableName, ddb) {
-  if (!vote) {
-    throw new SyntaxError('Vote must be not empty.');
-  }
+async function setVote(vote, connectionId, tableName, ddb) {
+  const queryConnection = {
+    TableName: tableName,
+    ConsistentRead: true,
+    Key: {
+      primaryKey: `connectionId:${connectionId}`,
+    },
+  };
+  const connectionItem = (await ddb.get(queryConnection).promise()).Item;
 
-  const updateParams = {
+  const updateGroupParams = {
     TableName: tableName,
     Key: {
-      connectionId: connectionId,
+      primaryKey: `groupId:${connectionItem.groupId}`,
     },
-    UpdateExpression: 'SET vote = :vote',
+    UpdateExpression: 'SET #userId.vote = :vote',
+    ExpressionAttributeNames: {
+      '#userId': connectionItem.userId,
+    },
     ExpressionAttributeValues: {
       ':vote': vote,
     },
     ReturnValues: 'UPDATED_NEW',
   };
 
-  return ddb.update(updateParams).promise();
+  return ddb.update(updateGroupParams).promise();
 }
 
 module.exports = {

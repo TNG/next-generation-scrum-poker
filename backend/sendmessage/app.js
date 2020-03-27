@@ -1,4 +1,3 @@
-const { getAllConnectionIds } = require('./get-all-connection-ids.js');
 const { loginUser } = require('./login-user.js');
 const { setVote } = require('./set-vote.js');
 const { resetVotes } = require('./reset-votes.js');
@@ -21,30 +20,23 @@ exports.handler = async (event) => {
   });
   const connectionId = event.requestContext.connectionId;
   const { type, payload } = JSON.parse(event.body).data;
-  let groupConnectionIds;
 
   switch (type) {
     case 'login':
       await loginUser(payload.user, payload.session, connectionId, TABLE_NAME, ddb);
-      groupConnectionIds = await getAllConnectionIds(connectionId, TABLE_NAME, ddb);
       break;
     case 'reveal-votes':
-      groupConnectionIds = await getAllConnectionIds(connectionId, TABLE_NAME, ddb);
-      await revealVotes(groupConnectionIds, TABLE_NAME, ddb);
+      await revealVotes(connectionId, TABLE_NAME, ddb);
       break;
     case 'set-vote':
       await setVote(payload.vote, connectionId, TABLE_NAME, ddb);
-      groupConnectionIds = await getAllConnectionIds(connectionId, TABLE_NAME, ddb);
       break;
     case 'reset-votes':
-      groupConnectionIds = await getAllConnectionIds(connectionId, TABLE_NAME, ddb);
-      await resetVotes(groupConnectionIds, TABLE_NAME, ddb);
+      await resetVotes(connectionId, TABLE_NAME, ddb);
       break;
-    default:
-      groupConnectionIds = await getAllConnectionIds(connectionId, TABLE_NAME, ddb);
   }
 
-  const postCalls = await broadcastState(groupConnectionIds, apigwManagementApi, TABLE_NAME, ddb);
+  const postCalls = await broadcastState(connectionId, apigwManagementApi, TABLE_NAME, ddb);
 
   try {
     await Promise.all(postCalls);
