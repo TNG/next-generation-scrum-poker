@@ -1,23 +1,33 @@
-async function broadcastState(groupConnectionIds, apigwManagementApi, tableName, ddb) {
-  const params = {
-    RequestItems: {
-      [tableName]: {
-        Keys: groupConnectionIds.map((id) => ({ connectionId: id })),
-      },
-    },
-  };
-  const groupItems = (await ddb.batchGet(params).promise()).Responses[tableName];
+const { validUserId } = require('./filter-userId.js');
+const { getConnectionItem, getGroupItem } = require('./get-item.js');
 
-  const resultsVisible = groupItems.some((item) => item.visible);
-  const votes = groupItems.map((item) => {
-    const userId = item.userId ? item.userId : item.connectionId;
-    const vote = item.vote ? item.vote : 'not-voted';
-    return { [userId]: vote };
-  });
+async function broadcastState(connectionId, apigwManagementApi, tableName, ddb) {
+  let groupConnectionIds, message;
+  const connectionItem = await getConnectionItem(connectionId, tableName, ddb);
 
-  const message = JSON.stringify({ resultsVisible, votes });
+  if (connectionItem.groupId) {
+    const groupItem = await getGroupItem(connectionItem.groupId, tableName, ddb);
+    const userIds = Object.keys(groupItem).filter(validUserId);
 
-  const postCalls = groupConnectionIds.map(async (connectionId) => {
+    groupConnectionIds = userIds.map((key) => groupItem[key].connectionId);
+    const resultsVisible = !!groupItem.visible;
+    const votes = userIds.reduce((accumulator, currentValue) => {
+      const vote = groupItem[currentValue].vote;
+      return {
+        ...accumulator,
+        [currentValue]: vote ? vote : 'not-voted',
+      };
+    }, {});
+    message = JSON.stringify({ type: 'state', payload: { resultsVisible, votes } });
+  } else {
+    groupConnectionIds = [connectionId];
+    message = JSON.stringify({
+      type: 'state',
+      payload: { resultsVisible: false, votes: [{ [connectionId]: 'not-voted' }] },
+    });
+  }
+
+  return groupConnectionIds.map(async (connectionId) => {
     try {
       await apigwManagementApi
         .postToConnection({ ConnectionId: connectionId, Data: message })
@@ -31,8 +41,6 @@ async function broadcastState(groupConnectionIds, apigwManagementApi, tableName,
       }
     }
   });
-
-  return postCalls;
 }
 
 module.exports = {

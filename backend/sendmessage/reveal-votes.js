@@ -1,27 +1,25 @@
-function revealVotes(allIds, TABLE_NAME, ddb) {
-  const allUpdates = [];
+async function revealVotes(connectionId, tableName, ddb) {
+  const queryConnection = {
+    TableName: tableName,
+    ConsistentRead: true,
+    Key: {
+      primaryKey: `connectionId:${connectionId}`,
+    },
+  };
+  const connectionItem = (await ddb.get(queryConnection).promise()).Item;
+  const updateParams = {
+    TableName: tableName,
+    Key: {
+      primaryKey: `groupId:${connectionItem.groupId}`,
+    },
+    UpdateExpression: 'SET visible = :visibility',
+    ExpressionAttributeValues: {
+      ':visibility': true,
+    },
+    ReturnValues: 'UPDATED_NEW',
+  };
 
-  try {
-    allIds.forEach((connectionId) => {
-      const updateParams = {
-        TableName: TABLE_NAME,
-        Key: {
-          connectionId: connectionId,
-        },
-        UpdateExpression: 'SET visible = :visibility',
-        ExpressionAttributeValues: {
-          ':visibility': true,
-        },
-        ReturnValues: 'UPDATED_NEW',
-      };
-
-      allUpdates.push(ddb.update(updateParams).promise());
-    });
-  } catch (e) {
-    return { statusCode: 500, body: e.stack };
-  }
-
-  return Promise.all(allUpdates);
+  return ddb.update(updateParams).promise();
 }
 
 module.exports = {

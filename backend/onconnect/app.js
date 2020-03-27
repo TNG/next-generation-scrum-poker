@@ -9,8 +9,8 @@ exports.handler = async (event) => {
   const putParams = {
     TableName: process.env.TABLE_NAME,
     Item: {
+      primaryKey: `connectionId:${event.requestContext.connectionId}`,
       connectionId: event.requestContext.connectionId,
-      groupId: 'X',
     },
   };
 

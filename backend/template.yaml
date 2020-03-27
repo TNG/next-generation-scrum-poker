@@ -98,12 +98,10 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: 'connectionId'
-          AttributeType: 'S'
-        - AttributeName: 'groupId'
+        - AttributeName: 'primaryKey'
           AttributeType: 'S'
       KeySchema:
-        - AttributeName: 'connectionId'
+        - AttributeName: 'primaryKey'
           KeyType: 'HASH'
       ProvisionedThroughput:
         ReadCapacityUnits: 5
@@ -111,16 +109,6 @@ Resources:
       SSESpecification:
         SSEEnabled: True
       TableName: !Ref TableName
-      GlobalSecondaryIndexes:
-        - IndexName: 'groupIdIdx'
-          KeySchema:
-            - AttributeName: 'groupId'
-              KeyType: 'HASH'
-          Projection:
-            ProjectionType: 'KEYS_ONLY'
-          ProvisionedThroughput:
-            ReadCapacityUnits: '5'
-            WriteCapacityUnits: '5'
   OnConnectFunction:
     Type: AWS::Serverless::Function
     Properties:
