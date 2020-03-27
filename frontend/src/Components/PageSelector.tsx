@@ -1,18 +1,18 @@
-import { html } from '../html.js';
-import { connectToWebSocket } from './WebSocket.js';
-import { VotingPage } from './VotingPage.js';
-import { ResultsPage } from './ResultsPage.js';
+import React from '../../node_modules/es-react/dev/react.js';
 import { WebSocketApi } from '../types/WebSocket.js';
 import { LoginPage } from './LoginPage.js';
+import { ResultsPage } from './ResultsPage.js';
+import { VotingPage } from './VotingPage.js';
+import { connectToWebSocket } from './WebSocket.js';
 
 const ProtoPageSelector = ({ socket }: { socket: WebSocketApi }) => {
   if (!socket.loginData) {
-    return html`<${LoginPage} />`;
+    return <LoginPage />;
   }
   if (socket.state.resultsVisible) {
-    return html`<${ResultsPage} />`;
+    return <ResultsPage />;
   }
-  return html`<${VotingPage} />`;
+  return <VotingPage />;
 };
 
 export const PageSelector = connectToWebSocket(ProtoPageSelector);

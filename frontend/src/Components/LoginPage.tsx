@@ -1,10 +1,9 @@
-import { html } from '../html.js';
-import { connectToWebSocket } from './WebSocket.js';
-import { WebSocketApi } from '../types/WebSocket.js';
 import React from '../../node_modules/es-react/dev/react.js';
-import { css } from '../css.js';
 import { ASSET_TNG_LOGO } from '../assets.js';
+import { css } from '../css.js';
 import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
+import { WebSocketApi } from '../types/WebSocket.js';
+import { connectToWebSocket } from './WebSocket.js';
 
 const styling = css`
   position: absolute;
@@ -83,39 +82,49 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
   const [session, setSession] = React.useState('');
   React.useEffect(() => firstInputRef.current.focus(), []);
 
-  return html`<form
-    className=${styling}
-    onSubmit=${(event) => {
-      event.preventDefault();
-      socket.login(user, session);
-    }}
-  >
-    <div className="heading">NEXT GENERATION<br />SCRUM POKER</div>
-    <label htmlFor="user" className="user-label">Name:</label>
-    <input
-      id="user"
-      type="text"
-      value=${user}
-      ref=${firstInputRef}
-      className="user-input"
-      onChange=${(event) => setUser(event.target.value)}
-    />
-    <label htmlFor="session" className="session-label">Session:</label>
-    <input
-      id="session"
-      type="text"
-      value=${session}
-      className="session-input"
-      onChange=${(event) => setSession(event.target.value)}
-    />
-    <input
-      type="submit"
-      value="Login"
-      className="submit"
-      disabled=${user.length === 0 || session.length < 2}
-    />
-    <img src=${ASSET_TNG_LOGO} alt="TNG Logo" className="logo" />
-  </form>`;
+  return (
+    <form
+      className={styling}
+      onSubmit={(event) => {
+        event.preventDefault();
+        socket.login(user, session);
+      }}
+    >
+      <div className="heading">
+        NEXT GENERATION
+        <br />
+        SCRUM POKER
+      </div>
+      <label htmlFor="user" className="user-label">
+        Name:
+      </label>
+      <input
+        id="user"
+        type="text"
+        value={user}
+        ref={firstInputRef}
+        className="user-input"
+        onChange={(event) => setUser(event.target.value)}
+      />
+      <label htmlFor="session" className="session-label">
+        Session:
+      </label>
+      <input
+        id="session"
+        type="text"
+        value={session}
+        className="session-input"
+        onChange={(event) => setSession(event.target.value)}
+      />
+      <input
+        type="submit"
+        value="Login"
+        className="submit"
+        disabled={user.length === 0 || session.length < 2}
+      />
+      <img src={ASSET_TNG_LOGO} alt="TNG Logo" className="logo" />
+    </form>
+  );
 };
 
 export const LoginPage = connectToWebSocket(ProtoLoginPage);
