@@ -1,4 +1,4 @@
-import { CardValue } from '../types/WebSocket';
+import { CardValue, WebsocketMessage } from '../types/WebSocket';
 
 export const getLoginRequest = (user: string, session: string) =>
   buildRequest({
@@ -27,4 +27,4 @@ export const getResetVotesRequest = () =>
     type: 'reset-votes',
   });
 
-const buildRequest = (data) => JSON.stringify({ message: 'sendmessage', data });
+const buildRequest = (data: WebsocketMessage) => JSON.stringify({ message: 'sendmessage', data });

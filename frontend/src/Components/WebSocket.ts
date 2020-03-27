@@ -7,7 +7,7 @@ import {
   getRevealVotesRequest,
   getSetVoteRequest,
 } from '../requests/websocket-requests.js';
-import { CardValue, WebSocketApi } from '../types/WebSocket.js';
+import { CardValue, WebSocketApi, WebsocketMessage } from '../types/WebSocket.js';
 
 const WebSocketContext = React.createContext('defaultValue');
 
@@ -21,7 +21,11 @@ export const WebSocketProvider = ({ children }) => {
     const socket = new WebSocket(WEBSOCKET_URL);
     socket.onopen = () => setSocket(socket);
     socket.onmessage = (event) => {
-      setState(JSON.parse(event.data));
+      const message: WebsocketMessage = JSON.parse(event.data);
+      console.log('WS message', message);
+      if (message.type === 'state') {
+        setState(message.payload);
+      }
     };
   }, []);
 
@@ -54,6 +58,7 @@ export const WebSocketProvider = ({ children }) => {
     revealVotes,
     resetVotes,
   };
+  console.log(value);
   return html`<${WebSocketContext.Provider} value=${value} key="provider">${children}<//> `;
 };
 

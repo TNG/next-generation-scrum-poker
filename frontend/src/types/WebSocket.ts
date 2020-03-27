@@ -29,3 +29,13 @@ export interface WebSocketApi {
   revealVotes(): void;
   resetVotes(): void;
 }
+
+export interface WebsocketMessage {
+  type: string;
+  payload?: unknown;
+}
+
+export interface StateMessage extends WebsocketMessage {
+  type: 'state';
+  payload: WebSocketState;
+}
