@@ -17,7 +17,7 @@ export const WebSocketProvider = ({ children }) => {
   const [loginData, setLoginData] = React.useState(null);
 
   React.useEffect(() => {
-    const socket = new WebSocket('ws://localhost:4000');
+    const socket = new WebSocket('wss://l9fem3i3za.execute-api.eu-central-1.amazonaws.com/Prod');
     socket.onopen = () => setSocket(socket);
     socket.onmessage = (event) => {
       setState(JSON.parse(event.data));
