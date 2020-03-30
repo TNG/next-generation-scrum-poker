@@ -11,11 +11,11 @@ async function broadcastState(connectionId, apigwManagementApi, tableName, ddb) 
 
     groupConnectionIds = userIds.map((key) => groupItem[key].connectionId);
     const resultsVisible = !!groupItem.visible;
-    const votes = userIds.reduce((accumulator, currentValue) => {
-      const vote = groupItem[currentValue].vote;
+    const votes = userIds.reduce((accumulatedVotes, currentUserId) => {
+      const vote = groupItem[currentUserId].vote;
       return {
-        ...accumulator,
-        [currentValue]: vote ? vote : 'not-voted',
+        ...accumulatedVotes,
+        [currentUserId]: vote ? vote : 'not-voted',
       };
     }, {});
     message = JSON.stringify({ type: 'state', payload: { resultsVisible, votes } });

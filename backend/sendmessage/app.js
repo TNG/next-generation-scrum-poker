@@ -21,24 +21,24 @@ exports.handler = async (event) => {
   const connectionId = event.requestContext.connectionId;
   const { type, payload } = JSON.parse(event.body).data;
 
-  switch (type) {
-    case 'login':
-      await loginUser(payload.user, payload.session, connectionId, TABLE_NAME, ddb);
-      break;
-    case 'reveal-votes':
-      await revealVotes(connectionId, TABLE_NAME, ddb);
-      break;
-    case 'set-vote':
-      await setVote(payload.vote, connectionId, TABLE_NAME, ddb);
-      break;
-    case 'reset-votes':
-      await resetVotes(connectionId, TABLE_NAME, ddb);
-      break;
-  }
-
-  const postCalls = await broadcastState(connectionId, apigwManagementApi, TABLE_NAME, ddb);
-
   try {
+    switch (type) {
+      case 'login':
+        await loginUser(payload.user, payload.session, connectionId, TABLE_NAME, ddb);
+        break;
+      case 'reveal-votes':
+        await revealVotes(connectionId, TABLE_NAME, ddb);
+        break;
+      case 'set-vote':
+        await setVote(payload.vote, connectionId, TABLE_NAME, ddb);
+        break;
+      case 'reset-votes':
+        await resetVotes(connectionId, TABLE_NAME, ddb);
+        break;
+    }
+
+    const postCalls = await broadcastState(connectionId, apigwManagementApi, TABLE_NAME, ddb);
+
     await Promise.all(postCalls);
   } catch (e) {
     return { statusCode: 500, body: e.stack };
