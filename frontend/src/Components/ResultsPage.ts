@@ -1,8 +1,8 @@
 import { html } from '../html.js';
-import { connectToWebSocket, WebSocketConsumer } from './WebSocket.js';
+import { connectToWebSocket } from './WebSocket.js';
 import { css } from '../css.js';
-import { WebSocketApi } from '../types/WebSocket.js';
-import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from './LoginPage.js';
+import { CardValue, WebSocketApi } from '../types/WebSocket.js';
+import { BORDER_RADIUS, TNG_BLUE } from './LoginPage.js';
 
 const styling = css`
   display: flex;
@@ -51,26 +51,29 @@ const styling = css`
 `;
 
 function getSortedResultsArray(unsortedResults) {
-    var dataArray = Object.entries(unsortedResults)
-    const noNumbers = ["not-voted","coffee"];
-    return dataArray.sort( function (vote1, vote2) {
-        // put not-voted last, wait if both are equal
-        if (vote1[1] == "not-voted" && vote2[1] != "not-voted") return 1;
-        if (vote1[1] != "not-voted" && vote2[1] == "not-voted") return -1;
-
-        // put coffee after all numbers but before not-voted, wait if both are equal
-        if (vote1[1] == "coffee" && vote2[1] != "coffee") return 1;
-        if (vote1[1] != "coffee" && vote2[1] == "coffee") return -1;
-
-        // sort numbers
-        if (Number(vote1[1]) > Number(vote2[1])) return 1;
-        if (Number(vote1[1]) < Number(vote2[1])) return -1;
-
-        // for two equal votes, sort by name of user
-        if (vote1[0] > vote2[0]) return 1;
-        if (vote1[0] < vote2[0]) return -1;
-    })
+    let dataArray: [string, CardValue][] = Object.entries(unsortedResults);
+    return dataArray.sort( compareVotes)
 }
+
+const compareVotes = (userAndVote1: [string, CardValue], userAndVote2: [string, CardValue]) => {
+
+  const vote1 = userAndVote1[1];
+  const vote2 = userAndVote2[1];
+
+  if (isNaN(Number(vote1)) && !isNaN(Number(vote2))) return 1;
+  else if (!isNaN(Number(vote1)) && isNaN(Number(vote2))) return -1;
+  else if (isNaN(Number(vote1)) && isNaN(Number(vote2))) {
+    if (vote1.toLowerCase() > vote2.toLowerCase()) return 1;
+    if (vote1.toLowerCase() < vote2.toLowerCase()) return -1;
+  } else {
+    if (Number(vote1) > Number(vote2)) return 1;
+    if (Number(vote1) < Number(vote2)) return -1;
+  }
+
+  const user1 = userAndVote1[0];
+  const user2 = userAndVote2[0];
+  return (user1 > user2) ? 1 : -1;
+};
 
 const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
   html`<div className=${styling}>
