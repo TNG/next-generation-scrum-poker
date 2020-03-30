@@ -4,7 +4,7 @@ describe('the entry point', () => {
     container.id = 'root';
     document.body.appendChild(container);
     jest.isolateModules(() => {
-      require('./index');
+      require('./index.js');
     });
     const rootElement = document.getElementById('root');
     console.log(rootElement);

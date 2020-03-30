@@ -1,8 +1,8 @@
-import { html } from '../html.js';
-import { connectToWebSocket, WebSocketConsumer } from './WebSocket.js';
 import { css } from '../css.js';
+import React from '../react.js';
+import { BORDER_RADIUS, TNG_BLUE } from '../styles.js';
 import { WebSocketApi } from '../types/WebSocket.js';
-import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from './LoginPage.js';
+import { connectToWebSocket } from './WebSocket.js';
 
 const styling = css`
   display: flex;
@@ -51,7 +51,7 @@ const styling = css`
 `;
 
 const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
-  html`<div className=${styling}>
+  <div className={styling}>
     <div className="heading">RESULTS</div>
     <table className="table">
       <thead>
@@ -61,22 +61,22 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
         </tr>
       </thead>
       <tbody>
-        ${Object.keys(socket.state.votes).map((user) => {
-          return html`<tr key=${user}>
-            <td>${user}</td>
-            <td>${socket.state.votes[user]}</td>
-          </tr>`;
+        {Object.keys(socket.state.votes).map((user) => {
+          return <tr key={user}>
+            <td>{user}</td>
+            <td>{socket.state.votes[user]}</td>
+          </tr>;
         })}
       </tbody>
     </table>
     <button
       className="button"
-      onClick=${() => {
+      onClick={() => {
         socket.resetVotes();
       }}
     >
       Reset votes
     </button>
-  </div>`;
+  </div>;
 
 export const ResultsPage = connectToWebSocket(ProtoResultsPage);

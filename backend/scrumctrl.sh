@@ -21,7 +21,10 @@ deploy(){
       --template-file packaged.yaml \
       --stack-name ${stackname} \
       --capabilities CAPABILITY_IAM \
-      --parameter-overrides TableName=${dynamoname}
+      --parameter-overrides TableName=${dynamoname} \
+          BaseDomain=${basedomainname} \
+          SubDomain=${subdomainname} \
+          CertificateArn=${certificate}
 }
 
 delete() {
