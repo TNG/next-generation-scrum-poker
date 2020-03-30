@@ -1,8 +1,9 @@
+import { connectToWebSocket, WebSocketConsumer } from './WebSocket.js';
 import { css } from '../css.js';
+import { CardValue, WebSocketApi } from '../types/WebSocket.js';
+import { compareVotes } from './compareVotes.js';
 import React from '../react.js';
 import { BORDER_RADIUS, TNG_BLUE } from '../styles.js';
-import { WebSocketApi } from '../types/WebSocket.js';
-import { connectToWebSocket } from './WebSocket.js';
 
 const styling = css`
   display: flex;
@@ -50,6 +51,11 @@ const styling = css`
   }
 `;
 
+const getSortedResultsArray = (unsortedResults) => {
+    let dataArray: [string, CardValue][] = Object.entries(unsortedResults);
+    return dataArray.sort(compareVotes)
+};
+
 const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
   <div className={styling}>
     <div className="heading">RESULTS</div>
@@ -61,10 +67,10 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
         </tr>
       </thead>
       <tbody>
-        {Object.keys(socket.state.votes).map((user) => {
-          return <tr key={user}>
-            <td>{user}</td>
-            <td>{socket.state.votes[user]}</td>
+        {getSortedResultsArray(socket.state.votes).map((userAndVote) => {
+            return <tr key={userAndVote[0]}>
+            <td>{userAndVote[0]}</td>
+            <td>{userAndVote[1]}</td>
           </tr>;
         })}
       </tbody>
