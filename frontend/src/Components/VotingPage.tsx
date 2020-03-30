@@ -1,8 +1,8 @@
 import { CARD_VALUES } from '../config.js';
 import { css } from '../css.js';
-import React from '../react.js';
+import { Votes, WebSocketApi } from '../types/WebSocket.js';
 import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
-import { WebSocketApi } from '../types/WebSocket.js';
+import React from '../react.js';
 import { connectToWebSocket } from './WebSocket.js';
 
 const votingPageStyle = css`
@@ -58,7 +58,34 @@ const votingPageStyle = css`
       background: ${TNG_GRAY};
     }
   }
+  .table {
+    text-align: left;
+    padding: 15px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: ${TNG_BLUE};
+    ${BORDER_RADIUS};
+    margin: 10px;
+  }
+  .header-row {
+    color: ${TNG_BLUE};
+    padding 25px;
+  }
+  .voted {
+    color: red;
+  }
+  .not-voted {
+    color: green;
+  }
 `;
+const getSortedVotingState = (votes: Votes) => {
+  const votedUsers = Object.keys(votes).map((user) => ({
+    user,
+    voted: votes[user] === 'not-voted',
+  }));
+  return votedUsers.sort((a, b) => (a.voted ? -1 : 1));
+};
+
 const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
   const [selectedCard, setSelectedCard] = React.useState(null);
   return <div className={votingPageStyle}>
@@ -81,6 +108,23 @@ const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
     <button className="button" onClick={() => socket.revealVotes()}>
       Reveal Votes
     </button>
+
+    <table className="table">
+      <thead>
+        <tr className="header-row">
+          <th>Name</th>
+          <th>Voted</th>
+        </tr>
+      </thead>
+      <tbody>
+        {getSortedVotingState(socket.state.votes).map(({ user, voted }) => {
+          return <tr key={user}>
+            <td className={voted ? 'voted' : 'not-voted'}>{user}</td>
+            <td align="center" className={voted ? 'voted' : 'not-voted'}>{voted ? '✗' : '✔'}</td>
+          </tr>;
+        })}
+      </tbody>
+    </table>
   </div>;
 };
 
