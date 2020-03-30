@@ -1,9 +1,8 @@
-import React from '../../node_modules/es-react/dev/react.js';
 import { CARD_VALUES } from '../config.js';
 import { css } from '../css.js';
-import { html } from '../html.js';
+import React from '../react.js';
+import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
 import { WebSocketApi } from '../types/WebSocket.js';
-import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from './LoginPage.js';
 import { connectToWebSocket } from './WebSocket.js';
 
 const votingPageStyle = css`
@@ -62,27 +61,27 @@ const votingPageStyle = css`
 `;
 const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
   const [selectedCard, setSelectedCard] = React.useState(null);
-  return html`<div className=${votingPageStyle}>
+  return <div className={votingPageStyle}>
     <div className="heading">SELECT A CARD</div>
     <div className="card-collection">
-      ${CARD_VALUES.map(
+      {CARD_VALUES.map(
         (cardValue) =>
-          html`<div
-            key=${cardValue}
-            className=${cardValue === selectedCard ? 'card selected-card' : 'card'}
-            onClick=${() => {
+          <div
+            key={cardValue}
+            className={cardValue === selectedCard ? 'card selected-card' : 'card'}
+            onClick={() => {
               setSelectedCard(cardValue);
               socket.setVote(cardValue);
             }}
           >
-            ${cardValue}
-          </div>`
+            {cardValue}
+          </div>
       )}
     </div>
-    <button className="button" onClick=${() => socket.revealVotes()}>
+    <button className="button" onClick={() => socket.revealVotes()}>
       Reveal Votes
     </button>
-  </div>`;
+  </div>;
 };
 
 export const VotingPage = connectToWebSocket(ProtoVotingPage);

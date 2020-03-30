@@ -1,5 +1,6 @@
 .idea
 *.iml
+frontend/build
 frontend/dist
 node_modules
 backend/aws.config

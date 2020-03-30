@@ -1,17 +1,11 @@
-import React from '../../node_modules/es-react/dev/react.js';
 import { WEBSOCKET_URL } from '../config.js';
-import { html } from '../html.js';
-import {
-  getLoginRequest,
-  getResetVotesRequest,
-  getRevealVotesRequest,
-  getSetVoteRequest,
-} from '../requests/websocket-requests.js';
+import React from '../react.js';
+import { getLoginRequest, getResetVotesRequest, getRevealVotesRequest, getSetVoteRequest } from '../requests/websocket-requests.js';
 import { CardValue, WebSocketApi, WebsocketMessage } from '../types/WebSocket.js';
 
 const WebSocketContext = React.createContext('defaultValue');
 
-export const WebSocketProvider = ({ children }) => {
+export const WebSocketProvider = ({ children }: any) => {
   const initialState = { resultsVisible: false, votes: {} };
   const [socket, setSocket] = React.useState(null);
   const [state, setState] = React.useState(initialState);
@@ -22,7 +16,6 @@ export const WebSocketProvider = ({ children }) => {
     socket.onopen = () => setSocket(socket);
     socket.onmessage = (event) => {
       const message: WebsocketMessage = JSON.parse(event.data);
-      console.log('WS message', message);
       if (message.type === 'state') {
         setState(message.payload);
       }
@@ -30,7 +23,7 @@ export const WebSocketProvider = ({ children }) => {
   }, []);
 
   if (!socket) {
-    return html`Connecting...`;
+    return 'Connecting...';
   }
 
   const login = (user: string, session: string) => {
@@ -58,14 +51,19 @@ export const WebSocketProvider = ({ children }) => {
     revealVotes,
     resetVotes,
   };
-  console.log(value);
-  return html`<${WebSocketContext.Provider} value=${value} key="provider">${children}<//> `;
+  return (
+    <WebSocketContext.Provider value={value} key="provider">
+      {children}
+    </WebSocketContext.Provider>
+  );
 };
 
 export const WebSocketConsumer = WebSocketContext.Consumer;
 
 export const connectToWebSocket = (Component) => (...props) => {
-  return html`<${WebSocketConsumer}
-    >${(socket: WebSocketApi) => html`<${Component} socket=${socket} ...${props} />`}<//
-  >`;
+  return (
+    <WebSocketConsumer>
+      {(socket: WebSocketApi) => <Component socket={socket} {...props} />}
+    </WebSocketConsumer>
+  );
 };
