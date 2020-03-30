@@ -16,29 +16,29 @@ const { TABLE_NAME } = process.env;
 exports.handler = async (event) => {
   const apigwManagementApi = new AWS.ApiGatewayManagementApi({
     apiVersion: '2018-11-29',
-    endpoint: event.requestContext.domainName + '/' + event.requestContext.stage,
+    endpoint: event.requestContext.domainName,
   });
   const connectionId = event.requestContext.connectionId;
   const { type, payload } = JSON.parse(event.body).data;
 
-  switch (type) {
-    case 'login':
-      await loginUser(payload.user, payload.session, connectionId, TABLE_NAME, ddb);
-      break;
-    case 'reveal-votes':
-      await revealVotes(connectionId, TABLE_NAME, ddb);
-      break;
-    case 'set-vote':
-      await setVote(payload.vote, connectionId, TABLE_NAME, ddb);
-      break;
-    case 'reset-votes':
-      await resetVotes(connectionId, TABLE_NAME, ddb);
-      break;
-  }
-
-  const postCalls = await broadcastState(connectionId, apigwManagementApi, TABLE_NAME, ddb);
-
   try {
+    switch (type) {
+      case 'login':
+        await loginUser(payload.user, payload.session, connectionId, TABLE_NAME, ddb);
+        break;
+      case 'reveal-votes':
+        await revealVotes(connectionId, TABLE_NAME, ddb);
+        break;
+      case 'set-vote':
+        await setVote(payload.vote, connectionId, TABLE_NAME, ddb);
+        break;
+      case 'reset-votes':
+        await resetVotes(connectionId, TABLE_NAME, ddb);
+        break;
+    }
+
+    const postCalls = await broadcastState(connectionId, apigwManagementApi, TABLE_NAME, ddb);
+
     await Promise.all(postCalls);
   } catch (e) {
     return { statusCode: 500, body: e.stack };

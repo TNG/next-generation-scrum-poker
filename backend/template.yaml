@@ -14,6 +14,13 @@ Parameters:
     MaxLength: 50
     AllowedPattern: ^[A-Za-z_]+$
     ConstraintDescription: 'Required. Can be characters and underscore only. No numbers or special characters allowed.'
+  BaseDomain:
+    Type: String
+  SubDomain:
+    Type: String
+    Default: 'scrum-poker'
+  CertificateArn:
+    Type: String
 
 Resources:
   NextGenerationScrumPokerWebSocket:
@@ -181,6 +188,33 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !Ref SendMessageFunction
       Principal: apigateway.amazonaws.com
+  DomainName:
+    Type: AWS::ApiGatewayV2::DomainName
+    Properties:
+      DomainName: !Sub '${SubDomain}.${BaseDomain}'
+      DomainNameConfigurations:
+        - EndpointType: REGIONAL
+          CertificateArn: !Ref CertificateArn
+  ApiMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    DependsOn:
+      - Stage
+      - DomainName
+    Properties:
+      DomainName: !Sub '${SubDomain}.${BaseDomain}'
+      ApiId: !Ref NextGenerationScrumPokerWebSocket
+      Stage: Prod
+  DnsRecord:
+    Type: AWS::Route53::RecordSet
+    DependsOn:
+      - DomainName
+    Properties:
+      Name: !Sub '${SubDomain}.${BaseDomain}.'
+      HostedZoneName: !Sub '${BaseDomain}.'
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt DomainName.RegionalDomainName
+        HostedZoneId: !GetAtt DomainName.RegionalHostedZoneId
 
 Outputs:
   ConnectionsTableArn:
@@ -200,7 +234,7 @@ Outputs:
     Value: !GetAtt SendMessageFunction.Arn
 
   WebSocketURI:
-    Description: 'The WSS Protocol URI to connect to'
+    Description: 'The WSS Protocol URI'
     Value:
       !Join [
         '',
@@ -213,3 +247,7 @@ Outputs:
           !Ref 'Stage',
         ],
       ]
+
+  DnsRecordDomainName:
+    Description: 'Domain Name (use for WebSocket)'
+    Value: !Ref DnsRecord

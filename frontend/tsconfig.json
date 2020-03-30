@@ -5,7 +5,8 @@
     "sourceMap": true,
     "types": ["node"],
     "strict": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "jsx": "react"
   },
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test.ts"]

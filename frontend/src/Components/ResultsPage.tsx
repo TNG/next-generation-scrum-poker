@@ -1,9 +1,9 @@
-import { html } from '../html.js';
-import { connectToWebSocket } from './WebSocket.js';
+import { connectToWebSocket, WebSocketConsumer } from './WebSocket.js';
 import { css } from '../css.js';
 import { CardValue, WebSocketApi } from '../types/WebSocket.js';
-import { BORDER_RADIUS, TNG_BLUE } from './LoginPage.js';
 import { compareVotes } from './compareVotes.js';
+import React from '../react.js';
+import { BORDER_RADIUS, TNG_BLUE } from '../styles.js';
 
 const styling = css`
   display: flex;
@@ -57,7 +57,7 @@ const getSortedResultsArray = (unsortedResults) => {
 };
 
 const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
-  html`<div className=${styling}>
+  <div className={styling}>
     <div className="heading">RESULTS</div>
     <table className="table">
       <thead>
@@ -67,22 +67,22 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
         </tr>
       </thead>
       <tbody>
-        ${getSortedResultsArray(socket.state.votes).map((userAndVote) => {
-            return html`<tr key=${userAndVote[0]}>
-            <td>${userAndVote[0]}</td>
-            <td>${userAndVote[1]}</td>
-          </tr>`;
+        {getSortedResultsArray(socket.state.votes).map((userAndVote) => {
+            return <tr key={userAndVote[0]}>
+            <td>{userAndVote[0]}</td>
+            <td>{userAndVote[1]}</td>
+          </tr>;
         })}
       </tbody>
     </table>
     <button
       className="button"
-      onClick=${() => {
+      onClick={() => {
         socket.resetVotes();
       }}
     >
       Reset votes
     </button>
-  </div>`;
+  </div>;
 
 export const ResultsPage = connectToWebSocket(ProtoResultsPage);
