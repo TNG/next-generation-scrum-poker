@@ -1,11 +1,8 @@
 import { CARD_VALUES } from '../config.js';
 import { css } from '../css.js';
-import { html } from '../html.js';
 import { Votes, WebSocketApi } from '../types/WebSocket.js';
-import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from './LoginPage.js';
-import React from '../react.js';
 import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
-import { WebSocketApi } from '../types/WebSocket.js';
+import React from '../react.js';
 import { connectToWebSocket } from './WebSocket.js';
 
 const votingPageStyle = css`
@@ -120,11 +117,11 @@ const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
         </tr>
       </thead>
       <tbody>
-        ${getSortedVotingState(socket.state.votes).map(({ user, voted }) => {
-          return html`<tr key=${user}>
-            <td className=${voted ? 'voted' : 'not-voted'}>${user}</td>
-            <td align="center" className=${voted ? 'voted' : 'not-voted'}>${voted ? '✗' : '✔'}</td>
-          </tr>`;
+        {getSortedVotingState(socket.state.votes).map(({ user, voted }) => {
+          return <tr key={user}>
+            <td className={voted ? 'voted' : 'not-voted'}>{user}</td>
+            <td align="center" className={voted ? 'voted' : 'not-voted'}>{voted ? '✗' : '✔'}</td>
+          </tr>;
         })}
       </tbody>
     </table>
