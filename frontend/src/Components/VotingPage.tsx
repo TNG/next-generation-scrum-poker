@@ -16,8 +16,9 @@ const votingPageStyle = css`
     line-height: 1.2;
   }
   .login-info {
+    color: ${TNG_GRAY};
     font-size: 12px;
-    margin-left: 2rem;
+    margin-bottom: 1rem;
   }
   .card-collection {
     display: flex;
@@ -92,50 +93,47 @@ const getSortedVotingState = (votes: Votes) => {
 
 const ProtoVotingPage = ({socket}: { socket: WebSocketApi }) => {
   const [selectedCard, setSelectedCard] = React.useState(null);
-  return <>
-    <div className="login-info">
-      <p>Session ID: {socket.loginData ? socket.loginData.session : 'not found'}</p>
-      <p>User name: {socket.loginData ? socket.loginData.user : 'not found'}</p>
+  return <div className={votingPageStyle}>
+    <div className="login-info">Session
+      ID: {socket.loginData ? socket.loginData.session : 'not found'} &nbsp;
+      - &nbsp; User name: {socket.loginData ? socket.loginData.user : 'not found'}</div>
+    <div className="heading">SELECT A CARD</div>
+    <div className="card-collection">
+      {CARD_VALUES.map(
+          (cardValue) =>
+              <div
+                  key={cardValue}
+                  className={cardValue === selectedCard ? 'card selected-card' : 'card'}
+                  onClick={() => {
+                    setSelectedCard(cardValue);
+                    socket.setVote(cardValue);
+                  }}
+              >
+                {cardValue}
+              </div>
+      )}
     </div>
-    <div className={votingPageStyle}>
-      <div className="heading">SELECT A CARD</div>
-      <div className="card-collection">
-        {CARD_VALUES.map(
-            (cardValue) =>
-                <div
-                    key={cardValue}
-                    className={cardValue === selectedCard ? 'card selected-card' : 'card'}
-                    onClick={() => {
-                      setSelectedCard(cardValue);
-                      socket.setVote(cardValue);
-                    }}
-                >
-                  {cardValue}
-                </div>
-        )}
-      </div>
-      <button className="button" onClick={() => socket.revealVotes()}>
-        Reveal Votes
-      </button>
+    <button className="button" onClick={() => socket.revealVotes()}>
+      Reveal Votes
+    </button>
 
-      <table className="table">
-        <thead>
-        <tr className="header-row">
-          <th>Name</th>
-          <th>Voted</th>
-        </tr>
-        </thead>
-        <tbody>
-        {getSortedVotingState(socket.state.votes).map(({user, voted}) => {
-          return <tr key={user}>
-            <td className={voted ? 'voted' : 'not-voted'}>{user}</td>
-            <td align="center" className={voted ? 'voted' : 'not-voted'}>{voted ? '✗' : '✔'}</td>
-          </tr>;
-        })}
-        </tbody>
-      </table>
-    </div>
-  </>;
+    <table className="table">
+      <thead>
+      <tr className="header-row">
+        <th>Name</th>
+        <th>Voted</th>
+      </tr>
+      </thead>
+      <tbody>
+      {getSortedVotingState(socket.state.votes).map(({user, voted}) => {
+        return <tr key={user}>
+          <td className={voted ? 'voted' : 'not-voted'}>{user}</td>
+          <td align="center" className={voted ? 'voted' : 'not-voted'}>{voted ? '✗' : '✔'}</td>
+        </tr>;
+      })}
+      </tbody>
+    </table>
+  </div>;
 };
 
 export const VotingPage = connectToWebSocket(ProtoVotingPage);
