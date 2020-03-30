@@ -1,7 +1,14 @@
 import { CARD_VALUES } from '../config.js';
 import { css } from '../css.js';
 import { Votes, WebSocketApi } from '../types/WebSocket.js';
-import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
+import {
+  buttonStyle,
+  headingStyle,
+  tableHeaderStyle,
+  tableStyle,
+  TNG_BLUE,
+  TNG_GRAY
+} from '../styles.js';
 import React from '../react.js';
 import { connectToWebSocket } from './WebSocket.js';
 
@@ -10,10 +17,7 @@ const votingPageStyle = css`
   align-items: center;
   flex-direction: column;
   .heading {
-    color: ${TNG_BLUE};
-    font-size: 20px;
-    text-align: center;
-    line-height: 1.2;
+    ${headingStyle};
   }
   .login-info {
     color: ${TNG_GRAY};
@@ -52,29 +56,13 @@ const votingPageStyle = css`
     color: white;
   }
   .button {
-    border: none;
-    color: white;
-    cursor: pointer;
-    background: ${TNG_BLUE};
-    ${BORDER_RADIUS};
-    height: 50px;
-    width: 150px;
-    :hover {
-      background: ${TNG_GRAY};
-    }
+    ${buttonStyle};
   }
   .table {
-    text-align: left;
-    padding: 15px;
-    border-width: 3px;
-    border-style: solid;
-    border-color: ${TNG_BLUE};
-    ${BORDER_RADIUS};
-    margin: 10px;
+    ${tableStyle};
   }
   .header-row {
-    color: ${TNG_BLUE};
-    padding 25px;
+    ${tableHeaderStyle};
   }
   .voted {
     color: red;

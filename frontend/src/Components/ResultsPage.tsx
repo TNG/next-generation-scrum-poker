@@ -1,9 +1,14 @@
-import { connectToWebSocket, WebSocketConsumer } from './WebSocket.js';
+import { connectToWebSocket } from './WebSocket.js';
 import { css } from '../css.js';
 import { CardValue, WebSocketApi } from '../types/WebSocket.js';
 import { compareVotes } from './compareVotes.js';
 import React from '../react.js';
-import { BORDER_RADIUS, TNG_BLUE } from '../styles.js';
+import {
+  buttonStyle,
+  headingStyle,
+  tableStyle,
+  tableHeaderStyle
+} from '../styles.js';
 
 const styling = css`
   display: flex;
@@ -18,36 +23,17 @@ const styling = css`
   align-content: center;
   justify-content: center;
  
-  .heading {
-    color: ${TNG_BLUE};
-    font-size: 20px;
-    text-align: center;
-    line-height: 1.2;
+  .heading{
+    ${headingStyle};
   }
-  
-  .table {
-    text-align: left;
-    padding: 15px;
-    border-width: 3px;
-    border-style: solid;
-    border-color: ${TNG_BLUE};
-    ${BORDER_RADIUS};
-    margin: 10px;
-  }
-  
-  .header-row {
-    color: ${TNG_BLUE};
-    padding 25px;
-  }
-  
   .button {
-    border: none;
-    color: white;
-    cursor: pointer;
-    background: ${TNG_BLUE};
-    ${BORDER_RADIUS}
-    height: 50px;
-    width: 150px;
+    ${buttonStyle};
+  }
+  .table {
+    ${tableStyle};
+  }
+  .header-row {
+    ${tableHeaderStyle};
   }
 `;
 
