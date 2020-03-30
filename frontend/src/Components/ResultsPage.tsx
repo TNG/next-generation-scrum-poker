@@ -7,7 +7,8 @@ import {
   buttonStyle,
   headingStyle,
   tableStyle,
-  tableHeaderStyle
+  tableHeaderStyle,
+  TNG_GRAY
 } from '../styles.js';
 
 const styling = css`
@@ -35,6 +36,9 @@ const styling = css`
   .header-row {
     ${tableHeaderStyle};
   }
+  .not-voted-entry {
+    color: ${TNG_GRAY};
+  }
 `;
 
 const getSortedResultsArray = (unsortedResults) => {
@@ -56,7 +60,7 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
         {getSortedResultsArray(socket.state.votes).map((userAndVote) => {
             return <tr key={userAndVote[0]}>
             <td>{userAndVote[0]}</td>
-            <td>{userAndVote[1]}</td>
+            <td className={userAndVote[1] === 'not-voted' && 'not-voted-entry'}>{userAndVote[1]}</td>
           </tr>;
         })}
       </tbody>

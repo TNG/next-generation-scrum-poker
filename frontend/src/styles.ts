@@ -24,8 +24,9 @@ export const buttonStyle = `
 
 export const tableStyle = `
     text-align: left;
-    padding: 15px;
+    padding: 10px 15px 15px 15px;
     border-width: 3px;
+    border-spacing: 10px 0;
     border-style: solid;
     border-color: ${TNG_BLUE};
     ${BORDER_RADIUS};
@@ -39,4 +40,5 @@ export const tableStyle = `
 export const tableHeaderStyle = `
     color: ${TNG_BLUE};
     padding 25px;
+    line-height: 35px;
 `;
