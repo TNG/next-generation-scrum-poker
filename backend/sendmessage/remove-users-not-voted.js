@@ -1,5 +1,7 @@
 const { validUserId } = require('./filter-userId.js');
 const { getConnectionItem, getGroupItem } = require('./get-item.js');
+const { broadcastState } = require('./broadcast-state.js');
+const { sendMessageToConnection } = require('./send-message-to-connection.js');
 
 function getRemoveUsersFromGroupParams(userIdsNotVoted, tableName, connectionItem) {
   const removeUsers = userIdsNotVoted.map((id, idx) => `#${idx}`).join(',');
@@ -30,7 +32,8 @@ function getRemoveGroupFromConnectionParams(tableName, groupItem, id) {
   };
 }
 
-async function removeUsersNotVoted(connectionId, tableName, ddb) {
+async function removeUsersNotVoted(config) {
+  const { connectionId, tableName, ddb } = config;
   const dbUpdates = [];
   const connectionItem = await getConnectionItem(connectionId, tableName, ddb);
   const groupItem = await getGroupItem(connectionItem.groupId, tableName, ddb);
@@ -49,7 +52,16 @@ async function removeUsersNotVoted(connectionId, tableName, ddb) {
     dbUpdates.push(ddb.update(updateParams).promise());
   }
 
-  return Promise.all(dbUpdates);
+  await Promise.all(dbUpdates);
+  await Promise.all(await broadcastState(connectionItem.groupId, config));
+  await Promise.all(
+    userIdsNotVoted.map((id) =>
+      sendMessageToConnection(
+        JSON.stringify({ type: 'not-logged-in' }),
+        (config = { ...config, connectionId: groupItem[id].connectionId })
+      )
+    )
+  );
 }
 
 module.exports = {

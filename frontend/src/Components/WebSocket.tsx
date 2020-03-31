@@ -25,6 +25,10 @@ export const WebSocketProvider = ({ children }: any) => {
       if (message.type === 'state') {
         setState(message.payload);
       }
+      if (message.type === 'not-logged-in') {
+        setState(initialState);
+        setLoginData(null);
+      }
     };
   }, []);
 
