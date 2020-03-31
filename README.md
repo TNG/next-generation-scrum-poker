@@ -9,6 +9,9 @@ your own stack for testing purposes.
 
 ## aws.config
 
+create your own aws.config (use aws-prod.config as template)
+and replace following variables
+
 ```
 stackname="[your-stack]"
 subdomainname="[your-bucket]"
