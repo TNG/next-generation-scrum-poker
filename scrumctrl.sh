@@ -12,23 +12,30 @@ display_usage() {
 }
 
 deploy(){
+  cd frontend
+  rm -rf dist
+  npm run build
+  cd ..
+
+  aws s3 sync frontend/dist s3://${S3Frontend} --delete
+
   sam package \
-      --template-file template.yaml \
-      --output-template-file packaged.yaml \
-      --s3-bucket ${bucketname}
+      --template-file backend/template.yaml \
+      --output-template-file backend/packaged.yaml \
+      --s3-bucket ${S3Backend}
 
   sam deploy \
-      --template-file packaged.yaml \
-      --stack-name ${stackname} \
+      --template-file backend/packaged.yaml \
+      --stack-name ${StackBackend} \
       --capabilities CAPABILITY_IAM \
-      --parameter-overrides TableName=${dynamoname} \
+      --parameter-overrides TableName=${tablename} \
           BaseDomain=${basedomainname} \
           SubDomain=${subdomainname} \
           CertificateArn=${certificate}
 }
 
 delete() {
-  aws cloudformation delete-stack --stack-name ${stackname}
+  aws cloudformation delete-stack --stack-name ${StackBackend}
 }
 
 while test $# -gt 0; do

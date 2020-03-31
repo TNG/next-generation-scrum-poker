@@ -3,5 +3,5 @@
 frontend/build
 frontend/dist
 node_modules
-backend/aws.config
+aws.config
 backend/packaged.yaml
