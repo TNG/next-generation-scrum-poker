@@ -7,18 +7,37 @@ Prototype for a new Scrum Poker
 Create a file with your custom aws settings. This allows you to deploy
 your own stack for testing purposes.
 
-aws.config
+## aws.config
+
+create your own aws.config (use aws-prod.config as template)
+and replace following variables
 
 ```
 stackname="[your-stack]"
-bucketname="[your-bucket]"
-dynamoname="[your-bucket]"
-basedomainname="[your-basedomain]"
-subdomainname="[your-subdomain]"
-certificate="[subdomain-certificate]"
+subdomainname="[your-bucket]"
+tablename="[your-table]"
+
+# constants
+basedomainname="playground.aws.tngtech.com"
+certificate="arn:aws:acm:eu-central-1:530798195059:certificate/9fb19f73-7147-4e1b-afeb-beb88568d5d5"
+
+# auto generated variables
+S3Backend=${subdomainname}
+S3Frontend=${subdomainname}.${basedomainname}
+StackBase=${stackname}-base
+StackBackend=${stackname}-backend
 ```
 
-The S3 bucket has to be created manually via UI.
+## Deployment
+
+### Create the S3 Buckets & deploy FE + BE
+
+Currently it is assumed we are using eu-central-1!
+
+```
+./inits3.sh
+./scrumctrl.sh --deploy
+```
 
 # Frontend
 

@@ -8,7 +8,6 @@ Description: >
 Parameters:
   TableName:
     Type: String
-    Default: 'next_gen_scrum_poker_connections'
     Description: (Required) The name of the new DynamoDB to store connection identifiers for each connected clients. Minimum 3 characters
     MinLength: 3
     MaxLength: 50
@@ -18,9 +17,14 @@ Parameters:
     Type: String
   SubDomain:
     Type: String
-    Default: 'scrum-poker'
   CertificateArn:
     Type: String
+  S3HostedZoneId:
+    Type: String
+    Default: 'Z21DNDUVLTQW6Q'
+  S3DNSName:
+    Type: String
+    Default: 's3-website.eu-central-1.amazonaws.com'
 
 Resources:
   NextGenerationScrumPokerWebSocket:
@@ -191,7 +195,7 @@ Resources:
   DomainName:
     Type: AWS::ApiGatewayV2::DomainName
     Properties:
-      DomainName: !Sub '${SubDomain}.${BaseDomain}'
+      DomainName: !Sub '${SubDomain}-backend.${BaseDomain}'
       DomainNameConfigurations:
         - EndpointType: REGIONAL
           CertificateArn: !Ref CertificateArn
@@ -201,7 +205,7 @@ Resources:
       - Stage
       - DomainName
     Properties:
-      DomainName: !Sub '${SubDomain}.${BaseDomain}'
+      DomainName: !Sub '${SubDomain}-backend.${BaseDomain}'
       ApiId: !Ref NextGenerationScrumPokerWebSocket
       Stage: Prod
   DnsRecord:
@@ -209,12 +213,21 @@ Resources:
     DependsOn:
       - DomainName
     Properties:
-      Name: !Sub '${SubDomain}.${BaseDomain}.'
+      Name: !Sub '${SubDomain}-backend.${BaseDomain}.'
       HostedZoneName: !Sub '${BaseDomain}.'
       Type: A
       AliasTarget:
         DNSName: !GetAtt DomainName.RegionalDomainName
         HostedZoneId: !GetAtt DomainName.RegionalHostedZoneId
+  DnsS3Record:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: !Sub '${SubDomain}.${BaseDomain}.'
+      HostedZoneName: !Sub '${BaseDomain}.'
+      Type: A
+      AliasTarget:
+        DNSName: !Ref S3DNSName
+        HostedZoneId: !Ref S3HostedZoneId
 
 Outputs:
   ConnectionsTableArn:
