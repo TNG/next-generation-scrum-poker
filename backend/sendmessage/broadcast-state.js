@@ -10,7 +10,9 @@ async function broadcastState(groupId, config) {
     const groupItem = await getGroupItem(groupId, tableName, ddb);
     const userIds = Object.keys(groupItem).filter(validUserId);
 
-    groupConnectionIds = userIds.map((key) => groupItem[key].connectionId);
+    groupConnectionIds = userIds
+      .filter((key) => groupItem[key].connectionId)
+      .map((key) => groupItem[key].connectionId);
     const resultsVisible = !!groupItem.visible;
     const votes = userIds.reduce((accumulatedVotes, currentUserId) => {
       const vote = groupItem[currentUserId].vote;
