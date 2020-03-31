@@ -3,6 +3,7 @@ const { setVote } = require('./set-vote.js');
 const { resetVotes } = require('./reset-votes.js');
 const { revealVotes } = require('./reveal-votes.js');
 const { broadcastState } = require('./broadcast-state.js');
+const { removeUsersNotVoted } = require('./remove-users-not-voted.js');
 
 const AWS = require('aws-sdk');
 
@@ -34,6 +35,9 @@ exports.handler = async (event) => {
         break;
       case 'reset-votes':
         await resetVotes(connectionId, TABLE_NAME, ddb);
+        break;
+      case 'remove-users-not-voted':
+        await removeUsersNotVoted(connectionId, TABLE_NAME, ddb);
         break;
     }
 
