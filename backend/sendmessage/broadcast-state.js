@@ -23,7 +23,7 @@ async function broadcastState(connectionId, apigwManagementApi, tableName, ddb) 
     groupConnectionIds = [connectionId];
     message = JSON.stringify({
       type: 'state',
-      payload: { resultsVisible: false, votes: [{ [connectionId]: 'not-voted' }] },
+      payload: { resultsVisible: false, votes: { [connectionId]: 'not-voted' } },
     });
   }
 

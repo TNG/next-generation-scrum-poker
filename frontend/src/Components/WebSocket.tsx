@@ -5,7 +5,7 @@ import {
   getRemoveUsersNotVotedRequest,
   getResetVotesRequest,
   getRevealVotesRequest,
-  getSetVoteRequest
+  getSetVoteRequest,
 } from '../requests/websocket-requests.js';
 import { CardValue, WebSocketApi, WebsocketMessage } from '../types/WebSocket.js';
 

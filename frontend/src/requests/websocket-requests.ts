@@ -28,8 +28,8 @@ export const getResetVotesRequest = () =>
   });
 
 export const getRemoveUsersNotVotedRequest = () =>
-    buildRequest({
-        type: 'remove-users-not-voted',
-    });
+  buildRequest({
+    type: 'remove-users-not-voted',
+  });
 
 const buildRequest = (data: WebsocketMessage) => JSON.stringify({ message: 'sendmessage', data });

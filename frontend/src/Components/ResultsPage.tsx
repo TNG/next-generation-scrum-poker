@@ -3,13 +3,7 @@ import { css } from '../css.js';
 import { CardValue, WebSocketApi } from '../types/WebSocket.js';
 import { compareVotes } from './compareVotes.js';
 import React from '../react.js';
-import {
-  buttonStyle,
-  headingStyle,
-  tableStyle,
-  tableHeaderStyle,
-  TNG_GRAY
-} from '../styles.js';
+import { buttonStyle, headingStyle, tableStyle, tableHeaderStyle, TNG_GRAY } from '../styles.js';
 
 const styling = css`
   display: flex;
@@ -23,8 +17,8 @@ const styling = css`
   right: 0;
   align-content: center;
   justify-content: center;
- 
-  .heading{
+
+  .heading {
     ${headingStyle};
   }
   .button {
@@ -42,11 +36,11 @@ const styling = css`
 `;
 
 const getSortedResultsArray = (unsortedResults) => {
-    let dataArray: [string, CardValue][] = Object.entries(unsortedResults);
-    return dataArray.sort(compareVotes)
+  let dataArray: [string, CardValue][] = Object.entries(unsortedResults);
+  return dataArray.sort(compareVotes);
 };
 
-const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
+const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
   <div className={styling}>
     <div className="heading">RESULTS</div>
     <table className="table">
@@ -58,10 +52,14 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
       </thead>
       <tbody>
         {getSortedResultsArray(socket.state.votes).map((userAndVote) => {
-            return <tr key={userAndVote[0]}>
-            <td>{userAndVote[0]}</td>
-            <td className={userAndVote[1] === 'not-voted' && 'not-voted-entry'}>{userAndVote[1]}</td>
-          </tr>;
+          return (
+            <tr key={userAndVote[0]}>
+              <td>{userAndVote[0]}</td>
+              <td className={userAndVote[1] === 'not-voted' && 'not-voted-entry'}>
+                {userAndVote[1]}
+              </td>
+            </tr>
+          );
         })}
       </tbody>
     </table>
@@ -73,6 +71,7 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) =>
     >
       Reset votes
     </button>
-  </div>;
+  </div>
+);
 
 export const ResultsPage = connectToWebSocket(ProtoResultsPage);

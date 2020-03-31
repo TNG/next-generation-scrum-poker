@@ -1,7 +1,9 @@
 import { CardValue } from '../types/WebSocket.js';
 
-export const compareVotes = (userAndVote1: [string, CardValue], userAndVote2: [string, CardValue]) => {
-
+export const compareVotes = (
+  userAndVote1: [string, CardValue],
+  userAndVote2: [string, CardValue]
+) => {
   const vote1 = userAndVote1[1];
   const vote2 = userAndVote2[1];
 
@@ -17,5 +19,5 @@ export const compareVotes = (userAndVote1: [string, CardValue], userAndVote2: [s
 
   const user1 = userAndVote1[0];
   const user2 = userAndVote2[0];
-  return (user1 > user2) ? 1 : -1;
+  return user1 > user2 ? 1 : -1;
 };
