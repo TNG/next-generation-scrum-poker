@@ -1,6 +1,12 @@
 import { WEBSOCKET_URL } from '../config.js';
 import React from '../react.js';
-import { getLoginRequest, getResetVotesRequest, getRevealVotesRequest, getSetVoteRequest } from '../requests/websocket-requests.js';
+import {
+  getLoginRequest,
+  getRemoveUsersNotVotedRequest,
+  getResetVotesRequest,
+  getRevealVotesRequest,
+  getSetVoteRequest
+} from '../requests/websocket-requests.js';
 import { CardValue, WebSocketApi, WebsocketMessage } from '../types/WebSocket.js';
 
 const WebSocketContext = React.createContext('defaultValue');
@@ -39,6 +45,10 @@ export const WebSocketProvider = ({ children }: any) => {
     socket.send(getRevealVotesRequest());
   };
 
+  const removeUsersNotVoted = () => {
+    socket.send(getRemoveUsersNotVotedRequest());
+  };
+
   const resetVotes = () => {
     socket.send(getResetVotesRequest());
   };
@@ -50,6 +60,7 @@ export const WebSocketProvider = ({ children }: any) => {
     setVote,
     revealVotes,
     resetVotes,
+    removeUsersNotVoted,
   };
   return (
     <WebSocketContext.Provider value={value} key="provider">

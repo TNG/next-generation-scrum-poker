@@ -30,6 +30,7 @@ export interface WebSocketApi {
   setVote(vote: CardValue): void;
   revealVotes(): void;
   resetVotes(): void;
+  removeUsersNotVoted(): void;
 }
 
 export interface WebsocketMessage {
