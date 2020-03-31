@@ -121,6 +121,10 @@ const ProtoVotingPage = ({socket}: { socket: WebSocketApi }) => {
       })}
       </tbody>
     </table>
+
+    <button className="button" onClick={() => console.log("Kick'em all!!!")}>
+      Kick users without vote
+    </button>
   </div>;
 };
 
