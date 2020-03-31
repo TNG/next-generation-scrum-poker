@@ -4,14 +4,10 @@ const { getConnectionItem, getGroupItem } = require('./get-item.js');
 async function resetVotes(connectionId, tableName, ddb) {
   const connectionItem = await getConnectionItem(connectionId, tableName, ddb);
   const groupItem = await getGroupItem(connectionItem.groupId, tableName, ddb);
-  const userIdsToResetVotes = Object.keys(groupItem).filter(validUserId);
-  const removeUserVotes = userIdsToResetVotes
-    .map((id, idx) =>
-      groupItem[id].vote || groupItem[id].connectionId === connectionId ? `#${idx}.vote` : `#${idx}`
-    )
-    .join(',');
+  const userIds = Object.keys(groupItem).filter(validUserId);
+  const removeUserVotes = userIds.map((id, idx) => `#${idx}.vote`).join(',');
 
-  const expressionAttributeNames = userIdsToResetVotes.reduce(
+  const expressionAttributeNames = userIds.reduce(
     (attributeNames, currentId, currentIdx) => ({
       ...attributeNames,
       [`#${currentIdx}`]: currentId,
