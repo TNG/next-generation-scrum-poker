@@ -2,7 +2,6 @@ const { loginUser } = require('./login-user.js');
 const { setVote } = require('./set-vote.js');
 const { resetVotes } = require('./reset-votes.js');
 const { revealVotes } = require('./reveal-votes.js');
-const { broadcastState } = require('./broadcast-state.js');
 const { removeUsersNotVoted } = require('./remove-users-not-voted.js');
 
 const AWS = require('aws-sdk');
@@ -21,29 +20,31 @@ exports.handler = async (event) => {
   });
   const connectionId = event.requestContext.connectionId;
   const { type, payload } = JSON.parse(event.body).data;
+  const config = {
+    connectionId,
+    tableName: TABLE_NAME,
+    ddb,
+    apigwManagementApi,
+  };
 
   try {
     switch (type) {
       case 'login':
-        await loginUser(payload.user, payload.session, connectionId, TABLE_NAME, ddb);
+        await loginUser(payload.user, payload.session, config);
         break;
       case 'reveal-votes':
-        await revealVotes(connectionId, TABLE_NAME, ddb);
+        await revealVotes(config);
         break;
       case 'set-vote':
-        await setVote(payload.vote, connectionId, TABLE_NAME, ddb);
+        await setVote(payload.vote, config);
         break;
       case 'reset-votes':
-        await resetVotes(connectionId, TABLE_NAME, ddb);
+        await resetVotes(config);
         break;
       case 'remove-users-not-voted':
-        await removeUsersNotVoted(connectionId, TABLE_NAME, ddb);
+        await removeUsersNotVoted(config);
         break;
     }
-
-    const postCalls = await broadcastState(connectionId, apigwManagementApi, TABLE_NAME, ddb);
-
-    await Promise.all(postCalls);
   } catch (e) {
     return { statusCode: 500, body: e.stack };
   }

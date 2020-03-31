@@ -1,8 +1,10 @@
-function loginUser(userId, groupId, connectionId, tableName, ddb) {
+const { broadcastState } = require('./broadcast-state.js');
+
+async function loginUser(userId, groupId, config) {
   const updateConnectionParams = {
-    TableName: tableName,
+    TableName: config.tableName,
     Key: {
-      primaryKey: `connectionId:${connectionId}`,
+      primaryKey: `connectionId:${config.connectionId}`,
     },
     UpdateExpression: 'set userId = :userId, groupId = :groupId',
     ExpressionAttributeValues: {
@@ -13,7 +15,7 @@ function loginUser(userId, groupId, connectionId, tableName, ddb) {
   };
 
   const updateGroupParams = {
-    TableName: tableName,
+    TableName: config.tableName,
     Key: {
       primaryKey: `groupId:${groupId}`,
     },
@@ -22,15 +24,16 @@ function loginUser(userId, groupId, connectionId, tableName, ddb) {
       '#userId': userId,
     },
     ExpressionAttributeValues: {
-      ':userId': { connectionId: connectionId },
+      ':userId': { connectionId: config.connectionId },
       ':groupId': groupId,
     },
     ReturnValues: 'UPDATED_NEW',
   };
-  return Promise.all([
-    ddb.update(updateConnectionParams).promise(),
-    ddb.update(updateGroupParams).promise(),
+  await Promise.all([
+    config.ddb.update(updateConnectionParams).promise(),
+    config.ddb.update(updateGroupParams).promise(),
   ]);
+  await Promise.all(await broadcastState(groupId, config));
 }
 
 module.exports = {

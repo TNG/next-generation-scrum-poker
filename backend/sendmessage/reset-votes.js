@@ -1,7 +1,9 @@
 const { validUserId } = require('./filter-userId.js');
 const { getConnectionItem, getGroupItem } = require('./get-item.js');
+const { broadcastState } = require('./broadcast-state.js');
 
-async function resetVotes(connectionId, tableName, ddb) {
+async function resetVotes(config) {
+  const { connectionId, tableName, ddb } = config;
   const connectionItem = await getConnectionItem(connectionId, tableName, ddb);
   const groupItem = await getGroupItem(connectionItem.groupId, tableName, ddb);
   const userIds = Object.keys(groupItem).filter(validUserId);
@@ -23,7 +25,8 @@ async function resetVotes(connectionId, tableName, ddb) {
     ExpressionAttributeNames: removeUserVotes ? expressionAttributeNames : undefined,
   };
 
-  return ddb.update(updateParams).promise();
+  await ddb.update(updateParams).promise();
+  await Promise.all(await broadcastState(connectionItem.groupId, config));
 }
 
 module.exports = {

@@ -1,15 +1,11 @@
-async function setVote(vote, connectionId, tableName, ddb) {
-  const queryConnection = {
-    TableName: tableName,
-    ConsistentRead: true,
-    Key: {
-      primaryKey: `connectionId:${connectionId}`,
-    },
-  };
-  const connectionItem = (await ddb.get(queryConnection).promise()).Item;
+const { getConnectionItem } = require('./get-item.js');
+const { broadcastState } = require('./broadcast-state.js');
+
+async function setVote(vote, config) {
+  const connectionItem = await getConnectionItem(config.connectionId, config.tableName, config.ddb);
 
   const updateGroupParams = {
-    TableName: tableName,
+    TableName: config.tableName,
     Key: {
       primaryKey: `groupId:${connectionItem.groupId}`,
     },
@@ -23,7 +19,8 @@ async function setVote(vote, connectionId, tableName, ddb) {
     ReturnValues: 'UPDATED_NEW',
   };
 
-  return ddb.update(updateGroupParams).promise();
+  await config.ddb.update(updateGroupParams).promise();
+  await Promise.all(await broadcastState(connectionItem.groupId, config));
 }
 
 module.exports = {

@@ -1,14 +1,10 @@
-async function revealVotes(connectionId, tableName, ddb) {
-  const queryConnection = {
-    TableName: tableName,
-    ConsistentRead: true,
-    Key: {
-      primaryKey: `connectionId:${connectionId}`,
-    },
-  };
-  const connectionItem = (await ddb.get(queryConnection).promise()).Item;
+const { getConnectionItem } = require('./get-item.js');
+const { broadcastState } = require('./broadcast-state.js');
+
+async function revealVotes(config) {
+  const connectionItem = await getConnectionItem(config.connectionId, config.tableName, config.ddb);
   const updateParams = {
-    TableName: tableName,
+    TableName: config.tableName,
     Key: {
       primaryKey: `groupId:${connectionItem.groupId}`,
     },
@@ -19,7 +15,8 @@ async function revealVotes(connectionId, tableName, ddb) {
     ReturnValues: 'UPDATED_NEW',
   };
 
-  return ddb.update(updateParams).promise();
+  await config.ddb.update(updateParams).promise();
+  await Promise.all(await broadcastState(connectionItem.groupId, config));
 }
 
 module.exports = {
