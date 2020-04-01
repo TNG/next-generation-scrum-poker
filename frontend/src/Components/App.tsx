@@ -1,5 +1,5 @@
-import { css } from '../css.js';
-import React from '../react.js';
+import css from '/web_modules/csz.js';
+import React from '/web_modules/react.js';
 import { PageSelector } from './PageSelector.js';
 import { WebSocketProvider } from './WebSocket.js';
 

@@ -1,6 +1,6 @@
+import css from '/web_modules/csz.js';
+import React from '/web_modules/react.js';
 import { ASSET_TNG_LOGO } from '../assets.js';
-import { css } from '../css.js';
-import React from '../react.js';
 import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
 import { WebSocketApi } from '../types/WebSocket.js';
 import { connectToWebSocket } from './WebSocket.js';

@@ -1,15 +1,8 @@
+import css from '/web_modules/csz.js';
+import React from '/web_modules/react.js';
 import { CARD_VALUES } from '../config.js';
-import { css } from '../css.js';
+import { buttonStyle, headingStyle, tableHeaderStyle, tableStyle, TNG_BLUE, TNG_GRAY } from '../styles.js';
 import { Votes, WebSocketApi } from '../types/WebSocket.js';
-import {
-  buttonStyle,
-  headingStyle,
-  tableHeaderStyle,
-  tableStyle,
-  TNG_BLUE,
-  TNG_GRAY,
-} from '../styles.js';
-import React from '../react.js';
 import { connectToWebSocket } from './WebSocket.js';
 
 const votingPageStyle = css`

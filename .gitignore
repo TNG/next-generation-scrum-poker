@@ -3,5 +3,6 @@
 frontend/build
 frontend/dist
 node_modules
+web_modules
 aws.config
 backend/packaged.yaml

@@ -1,11 +1,11 @@
+import React from '/web_modules/react.js';
 import { WEBSOCKET_URL } from '../config.js';
-import React from '../react.js';
 import {
   getLoginRequest,
   getRemoveUsersNotVotedRequest,
   getResetVotesRequest,
   getRevealVotesRequest,
-  getSetVoteRequest,
+  getSetVoteRequest
 } from '../requests/websocket-requests.js';
 import { CardValue, WebSocketApi, WebsocketMessage } from '../types/WebSocket.js';
 

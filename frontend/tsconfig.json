@@ -1,12 +1,16 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react",
     "module": "ESNext",
-    "target": "ESNext",
-    "sourceMap": true,
-    "types": ["node"],
-    "strict": true,
+    "moduleResolution": "Node",
     "noImplicitAny": false,
-    "jsx": "react"
+    "paths": {
+      "/web_modules/*.js": ["node_modules/@types/*", "node_modules/*", "web_modules/*.js"]
+    },
+    "sourceMap": true,
+    "strict": true,
+    "target": "ESNext"
   },
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test.ts"]

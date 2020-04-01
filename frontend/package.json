@@ -8,6 +8,7 @@
     "build": "run-s build:tsc build:rollup",
     "build:tsc": "tsc -p . --outDir build",
     "build:rollup": "rollup -c",
+    "prepare": "snowpack",
     "start": "run-p watch serve",
     "serve": "servor --reload --browse",
     "watch": "npm run build:tsc -- --watch"
@@ -37,11 +38,12 @@
     "rollup": "^2.2.0",
     "rollup-plugin-terser": "^5.3.0",
     "servor": "^3.2.0",
+    "snowpack": "^1.6.0",
     "typescript": "^3.8.3"
   },
   "dependencies": {
     "csz": "^1.2.0",
-    "es-react": "^16.12.0",
-    "htm": "^3.0.3"
+    "react": "npm:@pika/react@^16.13.1",
+    "react-dom": "npm:@pika/react-dom@^16.13.1"
   }
 }

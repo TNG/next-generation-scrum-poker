@@ -1,9 +1,9 @@
-import { connectToWebSocket } from './WebSocket.js';
-import { css } from '../css.js';
+import css from '/web_modules/csz.js';
+import React from '/web_modules/react.js';
+import { buttonStyle, headingStyle, tableHeaderStyle, tableStyle, TNG_GRAY } from '../styles.js';
 import { CardValue, WebSocketApi } from '../types/WebSocket.js';
 import { compareVotes } from './compareVotes.js';
-import React from '../react.js';
-import { buttonStyle, headingStyle, tableStyle, tableHeaderStyle, TNG_GRAY } from '../styles.js';
+import { connectToWebSocket } from './WebSocket.js';
 
 const styling = css`
   display: flex;
