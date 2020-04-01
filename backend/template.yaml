@@ -25,6 +25,9 @@ Parameters:
   S3DNSName:
     Type: String
     Default: 's3-website.eu-central-1.amazonaws.com'
+  ExpiryTimeInHour:
+    Type: Number
+    Default: 15
 
 Resources:
   NextGenerationScrumPokerWebSocket:
@@ -120,6 +123,9 @@ Resources:
       SSESpecification:
         SSEEnabled: True
       TableName: !Ref TableName
+      TimeToLiveSpecification:
+        AttributeName: 'ttl'
+        Enabled: True
   OnConnectFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -130,6 +136,7 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref TableName
+          EXPIRY_TIME_IN_HOUR: !Ref ExpiryTimeInHour
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TableName
@@ -174,6 +181,7 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref TableName
+          EXPIRY_TIME_IN_HOUR: !Ref ExpiryTimeInHour
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TableName
