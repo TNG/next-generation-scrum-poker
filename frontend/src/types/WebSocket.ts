@@ -1,5 +1,6 @@
 export type CardValue =
   | 'not-voted'
+  | '?'
   | 'coffee'
   | '0'
   | '0.5'
