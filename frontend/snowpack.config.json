@@ -1,0 +1,7 @@
+{
+  "webDependencies": ["classnames", "csz", "react", "react-dom"],
+  "installOptions": {
+    "clean": true,
+    "strict": false
+  }
+}

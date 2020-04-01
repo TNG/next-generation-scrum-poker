@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npx jest",
-    "build": "run-s build:tsc build:rollup",
+    "build": "run-s prepare build:tsc build:rollup",
     "build:tsc": "tsc -p . --outDir build",
     "build:rollup": "rollup -c",
     "prepare": "snowpack",
@@ -27,13 +27,17 @@
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-typescript": "^7.9.0",
+    "@types/classnames": "^2.2.10",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.5",
+    "@types/prop-types": "^15.7.3",
     "babel-jest": "^25.2.3",
+    "csstype": "^2.6.10",
     "jest": "^25.2.3",
     "libxmljs2": "^0.25.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.2",
+    "prop-types": "^15.7.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.2.0",
     "rollup-plugin-terser": "^5.3.0",
@@ -42,6 +46,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "classnames": "^2.2.6",
     "csz": "^1.2.0",
     "react": "npm:@pika/react@^16.13.1",
     "react-dom": "npm:@pika/react-dom@^16.13.1"

@@ -1,8 +1,8 @@
 import css from '/web_modules/csz.js';
-import React from '/web_modules/react.js';
+import * as React from '/web_modules/react.js';
 import { CARD_VALUES } from '../config.js';
 import { buttonStyle, headingStyle, tableHeaderStyle, tableStyle, TNG_BLUE, TNG_GRAY } from '../styles.js';
-import { Votes, WebSocketApi } from '../types/WebSocket.js';
+import { CardValue, Votes, WebSocketApi } from '../types/WebSocket.js';
 import { connectToWebSocket } from './WebSocket.js';
 
 const votingPageStyle = css`
@@ -73,7 +73,7 @@ const getSortedVotingState = (votes: Votes) => {
 };
 
 const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
-  const [selectedCard, setSelectedCard] = React.useState(null);
+  const [selectedCard, setSelectedCard] = React.useState<CardValue>('not-voted');
   return (
     <div className={votingPageStyle}>
       <div className="login-info">

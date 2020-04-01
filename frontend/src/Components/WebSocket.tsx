@@ -1,4 +1,5 @@
-import React from '/web_modules/react.js';
+import * as React from '/web_modules/react.js';
+import { Component } from 'react';
 import { WEBSOCKET_URL } from '../config.js';
 import {
   getLoginRequest,
@@ -7,15 +8,25 @@ import {
   getRevealVotesRequest,
   getSetVoteRequest
 } from '../requests/websocket-requests.js';
-import { CardValue, WebSocketApi, WebsocketMessage } from '../types/WebSocket.js';
+import { CardValue, WebSocketApi, WebSocketLoginData, WebsocketMessage, WebSocketState } from '../types/WebSocket.js';
 
-const WebSocketContext = React.createContext('defaultValue');
+const doNothing = () => {};
+
+const initialWebSocketState: WebSocketState = { resultsVisible: false, votes: {} };
+const WebSocketContext = React.createContext<WebSocketApi>({
+  login: doNothing,
+  loginData: null,
+  state: initialWebSocketState,
+  setVote: doNothing,
+  revealVotes: doNothing,
+  resetVotes: doNothing,
+  removeUsersNotVoted: doNothing,
+});
 
 export const WebSocketProvider = ({ children }: any) => {
-  const initialState = { resultsVisible: false, votes: {} };
-  const [socket, setSocket] = React.useState(null);
-  const [state, setState] = React.useState(initialState);
-  const [loginData, setLoginData] = React.useState(null);
+  const [socket, setSocket] = React.useState<WebSocket | null>(null);
+  const [state, setState] = React.useState(initialWebSocketState);
+  const [loginData, setLoginData] = React.useState<WebSocketLoginData>(null);
 
   React.useEffect(() => {
     const socket = new WebSocket(WEBSOCKET_URL);
@@ -26,14 +37,14 @@ export const WebSocketProvider = ({ children }: any) => {
         setState(message.payload);
       }
       if (message.type === 'not-logged-in') {
-        setState(initialState);
+        setState(initialWebSocketState);
         setLoginData(null);
       }
     };
   }, []);
 
   if (!socket) {
-    return 'Connecting...';
+    return <div>'Connecting...'</div>;
   }
 
   const login = (user: string, session: string) => {
@@ -75,7 +86,21 @@ export const WebSocketProvider = ({ children }: any) => {
 
 export const WebSocketConsumer = WebSocketContext.Consumer;
 
-export const connectToWebSocket = (Component) => (...props) => {
+type ConnectToWebSocket<P extends {} = {}> = (
+  Component: React.ComponentType<
+    {
+      [K in keyof P | 'socket']: K extends 'socket'
+        ? WebSocketApi
+        : K extends keyof P
+        ? P[K]
+        : never;
+    }
+  >
+) => React.ComponentType<P>;
+
+export const connectToWebSocket: ConnectToWebSocket = (Component) => (
+  ...props
+) => {
   return (
     <WebSocketConsumer>
       {(socket: WebSocketApi) => <Component socket={socket} {...props} />}

@@ -4,9 +4,11 @@
     "jsx": "react",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "noImplicitAny": false,
     "paths": {
-      "/web_modules/*.js": ["node_modules/@types/*", "node_modules/*", "web_modules/*.js"]
+      "/web_modules/react.js": ["node_modules/react/types"],
+      "/web_modules/react-dom.js": ["node_modules/react-dom/types"],
+      "/web_modules/*.js": ["node_modules/@types/*", "node_modules/*", "web_modules/*.js"],
+      "react": ["node_modules/react/types"]
     },
     "sourceMap": true,
     "strict": true,

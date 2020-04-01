@@ -34,12 +34,49 @@ export interface WebSocketApi {
   removeUsersNotVoted(): void;
 }
 
-export interface WebsocketMessage {
-  type: string;
-  payload?: unknown;
-}
-
-export interface StateMessage extends WebsocketMessage {
+export interface StateMessage {
   type: 'state';
   payload: WebSocketState;
 }
+
+export interface NotLoggedInMessage {
+  type: 'not-logged-in';
+}
+
+export interface LoginMessage {
+  type: 'login';
+  payload: {
+    user: string;
+    session: string;
+  };
+}
+
+export interface SetVoteMessage {
+  type: 'set-vote';
+  payload: {
+    vote: CardValue;
+  };
+}
+
+export interface RevealVotesMessage {
+  type: 'reveal-votes';
+}
+
+export interface ResetVotesMessage {
+  type: 'reset-votes';
+}
+
+export interface RemoveUsersNotVotedMessage {
+  type: 'remove-users-not-voted';
+}
+
+export type WebsocketMessage =
+  | StateMessage
+  | NotLoggedInMessage
+  | LoginMessage
+  | SetVoteMessage
+  | RevealVotesMessage
+  | ResetVotesMessage
+  | RemoveUsersNotVotedMessage;
+
+export type WebSocketLoginData = { user: string; session: string } | null;
