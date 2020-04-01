@@ -5,6 +5,7 @@ export const WEBSOCKET_URL = 'wss://scrum-poker-backend.playground.aws.tngtech.c
 export const CARD_VALUES: Array<CardValue> = [
   '?',
   'coffee',
+  '?',
   '0',
   '0.5',
   '1',
