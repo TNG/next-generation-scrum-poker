@@ -38,7 +38,7 @@ async function loginUser(userId, groupId, config) {
     groupUpdate = config.ddb.update(updateGroupParams).promise();
   } else {
     const expiryDate = new Date(Date.now());
-    expiryDate.setHours(expiryDate.getHours() + 15);
+    expiryDate.setHours(expiryDate.getHours() + parseFloat(process.env.EXPIRY_TIME_IN_HOUR));
     const putParams = {
       TableName: config.tableName,
       Item: {

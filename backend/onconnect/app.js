@@ -7,7 +7,7 @@ const ddb = new AWS.DynamoDB.DocumentClient({
 
 exports.handler = async (event) => {
   const expiryDate = new Date(Date.now());
-  expiryDate.setHours(expiryDate.getHours() + 15);
+  expiryDate.setHours(expiryDate.getHours() + parseFloat(process.env.EXPIRY_TIME_IN_HOUR));
   const putParams = {
     TableName: process.env.TABLE_NAME,
     Item: {
