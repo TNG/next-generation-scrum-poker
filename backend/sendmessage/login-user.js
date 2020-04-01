@@ -17,8 +17,10 @@ async function loginUser(userId, groupId, config) {
 
   const groupItem = await getGroupItem(groupId, config.tableName, config.ddb);
   let updateGroupParams;
+  let groupUpdate;
 
-  if (groupItem && groupItem[userId] && groupItem[userId].vote) {
+  if (groupItem) {
+    const vote = groupItem[userId] ? groupItem[userId].vote : undefined;
     updateGroupParams = {
       TableName: config.tableName,
       Key: {
@@ -29,32 +31,26 @@ async function loginUser(userId, groupId, config) {
         '#userId': userId,
       },
       ExpressionAttributeValues: {
-        ':userId': { connectionId: config.connectionId, vote: groupItem[userId].vote },
+        ':userId': { connectionId: config.connectionId, vote },
       },
       ReturnValues: 'UPDATED_NEW',
     };
+    groupUpdate = config.ddb.update(updateGroupParams).promise();
   } else {
-    updateGroupParams = {
+    const expiryDate = new Date(Date.now());
+    expiryDate.setHours(expiryDate.getHours() + 15);
+    const putParams = {
       TableName: config.tableName,
-      Key: {
+      Item: {
         primaryKey: `groupId:${groupId}`,
+        ttl: Math.floor(expiryDate / 1000),
+        [userId]: { connectionId: config.connectionId },
+        groupId,
       },
-      UpdateExpression: 'SET #userId = :userId, groupId = :groupId',
-      ExpressionAttributeNames: {
-        '#userId': userId,
-      },
-      ExpressionAttributeValues: {
-        ':userId': { connectionId: config.connectionId },
-        ':groupId': groupId,
-      },
-      ReturnValues: 'UPDATED_NEW',
     };
+    groupUpdate = config.ddb.put(putParams).promise();
   }
-
-  await Promise.all([
-    config.ddb.update(updateConnectionParams).promise(),
-    config.ddb.update(updateGroupParams).promise(),
-  ]);
+  await Promise.all([config.ddb.update(updateConnectionParams).promise(), groupUpdate]);
   await Promise.all(await broadcastState(groupId, config));
 }
 

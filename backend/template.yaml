@@ -120,6 +120,9 @@ Resources:
       SSESpecification:
         SSEEnabled: True
       TableName: !Ref TableName
+      TimeToLiveSpecification:
+        AttributeName: 'ttl'
+        Enabled: True
   OnConnectFunction:
     Type: AWS::Serverless::Function
     Properties:

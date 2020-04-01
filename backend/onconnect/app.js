@@ -6,11 +6,14 @@ const ddb = new AWS.DynamoDB.DocumentClient({
 });
 
 exports.handler = async (event) => {
+  const expiryDate = new Date(Date.now());
+  expiryDate.setHours(expiryDate.getHours() + 15);
   const putParams = {
     TableName: process.env.TABLE_NAME,
     Item: {
       primaryKey: `connectionId:${event.requestContext.connectionId}`,
       connectionId: event.requestContext.connectionId,
+      ttl: Math.floor(expiryDate / 1000),
     },
   };
 
