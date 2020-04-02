@@ -23,12 +23,6 @@ Parameters:
     Type: String
   S3Frontend:
     Type: String
-  S3HostedZoneId:
-    Type: String
-    Default: 'Z21DNDUVLTQW6Q'
-  CloudFrontHostedZoneId:
-    Type: String
-    Default: 'Z2FDTNDATAQYW2'
   S3DNSName:
     Type: String
     Default: 's3-website.eu-central-1.amazonaws.com'
@@ -265,7 +259,7 @@ Resources:
       Type: A
       AliasTarget:
         DNSName: !GetAtt CloudFrontDistribution.DomainName
-        HostedZoneId: !Ref CloudFrontHostedZoneId
+        HostedZoneId: 'Z2FDTNDATAQYW2'
 
 Outputs:
   ConnectionsTableArn:
