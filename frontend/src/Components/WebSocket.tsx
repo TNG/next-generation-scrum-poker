@@ -6,9 +6,15 @@ import {
   getRemoveUsersNotVotedRequest,
   getResetVotesRequest,
   getRevealVotesRequest,
-  getSetVoteRequest
+  getSetVoteRequest,
 } from '../requests/websocket-requests.js';
-import { CardValue, WebSocketApi, WebSocketLoginData, WebsocketMessage, WebSocketState } from '../types/WebSocket.js';
+import {
+  CardValue,
+  WebSocketApi,
+  WebSocketLoginData,
+  WebsocketMessage,
+  WebSocketState,
+} from '../types/WebSocket.js';
 
 const doNothing = () => {};
 

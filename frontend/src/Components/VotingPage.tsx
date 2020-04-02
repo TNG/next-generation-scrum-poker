@@ -1,7 +1,14 @@
 import css from '/web_modules/csz.js';
 import * as React from '/web_modules/react.js';
 import { CARD_VALUES } from '../config.js';
-import { buttonStyle, headingStyle, tableHeaderStyle, tableStyle, TNG_BLUE, TNG_GRAY } from '../styles.js';
+import {
+  buttonStyle,
+  headingStyle,
+  tableHeaderStyle,
+  tableStyle,
+  TNG_BLUE,
+  TNG_GRAY,
+} from '../styles.js';
 import { CardValue, Votes, WebSocketApi } from '../types/WebSocket.js';
 import { connectToWebSocket } from './WebSocket.js';
 
