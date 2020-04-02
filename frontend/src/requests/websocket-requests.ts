@@ -13,7 +13,7 @@ export const getSetVoteRequest = (vote: CardValue) =>
   buildRequest({
     type: 'set-vote',
     payload: {
-      vote: vote,
+      vote,
     },
   });
 

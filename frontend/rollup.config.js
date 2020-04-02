@@ -3,7 +3,7 @@ import { terser } from 'rollup-plugin-terser';
 import { buildFromHtml } from './build-plugins/build-from-html.js';
 import { cleanOutputFolder } from './build-plugins/clean-output-folder.js';
 import { emitAssetsFromFile } from './build-plugins/emit-assets-from-file.js';
-import { reactProductionBuild } from './build-plugins/react-production-build.js';
+import { handleWebModules } from './build-plugins/handle-web-modules.js';
 
 export default {
   treeshake: {
@@ -20,7 +20,7 @@ export default {
     cleanOutputFolder(),
     buildFromHtml(path.resolve('index.html')),
     emitAssetsFromFile('build/assets.js'),
-    reactProductionBuild(),
+    handleWebModules(),
     terser(),
   ],
 };

@@ -1,5 +1,5 @@
-describe.skip('the entry point', () => {
-  it('displays the app component', () => {
+describe('the entry point', () => {
+  it('displays the app as loading initially', () => {
     const container = document.createElement('div');
     container.id = 'root';
     document.body.appendChild(container);
@@ -7,7 +7,7 @@ describe.skip('the entry point', () => {
       require('./index.js');
     });
     const rootElement = document.getElementById('root');
-    console.log(rootElement);
+    expect(rootElement).toHaveTextContent('Connecting...');
     container.remove();
   });
 });

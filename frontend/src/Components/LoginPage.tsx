@@ -1,6 +1,6 @@
+import css from '/web_modules/csz.js';
+import * as React from '/web_modules/react.js';
 import { ASSET_TNG_LOGO } from '../assets.js';
-import { css } from '../css.js';
-import React from '../react.js';
 import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
 import { WebSocketApi } from '../types/WebSocket.js';
 import { connectToWebSocket } from './WebSocket.js';
@@ -77,10 +77,14 @@ const styling = css`
 `;
 
 const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
-  const firstInputRef = React.useRef(null);
+  const firstInputRef: React.RefObject<HTMLInputElement> = React.useRef(null);
   const [user, setUser] = React.useState('');
   const [session, setSession] = React.useState('');
-  React.useEffect(() => firstInputRef.current.focus(), []);
+  React.useEffect(() => {
+    if (firstInputRef.current) {
+      firstInputRef.current.focus();
+    }
+  }, []);
 
   return (
     <form

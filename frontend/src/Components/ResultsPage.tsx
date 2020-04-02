@@ -1,9 +1,10 @@
-import { connectToWebSocket } from './WebSocket.js';
-import { css } from '../css.js';
-import { CardValue, WebSocketApi } from '../types/WebSocket.js';
+import classnames from '/web_modules/classnames.js';
+import css from '/web_modules/csz.js';
+import * as React from '/web_modules/react.js';
+import { buttonStyle, headingStyle, tableHeaderStyle, tableStyle, TNG_GRAY } from '../styles.js';
+import { CardValue, Votes, WebSocketApi } from '../types/WebSocket.js';
 import { compareVotes } from './compareVotes.js';
-import React from '../react.js';
-import { buttonStyle, headingStyle, tableStyle, tableHeaderStyle, TNG_GRAY } from '../styles.js';
+import { connectToWebSocket } from './WebSocket.js';
 
 const styling = css`
   display: flex;
@@ -35,7 +36,7 @@ const styling = css`
   }
 `;
 
-const getSortedResultsArray = (unsortedResults) => {
+const getSortedResultsArray = (unsortedResults: Votes) => {
   let dataArray: [string, CardValue][] = Object.entries(unsortedResults);
   return dataArray.sort(compareVotes);
 };
@@ -55,7 +56,7 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
           return (
             <tr key={userAndVote[0]}>
               <td>{userAndVote[0]}</td>
-              <td className={userAndVote[1] === 'not-voted' && 'not-voted-entry'}>
+              <td className={classnames(userAndVote[1] === 'not-voted' && 'not-voted-entry')}>
                 {userAndVote[1]}
               </td>
             </tr>

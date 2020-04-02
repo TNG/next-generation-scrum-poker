@@ -1,12 +1,19 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react",
     "module": "ESNext",
-    "target": "ESNext",
+    "moduleResolution": "Node",
+    "outDir": "build",
+    "paths": {
+      "/web_modules/react.js": ["node_modules/@types/react"],
+      "/web_modules/react-dom.js": ["node_modules/@types/react-dom"],
+      "/web_modules/*.js": ["node_modules/@types/*", "node_modules/*", "web_modules/*.js"],
+      "react": ["node_modules/@types/react"]
+    },
     "sourceMap": true,
-    "types": ["node"],
     "strict": true,
-    "noImplicitAny": false,
-    "jsx": "react"
+    "target": "ESNext"
   },
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test.ts"]
