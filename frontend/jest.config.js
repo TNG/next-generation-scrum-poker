@@ -1,11 +1,13 @@
 module.exports = {
-  moduleFileExtensions: ['js', 'json', 'ts', 'mjs'],
-  transformIgnorePatterns: [],
-  moduleNameMapper: {
-    '^(.*)\\.js': '$1',
+  preset: 'ts-jest/presets/js-with-ts',
+  globals: {
+    'ts-jest': {
+      tsConfig: 'tsconfig-test.json',
+    },
   },
-
-  transform: {
-    '.*': require.resolve('babel-jest'),
+  moduleFileExtensions: ['js', 'ts', 'tsx', 'mjs'],
+  moduleNameMapper: {
+    '^/web_modules/(.*)\\.js': '<rootDir>/web_modules/$1',
+    '^(.*)\\.js': '$1',
   },
 };

@@ -98,9 +98,7 @@ type ConnectToWebSocket<P extends {} = {}> = (
   >
 ) => React.ComponentType<P>;
 
-export const connectToWebSocket: ConnectToWebSocket = (Component) => (
-  ...props
-) => {
+export const connectToWebSocket: ConnectToWebSocket = (Component) => (...props) => {
   return (
     <WebSocketConsumer>
       {(socket: WebSocketApi) => <Component socket={socket} {...props} />}

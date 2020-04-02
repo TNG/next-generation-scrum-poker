@@ -1,4 +1,4 @@
-describe.skip('the entry point', () => {
+describe('the entry point', () => {
   it('displays the app component', () => {
     const container = document.createElement('div');
     container.id = 'root';

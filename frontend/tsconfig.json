@@ -4,6 +4,7 @@
     "jsx": "react",
     "module": "ESNext",
     "moduleResolution": "Node",
+    "outDir": "build",
     "paths": {
       "/web_modules/react.js": ["node_modules/react/types"],
       "/web_modules/react-dom.js": ["node_modules/react-dom/types"],

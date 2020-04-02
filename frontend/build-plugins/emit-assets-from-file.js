@@ -1,6 +1,6 @@
-import babel from '@babel/core';
 import fs from 'fs';
 import path from 'path';
+import { rollup } from 'rollup';
 
 export const emitAssetsFromFile = (assetsFile) => {
   const fileName = path.resolve(assetsFile);
@@ -13,7 +13,7 @@ export const emitAssetsFromFile = (assetsFile) => {
         const getAssets = new Function(
           'module',
           'exports',
-          (await babel.transformFileAsync(fileName)).code
+          (await (await rollup({ input: fileName })).generate({ format: 'cjs' })).output[0].code
         );
         const module = { exports: {} };
         getAssets(module, module.exports);
