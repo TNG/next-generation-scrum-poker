@@ -19,12 +19,10 @@ Parameters:
     Type: String
   CertificateArn:
     Type: String
-  S3HostedZoneId:
+  CloudFrontCertificate:
     Type: String
-    Default: 'Z21DNDUVLTQW6Q'
-  S3DNSName:
+  S3Frontend:
     Type: String
-    Default: 's3-website.eu-central-1.amazonaws.com'
   ExpiryTimeInHour:
     Type: Number
     Default: 15
@@ -207,6 +205,29 @@ Resources:
       DomainNameConfigurations:
         - EndpointType: REGIONAL
           CertificateArn: !Ref CertificateArn
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Origins:
+          - DomainName: !Sub '${S3Frontend}.s3.amazonaws.com'
+            Id: !Sub 'S3-${SubDomain}.${BaseDomain}'
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+        Aliases:
+          - !Sub '${SubDomain}.${BaseDomain}'
+        Enabled: 'true'
+        DefaultRootObject: 'index.html'
+        DefaultCacheBehavior:
+          TargetOriginId: !Sub 'S3-${SubDomain}.${BaseDomain}'
+          ForwardedValues:
+            QueryString: 'false'
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CloudFrontCertificate
+          SslSupportMethod: sni-only
   ApiMapping:
     Type: AWS::ApiGatewayV2::ApiMapping
     DependsOn:
@@ -234,8 +255,8 @@ Resources:
       HostedZoneName: !Sub '${BaseDomain}.'
       Type: A
       AliasTarget:
-        DNSName: !Ref S3DNSName
-        HostedZoneId: !Ref S3HostedZoneId
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: 'Z2FDTNDATAQYW2'
 
 Outputs:
   ConnectionsTableArn:

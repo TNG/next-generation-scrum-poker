@@ -31,7 +31,9 @@ deploy(){
       --parameter-overrides TableName=${tablename} \
           BaseDomain=${basedomainname} \
           SubDomain=${subdomainname} \
-          CertificateArn=${certificate}
+          CertificateArn=${certificate} \
+          CloudFrontCertificate=${cloudfrontcertificate} \
+          S3Frontend=${S3Frontend}
 }
 
 delete() {
