@@ -23,9 +23,6 @@ Parameters:
     Type: String
   S3Frontend:
     Type: String
-  S3DNSName:
-    Type: String
-    Default: 's3-website.eu-central-1.amazonaws.com'
   ExpiryTimeInHour:
     Type: Number
     Default: 15
