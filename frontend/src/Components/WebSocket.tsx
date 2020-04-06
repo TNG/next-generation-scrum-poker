@@ -51,7 +51,7 @@ export const WebSocketProvider = ({ children }: any) => {
   }, []);
 
   if (!socket) {
-    return <div>'Connecting...'</div>;
+    return <div>Connecting...</div>;
   }
 
   const login = (user: string, session: string) => {

@@ -61,18 +61,21 @@ Note that except for TypeScript, which has really fast incremental builds, no fu
   import Component from './Component.js';
   ```
 
-- All dependencies need to be available as ES modules. This is the biggest pain point as for obscure reasons, many packages including React itself are only distributed as CommonJS modules. For React, we are therefore using a fork that exposes an ES modules build. Another alternative could be to add [Snowpack](https://www.snowpack.dev/) at some point, which will fix this but require some changes to the build setup.
-- Dependencies need to be imported via relative paths. I.e. not
+- All dependencies need to be available as ES modules. This is the biggest pain point as for obscure reasons, many packages including React itself are only distributed as CommonJS modules. To address this, we are using [Snowpack](https://www.snowpack.dev/), which provides ES version of all dependencies if possible. Dependencies are imported from `/web_modules/*`, e.g.
+
+  ```js
+  import * as Rect from '/web_modules/react.js';
+  ```
+
+  The Snowpack dependencies are updated on `npm ci`/`npm install` and on `npm run build`.
+
+- Dependencies need to be imported via relative paths or absolute paths. I.e.
 
   ```js
   import React from 'react';
   ```
 
-  but (in this case) e.g.
-
-  ```js
-  import React from '../../node_modules/es-react/dev/react.js';
-  ```
+  is not possible. Paths starting with a `/` are resolved relative to the document root.
 
 To support this, it is very recommended to configure you IDE to always add `.js` extensions and never shorten imports, e.g.
 
