@@ -29,7 +29,8 @@ describe('The App component', () => {
     expect(container).toHaveTextContent('Connecting...');
   });
 
-  it('creates a socket connection and displays the login window', () => {
+  it('creates a socket connection and displays the login window with an autogemerated session link', () => {
+    window.history.pushState({}, 'Test Title', '/');
     const socketInstances = ConfigureMockWebSocket();
     const { container } = render(<App />);
     expect(socketInstances).toHaveLength(1);
@@ -42,11 +43,13 @@ describe('The App component', () => {
 
     expect(container).not.toHaveTextContent('Connecting...');
     expect(container.querySelector('input.user-input')).toBeVisible();
-    expect(container.querySelector('input.session-input')).toBeVisible();
+    expect(container.querySelector('a.session-link')).toBeVisible();
+    expect(container.querySelector('a.session-link')).toHaveTextContent(/^[a-zA-Z0-9]{16}$/i);
     expect(container.querySelector('input.submit')).toBeVisible();
   });
 
   it('logs the user in and displays the voting page', () => {
+    window.history.pushState({}, 'Test Title', '/xvdBFRA6FyLZFcKo');
     const socketInstances = ConfigureMockWebSocket();
     const { container } = render(<App />);
     const socket = socketInstances[0];
@@ -55,15 +58,12 @@ describe('The App component', () => {
     fireEvent.change(container.querySelector('input.user-input')!, {
       target: { value: 'Happy User' },
     });
-    fireEvent.change(container.querySelector('input.session-input')!, {
-      target: { value: 'Happy Session' },
-    });
     fireEvent.click(container.querySelector('input.submit')!);
     expect(socket.test_messages).toEqual([
-      '{"message":"sendmessage","data":{"type":"login","payload":{"user":"Happy User","session":"Happy Session"}}}',
+      '{"message":"sendmessage","data":{"type":"login","payload":{"user":"Happy User","session":"xvdBFRA6FyLZFcKo"}}}',
     ]);
 
-    expect(container).toHaveTextContent('Session ID: Happy Session - User name: Happy User');
+    expect(container).toHaveTextContent('Session ID: xvdBFRA6FyLZFcKo - User name: Happy User');
     expect(container.querySelectorAll('div.card')).toHaveLength(13);
   });
 });
