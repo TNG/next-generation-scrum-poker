@@ -4,7 +4,6 @@ import { ASSET_TNG_LOGO } from '../assets.js';
 import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
 import { WebSocketApi } from '../types/WebSocket.js';
 import { connectToWebSocket } from './WebSocket.js';
-import { v4 as uuidv4 } from '/web_modules/uuid.js';
 
 const styling = css`
   position: absolute;
@@ -13,7 +12,7 @@ const styling = css`
   left: 0;
   right: 0;
   display: grid;
-  grid-template-columns: auto 100px;
+  grid-template-columns: auto 150px;
   grid-template-rows: 44px 30px 30px 30px 30px;
   align-content: center;
   justify-content: center;
@@ -55,10 +54,11 @@ const styling = css`
     justify-self: end;
   }
 
-  .session-input {
+  .session-link {
     grid-column: 2 / 3;
     grid-row: 3 / 4;
     padding: 0px 5px;
+    align-self: center;
     ${BORDER_RADIUS};
   }
 
@@ -77,13 +77,20 @@ const styling = css`
   }
 `;
 
+function randomString(length: number) {
+  const mask = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = length; i > 0; --i) result += mask[Math.round(Math.random() * (mask.length - 1))];
+  return result;
+}
+
 const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
   const firstInputRef: React.RefObject<HTMLInputElement> = React.useRef(null);
   const [user, setUser] = React.useState('');
   const path = window.location.pathname.slice(1);
   let sessionId = path;
-  if (!path.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i)) {
-    sessionId = uuidv4();
+  if (!path.match(/^[a-zA-Z0-9]{16}$/i)) {
+    sessionId = randomString(16);
     history.replaceState({}, 'Scrum Poker', `/${sessionId}`);
   }
 
@@ -120,7 +127,7 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       <label htmlFor="session" className="session-label">
         Session:
       </label>
-      <input id="session" type="text" value={sessionId} className="session-input" disabled />
+      <a id="session" href={sessionId} className="session-link">{sessionId}</a>
       <input type="submit" value="Login" className="submit" disabled={user.length === 0} />
       <img src={ASSET_TNG_LOGO} alt="TNG Logo" className="logo" />
     </form>
