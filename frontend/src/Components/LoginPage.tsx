@@ -81,11 +81,11 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
   const firstInputRef: React.RefObject<HTMLInputElement> = React.useRef(null);
   const [user, setUser] = React.useState('');
   const path = window.location.pathname.slice(1);
-  const sessionId = path.match(
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-  )
-    ? path
-    : uuidv4();
+  let sessionId = path;
+  if (!path.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i)) {
+    sessionId = uuidv4();
+    history.replaceState({}, 'Scrum Poker', `/${sessionId}`);
+  }
 
   React.useEffect(() => {
     if (firstInputRef.current) {
@@ -98,7 +98,6 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       className={styling}
       onSubmit={(event) => {
         event.preventDefault();
-        history.pushState({}, 'Scrum Poker', `/${sessionId}`);
         socket.login(user, sessionId);
       }}
     >
