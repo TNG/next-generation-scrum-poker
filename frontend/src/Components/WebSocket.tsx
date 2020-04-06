@@ -15,6 +15,7 @@ import {
   WebsocketMessage,
   WebSocketState,
 } from '../types/WebSocket.js';
+import { WEBSOCKET_RECONNECT_TIME_IN_MS } from '../constants.js';
 
 const doNothing = () => {};
 
@@ -36,19 +37,31 @@ export const WebSocketProvider = ({ children }: any) => {
   const [loginData, setLoginData] = React.useState(initialLoginData);
 
   React.useEffect(() => {
-    const socket = new WebSocket(WEBSOCKET_URL);
-    socket.onopen = () => setSocket(socket);
-    socket.onmessage = (event) => {
-      const message: WebsocketMessage = JSON.parse(event.data);
-      if (message.type === 'state') {
-        setState(message.payload);
-      }
-      if (message.type === 'not-logged-in') {
-        setState(initialWebSocketState);
-        setLoginData({ user: '', session: loginData.session });
-      }
-    };
-  }, []);
+    if (!socket) {
+      const webSocket = new WebSocket(WEBSOCKET_URL);
+      webSocket.onopen = () => {
+        if (loginData) {
+          webSocket.send(getLoginRequest(loginData.user, loginData.session));
+        }
+        setSocket(webSocket);
+      };
+      webSocket.onmessage = (event: any) => {
+        const message: WebsocketMessage = JSON.parse(event.data);
+        if (message.type === 'state') {
+          setState(message.payload);
+        }
+        if (message.type === 'not-logged-in') {
+          setState(initialWebSocketState);
+          setLoginData({ user: '', session: loginData.session });
+        }
+      };
+      webSocket.onclose = () => {
+        setTimeout(() => {
+          setSocket(null);
+        }, WEBSOCKET_RECONNECT_TIME_IN_MS);
+      };
+    }
+  }, [loginData, socket]);
 
   if (!socket) {
     return <div>Connecting...</div>;
