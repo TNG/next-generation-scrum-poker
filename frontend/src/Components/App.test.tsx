@@ -49,7 +49,7 @@ describe('The App component', () => {
   });
 
   it('logs the user in and displays the voting page', () => {
-    window.history.pushState({}, 'Test Title', '/xvdBFRA6FyLZFcKo');
+    window.history.pushState({}, 'Test Title', '?sessionId=xvdBFRA6FyLZFcKo');
     const socketInstances = ConfigureMockWebSocket();
     const { container } = render(<App />);
     const socket = socketInstances[0];

@@ -87,11 +87,10 @@ function randomString(length: number) {
 const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
   const firstInputRef: React.RefObject<HTMLInputElement> = React.useRef(null);
   const [user, setUser] = React.useState('');
-  const path = window.location.pathname.slice(1);
-  let sessionId = path;
-  if (!path.match(/^[a-zA-Z0-9]{16}$/i)) {
+  let sessionId = new URLSearchParams(window.location.search).get('sessionId') || '';
+  if (!sessionId.match(/^[a-zA-Z0-9]{16}$/i)) {
     sessionId = randomString(16);
-    history.replaceState({}, 'Scrum Poker', `/${sessionId}`);
+    history.replaceState({}, 'Scrum Poker', `?sessionId=${sessionId}`);
   }
 
   React.useEffect(() => {
@@ -127,7 +126,7 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       <label htmlFor="session" className="session-label">
         Session:
       </label>
-      <a id="session" href={sessionId} className="session-link">
+      <a id="session" href={`?sessionId=${sessionId}`} className="session-link">
         {sessionId}
       </a>
       <input type="submit" value="Login" className="submit" disabled={user.length === 0} />

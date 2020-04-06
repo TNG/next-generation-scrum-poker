@@ -21,6 +21,11 @@ Resources:
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: error.html
+        RoutingRules:
+          - RedirectRule:
+              ReplaceKeyWith: 'index.html'
+            RoutingRuleCondition:
+              HttpErrorCodeReturnedEquals: '404'
     DeletionPolicy: Retain
   BucketPolicy:
     Type: AWS::S3::BucketPolicy
