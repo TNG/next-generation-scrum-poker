@@ -15,5 +15,3 @@ export const CARD_VALUES: Array<CardValue> = [
   '40',
   '100',
 ];
-
-export const WEBSOCKET_RECONNECT_TIME_IN_MS = 5000;

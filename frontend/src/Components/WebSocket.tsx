@@ -15,7 +15,6 @@ import {
   WebsocketMessage,
   WebSocketState,
 } from '../types/WebSocket.js';
-import { WEBSOCKET_RECONNECT_TIME_IN_MS } from '../constants.js';
 
 const doNothing = () => {};
 
@@ -40,7 +39,7 @@ export const WebSocketProvider = ({ children }: any) => {
     if (!socket) {
       const webSocket = new WebSocket(WEBSOCKET_URL);
       webSocket.onopen = () => {
-        if (loginData) {
+        if (loginData.user && loginData.session) {
           webSocket.send(getLoginRequest(loginData.user, loginData.session));
         }
         setSocket(webSocket);
@@ -52,16 +51,13 @@ export const WebSocketProvider = ({ children }: any) => {
         }
         if (message.type === 'not-logged-in') {
           setState(initialWebSocketState);
-          setLoginData({ user: '', session: loginData.session });
         }
       };
       webSocket.onclose = () => {
-        setTimeout(() => {
-          setSocket(null);
-        }, WEBSOCKET_RECONNECT_TIME_IN_MS);
+        setSocket(null);
       };
     }
-  }, [loginData, socket]);
+  }, [socket]);
 
   if (!socket) {
     return <div>Connecting...</div>;
