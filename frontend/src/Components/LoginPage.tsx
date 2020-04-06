@@ -17,6 +17,8 @@ const styling = css`
   align-content: center;
   justify-content: center;
   grid-gap: 10px;
+  
+  a:visited { color: blue; }
 
   .heading {
     grid-column: 1 / 3;
