@@ -19,9 +19,10 @@ import {
 const doNothing = () => {};
 
 const initialWebSocketState: WebSocketState = { resultsVisible: false, votes: {} };
+const initialLoginData: WebSocketLoginData = { user: '', session: '' };
 const WebSocketContext = React.createContext<WebSocketApi>({
   login: doNothing,
-  loginData: null,
+  loginData: initialLoginData,
   state: initialWebSocketState,
   setVote: doNothing,
   revealVotes: doNothing,
@@ -32,7 +33,7 @@ const WebSocketContext = React.createContext<WebSocketApi>({
 export const WebSocketProvider = ({ children }: any) => {
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
   const [state, setState] = React.useState(initialWebSocketState);
-  const [loginData, setLoginData] = React.useState<WebSocketLoginData>(null);
+  const [loginData, setLoginData] = React.useState(initialLoginData);
 
   React.useEffect(() => {
     const socket = new WebSocket(WEBSOCKET_URL);
@@ -44,7 +45,7 @@ export const WebSocketProvider = ({ children }: any) => {
       }
       if (message.type === 'not-logged-in') {
         setState(initialWebSocketState);
-        setLoginData(null);
+        setLoginData({ user: '', session: loginData.session });
       }
     };
   }, []);

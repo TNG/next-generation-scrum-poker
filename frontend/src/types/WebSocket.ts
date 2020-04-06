@@ -25,7 +25,7 @@ export interface WebSocketState {
 
 export interface WebSocketApi {
   state: WebSocketState;
-  loginData: null | { user: string; session: string };
+  loginData: WebSocketLoginData;
 
   login(user: string, session: string): void;
   setVote(vote: CardValue): void;
@@ -79,4 +79,4 @@ export type WebsocketMessage =
   | ResetVotesMessage
   | RemoveUsersNotVotedMessage;
 
-export type WebSocketLoginData = { user: string; session: string } | null;
+export type WebSocketLoginData = { user: string; session: string };

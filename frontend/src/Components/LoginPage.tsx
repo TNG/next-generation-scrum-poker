@@ -4,6 +4,7 @@ import { ASSET_TNG_LOGO } from '../assets.js';
 import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
 import { WebSocketApi } from '../types/WebSocket.js';
 import { connectToWebSocket } from './WebSocket.js';
+import { v4 as uuidv4 } from '/web_modules/uuid.js';
 
 const styling = css`
   position: absolute;
@@ -79,7 +80,13 @@ const styling = css`
 const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
   const firstInputRef: React.RefObject<HTMLInputElement> = React.useRef(null);
   const [user, setUser] = React.useState('');
-  const [session, setSession] = React.useState('');
+  const path = window.location.pathname.slice(1);
+  const sessionId = path.match(
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+  )
+    ? path
+    : uuidv4();
+
   React.useEffect(() => {
     if (firstInputRef.current) {
       firstInputRef.current.focus();
@@ -91,7 +98,8 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       className={styling}
       onSubmit={(event) => {
         event.preventDefault();
-        socket.login(user, session);
+        history.pushState({}, 'Scrum Poker', `/${sessionId}`);
+        socket.login(user, sessionId);
       }}
     >
       <div className="heading">
@@ -113,19 +121,8 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       <label htmlFor="session" className="session-label">
         Session:
       </label>
-      <input
-        id="session"
-        type="text"
-        value={session}
-        className="session-input"
-        onChange={(event) => setSession(event.target.value)}
-      />
-      <input
-        type="submit"
-        value="Login"
-        className="submit"
-        disabled={user.length === 0 || session.length < 2}
-      />
+      <input id="session" type="text" value={sessionId} className="session-input" disabled />
+      <input type="submit" value="Login" className="submit" disabled={user.length === 0} />
       <img src={ASSET_TNG_LOGO} alt="TNG Logo" className="logo" />
     </form>
   );
