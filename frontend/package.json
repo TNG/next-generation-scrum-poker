@@ -41,6 +41,8 @@
     "rollup": "^2.3.2",
     "rollup-plugin-terser": "^5.3.0",
     "snowpack": "^1.6.0",
+    "test-react": "npm:react@^16.13.1",
+    "test-react-dom": "npm:react-dom@^16.13.1",
     "ts-jest": "^25.3.0",
     "typescript": "^3.8.3"
   },
