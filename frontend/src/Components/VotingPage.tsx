@@ -1,6 +1,6 @@
 import css from '/web_modules/csz.js';
 import * as React from '/web_modules/react.js';
-import { CARD_VALUES } from '../config.js';
+import { CARD_VALUES } from '../constants.js';
 import {
   buttonStyle,
   headingStyle,

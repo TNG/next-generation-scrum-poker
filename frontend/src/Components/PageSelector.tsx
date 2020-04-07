@@ -6,7 +6,7 @@ import { VotingPage } from './VotingPage.js';
 import { connectToWebSocket } from './WebSocket.js';
 
 const ProtoPageSelector = ({ socket }: { socket: WebSocketApi }) => {
-  if (!socket.loginData) {
+  if (!socket.loginData.user) {
     return <LoginPage />;
   }
   if (socket.state.resultsVisible) {

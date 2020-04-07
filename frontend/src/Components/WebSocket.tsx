@@ -19,9 +19,10 @@ import {
 const doNothing = () => {};
 
 const initialWebSocketState: WebSocketState = { resultsVisible: false, votes: {} };
+const initialLoginData: WebSocketLoginData = { user: '', session: '' };
 const WebSocketContext = React.createContext<WebSocketApi>({
   login: doNothing,
-  loginData: null,
+  loginData: initialLoginData,
   state: initialWebSocketState,
   setVote: doNothing,
   revealVotes: doNothing,
@@ -32,22 +33,31 @@ const WebSocketContext = React.createContext<WebSocketApi>({
 export const WebSocketProvider = ({ children }: any) => {
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
   const [state, setState] = React.useState(initialWebSocketState);
-  const [loginData, setLoginData] = React.useState<WebSocketLoginData>(null);
+  const [loginData, setLoginData] = React.useState(initialLoginData);
 
   React.useEffect(() => {
-    const socket = new WebSocket(WEBSOCKET_URL);
-    socket.onopen = () => setSocket(socket);
-    socket.onmessage = (event) => {
-      const message: WebsocketMessage = JSON.parse(event.data);
-      if (message.type === 'state') {
-        setState(message.payload);
-      }
-      if (message.type === 'not-logged-in') {
-        setState(initialWebSocketState);
-        setLoginData(null);
-      }
-    };
-  }, []);
+    if (!socket) {
+      const webSocket = new WebSocket(WEBSOCKET_URL);
+      webSocket.onopen = () => {
+        if (loginData.user && loginData.session) {
+          webSocket.send(getLoginRequest(loginData.user, loginData.session));
+        }
+        setSocket(webSocket);
+      };
+      webSocket.onmessage = (event: any) => {
+        const message: WebsocketMessage = JSON.parse(event.data);
+        if (message.type === 'state') {
+          setState(message.payload);
+        }
+        if (message.type === 'not-logged-in') {
+          setState(initialWebSocketState);
+        }
+      };
+      webSocket.onclose = () => {
+        setSocket(null);
+      };
+    }
+  }, [socket]);
 
   if (!socket) {
     return <div>Connecting...</div>;

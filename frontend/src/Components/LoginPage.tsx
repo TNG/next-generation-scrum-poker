@@ -12,11 +12,13 @@ const styling = css`
   left: 0;
   right: 0;
   display: grid;
-  grid-template-columns: auto 100px;
+  grid-template-columns: auto 150px;
   grid-template-rows: 44px 30px 30px 30px 30px;
   align-content: center;
   justify-content: center;
   grid-gap: 10px;
+  
+  a:visited { color: blue; }
 
   .heading {
     grid-column: 1 / 3;
@@ -54,10 +56,11 @@ const styling = css`
     justify-self: end;
   }
 
-  .session-input {
+  .session-link {
     grid-column: 2 / 3;
     grid-row: 3 / 4;
     padding: 0px 5px;
+    align-self: center;
     ${BORDER_RADIUS};
   }
 
@@ -76,10 +79,22 @@ const styling = css`
   }
 `;
 
+function randomString(length: number) {
+  const mask = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = length; i > 0; --i) result += mask[Math.round(Math.random() * (mask.length - 1))];
+  return result;
+}
+
 const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
   const firstInputRef: React.RefObject<HTMLInputElement> = React.useRef(null);
   const [user, setUser] = React.useState('');
-  const [session, setSession] = React.useState('');
+  let sessionId = new URLSearchParams(window.location.search).get('sessionId') || '';
+  if (!sessionId.match(/^[a-zA-Z0-9]{16}$/i)) {
+    sessionId = randomString(16);
+    history.replaceState({}, 'Scrum Poker', `?sessionId=${sessionId}`);
+  }
+
   React.useEffect(() => {
     if (firstInputRef.current) {
       firstInputRef.current.focus();
@@ -91,7 +106,7 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       className={styling}
       onSubmit={(event) => {
         event.preventDefault();
-        socket.login(user, session);
+        socket.login(user, sessionId);
       }}
     >
       <div className="heading">
@@ -113,19 +128,10 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       <label htmlFor="session" className="session-label">
         Session:
       </label>
-      <input
-        id="session"
-        type="text"
-        value={session}
-        className="session-input"
-        onChange={(event) => setSession(event.target.value)}
-      />
-      <input
-        type="submit"
-        value="Login"
-        className="submit"
-        disabled={user.length === 0 || session.length < 2}
-      />
+      <a id="session" href={`?sessionId=${sessionId}`} className="session-link">
+        {sessionId}
+      </a>
+      <input type="submit" value="Login" className="submit" disabled={user.length === 0} />
       <img src={ASSET_TNG_LOGO} alt="TNG Logo" className="logo" />
     </form>
   );
