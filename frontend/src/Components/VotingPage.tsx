@@ -57,6 +57,7 @@ const votingPageStyle = css`
   }
   .button {
     ${buttonStyle};
+    margin: 10px;
   }
   .table {
     ${tableStyle};
@@ -129,6 +130,14 @@ const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
 
       <button className="button" onClick={() => socket.removeUsersNotVoted()}>
         Kick users without vote
+      </button>
+      <button
+        className="button"
+        onClick={() => {
+          return navigator.clipboard.writeText(`${location.href}`);
+        }}
+      >
+        Copy Link to Clipboard
       </button>
     </div>
   );

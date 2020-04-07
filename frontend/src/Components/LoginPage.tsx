@@ -1,9 +1,10 @@
 import css from '/web_modules/csz.js';
 import * as React from '/web_modules/react.js';
 import { ASSET_TNG_LOGO } from '../assets.js';
-import { BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
+import { activeButtonStyle, BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
 import { WebSocketApi } from '../types/WebSocket.js';
 import { connectToWebSocket } from './WebSocket.js';
+import { generateId } from './generateId.js';
 
 const styling = css`
   position: absolute;
@@ -17,8 +18,10 @@ const styling = css`
   align-content: center;
   justify-content: center;
   grid-gap: 10px;
-  
-  a:visited { color: blue; }
+
+  a:visited {
+    color: blue;
+  }
 
   .heading {
     grid-column: 1 / 3;
@@ -33,6 +36,7 @@ const styling = css`
     grid-column: 1 / 3;
     grid-row: 5 / 6;
     height: 30px;
+    justify-self: center;
   }
 
   .user-label {
@@ -45,6 +49,8 @@ const styling = css`
   .user-input {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
+    border-color: ${TNG_BLUE};
+    border-style: solid;
     padding: 0px 5px;
     ${BORDER_RADIUS};
   }
@@ -76,22 +82,19 @@ const styling = css`
     &:disabled {
       background: ${TNG_GRAY};
     }
+
+    &:active {
+      ${activeButtonStyle};
+    }
   }
 `;
-
-function randomString(length: number) {
-  const mask = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let result = '';
-  for (let i = length; i > 0; --i) result += mask[Math.round(Math.random() * (mask.length - 1))];
-  return result;
-}
 
 const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
   const firstInputRef: React.RefObject<HTMLInputElement> = React.useRef(null);
   const [user, setUser] = React.useState('');
   let sessionId = new URLSearchParams(window.location.search).get('sessionId') || '';
   if (!sessionId.match(/^[a-zA-Z0-9]{16}$/i)) {
-    sessionId = randomString(16);
+    sessionId = generateId(16);
     history.replaceState({}, 'Scrum Poker', `?sessionId=${sessionId}`);
   }
 

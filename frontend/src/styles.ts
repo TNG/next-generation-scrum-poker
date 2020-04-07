@@ -9,6 +9,13 @@ export const headingStyle = `
     line-height: 1.2;
 `;
 
+export const activeButtonStyle = `
+    background: white;
+    border-color: ${TNG_BLUE};
+    border: solid;
+    color: ${TNG_BLUE};
+`;
+
 export const buttonStyle = `
     border: none;
     color: white;
@@ -19,6 +26,12 @@ export const buttonStyle = `
     width: 150px;
     :hover {
       background: ${TNG_GRAY};
+    }
+    :hover:active {
+      ${activeButtonStyle};
+    }
+    :active {
+      ${activeButtonStyle};
     }
 `;
 
