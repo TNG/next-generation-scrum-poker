@@ -7,7 +7,9 @@ const ConfigureMockWebSocket = () => {
 
   class MockWebSocket {
     onopen?(): void;
+
     onmessage?(event: MessageEvent): void;
+
     test_messages: string[] = [];
 
     constructor(public test_url: string) {
@@ -48,22 +50,38 @@ describe('The App component', () => {
     expect(container.querySelector('input.submit')).toBeVisible();
   });
 
-  it('logs the user in and displays the voting page', () => {
+  it('logs the user in and displays the voting page, then displays the login page if the user is kicked out', () => {
+    // given
     window.history.pushState({}, 'Test Title', '?sessionId=xvdBFRA6FyLZFcKo');
     const socketInstances = ConfigureMockWebSocket();
     const { container } = render(<App />);
     const socket = socketInstances[0];
 
+    // when
     act(() => socket.onopen!());
     fireEvent.change(container.querySelector('input.user-input')!, {
       target: { value: 'Happy User' },
     });
     fireEvent.click(container.querySelector('input.submit')!);
+
+    // then
     expect(socket.test_messages).toEqual([
       '{"message":"sendmessage","data":{"type":"login","payload":{"user":"Happy User","session":"xvdBFRA6FyLZFcKo"}}}',
     ]);
 
     expect(container).toHaveTextContent('Session ID: xvdBFRA6FyLZFcKo - User name: Happy User');
     expect(container.querySelectorAll('div.card')).toHaveLength(13);
+
+    // when
+    act(() =>
+      socket.onmessage!({ data: JSON.stringify({ type: 'not-logged-in' }) } as MessageEvent)
+    );
+
+    // then
+    expect(container).not.toHaveTextContent('Connecting...');
+    expect(container.querySelector('input.user-input')).toHaveValue('Happy User');
+    expect(container.querySelector('a.session-link')).toBeVisible();
+    expect(container.querySelector('a.session-link')).toHaveTextContent(/^[a-zA-Z0-9]{16}$/i);
+    expect(container.querySelector('input.submit')).toBeVisible();
   });
 });

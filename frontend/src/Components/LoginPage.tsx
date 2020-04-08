@@ -91,7 +91,7 @@ const styling = css`
 
 const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
   const firstInputRef: React.RefObject<HTMLInputElement> = React.useRef(null);
-  const [user, setUser] = React.useState('');
+  const [user, setUser] = React.useState(socket.loginData.user);
   let sessionId = new URLSearchParams(window.location.search).get('sessionId') || '';
   if (!sessionId.match(/^[a-zA-Z0-9]{16}$/i)) {
     sessionId = generateId(16);
