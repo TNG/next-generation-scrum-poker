@@ -1,7 +1,7 @@
 import * as React from '/web_modules/react.js';
 import { WebSocketApi } from '../types/WebSocket.js';
 import { LoginPage } from './LoginPage.js';
-import { ResultsPage } from './ResultsPage.js';
+import { ResultsPage } from './ResultsPage/ResultsPage.js';
 import { VotingPage } from './VotingPage.js';
 import { connectToWebSocket } from './WebSocket.js';
 

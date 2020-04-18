@@ -1,7 +1,7 @@
 import { CardValue } from './types/WebSocket';
 
 export const CARD_VALUES: Array<CardValue> = [
-  'coffee',
+  '☕️',
   '?',
   '0',
   '0.5',
