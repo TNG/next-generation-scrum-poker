@@ -1,35 +1,34 @@
 import css from '/web_modules/csz.js';
 import * as React from '/web_modules/react.js';
 import { CARD_VALUES } from '../constants.js';
-import {
-  buttonStyle,
-  headingStyle,
-  tableHeaderStyle,
-  tableStyle,
-  TNG_BLUE,
-  TNG_GRAY,
-} from '../styles.js';
-import { CardValue, Votes, WebSocketApi } from '../types/WebSocket.js';
+import { buttonStyle, headingStyle, TNG_BLUE, TNG_GRAY } from '../styles.js';
+import { CardValue, WebSocketApi } from '../types/WebSocket.js';
+import { CopyToClipboardButton } from './CopyToClipboardButton.js';
+import { VotingStateDisplay } from './VotingStateDisplay.js';
 import { connectToWebSocket } from './WebSocket.js';
 
 const votingPageStyle = css`
   display: flex;
   align-items: center;
   flex-direction: column;
+
   .heading {
     ${headingStyle};
   }
+
   .login-info {
     color: ${TNG_GRAY};
     font-size: 12px;
     margin-bottom: 1rem;
   }
+
   .card-collection {
     display: flex;
     justify-content: center;
     flex-direction: row;
     flex-wrap: wrap;
   }
+
   .card {
     display: flex;
     justify-content: center;
@@ -42,43 +41,46 @@ const votingPageStyle = css`
     height: 160px;
     width: 100px;
     margin: 10px;
+    cursor: pointer;
+    font-size: 20px;
+
     :hover {
       background: ${TNG_GRAY};
-      cursor: pointer;
     }
+
     :active {
       background: ${TNG_BLUE};
       color: white;
+      
+      :hover {
+        border-color: ${TNG_GRAY};
+      }
     }
   }
+
   .selected-card {
     background: ${TNG_BLUE};
     color: white;
+
+    :hover {
+      background: ${TNG_BLUE};
+      border-color: ${TNG_GRAY};
+    }
   }
+
   .button {
     ${buttonStyle};
     margin: 10px;
   }
-  .table {
-    ${tableStyle};
-  }
-  .header-row {
-    ${tableHeaderStyle};
-  }
+
   .voted {
     color: red;
   }
+
   .not-voted {
     color: green;
   }
 `;
-const getSortedVotingState = (votes: Votes) => {
-  const votedUsers = Object.keys(votes).map((user) => ({
-    user,
-    voted: votes[user] === 'not-voted',
-  }));
-  return votedUsers.sort((a, b) => (a.voted ? -1 : 1));
-};
 
 const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
   const [selectedCard, setSelectedCard] = React.useState<CardValue>('not-voted');
@@ -106,39 +108,11 @@ const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
       <button className="button" onClick={() => socket.revealVotes()}>
         Reveal Votes
       </button>
-
-      <table className="table">
-        <thead>
-          <tr className="header-row">
-            <th>Name</th>
-            <th>Voted</th>
-          </tr>
-        </thead>
-        <tbody>
-          {getSortedVotingState(socket.state.votes).map(({ user, voted }) => {
-            return (
-              <tr key={user}>
-                <td className={voted ? 'voted' : 'not-voted'}>{user}</td>
-                <td align="center" className={voted ? 'voted' : 'not-voted'}>
-                  {voted ? '✗' : '✔'}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-
+      <VotingStateDisplay />
       <button className="button" onClick={() => socket.removeUsersNotVoted()}>
         Kick users without vote
       </button>
-      <button
-        className="button"
-        onClick={() => {
-          return navigator.clipboard.writeText(`${location.href}`);
-        }}
-      >
-        Copy Link to Clipboard
-      </button>
+      <CopyToClipboardButton className="button" />
     </div>
   );
 };

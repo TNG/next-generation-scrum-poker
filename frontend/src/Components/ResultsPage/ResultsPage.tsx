@@ -1,10 +1,10 @@
 import classnames from '/web_modules/classnames.js';
 import css from '/web_modules/csz.js';
 import * as React from '/web_modules/react.js';
-import { buttonStyle, headingStyle, tableHeaderStyle, tableStyle, TNG_GRAY } from '../styles.js';
-import { CardValue, Votes, WebSocketApi } from '../types/WebSocket.js';
+import { buttonStyle, headingStyle, tableStyle, TNG_GRAY } from '../../styles.js';
+import { CardValue, Votes, WebSocketApi } from '../../types/WebSocket.js';
+import { connectToWebSocket } from '../WebSocket.js';
 import { compareVotes } from './compareVotes.js';
-import { connectToWebSocket } from './WebSocket.js';
 
 const styling = css`
   display: flex;
@@ -27,9 +27,6 @@ const styling = css`
   }
   .table {
     ${tableStyle};
-  }
-  .header-row {
-    ${tableHeaderStyle};
   }
   .not-voted-entry {
     color: ${TNG_GRAY};
