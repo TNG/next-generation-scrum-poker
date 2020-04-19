@@ -84,18 +84,17 @@ export const WebSocketProvider = ({ children }: any) => {
     setState({
       ...state,
       votes: Object.fromEntries(
-        Object.entries(state.votes).filter(([user, voted]) => voted !== 'not-voted')
+        Object.entries(state.votes).filter(([, voted]) => voted !== 'not-voted')
       ),
     });
   };
 
   const resetVotes = () => {
     socket.send(getResetVotesRequest());
-    const newVotes = { ...state.votes };
-    for (const user of Object.keys(newVotes)) {
-      newVotes[user] = 'not-voted';
-    }
-    setState({ votes: newVotes, resultsVisible: false });
+    setState({
+      votes: Object.fromEntries(Object.keys(state.votes).map((user) => [user, 'not-voted'])),
+      resultsVisible: false,
+    });
   };
 
   const value: WebSocketApi = {

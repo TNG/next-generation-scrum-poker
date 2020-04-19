@@ -1,5 +1,6 @@
 import * as React from '/web_modules/react.js';
 import { WebSocketApi } from '../types/WebSocket.js';
+import { LoginInfo } from './LoginInfo.js';
 import { LoginPage } from './LoginPage.js';
 import { ResultsPage } from './ResultsPage/ResultsPage.js';
 import { VotingPage } from './VotingPage.js';
@@ -10,9 +11,19 @@ const ProtoPageSelector = ({ socket }: { socket: WebSocketApi }) => {
     return <LoginPage />;
   }
   if (socket.state.resultsVisible) {
-    return <ResultsPage />;
+    return (
+      <>
+        <LoginInfo />
+        <ResultsPage />
+      </>
+    );
   }
-  return <VotingPage />;
+  return (
+    <>
+      <LoginInfo />
+      <VotingPage />
+    </>
+  );
 };
 
 export const PageSelector = connectToWebSocket(ProtoPageSelector);

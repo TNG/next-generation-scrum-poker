@@ -74,7 +74,7 @@ describe('The App component', () => {
     const { socket, container } = loginUser();
 
     expect(container).toHaveTextContent('Session ID: xvdBFRA6FyLZFcKo - User name: Happy User');
-    expect(container.querySelectorAll('div.card')).toHaveLength(13);
+    expect(container.querySelectorAll('button.card')).toHaveLength(13);
 
     // when
     act(() =>
@@ -107,7 +107,7 @@ describe('The App component', () => {
         }),
       } as MessageEvent)
     );
-    const selectedCard = container.querySelectorAll('div.card')[5];
+    const selectedCard = container.querySelectorAll('button.card')[5];
     expect(selectedCard).toHaveTextContent('2');
     expect(selectedCard).not.toHaveClass('selected-card');
     expect(container.querySelector('tbody')).toHaveTextContent(
@@ -115,7 +115,7 @@ describe('The App component', () => {
     );
 
     // when
-    fireEvent.click(container.querySelectorAll('div.card')[5]);
+    fireEvent.click(container.querySelectorAll('button.card')[5]);
 
     // then
     expect(selectedCard).toHaveClass('selected-card');
