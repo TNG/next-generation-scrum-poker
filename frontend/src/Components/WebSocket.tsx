@@ -6,15 +6,9 @@ import {
   getRemoveUsersNotVotedRequest,
   getResetVotesRequest,
   getRevealVotesRequest,
-  getSetVoteRequest,
+  getSetVoteRequest
 } from '../requests/websocket-requests.js';
-import {
-  CardValue,
-  WebSocketApi,
-  WebSocketLoginData,
-  WebsocketMessage,
-  WebSocketState,
-} from '../types/WebSocket.js';
+import { CardValue, WebSocketApi, WebSocketLoginData, WebsocketMessage, WebSocketState } from '../types/WebSocket.js';
 
 const doNothing = () => {};
 
@@ -74,18 +68,34 @@ export const WebSocketProvider = ({ children }: any) => {
 
   const setVote = (vote: CardValue) => {
     socket.send(getSetVoteRequest(vote));
+    setState({ ...state, votes: { ...state.votes, [loginData.user]: vote } });
   };
 
   const revealVotes = () => {
     socket.send(getRevealVotesRequest());
+    setState({
+      ...state,
+      resultsVisible: true,
+    });
   };
 
   const removeUsersNotVoted = () => {
     socket.send(getRemoveUsersNotVotedRequest());
+    setState({
+      ...state,
+      votes: Object.fromEntries(
+        Object.entries(state.votes).filter(([user, voted]) => voted !== 'not-voted')
+      ),
+    });
   };
 
   const resetVotes = () => {
     socket.send(getResetVotesRequest());
+    const newVotes = { ...state.votes };
+    for (const user of Object.keys(newVotes)) {
+      newVotes[user] = 'not-voted';
+    }
+    setState({ votes: newVotes, resultsVisible: false });
   };
 
   const value: WebSocketApi = {
