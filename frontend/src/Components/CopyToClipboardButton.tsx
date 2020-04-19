@@ -1,8 +1,14 @@
+import css from '/web_modules/csz.js';
 import * as React from '/web_modules/react.js';
+import { buttonStyle } from '../styles.js';
 
-export const CopyToClipboardButton = ({ className }: { className: string }) => (
+const copyToClipboardButtonStyles = css`
+  ${buttonStyle}
+`;
+
+export const CopyToClipboardButton = () => (
   <button
-    className={className}
+    className={copyToClipboardButtonStyles}
     onClick={() => {
       return navigator.clipboard.writeText(`${location.href}`);
     }}

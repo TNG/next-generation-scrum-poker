@@ -9,24 +9,16 @@ import { compareVotes } from './compareVotes.js';
 const styling = css`
   display: flex;
   flex-direction: column;
-  margin: auto;
   align-items: center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  align-content: center;
-  justify-content: center;
 
   .heading {
-    ${headingStyle};
+    ${headingStyle}
   }
   .button {
-    ${buttonStyle};
+    ${buttonStyle}
   }
   .table {
-    ${tableStyle};
+    ${tableStyle}
   }
   .not-voted-entry {
     color: ${TNG_GRAY};

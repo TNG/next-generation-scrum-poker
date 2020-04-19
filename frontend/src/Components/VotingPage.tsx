@@ -3,7 +3,6 @@ import * as React from '/web_modules/react.js';
 import { CARD_VALUES } from '../constants.js';
 import { buttonStyle, headingStyle, TNG_BLUE, TNG_GRAY } from '../styles.js';
 import { CardValue, WebSocketApi } from '../types/WebSocket.js';
-import { CopyToClipboardButton } from './CopyToClipboardButton.js';
 import { VotingStateDisplay } from './VotingStateDisplay.js';
 import { connectToWebSocket } from './WebSocket.js';
 
@@ -13,13 +12,7 @@ const votingPageStyle = css`
   flex-direction: column;
 
   .heading {
-    ${headingStyle};
-  }
-
-  .login-info {
-    color: ${TNG_GRAY};
-    font-size: 12px;
-    margin-bottom: 1rem;
+    ${headingStyle}
   }
 
   .card-collection {
@@ -27,6 +20,7 @@ const votingPageStyle = css`
     justify-content: center;
     flex-direction: row;
     flex-wrap: wrap;
+    max-width: 900px;
   }
 
   .card {
@@ -48,29 +42,20 @@ const votingPageStyle = css`
       background: ${TNG_GRAY};
     }
 
-    :active {
+    :active,
+    &.selected-card {
       background: ${TNG_BLUE};
       color: white;
-
-      :hover {
-        border-color: ${TNG_GRAY};
-      }
-    }
-  }
-
-  .selected-card {
-    background: ${TNG_BLUE};
-    color: white;
-
-    :hover {
-      background: ${TNG_BLUE};
-      border-color: ${TNG_GRAY};
     }
   }
 
   .button {
-    ${buttonStyle};
-    margin: 10px;
+    ${buttonStyle}
+    margin-bottom: 1rem;
+  }
+
+  .reveal-button {
+    height: 50px;
   }
 
   .voted {
@@ -86,14 +71,10 @@ const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
   const [selectedCard, setSelectedCard] = React.useState<CardValue>('not-voted');
   return (
     <div className={votingPageStyle}>
-      <div className="login-info">
-        Session ID: {socket.loginData ? socket.loginData.session : 'not found'} &nbsp; - &nbsp; User
-        name: {socket.loginData ? socket.loginData.user : 'not found'}
-      </div>
       <div className="heading">SELECT A CARD</div>
       <div className="card-collection">
         {CARD_VALUES.map((cardValue) => (
-          <div
+          <button
             key={cardValue}
             className={cardValue === selectedCard ? 'card selected-card' : 'card'}
             onClick={() => {
@@ -102,17 +83,16 @@ const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
             }}
           >
             {cardValue}
-          </div>
+          </button>
         ))}
       </div>
-      <button className="button" onClick={() => socket.revealVotes()}>
+      <button className="button reveal-button" onClick={() => socket.revealVotes()}>
         Reveal Votes
       </button>
       <VotingStateDisplay />
       <button className="button" onClick={() => socket.removeUsersNotVoted()}>
         Kick users without vote
       </button>
-      <CopyToClipboardButton className="button" />
     </div>
   );
 };

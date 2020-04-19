@@ -1,10 +1,10 @@
 import css from '/web_modules/csz.js';
 import * as React from '/web_modules/react.js';
 import { ASSET_TNG_LOGO } from '../assets.js';
-import { activeButtonStyle, BORDER_RADIUS, TNG_BLUE, TNG_GRAY } from '../styles.js';
+import { BORDER_RADIUS, buttonStyle, TNG_BLUE } from '../styles.js';
 import { WebSocketApi } from '../types/WebSocket.js';
-import { connectToWebSocket } from './WebSocket.js';
 import { generateId } from './generateId.js';
+import { connectToWebSocket } from './WebSocket.js';
 
 const styling = css`
   position: absolute;
@@ -73,19 +73,8 @@ const styling = css`
   .submit {
     grid-column: 1 / 3;
     grid-row: 4 / 5;
-    border: none;
-    cursor: pointer;
-    background: ${TNG_BLUE};
-    color: white;
-    ${BORDER_RADIUS}
-
-    &:disabled {
-      background: ${TNG_GRAY};
-    }
-
-    &:active {
-      ${activeButtonStyle};
-    }
+    ${buttonStyle};
+    width: 100%;
   }
 `;
 
