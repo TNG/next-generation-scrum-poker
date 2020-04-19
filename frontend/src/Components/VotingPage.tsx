@@ -51,7 +51,7 @@ const votingPageStyle = css`
     :active {
       background: ${TNG_BLUE};
       color: white;
-      
+
       :hover {
         border-color: ${TNG_GRAY};
       }

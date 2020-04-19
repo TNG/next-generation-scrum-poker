@@ -1,5 +1,5 @@
 import * as React from '/web_modules/react.js';
-import { act, render, fireEvent } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import { App } from './App.js';
 
 const ConfigureMockWebSocket = () => {
@@ -23,6 +23,25 @@ const ConfigureMockWebSocket = () => {
 
   window.WebSocket = MockWebSocket as any;
   return instances;
+};
+
+const loginUser = () => {
+  window.history.pushState({}, 'Test Title', '?sessionId=xvdBFRA6FyLZFcKo');
+  const socketInstances = ConfigureMockWebSocket();
+  const rendered = render(<App />);
+  const socket = socketInstances[0];
+
+  act(() => socket.onopen!());
+  fireEvent.change(rendered.container.querySelector('input.user-input')!, {
+    target: { value: 'Happy User' },
+  });
+  fireEvent.click(rendered.container.querySelector('input.submit')!);
+
+  expect(socket.test_messages).toEqual([
+    '{"message":"sendmessage","data":{"type":"login","payload":{"user":"Happy User","session":"xvdBFRA6FyLZFcKo"}}}',
+  ]);
+  socket.test_messages = [];
+  return { socket, ...rendered };
 };
 
 describe('The App component', () => {
@@ -52,22 +71,7 @@ describe('The App component', () => {
 
   it('logs the user in and displays the voting page, then displays the login page if the user is kicked out', () => {
     // given
-    window.history.pushState({}, 'Test Title', '?sessionId=xvdBFRA6FyLZFcKo');
-    const socketInstances = ConfigureMockWebSocket();
-    const { container } = render(<App />);
-    const socket = socketInstances[0];
-
-    // when
-    act(() => socket.onopen!());
-    fireEvent.change(container.querySelector('input.user-input')!, {
-      target: { value: 'Happy User' },
-    });
-    fireEvent.click(container.querySelector('input.submit')!);
-
-    // then
-    expect(socket.test_messages).toEqual([
-      '{"message":"sendmessage","data":{"type":"login","payload":{"user":"Happy User","session":"xvdBFRA6FyLZFcKo"}}}',
-    ]);
+    const { socket, container } = loginUser();
 
     expect(container).toHaveTextContent('Session ID: xvdBFRA6FyLZFcKo - User name: Happy User');
     expect(container.querySelectorAll('div.card')).toHaveLength(13);
@@ -83,5 +87,73 @@ describe('The App component', () => {
     expect(container.querySelector('a.session-link')).toBeVisible();
     expect(container.querySelector('a.session-link')).toHaveTextContent(/^[a-zA-Z0-9]{16}$/i);
     expect(container.querySelector('input.submit')).toBeVisible();
+  });
+
+  it('updates, reveals and resets votes and kicks non-voting users optimistically', () => {
+    // given
+    const { socket, container, getByText } = loginUser();
+    act(() =>
+      socket.onmessage!({
+        data: JSON.stringify({
+          type: 'state',
+          payload: {
+            votes: {
+              'Happy User': 'not-voted',
+              'Voting User': '13',
+              'Non-voting User': 'not-voted',
+            },
+            resultsVisible: false,
+          },
+        }),
+      } as MessageEvent)
+    );
+    const selectedCard = container.querySelectorAll('div.card')[5];
+    expect(selectedCard).toHaveTextContent('2');
+    expect(selectedCard).not.toHaveClass('selected-card');
+    expect(container.querySelector('tbody')).toHaveTextContent(
+      'Non-voting User✗Happy User✗Voting User✔'
+    );
+
+    // when
+    fireEvent.click(container.querySelectorAll('div.card')[5]);
+
+    // then
+    expect(selectedCard).toHaveClass('selected-card');
+    expect(container.querySelector('tbody')).toHaveTextContent(
+      'Non-voting User✗Happy User✔Voting User✔'
+    );
+    expect(socket.test_messages).toEqual([
+      '{"message":"sendmessage","data":{"type":"set-vote","payload":{"vote":"2"}}}',
+    ]);
+    socket.test_messages = [];
+
+    // when
+    fireEvent.click(getByText('Kick users without vote', { selector: 'button' }));
+
+    // then
+    expect(container.querySelector('tbody')).toHaveTextContent('Happy User✔Voting User✔');
+    expect(socket.test_messages).toEqual([
+      '{"message":"sendmessage","data":{"type":"remove-users-not-voted"}}',
+    ]);
+    socket.test_messages = [];
+
+    // when
+    fireEvent.click(getByText('Reveal Votes', { selector: 'button' }));
+
+    // then
+    expect(container.querySelector('tbody')).toHaveTextContent('Happy User2Voting User13');
+    expect(socket.test_messages).toEqual([
+      '{"message":"sendmessage","data":{"type":"reveal-votes"}}',
+    ]);
+    socket.test_messages = [];
+
+    // when
+    fireEvent.click(getByText('Reset votes', { selector: 'button' }));
+
+    // then
+    expect(container.querySelector('tbody')).toHaveTextContent('Voting User✗Happy User✗');
+    expect(socket.test_messages).toEqual([
+      '{"message":"sendmessage","data":{"type":"reset-votes"}}',
+    ]);
   });
 });
