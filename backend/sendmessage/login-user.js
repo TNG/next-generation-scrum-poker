@@ -46,6 +46,7 @@ async function loginUser(userId, groupId, config) {
         ttl: Math.floor(expiryDate / 1000),
         [userId]: { connectionId: config.connectionId },
         groupId,
+        voteOptions: ['']
       },
     };
     groupUpdate = config.ddb.put(putParams).promise();
