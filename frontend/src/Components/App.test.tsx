@@ -1,5 +1,5 @@
-import * as React from '/web_modules/react.js';
 import { act, fireEvent, render } from '@testing-library/react';
+import * as React from 'react';
 import { App } from './App.js';
 
 const ConfigureMockWebSocket = () => {

@@ -1,6 +1,6 @@
-import classnames from '/web_modules/classnames.js';
-import css from '/web_modules/csz.js';
-import * as React from '/web_modules/react.js';
+import classnames from 'classnames';
+import css from 'csz';
+import * as React from 'react';
 import { buttonStyle, headingStyle, tableStyle, TNG_GRAY } from '../../styles.js';
 import { CardValue, Votes, WebSocketApi } from '../../types/WebSocket.js';
 import { connectToWebSocket } from '../WebSocket.js';

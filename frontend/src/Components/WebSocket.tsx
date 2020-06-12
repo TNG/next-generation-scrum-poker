@@ -1,4 +1,4 @@
-import * as React from '/web_modules/react.js';
+import * as React from 'react';
 import { Component } from 'react';
 import { WEBSOCKET_URL } from '../config.js';
 import {
