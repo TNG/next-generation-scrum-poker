@@ -1,5 +1,6 @@
 const { loginUser } = require('./login-user.js');
 const { setVote } = require('./set-vote.js');
+const { setScale } = require('./set-scale.js');
 const { resetVotes } = require('./reset-votes.js');
 const { revealVotes } = require('./reveal-votes.js');
 const { removeUsersNotVoted } = require('./remove-users-not-voted.js');
@@ -31,6 +32,9 @@ exports.handler = async (event) => {
     switch (type) {
       case 'login':
         await loginUser(payload.user, payload.session, config);
+        break;
+      case 'set-scale':
+        await setScale(payload.scale, config);
         break;
       case 'reveal-votes':
         await revealVotes(config);

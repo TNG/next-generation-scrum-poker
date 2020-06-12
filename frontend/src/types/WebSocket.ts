@@ -1,18 +1,35 @@
 export type CardValue =
+  | 'observer'
   | 'not-voted'
+  | 'coffee'
   | '?'
-  | '☕️'
+  | '∞'
+  | 'XS'
+  | 'S'
+  | 'M'
+  | 'L'
+  | 'XL'
+  | 'XXL'
   | '0'
   | '0.5'
   | '1'
   | '2'
   | '3'
+  | '4'
   | '5'
   | '8'
   | '13'
+  | '16'
   | '20'
+  | '21'
+  | '32'
+  | '34'
   | '40'
-  | '100';
+  | '55'
+  | '64'
+  | '89'
+  | '100'
+  | '128';
 
 export interface Votes {
   [userId: string]: CardValue;
@@ -21,6 +38,7 @@ export interface Votes {
 export interface WebSocketState {
   resultsVisible: boolean;
   votes: Votes;
+  scale: Array<CardValue>;
 }
 
 export interface WebSocketApi {
@@ -29,6 +47,7 @@ export interface WebSocketApi {
   loggedIn: boolean;
   login(user: string, session: string): void;
   setVote(vote: CardValue): void;
+  setScale(scale: Array<CardValue>): void;
   revealVotes(): void;
   resetVotes(): void;
   removeUsersNotVoted(): void;
@@ -58,6 +77,13 @@ export interface SetVoteMessage {
   };
 }
 
+export interface SetScaleMessage {
+  type: 'set-scale';
+  payload: {
+    scale: Array<CardValue>;
+  };
+}
+
 export interface RevealVotesMessage {
   type: 'reveal-votes';
 }
@@ -75,6 +101,7 @@ export type WebsocketMessage =
   | NotLoggedInMessage
   | LoginMessage
   | SetVoteMessage
+  | SetScaleMessage
   | RevealVotesMessage
   | ResetVotesMessage
   | RemoveUsersNotVotedMessage;

@@ -2,11 +2,10 @@ const { validUserId } = require('./filter-userId.js');
 const { getConnectionItem, getGroupItem } = require('./get-item.js');
 const { broadcastState } = require('./broadcast-state.js');
 
-async function resetVotes(config) {
-  const { connectionId, tableName, ddb } = config;
-  const connectionItem = await getConnectionItem(connectionId, tableName, ddb);
-  const groupItem = await getGroupItem(connectionItem.groupId, tableName, ddb);
-  const userIds = Object.keys(groupItem).filter(validUserId);
+function getResetVotesUpdateParams(groupItem, tableName, connectionItem) {
+  const userIds = Object.keys(groupItem)
+    .filter(validUserId)
+    .filter((userId) => groupItem[userId].vote !== 'observer');
   const removeUserVotes = userIds.map((id, idx) => `#${idx}.vote`).join(',');
 
   const expressionAttributeNames = userIds.reduce(
@@ -16,7 +15,7 @@ async function resetVotes(config) {
     }),
     {}
   );
-  const updateParams = {
+  return {
     TableName: tableName,
     Key: {
       primaryKey: `groupId:${connectionItem.groupId}`,
@@ -24,11 +23,18 @@ async function resetVotes(config) {
     UpdateExpression: removeUserVotes ? `REMOVE visible, ${removeUserVotes}` : 'REMOVE visible',
     ExpressionAttributeNames: removeUserVotes ? expressionAttributeNames : undefined,
   };
+}
 
+async function resetVotes(config) {
+  const { connectionId, tableName, ddb } = config;
+  const connectionItem = await getConnectionItem(connectionId, tableName, ddb);
+  const groupItem = await getGroupItem(connectionItem.groupId, tableName, ddb);
+  const updateParams = getResetVotesUpdateParams(groupItem, tableName, connectionItem);
   await ddb.update(updateParams).promise();
   await Promise.all(await broadcastState(connectionItem.groupId, config));
 }
 
 module.exports = {
   resetVotes,
+  getResetVotesUpdateParams,
 };

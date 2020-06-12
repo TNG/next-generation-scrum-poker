@@ -1,6 +1,7 @@
-import * as React from '/web_modules/react.js';
 import { act, fireEvent, render } from '@testing-library/react';
+import * as React from 'react';
 import { App } from './App.js';
+import { COHEN_SCALE } from '../constants';
 
 const ConfigureMockWebSocket = () => {
   const instances: MockWebSocket[] = [];
@@ -74,7 +75,7 @@ describe('The App component', () => {
     const { socket, container } = loginUser();
 
     expect(container).toHaveTextContent('Session ID: xvdBFRA6FyLZFcKo - User name: Happy User');
-    expect(container.querySelectorAll('button.card')).toHaveLength(13);
+    expect(container.querySelectorAll('button.card')).toHaveLength(14);
 
     // when
     act(() =>
@@ -103,6 +104,7 @@ describe('The App component', () => {
               'Non-voting User': 'not-voted',
             },
             resultsVisible: false,
+            scale: COHEN_SCALE,
           },
         }),
       } as MessageEvent)
@@ -111,7 +113,7 @@ describe('The App component', () => {
     expect(selectedCard).toHaveTextContent('2');
     expect(selectedCard).not.toHaveClass('selected-card');
     expect(container.querySelector('tbody')).toHaveTextContent(
-      'Non-voting User✗Happy User✗Voting User✔'
+      'Happy UserNon-voting UserVoting User'
     );
 
     // when
@@ -120,7 +122,7 @@ describe('The App component', () => {
     // then
     expect(selectedCard).toHaveClass('selected-card');
     expect(container.querySelector('tbody')).toHaveTextContent(
-      'Non-voting User✗Happy User✔Voting User✔'
+      'Non-voting UserHappy UserVoting User'
     );
     expect(socket.test_messages).toEqual([
       '{"message":"sendmessage","data":{"type":"set-vote","payload":{"vote":"2"}}}',
@@ -131,7 +133,7 @@ describe('The App component', () => {
     fireEvent.click(getByText('Kick users without vote', { selector: 'button' }));
 
     // then
-    expect(container.querySelector('tbody')).toHaveTextContent('Happy User✔Voting User✔');
+    expect(container.querySelector('tbody')).toHaveTextContent('Happy UserVoting User');
     expect(socket.test_messages).toEqual([
       '{"message":"sendmessage","data":{"type":"remove-users-not-voted"}}',
     ]);
@@ -151,7 +153,7 @@ describe('The App component', () => {
     fireEvent.click(getByText('Reset votes', { selector: 'button' }));
 
     // then
-    expect(container.querySelector('tbody')).toHaveTextContent('Voting User✗Happy User✗');
+    expect(container.querySelector('tbody')).toHaveTextContent('Happy UserVoting User');
     expect(socket.test_messages).toEqual([
       '{"message":"sendmessage","data":{"type":"reset-votes"}}',
     ]);

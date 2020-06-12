@@ -1,10 +1,12 @@
-import classnames from '/web_modules/classnames.js';
-import css from '/web_modules/csz.js';
-import * as React from '/web_modules/react.js';
+import css from 'csz';
+import * as React from 'react';
 import { buttonStyle, headingStyle, tableStyle, TNG_GRAY } from '../../styles.js';
 import { CardValue, Votes, WebSocketApi } from '../../types/WebSocket.js';
 import { connectToWebSocket } from '../WebSocket.js';
 import { compareVotes } from './compareVotes.js';
+import { CoffeeIcon } from '../CoffeeIcon';
+import { NotVotedIcon } from '../NotVotedIcon';
+import { ObserverIcon } from '../ObserverIcon';
 
 const styling = css`
   display: flex;
@@ -22,6 +24,14 @@ const styling = css`
   }
   .not-voted-entry {
     color: ${TNG_GRAY};
+    fill: ${TNG_GRAY};
+    text-align: center;
+  }
+  .voted-entry {
+    text-align: center;
+  }
+  .name-entry {
+    line-height: 26px;
   }
 `;
 
@@ -29,6 +39,22 @@ const getSortedResultsArray = (unsortedResults: Votes) => {
   let dataArray: [string, CardValue][] = Object.entries(unsortedResults);
   return dataArray.sort(compareVotes);
 };
+
+const getVote = (vote: CardValue) => {
+  if (vote === 'coffee') {
+    return <CoffeeIcon />;
+  }
+  if (vote === 'not-voted') {
+    return <NotVotedIcon />;
+  }
+  if (vote === 'observer') {
+    return <ObserverIcon />;
+  }
+  return vote;
+};
+
+const getClassName = (vote: CardValue) =>
+  vote === 'not-voted' || vote === 'observer' ? 'not-voted-entry' : 'voted-entry';
 
 const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
   <div className={styling}>
@@ -44,10 +70,8 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
         {getSortedResultsArray(socket.state.votes).map((userAndVote) => {
           return (
             <tr key={userAndVote[0]}>
-              <td>{userAndVote[0]}</td>
-              <td className={classnames(userAndVote[1] === 'not-voted' && 'not-voted-entry')}>
-                {userAndVote[1]}
-              </td>
+              <td className={'name-entry'}>{userAndVote[0]}</td>
+              <td className={getClassName(userAndVote[1])}>{getVote(userAndVote[1])}</td>
             </tr>
           );
         })}

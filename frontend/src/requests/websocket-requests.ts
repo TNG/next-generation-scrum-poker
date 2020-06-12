@@ -17,6 +17,14 @@ export const getSetVoteRequest = (vote: CardValue) =>
     },
   });
 
+export const getSetScaleRequest = (scale: Array<CardValue>) =>
+  buildRequest({
+    type: 'set-scale',
+    payload: {
+      scale,
+    },
+  });
+
 export const getRevealVotesRequest = () =>
   buildRequest({
     type: 'reveal-votes',

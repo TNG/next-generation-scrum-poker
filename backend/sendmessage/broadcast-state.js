@@ -21,7 +21,10 @@ async function broadcastState(groupId, config) {
         [currentUserId]: vote ? vote : 'not-voted',
       };
     }, {});
-    message = JSON.stringify({ type: 'state', payload: { resultsVisible, votes } });
+    message = JSON.stringify({
+      type: 'state',
+      payload: { resultsVisible, votes, scale: groupItem.scale },
+    });
     return groupConnectionIds.map(async (connectionId) => {
       await sendMessageToConnection(message, (config = { ...config, connectionId }));
     });

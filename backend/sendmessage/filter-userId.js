@@ -4,6 +4,7 @@ function validUserId(userId) {
     userId !== 'primaryKey' &&
     userId !== 'visible' &&
     userId !== 'groupId' &&
+    userId !== 'scale' &&
     userId !== 'ttl'
   );
 }
