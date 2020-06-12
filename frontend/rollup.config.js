@@ -1,11 +1,12 @@
-import * as path from 'path';
 import { terser } from 'rollup-plugin-terser';
-import { buildFromHtml } from './build-plugins/build-from-html.js';
 import { cleanOutputFolder } from './build-plugins/clean-output-folder.js';
 import { emitAssetsFromFile } from './build-plugins/emit-assets-from-file.js';
-import { handleWebModules } from './build-plugins/handle-web-modules.js';
+import html from '@open-wc/rollup-plugin-html';
+import nodeResolve from '@rollup/plugin-node-resolve';
+import commonJs from '@rollup/plugin-commonjs';
 
 export default {
+  input: 'index.html',
   treeshake: {
     moduleSideEffects: false,
     propertyReadSideEffects: false,
@@ -15,12 +16,14 @@ export default {
   output: {
     dir: 'dist',
     format: 'esm',
+    entryFileNames: '[name]-[hash].js',
   },
   plugins: [
     cleanOutputFolder(),
-    buildFromHtml(path.resolve('index.html')),
+    nodeResolve(),
+    commonJs({ include: '**/node_modules/**' }),
+    html(),
     emitAssetsFromFile('build/assets.js'),
-    handleWebModules(),
     terser(),
   ],
 };

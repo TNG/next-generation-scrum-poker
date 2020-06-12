@@ -1,5 +1,5 @@
-import css from '/web_modules/csz.js';
-import * as React from '/web_modules/react.js';
+import css from 'csz';
+import * as React from 'react';
 import { CARD_VALUES } from '../constants.js';
 import { buttonStyle, headingStyle, TNG_BLUE, TNG_GRAY } from '../styles.js';
 import { CardValue, WebSocketApi } from '../types/WebSocket.js';
@@ -46,6 +46,11 @@ const votingPageStyle = css`
     &.selected-card {
       background: ${TNG_BLUE};
       color: white;
+    }
+    
+    :focus {
+      outline: 2px dashed ${TNG_BLUE};
+      outline-offset: 2px;
     }
   }
 

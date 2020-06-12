@@ -1,5 +1,5 @@
-import css from '/web_modules/csz.js';
-import * as React from '/web_modules/react.js';
+import css from 'csz';
+import * as React from 'react';
 import { ASSET_TNG_LOGO } from '../assets.js';
 import { BORDER_RADIUS, buttonStyle, TNG_BLUE } from '../styles.js';
 import { WebSocketApi } from '../types/WebSocket.js';
