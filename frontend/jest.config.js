@@ -10,7 +10,7 @@ module.exports = {
     // re-map all calls to react(-dom/test-utils) to the aliased CJS versions
     '^react((-dom(/.*)?)?)$': '<rootDir>/node_modules/test-react$1',
     // There is no CJS version for csz available and we cannot use ESM in node_modules
-    '^/web_modules/csz\\.js$': '<rootDir>/web_modules/csz.js',
+    '^csz$': '<rootDir>/src/test-utils/csz.js',
     // Remove extensions from imports so that Jest can resolve .js as .ts
     '^(.*)\\.js$': '$1',
   },

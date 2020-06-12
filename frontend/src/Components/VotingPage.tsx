@@ -47,6 +47,11 @@ const votingPageStyle = css`
       background: ${TNG_BLUE};
       color: white;
     }
+    
+    :focus {
+      outline: 2px dashed ${TNG_BLUE};
+      outline-offset: 2px;
+    }
   }
 
   .button {
