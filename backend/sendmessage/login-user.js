@@ -1,6 +1,23 @@
 const { broadcastState } = require('./broadcast-state.js');
 const { getGroupItem } = require('./get-item.js');
 
+const COHEN_SCALE = [
+  'coffee',
+  '?',
+  '0',
+  '0.5',
+  '1',
+  '2',
+  '3',
+  '5',
+  '8',
+  '13',
+  '20',
+  '40',
+  '100',
+  '∞',
+];
+
 async function loginUser(userId, groupId, config) {
   const updateConnectionParams = {
     TableName: config.tableName,
@@ -46,6 +63,7 @@ async function loginUser(userId, groupId, config) {
         ttl: Math.floor(expiryDate / 1000),
         [userId]: { connectionId: config.connectionId },
         groupId,
+        scale: COHEN_SCALE,
       },
     };
     groupUpdate = config.ddb.put(putParams).promise();
