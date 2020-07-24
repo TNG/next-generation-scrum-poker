@@ -1,9 +1,15 @@
+import { Config, ConnectionItem, GroupItem } from './types';
+
 const { validUserId } = require('./filter-userId.js');
 const { getConnectionItem, getGroupItem } = require('./get-item.js');
 const { broadcastState } = require('./broadcast-state.js');
 const { sendMessageToConnection } = require('./send-message-to-connection.js');
 
-function getRemoveUsersFromGroupParams(userIdsNotVoted, tableName, connectionItem) {
+function getRemoveUsersFromGroupParams(
+  userIdsNotVoted: string[],
+  tableName: string,
+  connectionItem: ConnectionItem
+) {
   const removeUsers = userIdsNotVoted.map((id, idx) => `#${idx}`).join(',');
   const expressionAttributeNames = userIdsNotVoted.reduce(
     (attributeNames, currentId, currentIdx) => ({
@@ -22,7 +28,7 @@ function getRemoveUsersFromGroupParams(userIdsNotVoted, tableName, connectionIte
   };
 }
 
-function getRemoveGroupFromConnectionParams(tableName, groupItem, id) {
+function getRemoveGroupFromConnectionParams(tableName: string, groupItem: GroupItem, id: string) {
   return {
     TableName: tableName,
     Key: {
@@ -32,7 +38,7 @@ function getRemoveGroupFromConnectionParams(tableName, groupItem, id) {
   };
 }
 
-async function removeUsersNotVoted(config) {
+export async function removeUsersNotVoted(config: Config) {
   const { connectionId, tableName, ddb } = config;
   const dbUpdates = [];
   const connectionItem = await getConnectionItem(connectionId, tableName, ddb);
@@ -52,7 +58,7 @@ async function removeUsersNotVoted(config) {
     dbUpdates.push(ddb.update(updateParams).promise());
   }
 
-  await Promise.all(dbUpdates);
+  await Promise.all(dbUpdates as any);
   await Promise.all(await broadcastState(connectionItem.groupId, config));
   await Promise.all(
     userIdsNotVoted.map((id) =>
@@ -63,7 +69,3 @@ async function removeUsersNotVoted(config) {
     )
   );
 }
-
-module.exports = {
-  removeUsersNotVoted,
-};

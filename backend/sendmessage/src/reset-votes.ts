@@ -1,8 +1,14 @@
+import { Config, ConnectionItem, GroupItem } from './types';
+
 const { validUserId } = require('./filter-userId.js');
 const { getConnectionItem, getGroupItem } = require('./get-item.js');
 const { broadcastState } = require('./broadcast-state.js');
 
-function getResetVotesUpdateParams(groupItem, tableName, connectionItem) {
+export function getResetVotesUpdateParams(
+  groupItem: GroupItem,
+  tableName: string,
+  connectionItem: ConnectionItem
+) {
   const userIds = Object.keys(groupItem)
     .filter(validUserId)
     .filter((userId) => groupItem[userId].vote !== 'observer');
@@ -25,7 +31,7 @@ function getResetVotesUpdateParams(groupItem, tableName, connectionItem) {
   };
 }
 
-async function resetVotes(config) {
+export async function resetVotes(config: Config) {
   const { connectionId, tableName, ddb } = config;
   const connectionItem = await getConnectionItem(connectionId, tableName, ddb);
   const groupItem = await getGroupItem(connectionItem.groupId, tableName, ddb);
@@ -33,8 +39,3 @@ async function resetVotes(config) {
   await ddb.update(updateParams).promise();
   await Promise.all(await broadcastState(connectionItem.groupId, config));
 }
-
-module.exports = {
-  resetVotes,
-  getResetVotesUpdateParams,
-};

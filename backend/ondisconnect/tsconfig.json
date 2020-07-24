@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react",
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "outDir": "build",
+    "sourceMap": false,
+    "strict": true,
+    "target": "es2019"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test.ts"]
+}

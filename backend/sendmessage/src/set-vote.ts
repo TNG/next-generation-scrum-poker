@@ -1,7 +1,9 @@
+import { Config } from './types';
+
 const { getConnectionItem } = require('./get-item.js');
 const { broadcastState } = require('./broadcast-state.js');
 
-async function setVote(vote, config) {
+export async function setVote(vote: string, config: Config) {
   const connectionItem = await getConnectionItem(config.connectionId, config.tableName, config.ddb);
 
   const updateGroupParams = {
@@ -22,7 +24,3 @@ async function setVote(vote, config) {
   await config.ddb.update(updateGroupParams).promise();
   await Promise.all(await broadcastState(connectionItem.groupId, config));
 }
-
-module.exports = {
-  setVote,
-};

@@ -1,3 +1,5 @@
+import { Config } from './types';
+
 const { broadcastState } = require('./broadcast-state.js');
 const { getGroupItem } = require('./get-item.js');
 
@@ -18,7 +20,9 @@ const COHEN_SCALE = [
   '∞',
 ];
 
-async function loginUser(userId, groupId, config) {
+const EXPIRY_TIME_IN_HOUR = process.env.EXPIRY_TIME_IN_HOUR || '1';
+
+export async function loginUser(userId: string, groupId: string, config: Config) {
   const updateConnectionParams = {
     TableName: config.tableName,
     Key: {
@@ -55,12 +59,12 @@ async function loginUser(userId, groupId, config) {
     groupUpdate = config.ddb.update(updateGroupParams).promise();
   } else {
     const expiryDate = new Date(Date.now());
-    expiryDate.setHours(expiryDate.getHours() + parseFloat(process.env.EXPIRY_TIME_IN_HOUR));
+    expiryDate.setHours(expiryDate.getHours() + parseFloat(EXPIRY_TIME_IN_HOUR));
     const putParams = {
       TableName: config.tableName,
       Item: {
         primaryKey: `groupId:${groupId}`,
-        ttl: Math.floor(expiryDate / 1000),
+        ttl: Math.floor(expiryDate.getDate() / 1000),
         [userId]: { connectionId: config.connectionId },
         groupId,
         scale: COHEN_SCALE,
@@ -71,7 +75,3 @@ async function loginUser(userId, groupId, config) {
   await Promise.all([config.ddb.update(updateConnectionParams).promise(), groupUpdate]);
   await Promise.all(await broadcastState(groupId, config));
 }
-
-module.exports = {
-  loginUser,
-};

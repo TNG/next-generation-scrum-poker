@@ -1,10 +1,12 @@
+import { Config } from './types';
+
 const { validUserId } = require('./filter-userId.js');
 const { getGroupItem } = require('./get-item.js');
 const { sendMessageToConnection } = require('./send-message-to-connection.js');
 
-async function broadcastState(groupId, config) {
+export async function broadcastState(groupId: string, config: Config) {
   const { tableName, ddb } = config;
-  let groupConnectionIds, message;
+  let groupConnectionIds, message: string;
 
   if (groupId) {
     const groupItem = await getGroupItem(groupId, tableName, ddb);
@@ -13,7 +15,7 @@ async function broadcastState(groupId, config) {
     groupConnectionIds = userIds
       .filter((key) => groupItem[key].connectionId)
       .map((key) => groupItem[key].connectionId);
-    const resultsVisible = !!groupItem.visible;
+    const resultsVisible = groupItem.visible;
     const votes = userIds.reduce((accumulatedVotes, currentUserId) => {
       const vote = groupItem[currentUserId].vote;
       return {
@@ -30,7 +32,3 @@ async function broadcastState(groupId, config) {
     });
   }
 }
-
-module.exports = {
-  broadcastState,
-};

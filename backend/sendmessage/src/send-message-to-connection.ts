@@ -1,9 +1,11 @@
+import { Config } from './types';
+
 const { getConnectionItem } = require('./get-item.js');
 
-async function sendMessageToConnection(message, config) {
+export async function sendMessageToConnection(message: string, config: Config) {
   try {
     await config.apigwManagementApi
-      .postToConnection({ ConnectionId: config.connectionId, Data: message })
+      .postToConnection({ ConnectionId: config.connectionId as string, Data: message })
       .promise();
   } catch (e) {
     if (e.statusCode === 410) {
@@ -26,14 +28,10 @@ async function sendMessageToConnection(message, config) {
             '#1': connectionItem.userId,
           },
         };
-        await ddb.update(updateParams).promise();
+        await config.ddb.update(updateParams).promise();
       }
     } else {
       throw e;
     }
   }
 }
-
-module.exports = {
-  sendMessageToConnection,
-};
