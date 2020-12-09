@@ -18,6 +18,8 @@ export const buttonStyle = `
   ${BORDER_RADIUS};
   height: ${BUTTON_HEIGHT};
   width: 150px;
+  font: 13.3333px Arial;
+  padding: 1px 6px;
   
   :disabled {
     background: ${TNG_GRAY};
