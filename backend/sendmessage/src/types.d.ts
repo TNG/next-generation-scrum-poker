@@ -1,7 +1,7 @@
 import * as AWS from 'aws-sdk';
 
 export interface Config {
-  connectionId: string | undefined;
+  connectionId?: string;
   tableName: string;
   ddb: AWS.DynamoDB.DocumentClient;
   apigwManagementApi: AWS.ApiGatewayManagementApi;

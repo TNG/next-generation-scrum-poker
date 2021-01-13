@@ -12,6 +12,6 @@
   },
   "scripts": {
     "test": "npx jest",
-    "build:tsc": "tsc -p ."
+    "build": "tsc -p ."
   }
 }
