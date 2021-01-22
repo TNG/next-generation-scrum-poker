@@ -1,6 +1,9 @@
 .idea
 *.iml
 frontend/build
+backend/onconnect/build
+backend/ondisconnect/build
+backend/sendmessage/build
 frontend/dist
 node_modules
 aws.config

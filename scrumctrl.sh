@@ -17,6 +17,21 @@ deploy(){
   npm run build
   cd ..
 
+  cd backend/onconnect
+  rm -rf dist
+  npm run build
+  cd ../..
+
+  cd backend/ondisconnect
+  rm -rf dist
+  npm run build
+  cd ../..
+
+  cd backend/sendmessage
+  rm -rf dist
+  npm run build
+  cd ../..
+
   aws s3 sync frontend/dist s3://${S3Frontend} --delete
 
   sam package \

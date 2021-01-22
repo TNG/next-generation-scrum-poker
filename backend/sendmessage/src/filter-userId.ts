@@ -1,4 +1,4 @@
-function validUserId(userId) {
+export function validUserId(userId: string) {
   return (
     userId &&
     userId !== 'primaryKey' &&
@@ -8,7 +8,3 @@ function validUserId(userId) {
     userId !== 'ttl'
   );
 }
-
-module.exports = {
-  validUserId,
-};

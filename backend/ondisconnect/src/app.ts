@@ -1,19 +1,22 @@
-const AWS = require('aws-sdk');
+import * as AWS from 'aws-sdk';
+import { APIGatewayProxyHandler } from 'aws-lambda/trigger/api-gateway-proxy';
 
 const ddb = new AWS.DynamoDB.DocumentClient({
   apiVersion: '2012-08-10',
   region: process.env.AWS_REGION,
 });
 
-exports.handler = async (event) => {
+const TABLE_NAME = process.env.TABLE_NAME || 'scrum_poker';
+
+export const handler: APIGatewayProxyHandler = async (event) => {
   const deleteParams = {
-    TableName: process.env.TABLE_NAME,
+    TableName: TABLE_NAME,
     Key: {
       primaryKey: `connectionId:${event.requestContext.connectionId}`,
     },
   };
   const queryItemParams = {
-    TableName: process.env.TABLE_NAME,
+    TableName: TABLE_NAME,
     ConsistentRead: true,
     Key: {
       primaryKey: `connectionId:${event.requestContext.connectionId}`,
@@ -25,7 +28,7 @@ exports.handler = async (event) => {
     await ddb.delete(deleteParams).promise();
     if (connectionItem && connectionItem.groupId) {
       const updateParams = {
-        TableName: process.env.TABLE_NAME,
+        TableName: TABLE_NAME,
         Key: {
           primaryKey: `groupId:${connectionItem.groupId}`,
         },

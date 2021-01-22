@@ -1,27 +1,28 @@
-const { loginUser } = require('./login-user.js');
-const { setVote } = require('./set-vote.js');
-const { setScale } = require('./set-scale.js');
-const { resetVotes } = require('./reset-votes.js');
-const { revealVotes } = require('./reveal-votes.js');
-const { removeUsersNotVoted } = require('./remove-users-not-voted.js');
-
-const AWS = require('aws-sdk');
+import * as AWS from 'aws-sdk';
+import { APIGatewayProxyHandler } from 'aws-lambda';
+import { Config } from './types';
+import { loginUser } from './login-user';
+import { resetVotes } from './reset-votes';
+import { removeUsersNotVoted } from './remove-users-not-voted';
+import { setScale } from './set-scale';
+import { revealVotes } from './reveal-votes';
+import { setVote } from './set-vote';
 
 const ddb = new AWS.DynamoDB.DocumentClient({
   apiVersion: '2012-08-10',
   region: process.env.AWS_REGION,
 });
 
-const { TABLE_NAME } = process.env;
+const TABLE_NAME = process.env.TABLE_NAME || 'scrum_poker';
 
-exports.handler = async (event) => {
+export const handler: APIGatewayProxyHandler = async (event) => {
   const apigwManagementApi = new AWS.ApiGatewayManagementApi({
     apiVersion: '2018-11-29',
     endpoint: event.requestContext.domainName,
   });
   const connectionId = event.requestContext.connectionId;
-  const { type, payload } = JSON.parse(event.body).data;
-  const config = {
+  const { type, payload } = JSON.parse(event.body as string).data;
+  const config: Config = {
     connectionId,
     tableName: TABLE_NAME,
     ddb,
