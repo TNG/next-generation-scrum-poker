@@ -36,7 +36,9 @@ export const ProtoLoginInfo = ({ socket }: { socket: WebSocketApi }) => (
   <div className={loginInfoStyle}>
     <div className="heading">
       NEXT GENERATION SCRUM POKER
-      <img src={ASSET_TNG_LOGO} alt="TNG Logo" className="logo" />
+      <a href="https://www.tngtech.com/" target="_blank">
+        <img src={ASSET_TNG_LOGO} alt="TNG Logo" className="logo" />
+      </a>
     </div>
     <div className="session-info">
       Session ID: {socket.loginData ? socket.loginData.session : 'not found'} &nbsp; - &nbsp; User
