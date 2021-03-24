@@ -124,7 +124,9 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
         {sessionId}
       </a>
       <input type="submit" value="Login" className="submit" disabled={user.length === 0} />
-      <img src={ASSET_TNG_LOGO} alt="TNG Logo" className="logo" />
+      <a href="https://www.tngtech.com/" target="_blank" className="logo">
+        <img src={ASSET_TNG_LOGO} alt="TNG Logo" className="logo" />
+      </a>
     </form>
   );
 };
