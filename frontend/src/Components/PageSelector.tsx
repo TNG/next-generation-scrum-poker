@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { WebSocketApi } from '../types/WebSocket.js';
 import { LoginInfo } from './LoginInfo.js';
 import { LoginPage } from './LoginPage.js';

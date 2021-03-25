@@ -1,5 +1,6 @@
 import css from 'csz';
-import * as React from 'react';
+import { RefObject } from 'preact';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import { ASSET_TNG_LOGO } from '../assets.js';
 import { BORDER_RADIUS, buttonStyle, TNG_BLUE } from '../styles.js';
 import { WebSocketApi } from '../types/WebSocket.js';
@@ -79,15 +80,15 @@ const styling = css`
 `;
 
 const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
-  const firstInputRef: React.RefObject<HTMLInputElement> = React.useRef(null);
-  const [user, setUser] = React.useState(socket.loginData.user);
+  const firstInputRef: RefObject<HTMLInputElement> = useRef(null);
+  const [user, setUser] = useState(socket.loginData.user);
   let sessionId = new URLSearchParams(window.location.search).get('sessionId') || '';
   if (!sessionId.match(/^[a-zA-Z0-9]{16}$/i)) {
     sessionId = generateId(16);
     history.replaceState({}, 'Scrum Poker', `?sessionId=${sessionId}`);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (firstInputRef.current) {
       firstInputRef.current.focus();
     }
@@ -115,7 +116,7 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
         value={user}
         ref={firstInputRef}
         className="user-input"
-        onChange={(event) => setUser(event.target.value)}
+        onChange={(event) => setUser((event.target as HTMLInputElement).value)}
       />
       <label htmlFor="session" className="session-label">
         Session:

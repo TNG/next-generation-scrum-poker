@@ -1,12 +1,11 @@
 import css from 'csz';
-import * as React from 'react';
+import { useEffect, useState } from 'preact/hooks';
+import { SCALE_MAPPING } from '../constants';
 import { buttonStyle, headingStyle, TNG_BLUE, TNG_GRAY } from '../styles.js';
 import { CardValue, WebSocketApi } from '../types/WebSocket.js';
+import { CoffeeIcon } from './CoffeeIcon';
 import { VotingStateDisplay } from './VotingStateDisplay.js';
 import { connectToWebSocket } from './WebSocket.js';
-import { CoffeeIcon } from './CoffeeIcon';
-import { SCALE_MAPPING } from '../constants';
-import { useEffect } from 'react';
 
 const votingPageStyle = css`
   display: flex;
@@ -90,7 +89,7 @@ const votingPageStyle = css`
 `;
 
 const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
-  const [selectedCard, setSelectedCard] = React.useState<CardValue>(
+  const [selectedCard, setSelectedCard] = useState<CardValue>(
     socket.state.votes[socket.loginData.user]
   );
 
@@ -134,7 +133,7 @@ const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
       <select
         name="scale"
         className="select"
-        onChange={(e) => socket.setScale(SCALE_MAPPING[e.target.value])}
+        onChange={(e) => socket.setScale(SCALE_MAPPING[(e.target as HTMLSelectElement).value])}
         value={'CHANGE_SCALE'}
       >
         <option value="CHANGE_SCALE" disabled>

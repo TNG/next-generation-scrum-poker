@@ -1,11 +1,10 @@
 import css from 'csz';
-import * as React from 'react';
 import { tableStyle } from '../styles.js';
 import { Votes, WebSocketApi } from '../types/WebSocket.js';
-import { connectToWebSocket } from './WebSocket.js';
-import { VotedIcon } from './VotedIcon';
 import { NotVotedIcon } from './NotVotedIcon';
 import { ObserverIcon } from './ObserverIcon';
+import { VotedIcon } from './VotedIcon';
+import { connectToWebSocket } from './WebSocket.js';
 
 const votingStateDisplayStyle = css`,
   ${tableStyle}
@@ -70,9 +69,7 @@ const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
         return (
           <tr key={user}>
             <td className={getClassName(voted, observer)}>{user}</td>
-            <td align="center" className={getClassName(voted, observer)}>
-              {getIcon(voted, observer)}
-            </td>
+            <td className={getClassName(voted, observer)}>{getIcon(voted, observer)}</td>
           </tr>
         );
       })}
