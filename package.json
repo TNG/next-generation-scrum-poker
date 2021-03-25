@@ -18,7 +18,7 @@
   "homepage": "https://github.com/lukastaegert/next-generation-scrum-poker#readme",
   "devDependencies": {
     "husky": "^5.2.0",
-    "lint-staged": "^10.0.9",
-    "prettier": "^2.0.2"
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1"
   }
 }
