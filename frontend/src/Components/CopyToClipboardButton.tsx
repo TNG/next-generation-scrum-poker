@@ -1,5 +1,4 @@
 import css from 'csz';
-import * as React from 'react';
 import { buttonStyle } from '../styles.js';
 
 const copyToClipboardButtonStyles = css`

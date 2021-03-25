@@ -1,7 +1,6 @@
-import { act, fireEvent, render } from '@testing-library/react';
-import * as React from 'react';
-import { App } from './App.js';
+import { act, fireEvent, render } from '@testing-library/preact';
 import { COHEN_SCALE } from '../constants';
+import { App } from './App.js';
 
 const ConfigureMockWebSocket = () => {
   const instances: MockWebSocket[] = [];

@@ -1,5 +1,4 @@
 import css from 'csz';
-import * as React from 'react';
 import { ASSET_TNG_LOGO } from '../assets.js';
 import { TNG_GRAY } from '../styles.js';
 import { WebSocketApi } from '../types/WebSocket.js';

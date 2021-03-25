@@ -1,5 +1,4 @@
 import css from 'csz';
-import * as React from 'react';
 import { PageSelector } from './PageSelector.js';
 import { WebSocketProvider } from './WebSocket.js';
 

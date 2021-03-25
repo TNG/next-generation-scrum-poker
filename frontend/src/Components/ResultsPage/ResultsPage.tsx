@@ -1,12 +1,11 @@
 import css from 'csz';
-import * as React from 'react';
 import { buttonStyle, headingStyle, tableStyle, TNG_GRAY } from '../../styles.js';
 import { CardValue, Votes, WebSocketApi } from '../../types/WebSocket.js';
-import { connectToWebSocket } from '../WebSocket.js';
-import { compareVotes } from './compareVotes.js';
 import { CoffeeIcon } from '../CoffeeIcon';
 import { NotVotedIcon } from '../NotVotedIcon';
 import { ObserverIcon } from '../ObserverIcon';
+import { connectToWebSocket } from '../WebSocket.js';
+import { compareVotes } from './compareVotes.js';
 
 const styling = css`
   display: flex;
