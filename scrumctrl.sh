@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -eu
+cd "$(dirname "${BASH_SOURCE[0]}")"
+BASE_DIR=$(pwd)
+
 display_usage() {
     echo ""
     echo "If no --prod flag is given your stack will be deploy based on your custom aws.config."
@@ -11,26 +15,27 @@ display_usage() {
     echo "  --delete               Deletes the current deployment. Can be combined with --prod."
 }
 
+build() {
+  if [[ ! -d "$1" ]]
+    then
+      echo "$1 is not a directory"
+      exit 1
+  fi
+  echo
+  echo "Building \"$1\":"
+  cd "$1"
+  rm -rf dist
+  npm ci
+  npm run build
+  cd "$BASE_DIR"
+  echo "\"$1\" built."
+}
+
 deploy(){
-  cd frontend
-  rm -rf dist
-  npm run build
-  cd ..
-
-  cd backend/onconnect
-  rm -rf dist
-  npm run build
-  cd ../..
-
-  cd backend/ondisconnect
-  rm -rf dist
-  npm run build
-  cd ../..
-
-  cd backend/sendmessage
-  rm -rf dist
-  npm run build
-  cd ../..
+  build frontend
+  build backend/onconnect
+  build backend/ondisconnect
+  build backend/sendmessage
 
   aws s3 sync frontend/dist s3://${S3Frontend} --delete
 
@@ -55,6 +60,9 @@ delete() {
   aws cloudformation delete-stack --stack-name ${StackBackend}
 }
 
+PROD=0
+DELETE=0
+DEPLOY=0
 while test $# -gt 0; do
     case "$1" in
         -h|--help)
@@ -76,24 +84,30 @@ while test $# -gt 0; do
 done
 
 if [[ DELETE -eq 1 && DEPLOY -eq 1 ]] || [[ DELETE -ne 1 && DEPLOY -ne 1 ]]
-  then echo "ERROR: you must select exactly one of \"--delete\" or \"--deploy\""; exit 1
+  then
+    echo "ERROR: you must select exactly one of \"--delete\" or \"--deploy\""
+    exit 1
 fi
 
 if [[ PROD -eq 1 ]]
-  then if source aws-prod.config
-          then echo "succesfully read aws-prod.config"
-          else echo "ERROR: your aws-prod.config is missing or broken"; exit 1
-        fi
-  else if source aws.config
-          then echo "Succesfully read custom aws.config"
-          else echo "ERROR: your custom aws.config is missing or broken"; exit 1
-        fi
+  then
+    if source aws-prod.config
+      then echo "succesfully read aws-prod.config"
+      else echo "ERROR: your aws-prod.config is missing or broken"; exit 1
+    fi
+  else
+    if source aws.config
+      then echo "Succesfully read custom aws.config"
+      else echo "ERROR: your custom aws.config is missing or broken"; exit 1
+    fi
 fi
 
 
 
 if [[ DELETE -eq 1 ]]
-  then delete && echo "stack deleted"
-  else deploy
+  then
+    delete && echo "stack deleted"
+  else
+    deploy
 fi
 
