@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "lint": "prettier . --write"
+    "lint": "prettier . --write",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -16,8 +17,8 @@
   },
   "homepage": "https://github.com/lukastaegert/next-generation-scrum-poker#readme",
   "devDependencies": {
-    "husky": "^4.2.3",
-    "lint-staged": "^10.0.9",
-    "prettier": "^2.0.2"
+    "husky": "^5.2.0",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1"
   }
 }
