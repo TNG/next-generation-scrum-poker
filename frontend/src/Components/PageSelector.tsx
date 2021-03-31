@@ -1,9 +1,9 @@
-import { WebSocketApi } from '../types/WebSocket.js';
-import { LoginInfo } from './LoginInfo.js';
-import { LoginPage } from './LoginPage.js';
-import { ResultsPage } from './ResultsPage/ResultsPage.js';
-import { VotingPage } from './VotingPage.js';
-import { connectToWebSocket } from './WebSocket.js';
+import { WebSocketApi } from '../types/WebSocket';
+import { LoginInfo } from './LoginInfo';
+import { LoginPage } from './LoginPage';
+import { ResultsPage } from './ResultsPage/ResultsPage';
+import { VotingPage } from './VotingPage';
+import { connectToWebSocket } from './WebSocket';
 
 const ProtoPageSelector = ({ socket }: { socket: WebSocketApi }) => {
   if (!socket.loginData.user || !socket.loggedIn) {

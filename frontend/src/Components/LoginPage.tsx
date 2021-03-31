@@ -1,11 +1,11 @@
 import css from 'csz';
 import { RefObject } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { ASSET_TNG_LOGO } from '../assets.js';
-import { BORDER_RADIUS, buttonStyle, TNG_BLUE } from '../styles.js';
-import { WebSocketApi } from '../types/WebSocket.js';
-import { generateId } from './generateId.js';
-import { connectToWebSocket } from './WebSocket.js';
+import tngLogo from '../img/tng.svg';
+import { BORDER_RADIUS, buttonStyle, TNG_BLUE } from '../styles';
+import { WebSocketApi } from '../types/WebSocket';
+import { generateId } from './generateId';
+import { connectToWebSocket } from './WebSocket';
 
 const styling = css`
   position: absolute;
@@ -126,7 +126,7 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       </a>
       <input type="submit" value="Login" className="submit" disabled={user.length === 0} />
       <a href="https://www.tngtech.com/" target="_blank" className="logo">
-        <img src={ASSET_TNG_LOGO} alt="TNG Logo" className="logo" />
+        <img src={tngLogo} alt="TNG Logo" className="logo" />
       </a>
     </form>
   );

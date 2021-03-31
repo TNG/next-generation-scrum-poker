@@ -1,5 +1,5 @@
 import css from 'csz';
-import { buttonStyle } from '../styles.js';
+import { buttonStyle } from '../styles';
 
 const copyToClipboardButtonStyles = css`
   ${buttonStyle}

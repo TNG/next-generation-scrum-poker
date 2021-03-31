@@ -1,15 +1,22 @@
 {
   "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
+    "esModuleInterop": false,
+    "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "moduleResolution": "Node",
-    "outDir": "build",
+    "noEmit": true,
+    "skipLibCheck": false,
     "sourceMap": true,
     "strict": true,
-    "target": "ESNext"
+    "target": "ESNext",
+    "types": ["vite/client"]
   },
   "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.ts"]
+  "exclude": ["src/**/*.test.*"]
 }

@@ -1,6 +1,6 @@
 .idea
 *.iml
-frontend/build
+.cache
 backend/onconnect/build
 backend/ondisconnect/build
 backend/sendmessage/build
