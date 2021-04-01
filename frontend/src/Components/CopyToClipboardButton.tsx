@@ -1,16 +1,9 @@
-import css from 'csz';
-import { buttonStyle } from '../styles';
-
-const copyToClipboardButtonStyles = css`
-  ${buttonStyle}
-`;
+import sharedClasses from '../styles.module.css';
 
 export const CopyToClipboardButton = () => (
   <button
-    className={copyToClipboardButtonStyles}
-    onClick={() => {
-      return navigator.clipboard.writeText(`${location.href}`);
-    }}
+    className={sharedClasses.button}
+    onClick={() => navigator.clipboard.writeText(`${location.href}`)}
   >
     Copy Link to Clipboard
   </button>

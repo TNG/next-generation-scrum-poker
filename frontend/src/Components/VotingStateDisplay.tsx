@@ -1,14 +1,10 @@
-import css from 'csz';
-import { tableStyle } from '../styles';
+import sharedClasses from '../styles.module.css';
 import { Votes, WebSocketApi } from '../types/WebSocket';
 import { NotVotedIcon } from './NotVotedIcon';
 import { ObserverIcon } from './ObserverIcon';
 import { VotedIcon } from './VotedIcon';
+import classes from './VotingStateDisplay.module.css';
 import { connectToWebSocket } from './WebSocket';
-
-const votingStateDisplayStyle = css`,
-  ${tableStyle}
-`;
 
 const getSortedVotingState = (votes: Votes) => {
   const votedUsers = Object.keys(votes).map((user) => ({
@@ -38,12 +34,12 @@ const getRank = (voted: boolean, observer: boolean) => {
 
 const getClassName = (voted: boolean, observer: boolean) => {
   if (observer) {
-    return 'observer';
+    return classes.observer;
   }
   if (voted) {
-    return 'voted';
+    return classes.voted;
   }
-  return 'not-voted';
+  return classes.notVoted;
 };
 
 const getIcon = (voted: boolean, observer: boolean) => {
@@ -57,9 +53,9 @@ const getIcon = (voted: boolean, observer: boolean) => {
 };
 
 const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
-  <table className={votingStateDisplayStyle}>
+  <table className={sharedClasses.table}>
     <thead>
-      <tr className="header-row">
+      <tr className={sharedClasses.headerRow}>
         <th>Name</th>
         <th>Voted</th>
       </tr>

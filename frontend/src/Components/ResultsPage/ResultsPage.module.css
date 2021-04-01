@@ -1,0 +1,19 @@
+.resultsPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notVotedEntry {
+  color: var(--tng-gray);
+  fill: var(--tng-gray);
+  text-align: center;
+}
+
+.votedEntry {
+  text-align: center;
+}
+
+.nameEntry {
+  line-height: 26px;
+}

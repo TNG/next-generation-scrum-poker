@@ -1,13 +1,9 @@
-import css from 'csz';
+import classes from './App.module.css';
 import { PageSelector } from './PageSelector';
 import { WebSocketProvider } from './WebSocket';
 
-const styling = css`
-  font: 14px sans-serif;
-`;
-
 export const App = () => (
-  <div className={styling}>
+  <div className={classes.app}>
     <WebSocketProvider>
       <PageSelector />
     </WebSocketProvider>

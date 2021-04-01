@@ -1,6 +1,6 @@
 import { WebSocketApi } from '../types/WebSocket';
 import { LoginInfo } from './LoginInfo';
-import { LoginPage } from './LoginPage';
+import { LoginPage } from './LoginPage/LoginPage';
 import { ResultsPage } from './ResultsPage/ResultsPage';
 import { VotingPage } from './VotingPage';
 import { connectToWebSocket } from './WebSocket';

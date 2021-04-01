@@ -1,92 +1,12 @@
-import css from 'csz';
+import classNames from 'classnames';
 import { useEffect, useState } from 'preact/hooks';
 import { SCALE_MAPPING } from '../constants';
-import { buttonStyle, headingStyle, TNG_BLUE, TNG_GRAY } from '../styles';
+import sharedClasses from '../styles.module.css';
 import { CardValue, WebSocketApi } from '../types/WebSocket';
 import { CoffeeIcon } from './CoffeeIcon';
+import classes from './VotingPage.module.css';
 import { VotingStateDisplay } from './VotingStateDisplay';
 import { connectToWebSocket } from './WebSocket';
-
-const votingPageStyle = css`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-
-  .heading {
-    ${headingStyle}
-  }
-
-  .card-collection {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    flex-wrap: wrap;
-    max-width: 900px;
-  }
-
-  .card {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-width: 3px;
-    border-style: solid;
-    border-color: ${TNG_BLUE};
-    border-radius: 10px;
-    color: ${TNG_BLUE};
-    fill: ${TNG_BLUE};
-    height: 160px;
-    width: 100px;
-    margin: 10px;
-    cursor: pointer;
-    font-size: 20px;
-
-    :hover {
-      background: ${TNG_GRAY};
-    }
-
-    :active,
-    &.selected-card {
-      background: ${TNG_BLUE};
-      color: white;
-      fill: white;
-    }
-
-    :focus {
-      outline: 2px dashed ${TNG_BLUE};
-      outline-offset: 2px;
-    }
-  }
-
-  .button {
-    ${buttonStyle}
-    margin-bottom: 1rem;
-  }
-
-  .select {
-    ${buttonStyle}
-    margin-bottom: 1rem;
-    padding-left: 8px;
-  }
-
-  .reveal-button {
-    height: 50px;
-  }
-
-  .voted {
-    color: green;
-    fill: green;
-  }
-
-  .not-voted {
-    color: red;
-    fill: red;
-  }
-
-  .observer {
-    color: ${TNG_BLUE};
-    fill: ${TNG_BLUE};
-  }
-`;
 
 const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
   const [selectedCard, setSelectedCard] = useState<CardValue>(
@@ -98,13 +18,16 @@ const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
   }, [socket]);
 
   return (
-    <div className={votingPageStyle}>
-      <div className="heading">SELECT A CARD</div>
-      <div className="card-collection">
+    <div className={classes.votingPage}>
+      <div className={sharedClasses.heading}>SELECT A CARD</div>
+      <div className={classes.cardCollection}>
         {socket.state.scale.map((cardValue) => (
           <button
             key={cardValue}
-            className={cardValue === selectedCard ? 'card selected-card' : 'card'}
+            className={classNames([
+              classes.card,
+              { [classes.selectedCard]: cardValue === selectedCard },
+            ])}
             onClick={() => {
               setSelectedCard(cardValue);
               socket.setVote(cardValue);
@@ -115,7 +38,7 @@ const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
         ))}
       </div>
       <button
-        className="button observer-button"
+        className={classes.button}
         onClick={() => {
           setSelectedCard('observer');
           socket.setVote('observer');
@@ -123,16 +46,16 @@ const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => {
       >
         Observer
       </button>
-      <button className="button reveal-button" onClick={() => socket.revealVotes()}>
+      <button className={classes.revealButton} onClick={() => socket.revealVotes()}>
         Reveal Votes
       </button>
       <VotingStateDisplay />
-      <button className="button" onClick={() => socket.removeUsersNotVoted()}>
+      <button className={classes.button} onClick={() => socket.removeUsersNotVoted()}>
         Kick users without vote
       </button>
       <select
         name="scale"
-        className="select"
+        className={classes.select}
         onChange={(e) => socket.setScale(SCALE_MAPPING[(e.target as HTMLSelectElement).value])}
         value={'CHANGE_SCALE'}
       >
