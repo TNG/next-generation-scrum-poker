@@ -51,21 +51,7 @@ npm ci
 npm start
 ```
 
-This will launch TypeScript in watch mode and a server that automatically reloads when any code is edited.
-
-Note that except for TypeScript, which has really fast incremental builds, no further build step is required during development. This is possible due to the use of ES modules in the browser but has some consequences:
-
-- Imports of TypeScript files need to have `.js`(!!) extensions. This is very confusing but the reason is that ES modules need extensions to work and in the created output, the files will have `.js` extensions, not `.ts(x)`. I.e. to import `./Component.tsx`, you write
-
-  ```js
-  import Component from './Component.js';
-  ```
-
-- For development, CommonJS dependencies (including React itself!) need to be transformed to ESM. Moreover, all imports need to be relative paths with file extensions. Both of this is handled on-the-fly by es-dev-server.
-
-To support this, it is very recommended to configure you IDE to always add `.js` extensions and never shorten imports, e.g.
-
-![IntelliJ config](docs/intellij-config.png)
+This will use [Vite](https://vitejs.dev) to serve your app on [http://localhost:3000](http://localhost:3000). Vite will automatically update the browser via hot module reloading on save while providing extremely fast rebuilds.
 
 ## Production Build
 
@@ -77,6 +63,12 @@ npm run build
 ```
 
 This will generate a folder `frontend/dist` that contains a directly deployable artifact without external dependencies that can be served as a static web site.
+
+To test the production build locally, run
+
+```shell
+npm run serve
+```
 
 ## License
 

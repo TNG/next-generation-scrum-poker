@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "allowJs": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["vite/client", "node"]
   }
 }

@@ -1,10 +1,10 @@
 import css from 'csz';
-import { tableStyle } from '../styles.js';
-import { Votes, WebSocketApi } from '../types/WebSocket.js';
+import { tableStyle } from '../styles';
+import { Votes, WebSocketApi } from '../types/WebSocket';
 import { NotVotedIcon } from './NotVotedIcon';
 import { ObserverIcon } from './ObserverIcon';
 import { VotedIcon } from './VotedIcon';
-import { connectToWebSocket } from './WebSocket.js';
+import { connectToWebSocket } from './WebSocket';
 
 const votingStateDisplayStyle = css`,
   ${tableStyle}

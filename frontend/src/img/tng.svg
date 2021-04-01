@@ -13,10 +13,11 @@
 	<!ENTITY ns_svg "http://www.w3.org/2000/svg">
 	<!ENTITY ns_xlink "http://www.w3.org/1999/xlink">
 ]>
-<svg 
-	 xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;" i:viewOrigin="100 616" i:rulerOrigin="0 9.765625e-04" i:pageBounds="0 841.8887 595.2754 -9.765625e-04"
-	 xmlns="&ns_svg;" xmlns:xlink="&ns_xlink;" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" width="400" height="64"
-	 viewBox="0 0 400 64" overflow="visible" enable-background="new 0 0 400 64" xml:space="preserve">
+<svg
+		xmlns:i="&ns_ai;" i:viewOrigin="100 616" i:rulerOrigin="0 9.765625e-04"
+		i:pageBounds="0 841.8887 595.2754 -9.765625e-04"
+		xmlns="&ns_svg;" xmlns:xlink="&ns_xlink;" width="400" height="64"
+		viewBox="0 0 400 64" overflow="visible" enable-background="new 0 0 400 64" xml:space="preserve">
 	<metadata>
 		<variableSets  xmlns="&ns_vars;">
 			<variableSet  varSetName="binding1" locked="none">

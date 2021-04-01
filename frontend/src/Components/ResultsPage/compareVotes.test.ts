@@ -1,4 +1,4 @@
-import { compareVotes } from './compareVotes.js';
+import { compareVotes } from './compareVotes';
 
 describe('The compareVotes function', () => {
   it.each`

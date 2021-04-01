@@ -1,6 +1,6 @@
 import { act, fireEvent, render } from '@testing-library/preact';
 import { COHEN_SCALE } from '../constants';
-import { App } from './App.js';
+import { App } from './App';
 
 const ConfigureMockWebSocket = () => {
   const instances: MockWebSocket[] = [];

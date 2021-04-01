@@ -1,9 +1,9 @@
 import css from 'csz';
-import { ASSET_TNG_LOGO } from '../assets.js';
-import { TNG_GRAY } from '../styles.js';
-import { WebSocketApi } from '../types/WebSocket.js';
-import { CopyToClipboardButton } from './CopyToClipboardButton.js';
-import { connectToWebSocket } from './WebSocket.js';
+import tngLogo from '../img/tng.svg';
+import { TNG_GRAY } from '../styles';
+import { WebSocketApi } from '../types/WebSocket';
+import { CopyToClipboardButton } from './CopyToClipboardButton';
+import { connectToWebSocket } from './WebSocket';
 
 const loginInfoStyle = css`
   margin-bottom: 1rem;
@@ -36,7 +36,7 @@ export const ProtoLoginInfo = ({ socket }: { socket: WebSocketApi }) => (
     <div className="heading">
       NEXT GENERATION SCRUM POKER
       <a href="https://www.tngtech.com/" target="_blank">
-        <img src={ASSET_TNG_LOGO} alt="TNG Logo" className="logo" />
+        <img src={tngLogo} alt="TNG Logo" className="logo" />
       </a>
     </div>
     <div className="session-info">

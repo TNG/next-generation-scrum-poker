@@ -1,11 +1,11 @@
 import css from 'csz';
-import { buttonStyle, headingStyle, tableStyle, TNG_GRAY } from '../../styles.js';
-import { CardValue, Votes, WebSocketApi } from '../../types/WebSocket.js';
+import { buttonStyle, headingStyle, tableStyle, TNG_GRAY } from '../../styles';
+import { CardValue, Votes, WebSocketApi } from '../../types/WebSocket';
 import { CoffeeIcon } from '../CoffeeIcon';
 import { NotVotedIcon } from '../NotVotedIcon';
 import { ObserverIcon } from '../ObserverIcon';
-import { connectToWebSocket } from '../WebSocket.js';
-import { compareVotes } from './compareVotes.js';
+import { connectToWebSocket } from '../WebSocket';
+import { compareVotes } from './compareVotes';
 
 const styling = css`
   display: flex;

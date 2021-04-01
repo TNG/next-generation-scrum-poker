@@ -1,11 +1,11 @@
 import css from 'csz';
 import { useEffect, useState } from 'preact/hooks';
 import { SCALE_MAPPING } from '../constants';
-import { buttonStyle, headingStyle, TNG_BLUE, TNG_GRAY } from '../styles.js';
-import { CardValue, WebSocketApi } from '../types/WebSocket.js';
+import { buttonStyle, headingStyle, TNG_BLUE, TNG_GRAY } from '../styles';
+import { CardValue, WebSocketApi } from '../types/WebSocket';
 import { CoffeeIcon } from './CoffeeIcon';
-import { VotingStateDisplay } from './VotingStateDisplay.js';
-import { connectToWebSocket } from './WebSocket.js';
+import { VotingStateDisplay } from './VotingStateDisplay';
+import { connectToWebSocket } from './WebSocket';
 
 const votingPageStyle = css`
   display: flex;

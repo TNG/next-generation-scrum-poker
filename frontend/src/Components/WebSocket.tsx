@@ -1,6 +1,6 @@
 import { ComponentType, createContext } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { WEBSOCKET_URL } from '../config.js';
+import { WEBSOCKET_URL } from '../config';
 import { COHEN_SCALE } from '../constants';
 import {
   getLoginRequest,
@@ -9,7 +9,7 @@ import {
   getRevealVotesRequest,
   getSetScaleRequest,
   getSetVoteRequest,
-} from '../requests/websocket-requests.js';
+} from '../requests/websocket-requests';
 import {
   CardValue,
   Votes,
@@ -17,7 +17,7 @@ import {
   WebSocketLoginData,
   WebsocketMessage,
   WebSocketState,
-} from '../types/WebSocket.js';
+} from '../types/WebSocket';
 
 const doNothing = () => {};
 

@@ -1,6 +1,6 @@
 import css from 'csz';
-import { PageSelector } from './PageSelector.js';
-import { WebSocketProvider } from './WebSocket.js';
+import { PageSelector } from './PageSelector';
+import { WebSocketProvider } from './WebSocket';
 
 const styling = css`
   font: 14px sans-serif;

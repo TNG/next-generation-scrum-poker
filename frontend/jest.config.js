@@ -7,10 +7,9 @@ module.exports = {
   },
   moduleFileExtensions: ['js', 'ts', 'tsx', 'mjs'],
   moduleNameMapper: {
+    '\\.svg$': '<rootDir>/src/__mocks__/fileMock.js',
     // There is no CJS version for csz available and we cannot use ESM in node_modules
     '^csz$': '<rootDir>/src/test-utils/csz.js',
-    // Remove extensions from imports so that Jest can resolve .js as .ts
-    '^(.*)\\.js$': '$1',
   },
   setupFilesAfterEnv: ['./jest.setup.js'],
   testPathIgnorePatterns: ['/node_modules/', '/build/', '/dist/'],
