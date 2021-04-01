@@ -32,10 +32,10 @@ const loginUser = () => {
   const socket = socketInstances[0];
 
   act(() => socket.onopen!());
-  fireEvent.change(rendered.container.querySelector('input.user-input')!, {
+  fireEvent.change(rendered.container.querySelector('input#user')!, {
     target: { value: 'Happy User' },
   });
-  fireEvent.click(rendered.container.querySelector('input.submit')!);
+  fireEvent.click(rendered.container.querySelector('input[type=submit]')!);
 
   expect(socket.test_messages).toEqual([
     '{"message":"sendmessage","data":{"type":"login","payload":{"user":"Happy User","session":"xvdBFRA6FyLZFcKo"}}}',
@@ -63,10 +63,10 @@ describe('The App component', () => {
     act(() => socket.onopen!());
 
     expect(container).not.toHaveTextContent('Connecting...');
-    expect(container.querySelector('input.user-input')).toBeVisible();
-    expect(container.querySelector('a.session-link')).toBeVisible();
-    expect(container.querySelector('a.session-link')).toHaveTextContent(/^[a-zA-Z0-9]{16}$/i);
-    expect(container.querySelector('input.submit')).toBeVisible();
+    expect(container.querySelector('input#user')).toBeVisible();
+    expect(container.querySelector('a#session')).toBeVisible();
+    expect(container.querySelector('a#session')).toHaveTextContent(/^[a-zA-Z0-9]{16}$/i);
+    expect(container.querySelector('input[type=submit]')).toBeVisible();
   });
 
   it('logs the user in and displays the voting page, then displays the login page if the user is kicked out', () => {
@@ -83,15 +83,15 @@ describe('The App component', () => {
 
     // then
     expect(container).not.toHaveTextContent('Connecting...');
-    expect(container.querySelector('input.user-input')).toHaveValue('Happy User');
-    expect(container.querySelector('a.session-link')).toBeVisible();
-    expect(container.querySelector('a.session-link')).toHaveTextContent(/^[a-zA-Z0-9]{16}$/i);
-    expect(container.querySelector('input.submit')).toBeVisible();
+    expect(container.querySelector('input#user')).toHaveValue('Happy User');
+    expect(container.querySelector('a#session')).toBeVisible();
+    expect(container.querySelector('a#session')).toHaveTextContent(/^[a-zA-Z0-9]{16}$/i);
+    expect(container.querySelector('input[type=submit]')).toBeVisible();
   });
 
   it('updates, reveals and resets votes and kicks non-voting users optimistically', () => {
     // given
-    const { socket, container, getByText } = loginUser();
+    const { socket, container, getByText, getAllByTestId } = loginUser();
     act(() =>
       socket.onmessage!({
         data: JSON.stringify({
@@ -110,7 +110,7 @@ describe('The App component', () => {
     );
     const selectedCard = container.querySelectorAll('button.card')[5];
     expect(selectedCard).toHaveTextContent('2');
-    expect(selectedCard).not.toHaveClass('selected-card');
+    expect(selectedCard).not.toHaveClass('selectedCard');
     expect(container.querySelector('tbody')).toHaveTextContent(
       'Happy UserNon-voting UserVoting User'
     );
@@ -119,7 +119,7 @@ describe('The App component', () => {
     fireEvent.click(container.querySelectorAll('button.card')[5]);
 
     // then
-    expect(selectedCard).toHaveClass('selected-card');
+    expect(selectedCard).toHaveClass('selectedCard');
     expect(container.querySelector('tbody')).toHaveTextContent(
       'Non-voting UserHappy UserVoting User'
     );
