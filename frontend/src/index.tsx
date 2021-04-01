@@ -1,4 +1,5 @@
-import { render } from 'preact';
+import { hydrate } from 'preact';
 import { App } from './Components/App';
 
-render(<App />, document.body);
+// Hydrate instead of "render" is necessary to reuse pre-rendered content
+hydrate(<App />, document.body);
