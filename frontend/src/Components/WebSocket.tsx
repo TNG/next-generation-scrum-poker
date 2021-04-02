@@ -40,7 +40,7 @@ const WebSocketContext = createContext<WebSocketApi>({
   removeUsersNotVoted: doNothing,
 });
 
-function getVotes(votes: Votes): Votes {
+function getInitialVotes(votes: Votes): Votes {
   return Object.fromEntries(
     Object.keys(votes).map((user) => [user, votes[user] === 'observer' ? 'observer' : 'not-voted'])
   );
@@ -81,6 +81,13 @@ export const WebSocketProvider = ({ children }: any) => {
     socket!.send(getLoginRequest(user, session));
     setLoginData({ user, session });
     setLoggedIn(true);
+    // Optimistically show the non-voted state of the current user
+    setState({
+      ...initialWebSocketState,
+      votes: {
+        [user]: 'not-voted',
+      },
+    });
   };
 
   const setVote = (vote: CardValue) => {
@@ -90,7 +97,7 @@ export const WebSocketProvider = ({ children }: any) => {
 
   const setScale = (scale: Array<CardValue>) => {
     socket!.send(getSetScaleRequest(scale));
-    setState({ ...state, votes: getVotes(state.votes), scale });
+    setState({ ...state, votes: getInitialVotes(state.votes), scale });
   };
 
   const revealVotes = () => {
@@ -114,7 +121,7 @@ export const WebSocketProvider = ({ children }: any) => {
   const resetVotes = () => {
     socket!.send(getResetVotesRequest());
     setState({
-      votes: getVotes(state.votes),
+      votes: getInitialVotes(state.votes),
       resultsVisible: false,
       scale: state.scale,
     });
