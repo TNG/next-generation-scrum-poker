@@ -4,7 +4,7 @@
 backend/onconnect/build
 backend/ondisconnect/build
 backend/sendmessage/build
-frontend/dist
+frontend/dist*
 node_modules
 aws.config
 backend/packaged.yaml

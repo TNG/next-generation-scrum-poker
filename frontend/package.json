@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npx jest",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && vite build --outDir dist-ssr --ssr src/index-ssr.tsx && node prerenderHtml.js",
     "start": "vite",
     "serve": "vite preview"
   },
