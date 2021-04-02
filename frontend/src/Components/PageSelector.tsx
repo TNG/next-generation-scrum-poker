@@ -1,5 +1,6 @@
 import { WebSocketApi } from '../types/WebSocket';
-import { LoginInfo } from './LoginInfo';
+import { Footer } from './Footer';
+import { Header } from './Header';
 import { LoginPage } from './LoginPage/LoginPage';
 import { ResultsPage } from './ResultsPage/ResultsPage';
 import { VotingPage } from './VotingPage';
@@ -9,18 +10,11 @@ const ProtoPageSelector = ({ socket }: { socket: WebSocketApi }) => {
   if (!socket.loginData.user || !socket.loggedIn) {
     return <LoginPage />;
   }
-  if (socket.state.resultsVisible) {
-    return (
-      <>
-        <LoginInfo />
-        <ResultsPage />
-      </>
-    );
-  }
   return (
     <>
-      <LoginInfo />
-      <VotingPage />
+      <Header />
+      {socket.state.resultsVisible ? <ResultsPage /> : <VotingPage />}
+      <Footer />
     </>
   );
 };

@@ -1,0 +1,19 @@
+.footer {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.sessionInfo {
+  color: var(--tng-gray);
+  font-size: 12px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.infoItem {
+  margin: 0 10px;
+  white-space: nowrap;
+}

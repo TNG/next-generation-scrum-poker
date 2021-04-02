@@ -1,0 +1,13 @@
+.header {
+  color: var(--tng-gray);
+  font-size: 16px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.logo {
+  height: 16px;
+  margin-left: 8px;
+  vertical-align: top;
+}
