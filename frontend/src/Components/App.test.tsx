@@ -1,5 +1,5 @@
 import { act, fireEvent, render } from '@testing-library/preact';
-import { COHEN_SCALE } from '../constants';
+import { SCALES } from '../constants';
 import { App } from './App';
 
 const ConfigureMockWebSocket = () => {
@@ -108,7 +108,7 @@ describe('The App component', () => {
               'Non-voting User': 'not-voted',
             },
             resultsVisible: false,
-            scale: COHEN_SCALE,
+            scale: SCALES.COHEN_SCALE.values,
           },
         }),
       } as MessageEvent)

@@ -1,0 +1,6 @@
+.select {
+  composes: button from '../styles.module.css';
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+  text-align-last: center;
+}

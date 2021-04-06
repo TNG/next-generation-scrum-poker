@@ -1,7 +1,7 @@
 import { ComponentType, createContext } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { WEBSOCKET_URL } from '../config';
-import { COHEN_SCALE } from '../constants';
+import { SCALES } from '../constants';
 import {
   getLoginRequest,
   getRemoveUsersNotVotedRequest,
@@ -24,7 +24,7 @@ const doNothing = () => {};
 const initialWebSocketState: WebSocketState = {
   resultsVisible: false,
   votes: {},
-  scale: COHEN_SCALE,
+  scale: SCALES.COHEN_SCALE.values,
 };
 const initialLoginData: WebSocketLoginData = { user: '', session: '' };
 const WebSocketContext = createContext<WebSocketApi>({

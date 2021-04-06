@@ -75,13 +75,6 @@
   margin-bottom: 0.75rem;
 }
 
-.select {
-  composes: button from '../styles.module.css';
-  margin-bottom: 1rem;
-  padding-left: 0.5rem;
-  text-align-last: center;
-}
-
 .revealButton {
   composes: button;
   height: 4rem;
