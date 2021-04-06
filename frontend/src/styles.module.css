@@ -1,28 +1,14 @@
-:root {
-  --border-radius: 5px;
-  --button-height: 30px;
-  --button-width: 150px;
-  --tng-blue: rgb(5, 99, 165);
-  --tng-gray: rgb(161, 166, 174);
-}
-
 .heading {
   color: var(--tng-blue);
-  font-size: 20px;
+  font-size: 1.5rem;
   text-align: center;
-  line-height: 1.2;
+  margin-top: 1rem;
 }
 
 .button {
-  border: none;
   color: white;
-  cursor: pointer;
   background: var(--tng-blue);
-  border-radius: var(--border-radius);
-  height: var(--button-height);
   width: var(--button-width);
-  font: 13px Arial;
-  padding: 1px 6px;
 }
 
 .button:disabled {
@@ -30,8 +16,9 @@
   cursor: not-allowed;
 }
 
-.button:hover {
-  background: var(--tng-gray);
+.button:hover,
+.button:focus {
+  background: var(--light-blue);
 }
 
 .button:hover:active {
@@ -40,17 +27,20 @@
 
 .table {
   text-align: left;
-  padding: 10px 15px 15px 15px;
-  border-width: 3px;
-  border-spacing: 10px 0;
-  border-style: solid;
-  border-color: var(--tng-blue);
+  padding: 0.25rem;
+  border-spacing: 0.5rem 0;
+  margin: auto;
+}
+
+.blueBorder {
+  border: 0.125rem solid var(--tng-blue);
+  width: min-content;
   border-radius: var(--border-radius);
-  margin: 10px;
+  margin: 0.25rem 0 0.75rem 0;
+  min-width: var(--button-width);
 }
 
 .headerRow {
   color: var(--tng-blue);
-  padding: 25px;
   line-height: 35px;
 }

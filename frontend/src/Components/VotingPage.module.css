@@ -5,60 +5,86 @@
 }
 
 .cardCollection {
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 0.5rem;
+  width: 90vw;
+  margin: 0.5rem 0 1rem 0;
 }
 
 .card {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-width: 3px;
+  border-width: 0.125rem;
   border-style: solid;
   border-color: var(--tng-blue);
-  border-radius: 10px;
+  border-radius: 0.5rem;
   color: var(--tng-blue);
   fill: var(--tng-blue);
-  height: 160px;
-  width: 100px;
-  margin: 10px;
+  padding: 40% 0;
+  width: 100%;
   cursor: pointer;
-  font-size: 20px;
-}
-
-.card :hover {
-  background: var(--tng-gray);
+  font-size: 1.5rem;
+  background-color: var(--light-gray);
 }
 
 .card:active,
+.card:focus,
+.card:hover {
+  border-color: var(--light-blue);
+}
+
 .card.selectedCard {
   background: var(--tng-blue);
   color: white;
   fill: white;
 }
 
-.card:focus {
-  outline: 2px dashed var(--tng-blue);
-  outline-offset: 2px;
+@media (min-width: 300px) {
+  .cardCollection {
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1rem;
+  }
+}
+
+@media (min-width: 450px) {
+  .cardCollection {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .card {
+    padding: 50% 0;
+  }
+}
+
+@media (min-width: 600px) {
+  .cardCollection {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+@media (min-width: 880px) {
+  .cardCollection {
+    width: 800px;
+  }
 }
 
 .button {
   composes: button from '../styles.module.css';
-  margin-bottom: 1rem;
-  width: 150px;
+  margin-bottom: 0.75rem;
 }
 
 .select {
   composes: button from '../styles.module.css';
   margin-bottom: 1rem;
-  padding-left: 8px;
-  width: 150px;
+  padding-left: 0.5rem;
+  text-align-last: center;
 }
 
 .revealButton {
   composes: button;
-  height: 50px;
+  height: 4rem;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
 }

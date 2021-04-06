@@ -4,8 +4,8 @@ import classes from './Header.module.css';
 export const Header = () => (
   <header className={classes.header}>
     NEXT&nbsp;GENERATION SCRUM&nbsp;POKER
-    <a href="https://www.tngtech.com/" target="_blank">
-      <img src={tngLogo} alt="TNG Logo" className={classes.logo} />
+    <a href="https://www.tngtech.com/" target="_blank" className={classes.logo}>
+      <img src={tngLogo} alt="TNG Logo" className={classes.logoImage} />
     </a>
   </header>
 );
