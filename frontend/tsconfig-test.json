@@ -3,6 +3,6 @@
   "compilerOptions": {
     "allowJs": true,
     "esModuleInterop": true,
-    "types": ["vite/client", "node"]
+    "types": ["vite/client", "node", "jest", "@testing-library/jest-dom"]
   }
 }

@@ -1,0 +1,25 @@
+.loginInfo {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.heading {
+  display: flex;
+  align-items: initial;
+  color: var(--tng-gray);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.logo {
+  height: 16px;
+  margin-left: 8px;
+}
+
+.sessionInfo {
+  color: var(--tng-gray);
+  font-size: 12px;
+  margin-bottom: 0.5rem;
+}

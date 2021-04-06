@@ -1,0 +1,56 @@
+:root {
+  --border-radius: 5px;
+  --button-height: 30px;
+  --button-width: 150px;
+  --tng-blue: rgb(5, 99, 165);
+  --tng-gray: rgb(161, 166, 174);
+}
+
+.heading {
+  color: var(--tng-blue);
+  font-size: 20px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.button {
+  border: none;
+  color: white;
+  cursor: pointer;
+  background: var(--tng-blue);
+  border-radius: var(--border-radius);
+  height: var(--button-height);
+  width: var(--button-width);
+  font: 13px Arial;
+  padding: 1px 6px;
+}
+
+.button:disabled {
+  background: var(--tng-gray);
+  cursor: not-allowed;
+}
+
+.button:hover {
+  background: var(--tng-gray);
+}
+
+.button:hover:active {
+  background: var(--tng-blue);
+}
+
+.table {
+  text-align: left;
+  padding: 10px 15px 15px 15px;
+  border-width: 3px;
+  border-spacing: 10px 0;
+  border-style: solid;
+  border-color: var(--tng-blue);
+  border-radius: var(--border-radius);
+  margin: 10px;
+}
+
+.headerRow {
+  color: var(--tng-blue);
+  padding: 25px;
+  line-height: 35px;
+}

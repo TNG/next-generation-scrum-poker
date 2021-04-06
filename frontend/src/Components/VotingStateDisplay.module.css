@@ -1,0 +1,14 @@
+.voted {
+  color: green;
+  fill: green;
+}
+
+.notVoted {
+  color: red;
+  fill: red;
+}
+
+.observer {
+  color: var(--tng-blue);
+  fill: var(--tng-blue);
+}
