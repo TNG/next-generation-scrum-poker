@@ -6,13 +6,19 @@ import { connectToWebSocket } from '../WebSocket';
 import { generateId } from './generateId';
 import classes from './LoginPage.module.css';
 
+// During server-side-rendering, window/history cannot be accessed
+const isSSR = typeof window === 'undefined';
+
 const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
   const firstInputRef: RefObject<HTMLInputElement> = useRef(null);
   const [user, setUser] = useState(socket.loginData.user);
-  let sessionId = new URLSearchParams(window.location.search).get('sessionId') || '';
-  if (!sessionId.match(/^[a-zA-Z0-9]{16}$/i)) {
-    sessionId = generateId(16);
-    history.replaceState({}, 'Scrum Poker', `?sessionId=${sessionId}`);
+  let sessionId = '';
+  if (!isSSR) {
+    sessionId = new URLSearchParams(window.location.search).get('sessionId') || '';
+    if (!sessionId.match(/^[a-zA-Z0-9]{16}$/i)) {
+      sessionId = generateId(16);
+      history.replaceState({}, 'Scrum Poker', `?sessionId=${sessionId}`);
+    }
   }
 
   useEffect(() => {
@@ -51,7 +57,12 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       <a id="session" href={`?sessionId=${sessionId}`} className={classes.sessionLink}>
         {sessionId}
       </a>
-      <input type="submit" value="Login" className={classes.submit} disabled={user.length === 0} />
+      <input
+        type="submit"
+        value={socket.connected ? 'Login' : 'Connecting...'}
+        className={classes.submit}
+        disabled={user.length === 0 || !socket.connected}
+      />
       <a href="https://www.tngtech.com/" target="_blank" className={classes.logo}>
         <img src={tngLogo} alt="TNG Logo" className={classes.logo} />
       </a>

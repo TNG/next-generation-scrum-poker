@@ -28,6 +28,7 @@ const initialWebSocketState: WebSocketState = {
 };
 const initialLoginData: WebSocketLoginData = { user: '', session: '' };
 const WebSocketContext = createContext<WebSocketApi>({
+  connected: false,
   login: doNothing,
   loginData: initialLoginData,
   loggedIn: false,
@@ -39,7 +40,7 @@ const WebSocketContext = createContext<WebSocketApi>({
   removeUsersNotVoted: doNothing,
 });
 
-function getVotes(votes: Votes): Votes {
+function getInitialVotes(votes: Votes): Votes {
   return Object.fromEntries(
     Object.keys(votes).map((user) => [user, votes[user] === 'observer' ? 'observer' : 'not-voted'])
   );
@@ -76,28 +77,31 @@ export const WebSocketProvider = ({ children }: any) => {
     }
   }, [socket]);
 
-  if (!socket) {
-    return <div>Connecting...</div>;
-  }
-
   const login = (user: string, session: string) => {
-    socket.send(getLoginRequest(user, session));
+    socket!.send(getLoginRequest(user, session));
     setLoginData({ user, session });
     setLoggedIn(true);
+    // Optimistically show the non-voted state of the current user
+    setState({
+      ...initialWebSocketState,
+      votes: {
+        [user]: 'not-voted',
+      },
+    });
   };
 
   const setVote = (vote: CardValue) => {
-    socket.send(getSetVoteRequest(vote));
+    socket!.send(getSetVoteRequest(vote));
     setState({ ...state, votes: { ...state.votes, [loginData.user]: vote } });
   };
 
   const setScale = (scale: Array<CardValue>) => {
-    socket.send(getSetScaleRequest(scale));
-    setState({ ...state, votes: getVotes(state.votes), scale });
+    socket!.send(getSetScaleRequest(scale));
+    setState({ ...state, votes: getInitialVotes(state.votes), scale });
   };
 
   const revealVotes = () => {
-    socket.send(getRevealVotesRequest());
+    socket!.send(getRevealVotesRequest());
     setState({
       ...state,
       resultsVisible: true,
@@ -105,7 +109,7 @@ export const WebSocketProvider = ({ children }: any) => {
   };
 
   const removeUsersNotVoted = () => {
-    socket.send(getRemoveUsersNotVotedRequest());
+    socket!.send(getRemoveUsersNotVotedRequest());
     setState({
       ...state,
       votes: Object.fromEntries(
@@ -115,15 +119,16 @@ export const WebSocketProvider = ({ children }: any) => {
   };
 
   const resetVotes = () => {
-    socket.send(getResetVotesRequest());
+    socket!.send(getResetVotesRequest());
     setState({
-      votes: getVotes(state.votes),
+      votes: getInitialVotes(state.votes),
       resultsVisible: false,
       scale: state.scale,
     });
   };
 
   const value: WebSocketApi = {
+    connected: Boolean(socket),
     login,
     loginData,
     loggedIn,

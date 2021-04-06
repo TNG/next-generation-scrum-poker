@@ -42,6 +42,7 @@ export interface WebSocketState {
 }
 
 export interface WebSocketApi {
+  connected: boolean;
   state: WebSocketState;
   loginData: WebSocketLoginData;
   loggedIn: boolean;
