@@ -7,20 +7,27 @@
 }
 
 .card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-width: 0.125rem;
-  border-style: solid;
-  border-color: var(--tng-blue);
+  border: 0.125rem solid var(--tng-blue);
   border-radius: 0.5rem;
   color: var(--tng-blue);
   fill: var(--tng-blue);
+  cursor: pointer;
+  background-color: var(--light-gray);
+}
+
+.largeCard {
+  composes: card;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 40% 0;
   width: 100%;
-  cursor: pointer;
   font-size: 1.5rem;
-  background-color: var(--light-gray);
+}
+
+.buttonCard {
+  composes: card;
+  width: var(--button-width);
 }
 
 .card:active,
@@ -29,7 +36,7 @@
   border-color: var(--light-blue);
 }
 
-.card.selectedCard {
+.card.selected {
   background: var(--tng-blue);
   color: white;
   fill: white;
@@ -47,7 +54,7 @@
     grid-template-columns: repeat(5, 1fr);
   }
 
-  .card {
+  .largeCard {
     padding: 50% 0;
   }
 }

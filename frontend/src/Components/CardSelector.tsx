@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import sharedClasses from '../styles.module.css';
 import { WebSocketApi } from '../types/WebSocket';
 import classes from './CardSelector.module.css';
 import { CoffeeIcon } from './CoffeeIcon';
@@ -14,8 +13,8 @@ const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
           <button
             key={cardValue}
             className={classNames([
-              classes.card,
-              { [classes.selectedCard]: cardValue === selectedCard },
+              classes.largeCard,
+              { [classes.selected]: selectedCard === cardValue },
             ])}
             onClick={() => socket.setVote(cardValue)}
           >
@@ -23,7 +22,13 @@ const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
           </button>
         ))}
       </div>
-      <button className={sharedClasses.button} onClick={() => socket.setVote('observer')}>
+      <button
+        className={classNames([
+          classes.buttonCard,
+          { [classes.selected]: selectedCard === 'observer' },
+        ])}
+        onClick={() => socket.setVote('observer')}
+      >
         Observer
       </button>
     </>
