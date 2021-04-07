@@ -34,10 +34,17 @@
   grid-column: 1 / 3;
   grid-row: 5 / 6;
   justify-self: center;
+  padding-bottom: 16%;
+  width: 100%;
+  position: relative;
 }
 
 .logoImage {
-  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 .userLabel {

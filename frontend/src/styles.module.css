@@ -11,14 +11,15 @@
   width: var(--button-width);
 }
 
-.button:disabled {
-  background: var(--tng-gray);
-  cursor: not-allowed;
-}
-
 .button:hover,
 .button:focus {
   background: var(--light-blue);
+}
+
+.button:disabled,
+.button:disabled:hover {
+  background: var(--tng-gray);
+  cursor: not-allowed;
 }
 
 .button:hover:active {
