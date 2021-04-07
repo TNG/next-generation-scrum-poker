@@ -35,17 +35,19 @@
 .card:hover {
   background: var(--light-blue);
   color: white;
+  fill: white;
   border-color: var(--light-blue);
 }
 
 .card.selected {
   background: var(--tng-blue);
   color: var(--light-gray);
-  fill: white;
+  fill: var(--light-gray);
 }
 
 .card.selected:hover {
   color: white;
+  fill: white;
   border-color: var(--light-blue);
 }
 
