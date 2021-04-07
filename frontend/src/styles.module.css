@@ -6,13 +6,14 @@
 }
 
 .button {
-  color: white;
+  color: var(--light-gray);
   background: var(--tng-blue);
   width: var(--button-width);
 }
 
 .button:hover,
 .button:focus {
+  color: white;
   background: var(--light-blue);
 }
 

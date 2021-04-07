@@ -33,13 +33,20 @@
 .card:active,
 .card:focus,
 .card:hover {
+  background: var(--light-blue);
+  color: white;
   border-color: var(--light-blue);
 }
 
 .card.selected {
   background: var(--tng-blue);
-  color: white;
+  color: var(--light-gray);
   fill: white;
+}
+
+.card.selected:hover {
+  color: white;
+  border-color: var(--light-blue);
 }
 
 @media (min-width: 300px) {

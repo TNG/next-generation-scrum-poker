@@ -2,9 +2,9 @@
   --border-radius: 0.5rem;
   --button-width: 90vw;
   --tng-blue: rgb(5, 99, 165);
-  --light-blue: hsl(205, 95%, 70%);
+  --light-blue: hsl(205, 95%, 40%);
   --tng-gray: rgb(161, 166, 174);
-  --light-gray: hsl(217, 8%, 95%);
+  --light-gray: hsl(217, 8%, 94%);
 }
 
 @media (min-width: 300px) {
