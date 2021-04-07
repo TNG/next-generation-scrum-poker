@@ -1,5 +1,5 @@
 import { act, fireEvent, render } from '@testing-library/preact';
-import { COHEN_SCALE } from '../constants';
+import { SCALES } from '../constants';
 import { App } from './App';
 
 const ConfigureMockWebSocket = () => {
@@ -32,7 +32,7 @@ const loginUser = () => {
   const socket = socketInstances[0];
 
   act(() => socket.onopen!());
-  fireEvent.change(rendered.container.querySelector('input#user')!, {
+  fireEvent.input(rendered.container.querySelector('input#user')!, {
     target: { value: 'Happy User' },
   });
   fireEvent.click(rendered.container.querySelector('input[type=submit]')!);
@@ -68,7 +68,7 @@ describe('The App component', () => {
     expect(container.querySelector('input[type=submit]')).toHaveValue('Login');
     expect(container.querySelector('input[type=submit]')).toBeDisabled();
 
-    fireEvent.change(container.querySelector('input#user')!, {
+    fireEvent.input(container.querySelector('input#user')!, {
       target: { value: 'Happy User' },
     });
     expect(container.querySelector('input[type=submit]')).not.toBeDisabled();
@@ -78,8 +78,8 @@ describe('The App component', () => {
     // given
     const { socket, container } = loginUser();
 
-    expect(container).toHaveTextContent('Session ID: xvdBFRA6FyLZFcKo - User name: Happy User');
-    expect(container.querySelectorAll('button.card')).toHaveLength(14);
+    expect(container).toHaveTextContent('Session ID: xvdBFRA6FyLZFcKoUser name: Happy User');
+    expect(container.querySelectorAll('button.largeCard')).toHaveLength(14);
 
     // when
     act(() =>
@@ -108,12 +108,12 @@ describe('The App component', () => {
               'Non-voting User': 'not-voted',
             },
             resultsVisible: false,
-            scale: COHEN_SCALE,
+            scale: SCALES.COHEN_SCALE.values,
           },
         }),
       } as MessageEvent)
     );
-    const selectedCard = container.querySelectorAll('button.card')[5];
+    const selectedCard = container.querySelectorAll('button.largeCard')[5];
     expect(selectedCard).toHaveTextContent('2');
     expect(selectedCard).not.toHaveClass('selectedCard');
     expect(container.querySelector('tbody')).toHaveTextContent(
@@ -121,10 +121,10 @@ describe('The App component', () => {
     );
 
     // when
-    fireEvent.click(container.querySelectorAll('button.card')[5]);
+    fireEvent.click(container.querySelectorAll('button.largeCard')[5]);
 
     // then
-    expect(selectedCard).toHaveClass('selectedCard');
+    expect(selectedCard).toHaveClass('selected');
     expect(container.querySelector('tbody')).toHaveTextContent(
       'Non-voting UserHappy UserVoting User'
     );

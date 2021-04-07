@@ -53,24 +53,26 @@ const getIcon = (voted: boolean, observer: boolean) => {
 };
 
 const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
-  <table className={sharedClasses.table}>
-    <thead>
-      <tr className={sharedClasses.headerRow}>
-        <th>Name</th>
-        <th>Voted</th>
-      </tr>
-    </thead>
-    <tbody>
-      {getSortedVotingState(socket.state.votes).map(({ user, voted, observer }) => {
-        return (
-          <tr key={user}>
-            <td className={getClassName(voted, observer)}>{user}</td>
-            <td className={getClassName(voted, observer)}>{getIcon(voted, observer)}</td>
-          </tr>
-        );
-      })}
-    </tbody>
-  </table>
+  <div className={sharedClasses.blueBorder}>
+    <table className={sharedClasses.table}>
+      <thead>
+        <tr className={sharedClasses.headerRow}>
+          <th>Name</th>
+          <th>Voted</th>
+        </tr>
+      </thead>
+      <tbody>
+        {getSortedVotingState(socket.state.votes).map(({ user, voted, observer }) => {
+          return (
+            <tr key={user} className={getClassName(voted, observer)}>
+              <td>{user}</td>
+              <td className={classes.votedIcon}>{getIcon(voted, observer)}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
 );
 
 export const VotingStateDisplay = connectToWebSocket(ProtoVotingStateDisplay);

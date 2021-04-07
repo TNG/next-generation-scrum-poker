@@ -1,0 +1,18 @@
+.header {
+  color: var(--tng-gray);
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.logo {
+  margin-left: 0.5rem;
+}
+
+.logoImage {
+  height: 1rem;
+  width: 6.25rem;
+  vertical-align: middle;
+  position: relative;
+  top: -0.125rem;
+}

@@ -1,3 +1,61 @@
-.app {
-  font: 14px sans-serif;
+:root {
+  --border-radius: 0.5rem;
+  --button-width: 90vw;
+  --tng-blue: rgb(5, 99, 165);
+  --light-blue: hsl(205, 95%, 40%);
+  --tng-gray: rgb(161, 166, 174);
+  --light-gray: hsl(217, 8%, 94%);
+}
+
+@media (min-width: 300px) {
+  :root {
+    --button-width: 14rem;
+  }
+}
+
+:global body {
+  font: 16px sans-serif;
+}
+
+:global * {
+  box-sizing: border-box;
+}
+
+:global *:focus {
+  outline: none;
+}
+
+:global input[type='text'],
+:global input[type='submit'],
+:global button,
+:global select {
+  font-size: 1rem;
+  line-height: 2rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  border-radius: var(--border-radius);
+}
+
+:global input[type='text'] {
+  border: 0.125rem solid var(--tng-blue);
+}
+
+:global button,
+:global input[type='submit'] {
+  cursor: pointer;
+}
+
+:global a {
+  border: 0.125rem solid transparent;
+}
+
+:global input[type='text']:focus,
+:global a:focus {
+  border-color: var(--light-blue);
+}
+
+:global input[type='submit']:disabled {
+  border-color: var(--tng-gray);
 }

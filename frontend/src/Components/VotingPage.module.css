@@ -4,61 +4,14 @@
   flex-direction: column;
 }
 
-.cardCollection {
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: 900px;
-}
-
-.card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-width: 3px;
-  border-style: solid;
-  border-color: var(--tng-blue);
-  border-radius: 10px;
-  color: var(--tng-blue);
-  fill: var(--tng-blue);
-  height: 160px;
-  width: 100px;
-  margin: 10px;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-.card :hover {
-  background: var(--tng-gray);
-}
-
-.card:active,
-.card.selectedCard {
-  background: var(--tng-blue);
-  color: white;
-  fill: white;
-}
-
-.card:focus {
-  outline: 2px dashed var(--tng-blue);
-  outline-offset: 2px;
-}
-
 .button {
   composes: button from '../styles.module.css';
-  margin-bottom: 1rem;
-  width: 150px;
-}
-
-.select {
-  composes: button from '../styles.module.css';
-  margin-bottom: 1rem;
-  padding-left: 8px;
-  width: 150px;
+  margin-bottom: 0.75rem;
 }
 
 .revealButton {
   composes: button;
-  height: 50px;
+  height: 4rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0.5rem;
 }

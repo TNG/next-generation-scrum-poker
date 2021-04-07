@@ -31,24 +31,26 @@ const getClassName = (vote: CardValue) =>
 const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
   <div className={classes.resultsPage}>
     <div className={sharedClasses.heading}>RESULTS</div>
-    <table className={sharedClasses.table}>
-      <thead>
-        <tr className={sharedClasses.headerRow}>
-          <th>Name</th>
-          <th>Vote</th>
-        </tr>
-      </thead>
-      <tbody>
-        {getSortedResultsArray(socket.state.votes).map((userAndVote) => {
-          return (
-            <tr key={userAndVote[0]}>
-              <td className={classes.nameEntry}>{userAndVote[0]}</td>
-              <td className={getClassName(userAndVote[1])}>{getVote(userAndVote[1])}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <div className={sharedClasses.blueBorder}>
+      <table className={sharedClasses.table}>
+        <thead>
+          <tr className={sharedClasses.headerRow}>
+            <th>Name</th>
+            <th>Vote</th>
+          </tr>
+        </thead>
+        <tbody>
+          {getSortedResultsArray(socket.state.votes).map((userAndVote) => {
+            return (
+              <tr key={userAndVote[0]}>
+                <td className={classes.nameEntry}>{userAndVote[0]}</td>
+                <td className={getClassName(userAndVote[1])}>{getVote(userAndVote[1])}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
     <button
       className={sharedClasses.button}
       onClick={() => {

@@ -49,7 +49,7 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
         value={user}
         ref={firstInputRef}
         className={classes.userInput}
-        onChange={(event) => setUser((event.target as HTMLInputElement).value)}
+        onInput={(event) => setUser((event.target as HTMLInputElement).value)}
       />
       <label htmlFor="session" className={classes.sessionLabel}>
         Session:
@@ -64,7 +64,7 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
         disabled={user.length === 0 || !socket.connected}
       />
       <a href="https://www.tngtech.com/" target="_blank" className={classes.logo}>
-        <img src={tngLogo} alt="TNG Logo" className={classes.logo} />
+        <img src={tngLogo} alt="TNG Logo" className={classes.logoImage} />
       </a>
     </form>
   );

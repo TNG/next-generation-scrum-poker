@@ -1,0 +1,79 @@
+.cardCollection {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 0.5rem;
+  width: 90vw;
+  margin: 0.5rem 0 1rem 0;
+}
+
+.card {
+  border: 0.125rem solid var(--tng-blue);
+  border-radius: 0.5rem;
+  color: var(--tng-blue);
+  fill: var(--tng-blue);
+  cursor: pointer;
+  background-color: var(--light-gray);
+}
+
+.largeCard {
+  composes: card;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40% 0;
+  width: 100%;
+  font-size: 1.5rem;
+}
+
+.buttonCard {
+  composes: card;
+  width: var(--button-width);
+}
+
+.card:active,
+.card:focus,
+.card:hover {
+  background: var(--light-blue);
+  color: white;
+  border-color: var(--light-blue);
+}
+
+.card.selected {
+  background: var(--tng-blue);
+  color: var(--light-gray);
+  fill: white;
+}
+
+.card.selected:hover {
+  color: white;
+  border-color: var(--light-blue);
+}
+
+@media (min-width: 300px) {
+  .cardCollection {
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1rem;
+  }
+}
+
+@media (min-width: 450px) {
+  .cardCollection {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .largeCard {
+    padding: 50% 0;
+  }
+}
+
+@media (min-width: 600px) {
+  .cardCollection {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+@media (min-width: 880px) {
+  .cardCollection {
+    width: 800px;
+  }
+}

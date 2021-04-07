@@ -12,3 +12,7 @@
   color: var(--tng-blue);
   fill: var(--tng-blue);
 }
+
+.votedIcon {
+  text-align: center;
+}
