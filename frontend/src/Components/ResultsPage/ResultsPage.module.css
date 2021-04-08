@@ -8,13 +8,8 @@
 .notVotedEntry {
   color: var(--tng-gray);
   fill: var(--tng-gray);
-  text-align: center;
 }
 
 .votedEntry {
   text-align: center;
-}
-
-.nameEntry {
-  line-height: 1.5rem;
 }

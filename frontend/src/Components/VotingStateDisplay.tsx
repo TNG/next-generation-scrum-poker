@@ -66,7 +66,7 @@ const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
           return (
             <tr key={user} className={getClassName(voted, observer)}>
               <td>{user}</td>
-              <td className={classes.votedIcon}>{getIcon(voted, observer)}</td>
+              <td>{getIcon(voted, observer)}</td>
             </tr>
           );
         })}
