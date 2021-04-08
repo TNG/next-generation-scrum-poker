@@ -1,1 +1,4 @@
-export const WEBSOCKET_URL = 'wss://scrum-poker-backend.playground.aws.tngtech.com';
+// This will be injected by Vite/Rollup
+declare var API_URL: string;
+
+export const WEBSOCKET_URL = API_URL;
