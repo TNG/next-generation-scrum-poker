@@ -32,7 +32,7 @@
 
 .card:active,
 .card:focus,
-.card:hover {
+:global(no-touch).card:hover {
   background: var(--light-blue);
   color: white;
   fill: white;
@@ -45,7 +45,7 @@
   fill: var(--light-gray);
 }
 
-.card.selected:hover {
+:global(no-touch).card.selected:hover {
   color: white;
   fill: white;
   border-color: var(--light-blue);
