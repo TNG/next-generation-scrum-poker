@@ -43,17 +43,18 @@
 }
 
 :global button,
-:global input[type='submit'] {
+:global input[type='submit'],
+:global select {
   cursor: pointer;
 }
 
-:global a {
-  border: 0.125rem solid transparent;
+:global input[type='text']:focus {
+  border-color: var(--light-blue);
 }
 
-:global input[type='text']:focus,
 :global a:focus {
-  border-color: var(--light-blue);
+  outline: 0.125rem solid var(--light-blue);
+  outline-offset: 0.125rem;
 }
 
 :global input[type='submit']:disabled {
