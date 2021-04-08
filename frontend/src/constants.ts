@@ -15,3 +15,5 @@ export const SCALES: { [id: string]: { name: string; values: Array<CardValue> } 
   },
   SIZES_SCALE: { name: 'Sizes', values: ['coffee', '?', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '∞'] },
 };
+
+export const TNG_URL = 'https://www.tngtech.com/en';
