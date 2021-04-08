@@ -11,7 +11,7 @@
   width: var(--button-width);
 }
 
-:global(no-touch).button:hover,
+:global(.no-touch) .button:hover,
 .button:focus {
   color: white;
   background: var(--light-blue);
@@ -19,11 +19,12 @@
 
 .button:disabled,
 .button:disabled:hover {
+  color: var(--light-gray);
   background: var(--tng-gray);
   cursor: not-allowed;
 }
 
-:global(no-touch).button:hover:active {
+:global(.no-touch) .button:hover:active {
   background: var(--tng-blue);
 }
 
