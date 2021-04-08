@@ -4,6 +4,7 @@ module.exports = {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig-test.json',
     },
+    API_URL: 'wss://api.url',
   },
   moduleFileExtensions: ['js', 'ts', 'tsx', 'mjs'],
   moduleNameMapper: {

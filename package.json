@@ -26,6 +26,7 @@
   "homepage": "https://github.com/tng/next-generation-scrum-poker#readme",
   "dependencies": {
     "@preact/preset-vite": "^2.0.1",
+    "@rollup/plugin-replace": "^2.4.2",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/preact": "^2.0.1",
     "@types/aws-lambda": "^8.10.73",
