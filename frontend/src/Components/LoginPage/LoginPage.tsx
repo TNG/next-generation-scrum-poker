@@ -5,6 +5,7 @@ import { WebSocketApi } from '../../types/WebSocket';
 import { connectToWebSocket } from '../WebSocket';
 import { generateId } from './generateId';
 import classes from './LoginPage.module.css';
+import { TNG_URL } from '../../constants';
 
 // During server-side-rendering, window/history cannot be accessed
 const isSSR = typeof window === 'undefined';
@@ -63,7 +64,7 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
         className={classes.submit}
         disabled={user.length === 0 || !socket.connected}
       />
-      <a href="https://www.tngtech.com/" target="_blank" className={classes.logo}>
+      <a href={TNG_URL} target="_blank" className={classes.logo}>
         <img src={tngLogo} alt="TNG Logo" className={classes.logoImage} />
       </a>
     </form>
