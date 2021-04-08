@@ -11,7 +11,7 @@
   width: var(--button-width);
 }
 
-.button:hover,
+:global(no-touch).button:hover,
 .button:focus {
   color: white;
   background: var(--light-blue);
@@ -23,7 +23,7 @@
   cursor: not-allowed;
 }
 
-.button:hover:active {
+:global(no-touch).button:hover:active {
   background: var(--tng-blue);
 }
 
@@ -32,6 +32,7 @@
   padding: 0.25rem;
   border-spacing: 0.5rem 0;
   margin: auto;
+  line-height: 1.5rem;
 }
 
 .blueBorder {
@@ -45,4 +46,11 @@
 .headerRow {
   color: var(--tng-blue);
   line-height: 35px;
+}
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+  margin: auto;
 }

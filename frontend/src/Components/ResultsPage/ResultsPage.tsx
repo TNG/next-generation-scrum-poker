@@ -43,7 +43,7 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
           {getSortedResultsArray(socket.state.votes).map((userAndVote) => {
             return (
               <tr key={userAndVote[0]}>
-                <td className={classes.nameEntry}>{userAndVote[0]}</td>
+                <td>{userAndVote[0]}</td>
                 <td className={getClassName(userAndVote[1])}>{getVote(userAndVote[1])}</td>
               </tr>
             );
