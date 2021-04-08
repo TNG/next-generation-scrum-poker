@@ -2,7 +2,6 @@
 
 set -eu
 cd "$(dirname "${BASH_SOURCE[0]}")"
-BASE_DIR=$(pwd)
 
 display_usage() {
     echo ""
@@ -15,27 +14,9 @@ display_usage() {
     echo "  --delete               Deletes the current deployment. Can be combined with --prod."
 }
 
-build() {
-  if [[ ! -d "$1" ]]
-    then
-      echo "$1 is not a directory"
-      exit 1
-  fi
-  echo
-  echo "Building \"$1\":"
-  cd "$1"
-  rm -rf dist
+deploy(){
   npm ci
   npm run build
-  cd "$BASE_DIR"
-  echo "\"$1\" built."
-}
-
-deploy(){
-  build frontend
-  build backend/onconnect
-  build backend/ondisconnect
-  build backend/sendmessage
 
   aws s3 sync frontend/dist s3://${S3Frontend} --delete
 

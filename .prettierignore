@@ -1,0 +1,6 @@
+backend/onconnect/build
+backend/ondisconnect/build
+backend/sendmessage/build
+frontend/dist
+frontend/dist-ssr
+backend/packaged.yaml
