@@ -59,7 +59,7 @@ describe('The App component', () => {
     const { container } = render(<App />);
     expect(socketInstances).toHaveLength(1);
     const socket = socketInstances[0];
-    expect(socket.test_url).toBe('wss://scrum-poker-backend.playground.aws.tngtech.com');
+    expect(socket.test_url).toBe('wss://api.url');
     expect(typeof socket.onopen).toBe('function');
     expect(typeof socket.onmessage).toBe('function');
 
