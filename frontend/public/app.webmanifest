@@ -2,9 +2,11 @@
   "name": "Next Generation Scrum Poker",
   "short_name": "Scrum Poker",
   "display": "fullscreen",
-  "icons": [{
-    "src": "icon_192.png",
-    "sizes": "192x192",
-    "type": "image/png"
-  }]
+  "icons": [
+    {
+      "src": "icon_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
 }

@@ -46,8 +46,6 @@ Currently it is assumed we are using eu-central-1!
 To test and develop the frontend, run
 
 ```shell
-cd frontend
-npm ci
 npm start
 ```
 
@@ -58,8 +56,7 @@ This will use [Vite](https://vitejs.dev) to serve your app on [http://localhost:
 To generate a production build, run
 
 ```sh
-cd frontend
-npm run build
+npm run build:frontend
 ```
 
 This will generate a folder `frontend/dist` that contains a directly deployable artifact without external dependencies that can be served as a static web site.
@@ -67,7 +64,7 @@ This will generate a folder `frontend/dist` that contains a directly deployable 
 To test the production build locally, run
 
 ```shell
-npm run serve
+npm run preview
 ```
 
 ## License

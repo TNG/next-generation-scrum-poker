@@ -1,24 +1,51 @@
 {
   "name": "next-generation-scrum-poker",
   "version": "1.0.0",
-  "description": "",
+  "description": "prototype for a new scrum poker",
   "scripts": {
+    "start": "cd frontend && vite",
+    "preview": "npm run build:frontend && cd frontend && vite preview",
+    "test": "npx jest --config frontend/jest.config.js",
+    "build": "run-p build:backend build:frontend",
     "lint": "prettier . --write",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build:backend": "run-p build:backend:onconnect build:backend:ondisconnect build:backend:sendmessage",
+    "build:backend:onconnect": "cd backend/onconnect && rimraf build && tsc -p .",
+    "build:backend:ondisconnect": "cd backend/ondisconnect && rimraf build && tsc -p .",
+    "build:backend:sendmessage": "cd backend/sendmessage && rimraf build && tsc -p .",
+    "build:frontend": "run-p build:frontend:vite build:frontend:typecheck",
+    "build:frontend:vite": "cd frontend && rimraf dist && rimraf dist-ssr && vite build && vite build --ssr src/index-ssr.tsx --outDir dist-ssr && node prerenderHtml.js",
+    "build:frontend:typecheck": "tsc -p frontend"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lukastaegert/next-generation-scrum-poker.git"
-  },
+  "repository": "github:tng/next-generation-scrum-poker",
   "author": "TNG",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/lukastaegert/next-generation-scrum-poker/issues"
+    "url": "https://github.com/tng/next-generation-scrum-poker/issues"
   },
-  "homepage": "https://github.com/lukastaegert/next-generation-scrum-poker#readme",
-  "devDependencies": {
-    "husky": "^5.2.0",
+  "homepage": "https://github.com/tng/next-generation-scrum-poker#readme",
+  "dependencies": {
+    "@preact/preset-vite": "^2.0.1",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/preact": "^2.0.1",
+    "@types/aws-lambda": "^8.10.73",
+    "@types/classnames": "^2.2.11",
+    "@types/jest": "^26.0.21",
+    "@types/node": "^12.20.7",
+    "aws-sdk": "^2.871.0",
+    "classnames": "^2.3.1",
+    "csz": "^1.2.0",
+    "html-minifier-terser": "^5.1.1",
+    "husky": "^6.0.0",
+    "jest": "^26.6.3",
     "lint-staged": "^10.5.4",
-    "prettier": "^2.2.1"
+    "npm-run-all": "^4.1.5",
+    "preact": "^10.5.13",
+    "preact-render-to-string": "^5.1.18",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.5.4",
+    "typescript": "^4.2.3",
+    "vite": "^2.1.5"
   }
 }
