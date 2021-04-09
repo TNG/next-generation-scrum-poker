@@ -25,7 +25,7 @@ const getVote = (vote: CardValue) => {
   return vote;
 };
 
-const getClass = (vote: CardValue) =>
+const getClassName = (vote: CardValue) =>
   vote === 'not-voted' || vote === 'observer' ? classes.notVotedEntry : classes.votedEntry;
 
 const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
@@ -44,7 +44,7 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
             return (
               <tr key={userAndVote[0]}>
                 <td>{userAndVote[0]}</td>
-                <td class={getClass(userAndVote[1])}>{getVote(userAndVote[1])}</td>
+                <td class={getClassName(userAndVote[1])}>{getVote(userAndVote[1])}</td>
               </tr>
             );
           })}
