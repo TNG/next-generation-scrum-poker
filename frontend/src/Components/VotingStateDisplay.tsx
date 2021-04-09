@@ -32,7 +32,7 @@ const getRank = (voted: boolean, observer: boolean) => {
   return 1;
 };
 
-const getClassName = (voted: boolean, observer: boolean) => {
+const getClass = (voted: boolean, observer: boolean) => {
   if (observer) {
     return classes.observer;
   }
@@ -53,10 +53,10 @@ const getIcon = (voted: boolean, observer: boolean) => {
 };
 
 const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
-  <div className={sharedClasses.blueBorder}>
-    <table className={sharedClasses.table}>
+  <div class={sharedClasses.blueBorder}>
+    <table class={sharedClasses.table}>
       <thead>
-        <tr className={sharedClasses.headerRow}>
+        <tr class={sharedClasses.headerRow}>
           <th>Name</th>
           <th>Voted</th>
         </tr>
@@ -64,7 +64,7 @@ const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
       <tbody>
         {getSortedVotingState(socket.state.votes).map(({ user, voted, observer }) => {
           return (
-            <tr key={user} className={getClassName(voted, observer)}>
+            <tr key={user} class={getClass(voted, observer)}>
               <td>{user}</td>
               <td>{getIcon(voted, observer)}</td>
             </tr>

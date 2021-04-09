@@ -6,7 +6,7 @@ import { connectToWebSocket } from './WebSocket';
 const ProtoScaleSelector = ({ socket }: { socket: WebSocketApi }) => (
   <select
     name="scale"
-    className={classes.select}
+    class={classes.select}
     onChange={(e) => socket.setScale(SCALES[(e.target as HTMLSelectElement).value].values)}
     value={'CHANGE_SCALE'}
   >

@@ -12,7 +12,7 @@ const ProtoPageSelector = ({ socket }: { socket: WebSocketApi }) => {
     return <LoginPage />;
   }
   return (
-    <div className={classes.pageSelector}>
+    <div class={classes.pageSelector}>
       <Header />
       {socket.state.resultsVisible ? <ResultsPage /> : <VotingPage />}
       <Footer />

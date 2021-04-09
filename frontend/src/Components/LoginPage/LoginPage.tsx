@@ -30,18 +30,18 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
 
   return (
     <form
-      className={classes.loginPage}
+      class={classes.loginPage}
       onSubmit={(event) => {
         event.preventDefault();
         socket.login(user, sessionId);
       }}
     >
-      <div className={classes.heading}>
+      <div class={classes.heading}>
         NEXT GENERATION
         <br />
         SCRUM POKER
       </div>
-      <label htmlFor="user" className={classes.userLabel}>
+      <label for="user" class={classes.userLabel}>
         Name:
       </label>
       <input
@@ -49,23 +49,23 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
         type="text"
         value={user}
         ref={firstInputRef}
-        className={classes.userInput}
+        class={classes.userInput}
         onInput={(event) => setUser((event.target as HTMLInputElement).value)}
       />
-      <label htmlFor="session" className={classes.sessionLabel}>
+      <label for="session" class={classes.sessionLabel}>
         Session:
       </label>
-      <a id="session" href={`?sessionId=${sessionId}`} className={classes.sessionLink}>
+      <a id="session" href={`?sessionId=${sessionId}`} class={classes.sessionLink}>
         {sessionId}
       </a>
       <input
         type="submit"
         value={socket.connected ? 'Login' : 'Connecting...'}
-        className={classes.submit}
+        class={classes.submit}
         disabled={user.length === 0 || !socket.connected}
       />
-      <a href={TNG_URL} target="_blank" className={classes.logo}>
-        <img src={tngLogo} alt="TNG Logo" className={classes.logoImage} />
+      <a href={TNG_URL} target="_blank" class={classes.logo}>
+        <img src={tngLogo} alt="TNG Logo" class={classes.logoImage} />
       </a>
     </form>
   );

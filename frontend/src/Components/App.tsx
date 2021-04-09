@@ -4,7 +4,7 @@ import { TouchDetector } from './TouchDetector';
 import { WebSocketProvider } from './WebSocket';
 
 export const App = () => (
-  <div className={classes.app}>
+  <div class={classes.app}>
     <WebSocketProvider>
       <TouchDetector>
         <PageSelector />

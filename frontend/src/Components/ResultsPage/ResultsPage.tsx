@@ -25,16 +25,16 @@ const getVote = (vote: CardValue) => {
   return vote;
 };
 
-const getClassName = (vote: CardValue) =>
+const getClass = (vote: CardValue) =>
   vote === 'not-voted' || vote === 'observer' ? classes.notVotedEntry : classes.votedEntry;
 
 const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
-  <div className={classes.resultsPage}>
-    <div className={sharedClasses.heading}>RESULTS</div>
-    <div className={sharedClasses.blueBorder}>
-      <table className={sharedClasses.table}>
+  <div class={classes.resultsPage}>
+    <div class={sharedClasses.heading}>RESULTS</div>
+    <div class={sharedClasses.blueBorder}>
+      <table class={sharedClasses.table}>
         <thead>
-          <tr className={sharedClasses.headerRow}>
+          <tr class={sharedClasses.headerRow}>
             <th>Name</th>
             <th>Vote</th>
           </tr>
@@ -44,7 +44,7 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
             return (
               <tr key={userAndVote[0]}>
                 <td>{userAndVote[0]}</td>
-                <td className={getClassName(userAndVote[1])}>{getVote(userAndVote[1])}</td>
+                <td class={getClass(userAndVote[1])}>{getVote(userAndVote[1])}</td>
               </tr>
             );
           })}
@@ -52,7 +52,7 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
       </table>
     </div>
     <button
-      className={sharedClasses.button}
+      class={sharedClasses.button}
       onClick={() => {
         socket.resetVotes();
       }}

@@ -7,14 +7,14 @@ import { VotingStateDisplay } from './VotingStateDisplay';
 import { connectToWebSocket } from './WebSocket';
 
 const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => (
-  <div className={classes.votingPage}>
-    <div className={sharedClasses.heading}>SELECT A CARD</div>
+  <div class={classes.votingPage}>
+    <div class={sharedClasses.heading}>SELECT A CARD</div>
     <CardSelector />
-    <button className={classes.revealButton} onClick={() => socket.revealVotes()}>
+    <button class={classes.revealButton} onClick={() => socket.revealVotes()}>
       Reveal Votes
     </button>
     <VotingStateDisplay />
-    <button className={classes.button} onClick={() => socket.removeUsersNotVoted()}>
+    <button class={classes.button} onClick={() => socket.removeUsersNotVoted()}>
       Kick users without vote
     </button>
     <ScaleSelector />

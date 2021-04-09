@@ -9,11 +9,11 @@ const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
   const selectedCard = socket.state.votes[socket.loginData.user];
   return (
     <>
-      <div className={classes.cardCollection}>
+      <div class={classes.cardCollection}>
         {socket.state.scale.map((cardValue) => (
           <button
             key={cardValue}
-            className={classNames([
+            class={classNames([
               classes.largeCard,
               { [classes.selected]: selectedCard === cardValue },
             ])}
@@ -24,7 +24,7 @@ const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
         ))}
       </div>
       <button
-        className={classNames([
+        class={classNames([
           classes.buttonCard,
           { [classes.selected]: selectedCard === 'observer' },
         ])}
