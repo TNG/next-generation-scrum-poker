@@ -5,17 +5,18 @@ import { ScaleSelector } from './ScaleSelector';
 import classes from './VotingPage.module.css';
 import { VotingStateDisplay } from './VotingStateDisplay';
 import { connectToWebSocket } from './WebSocket';
+import { BUTTON_KICK_NOT_VOTED, HEADING_SELECT_CARD } from '../constants';
 
 const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => (
   <div class={classes.votingPage}>
-    <div class={sharedClasses.heading}>SELECT A CARD</div>
+    <div class={sharedClasses.heading}>{HEADING_SELECT_CARD}</div>
     <CardSelector />
     <button class={classes.revealButton} onClick={() => socket.revealVotes()}>
       Reveal Votes
     </button>
     <VotingStateDisplay />
     <button class={classes.button} onClick={() => socket.removeUsersNotVoted()}>
-      Kick users without vote
+      {BUTTON_KICK_NOT_VOTED}
     </button>
     <ScaleSelector />
   </div>

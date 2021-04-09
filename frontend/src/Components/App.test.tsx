@@ -49,7 +49,7 @@ describe('The App component', () => {
     const { container } = render(<App />);
     expect(document.activeElement).toBe(container.querySelector('input#user'));
     expect(container.querySelector('a#session')).toHaveTextContent(/^[a-zA-Z0-9]{16}$/i);
-    expect(container.querySelector('input[type=submit]')).toHaveValue('Connecting...');
+    expect(container.querySelector('input[type=submit]')).toHaveValue('Connecting…');
     expect(container.querySelector('input[type=submit]')).toBeDisabled();
   });
 
@@ -78,7 +78,7 @@ describe('The App component', () => {
     // given
     const { socket, container } = loginUser();
 
-    expect(container).toHaveTextContent('Session ID: xvdBFRA6FyLZFcKoUser name: Happy User');
+    expect(container).toHaveTextContent('Session: xvdBFRA6FyLZFcKoName: Happy User');
     expect(container.querySelectorAll('button.largeCard')).toHaveLength(14);
 
     // when

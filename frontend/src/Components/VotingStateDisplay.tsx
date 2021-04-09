@@ -5,12 +5,13 @@ import { IconObserver } from './IconObserver';
 import { IconVoted } from './IconVoted';
 import classes from './VotingStateDisplay.module.css';
 import { connectToWebSocket } from './WebSocket';
+import { COLUMN_NAME, COLUMN_VOTED, VOTE_OBSERVER } from '../constants';
 
 const getSortedVotingState = (votes: Votes) => {
   const votedUsers = Object.keys(votes).map((user) => ({
     user,
     voted: votes[user] !== 'not-voted',
-    observer: votes[user] === 'observer',
+    observer: votes[user] === VOTE_OBSERVER,
   }));
   return votedUsers.sort((a, b) => {
     const rankA = getRank(a.voted, a.observer);
@@ -57,8 +58,8 @@ const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
     <table class={sharedClasses.table}>
       <thead>
         <tr class={sharedClasses.headerRow}>
-          <th>Name</th>
-          <th>Voted</th>
+          <th>{COLUMN_NAME}</th>
+          <th>{COLUMN_VOTED}</th>
         </tr>
       </thead>
       <tbody>

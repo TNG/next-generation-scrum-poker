@@ -1,7 +1,7 @@
 import { ComponentType, createContext } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { WEBSOCKET_URL } from '../config';
-import { SCALES } from '../constants';
+import { SCALES, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../constants';
 import {
   getLoginRequest,
   getRemoveUsersNotVotedRequest,
@@ -42,7 +42,10 @@ const WebSocketContext = createContext<WebSocketApi>({
 
 function getInitialVotes(votes: Votes): Votes {
   return Object.fromEntries(
-    Object.keys(votes).map((user) => [user, votes[user] === 'observer' ? 'observer' : 'not-voted'])
+    Object.keys(votes).map((user) => [
+      user,
+      votes[user] === VOTE_OBSERVER ? VOTE_OBSERVER : VOTE_NOTE_VOTED,
+    ])
   );
 }
 
@@ -85,7 +88,7 @@ export const WebSocketProvider = ({ children }: any) => {
     setState({
       ...initialWebSocketState,
       votes: {
-        [user]: 'not-voted',
+        [user]: VOTE_NOTE_VOTED,
       },
     });
   };
@@ -113,7 +116,7 @@ export const WebSocketProvider = ({ children }: any) => {
     setState({
       ...state,
       votes: Object.fromEntries(
-        Object.entries(state.votes).filter(([, voted]) => voted !== 'not-voted')
+        Object.entries(state.votes).filter(([, voted]) => voted !== VOTE_NOTE_VOTED)
       ),
     });
   };

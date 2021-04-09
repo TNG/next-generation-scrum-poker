@@ -4,6 +4,7 @@ import classes from './CardSelector.module.css';
 import { IconCoffee } from './IconCoffee';
 import { connectToWebSocket } from './WebSocket';
 import { IconObserver } from './IconObserver';
+import { BUTTON_OBSERVER, VOTE_COFFEE, VOTE_OBSERVER } from '../constants';
 
 const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
   const selectedCard = socket.state.votes[socket.loginData.user];
@@ -19,19 +20,19 @@ const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
             ])}
             onClick={() => socket.setVote(cardValue)}
           >
-            {cardValue === 'coffee' ? <IconCoffee /> : cardValue}
+            {cardValue === VOTE_COFFEE ? <IconCoffee /> : cardValue}
           </button>
         ))}
       </div>
       <button
         class={classNames([
-          classes.buttonCard,
-          { [classes.selected]: selectedCard === 'observer' },
+          classes.buttonObserver,
+          { [classes.selected]: selectedCard === VOTE_OBSERVER },
         ])}
-        onClick={() => socket.setVote('observer')}
+        onClick={() => socket.setVote(VOTE_OBSERVER)}
       >
         <IconObserver />
-        <div>Observer</div>
+        <div class={classes.buttonObserverText}>{BUTTON_OBSERVER}</div>
       </button>
     </>
   );

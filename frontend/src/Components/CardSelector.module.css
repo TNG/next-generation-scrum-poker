@@ -25,14 +25,17 @@
   font-size: 1.5rem;
 }
 
-.buttonCard {
+.buttonObserver {
   composes: card;
   display: flex;
   width: var(--button-width);
   line-height: 1.5rem;
   padding: 0.25rem;
-  gap: 0.5rem;
   justify-content: center;
+}
+
+.buttonObserverText {
+  margin-left: 0.5rem;
 }
 
 .card:active,
