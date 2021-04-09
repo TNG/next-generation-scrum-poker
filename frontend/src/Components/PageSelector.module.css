@@ -1,0 +1,13 @@
+.pageSelector {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* the media query targets an iOS only feature */
+@supports (-webkit-touch-callout: none) {
+  .pageSelector {
+    /* on iOS, 100vh will unfortunately be obscured by the status bar */
+    min-height: -webkit-fill-available;
+  }
+}

@@ -4,7 +4,7 @@ import classes from './Footer.module.css';
 import { connectToWebSocket } from './WebSocket';
 
 export const ProtoLoginInfo = ({ socket }: { socket: WebSocketApi }) => (
-  <div className={classes.footer}>
+  <footer className={classes.footer}>
     <div className={classes.sessionInfo}>
       <span className={classes.infoItem}>
         Session ID: {socket.loginData ? socket.loginData.session : 'not found'}
@@ -15,7 +15,7 @@ export const ProtoLoginInfo = ({ socket }: { socket: WebSocketApi }) => (
       </span>
     </div>
     <CopyToClipboardButton />
-  </div>
+  </footer>
 );
 
 export const Footer = connectToWebSocket(ProtoLoginInfo);
