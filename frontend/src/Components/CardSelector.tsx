@@ -3,6 +3,7 @@ import { WebSocketApi } from '../types/WebSocket';
 import classes from './CardSelector.module.css';
 import { IconCoffee } from './IconCoffee';
 import { connectToWebSocket } from './WebSocket';
+import { IconObserver } from './IconObserver';
 
 const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
   const selectedCard = socket.state.votes[socket.loginData.user];
@@ -29,7 +30,8 @@ const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
         ])}
         onClick={() => socket.setVote('observer')}
       >
-        Observer
+        <IconObserver />
+        <div>Observer</div>
       </button>
     </>
   );

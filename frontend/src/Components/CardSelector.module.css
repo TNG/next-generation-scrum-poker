@@ -27,7 +27,12 @@
 
 .buttonCard {
   composes: card;
+  display: flex;
   width: var(--button-width);
+  line-height: 1.5rem;
+  padding: 0.25rem;
+  gap: 0.5rem;
+  justify-content: center;
 }
 
 .card:active,
