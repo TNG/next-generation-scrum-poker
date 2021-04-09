@@ -1,7 +1,9 @@
+import { VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../constants';
+
 export type CardValue =
-  | 'observer'
-  | 'not-voted'
-  | 'coffee'
+  | typeof VOTE_OBSERVER
+  | typeof VOTE_NOTE_VOTED
+  | typeof VOTE_COFFEE
   | '?'
   | '∞'
   | 'XS'

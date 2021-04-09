@@ -1,8 +1,9 @@
 import sharedClasses from '../styles.module.css';
+import { TOOLTIP_COFFEE } from '../constants';
 
 // taken from material ui icons
 export const IconCoffee = () => (
-  <div title="Need a break">
+  <div title={TOOLTIP_COFFEE}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height="24"

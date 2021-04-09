@@ -1,4 +1,4 @@
-import { SCALES } from '../constants';
+import { SCALES, SELECT_CHANGE_SCALE } from '../constants';
 import { WebSocketApi } from '../types/WebSocket';
 import classes from './ScaleSelector.module.css';
 import { connectToWebSocket } from './WebSocket';
@@ -11,7 +11,7 @@ const ProtoScaleSelector = ({ socket }: { socket: WebSocketApi }) => (
     value={'CHANGE_SCALE'}
   >
     <option value="CHANGE_SCALE" disabled>
-      Change Scale
+      {SELECT_CHANGE_SCALE}
     </option>
     {Object.keys(SCALES).map((id) => (
       <option value={id} key={id}>

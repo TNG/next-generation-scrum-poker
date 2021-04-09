@@ -5,7 +5,16 @@ import { WebSocketApi } from '../../types/WebSocket';
 import { connectToWebSocket } from '../WebSocket';
 import { generateId } from './generateId';
 import classes from './LoginPage.module.css';
-import { TNG_URL } from '../../constants';
+import {
+  ALT_TNG_LOGO,
+  APP_NAME_FIRST,
+  APP_NAME_SECOND,
+  BUTTON_CONNECTING,
+  BUTTON_LOGIN,
+  LABEL_SESSION,
+  LABEL_USERNAME,
+  TNG_URL,
+} from '../../constants';
 
 // During server-side-rendering, window/history cannot be accessed
 const isSSR = typeof window === 'undefined';
@@ -37,12 +46,12 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       }}
     >
       <div class={classes.heading}>
-        NEXT GENERATION
+        {APP_NAME_FIRST}
         <br />
-        SCRUM POKER
+        {APP_NAME_SECOND}
       </div>
       <label for="user" class={classes.userLabel}>
-        Name:
+        {LABEL_USERNAME}
       </label>
       <input
         id="user"
@@ -53,19 +62,19 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
         onInput={(event) => setUser((event.target as HTMLInputElement).value)}
       />
       <label for="session" class={classes.sessionLabel}>
-        Session:
+        {LABEL_SESSION}
       </label>
       <a id="session" href={`?sessionId=${sessionId}`} class={classes.sessionLink}>
         {sessionId}
       </a>
       <input
         type="submit"
-        value={socket.connected ? 'Login' : 'Connecting...'}
+        value={socket.connected ? BUTTON_LOGIN : BUTTON_CONNECTING}
         class={classes.submit}
         disabled={user.length === 0 || !socket.connected}
       />
       <a href={TNG_URL} target="_blank" class={classes.logo}>
-        <img src={tngLogo} alt="TNG Logo" class={classes.logoImage} />
+        <img src={tngLogo} alt={ALT_TNG_LOGO} class={classes.logoImage} />
       </a>
     </form>
   );
