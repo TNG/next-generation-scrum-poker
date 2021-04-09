@@ -15,6 +15,7 @@
 
 :global body {
   font: 16px sans-serif;
+  margin: 0;
 }
 
 :global * {

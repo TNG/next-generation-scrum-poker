@@ -1,8 +1,8 @@
 import sharedClasses from '../styles.module.css';
 import { Votes, WebSocketApi } from '../types/WebSocket';
-import { NotVotedIcon } from './NotVotedIcon';
-import { ObserverIcon } from './ObserverIcon';
-import { VotedIcon } from './VotedIcon';
+import { IconNotVoted } from './IconNotVoted';
+import { IconObserver } from './IconObserver';
+import { IconVoted } from './IconVoted';
 import classes from './VotingStateDisplay.module.css';
 import { connectToWebSocket } from './WebSocket';
 
@@ -44,19 +44,19 @@ const getClassName = (voted: boolean, observer: boolean) => {
 
 const getIcon = (voted: boolean, observer: boolean) => {
   if (observer) {
-    return <ObserverIcon />;
+    return <IconObserver />;
   }
   if (voted) {
-    return <VotedIcon />;
+    return <IconVoted />;
   }
-  return <NotVotedIcon />;
+  return <IconNotVoted />;
 };
 
 const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
-  <div className={sharedClasses.blueBorder}>
-    <table className={sharedClasses.table}>
+  <div class={sharedClasses.blueBorder}>
+    <table class={sharedClasses.table}>
       <thead>
-        <tr className={sharedClasses.headerRow}>
+        <tr class={sharedClasses.headerRow}>
           <th>Name</th>
           <th>Voted</th>
         </tr>
@@ -64,7 +64,7 @@ const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
       <tbody>
         {getSortedVotingState(socket.state.votes).map(({ user, voted, observer }) => {
           return (
-            <tr key={user} className={getClassName(voted, observer)}>
+            <tr key={user} class={getClassName(voted, observer)}>
               <td>{user}</td>
               <td>{getIcon(voted, observer)}</td>
             </tr>
