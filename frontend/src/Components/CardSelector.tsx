@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { WebSocketApi } from '../types/WebSocket';
 import classes from './CardSelector.module.css';
-import { CoffeeIcon } from './CoffeeIcon';
+import { IconCoffee } from './IconCoffee';
 import { connectToWebSocket } from './WebSocket';
 
 const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
@@ -18,7 +18,7 @@ const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
             ])}
             onClick={() => socket.setVote(cardValue)}
           >
-            {cardValue === 'coffee' ? <CoffeeIcon /> : cardValue}
+            {cardValue === 'coffee' ? <IconCoffee /> : cardValue}
           </button>
         ))}
       </div>

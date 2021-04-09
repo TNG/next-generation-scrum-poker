@@ -1,8 +1,8 @@
 import sharedClasses from '../../styles.module.css';
 import { CardValue, Votes, WebSocketApi } from '../../types/WebSocket';
-import { CoffeeIcon } from '../CoffeeIcon';
-import { NotVotedIcon } from '../NotVotedIcon';
-import { ObserverIcon } from '../ObserverIcon';
+import { IconCoffee } from '../IconCoffee';
+import { IconNotVoted } from '../IconNotVoted';
+import { IconObserver } from '../IconObserver';
 import { connectToWebSocket } from '../WebSocket';
 import { compareVotes } from './compareVotes';
 import classes from './ResultsPage.module.css';
@@ -14,13 +14,13 @@ const getSortedResultsArray = (unsortedResults: Votes) => {
 
 const getVote = (vote: CardValue) => {
   if (vote === 'coffee') {
-    return <CoffeeIcon />;
+    return <IconCoffee />;
   }
   if (vote === 'not-voted') {
-    return <NotVotedIcon />;
+    return <IconNotVoted />;
   }
   if (vote === 'observer') {
-    return <ObserverIcon />;
+    return <IconObserver />;
   }
   return vote;
 };

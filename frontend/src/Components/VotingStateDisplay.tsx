@@ -1,8 +1,8 @@
 import sharedClasses from '../styles.module.css';
 import { Votes, WebSocketApi } from '../types/WebSocket';
-import { NotVotedIcon } from './NotVotedIcon';
-import { ObserverIcon } from './ObserverIcon';
-import { VotedIcon } from './VotedIcon';
+import { IconNotVoted } from './IconNotVoted';
+import { IconObserver } from './IconObserver';
+import { IconVoted } from './IconVoted';
 import classes from './VotingStateDisplay.module.css';
 import { connectToWebSocket } from './WebSocket';
 
@@ -44,12 +44,12 @@ const getClassName = (voted: boolean, observer: boolean) => {
 
 const getIcon = (voted: boolean, observer: boolean) => {
   if (observer) {
-    return <ObserverIcon />;
+    return <IconObserver />;
   }
   if (voted) {
-    return <VotedIcon />;
+    return <IconVoted />;
   }
-  return <NotVotedIcon />;
+  return <IconNotVoted />;
 };
 
 const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
