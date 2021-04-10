@@ -36,6 +36,7 @@ export const LABEL_SESSION = 'Session:';
 export const BUTTON_LOGIN = 'Login';
 export const BUTTON_CONNECTING = 'Connecting…';
 export const BUTTON_OBSERVER = 'Observer';
+export const BUTTON_REVEAL_VOTES = 'Reveal Votes';
 export const BUTTON_KICK_NOT_VOTED = 'Kick users without vote';
 export const BUTTON_COPY_TO_CLIPBOARD = 'Copy Link to Clipboard';
 export const SELECT_CHANGE_SCALE = 'Change Scale';
