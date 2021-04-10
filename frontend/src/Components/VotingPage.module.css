@@ -8,10 +8,3 @@
   composes: button from '../styles.module.css';
   margin-bottom: 0.75rem;
 }
-
-.revealButton {
-  composes: button;
-  height: 4rem;
-  margin-top: 2.5rem;
-  margin-bottom: 0.5rem;
-}

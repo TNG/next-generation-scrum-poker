@@ -6,14 +6,13 @@ import classes from './VotingPage.module.css';
 import { VotingStateDisplay } from './VotingStateDisplay';
 import { connectToWebSocket } from './WebSocket';
 import { BUTTON_KICK_NOT_VOTED, HEADING_SELECT_CARD } from '../constants';
+import { RevealButton } from './RevealButton';
 
 const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => (
   <div class={classes.votingPage}>
     <div class={sharedClasses.heading}>{HEADING_SELECT_CARD}</div>
     <CardSelector />
-    <button class={classes.revealButton} onClick={() => socket.revealVotes()}>
-      Reveal Votes
-    </button>
+    <RevealButton />
     <VotingStateDisplay />
     <button class={classes.button} onClick={() => socket.removeUsersNotVoted()}>
       {BUTTON_KICK_NOT_VOTED}
