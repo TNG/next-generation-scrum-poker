@@ -5,17 +5,14 @@
   --light-blue: hsl(205, 95%, 40%);
   --tng-gray: rgb(161, 166, 174);
   --light-gray: hsl(217, 8%, 94%);
+  --dark-red: hsl(0, 100%, 40%);
+  --red: hsl(0, 100%, 50%);
 }
 
 @media (min-width: 300px) {
   :root {
     --button-width: 14rem;
   }
-}
-
-:global body {
-  font: 16px sans-serif;
-  margin: 0;
 }
 
 :global * {
@@ -26,17 +23,34 @@
   outline: none;
 }
 
+:global body {
+  font: 16px sans-serif;
+  margin: 0;
+}
+
 :global input[type='text'],
 :global input[type='submit'],
 :global button,
 :global select {
   font-size: 1rem;
-  line-height: 2rem;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   border: none;
+  margin: 0;
   border-radius: var(--border-radius);
+}
+
+:global input[type='text'] {
+  line-height: 2rem;
+  padding: 0 0.5rem;
+}
+
+:global input[type='submit'],
+:global button,
+:global select {
+  line-height: 2.25rem;
+  padding: 0;
 }
 
 :global input[type='text'] {

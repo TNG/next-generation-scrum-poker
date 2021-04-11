@@ -26,8 +26,10 @@ const initialWebSocketState: WebSocketState = {
   votes: {},
   scale: SCALES.COHEN_SCALE.values,
 };
+
 const initialLoginData: WebSocketLoginData = { user: '', session: '' };
-const WebSocketContext = createContext<WebSocketApi>({
+
+export const WebSocketContext = createContext<WebSocketApi>({
   connected: false,
   login: doNothing,
   loginData: initialLoginData,
@@ -142,11 +144,7 @@ export const WebSocketProvider = ({ children }: any) => {
     resetVotes,
     removeUsersNotVoted,
   };
-  return (
-    <WebSocketContext.Provider value={value} key="provider">
-      {children}
-    </WebSocketContext.Provider>
-  );
+  return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>;
 };
 
 export const WebSocketConsumer = WebSocketContext.Consumer;
