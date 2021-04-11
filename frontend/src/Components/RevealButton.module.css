@@ -1,6 +1,26 @@
-.revealButton {
-  composes: button from '../styles.module.css';
-  height: 4rem;
+.revealButtonContainer {
   margin-top: 2.5rem;
   margin-bottom: 0.5rem;
+  text-align: center;
+  line-height: 2.25rem;
+}
+
+.revealButton {
+  composes: button from '../styles.module.css';
+  height: 4.5rem;
+}
+
+.revealNowButton {
+  composes: button from '../styles.module.css';
+  background-color: var(--dark-red);
+}
+
+:global(.no-touch) .revealNowButton:hover,
+.revealNowButton:focus {
+  color: white;
+  background: var(--red);
+}
+
+:global(.no-touch) .revealNowButton:hover:active {
+  background: var(--dark-red);
 }
