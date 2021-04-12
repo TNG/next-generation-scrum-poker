@@ -47,13 +47,29 @@ describe('The RevealButton', () => {
 
     fireEvent.click(getByText('Reveal Votes'));
     expect(revealVotes).not.toHaveBeenCalled();
-    getByText('1 people did not vote');
+    getByText('waiting for 1 missing votes…');
 
     fireEvent.click(getByText('Reveal Now'));
     expect(revealVotes).toHaveBeenCalled();
   });
 
-  it('auto-updates the view and auto-reveals', () => {
+  it('reveals if only the vote of the current user is missing', () => {
+    const revealVotes = jest.fn();
+    const { getByText } = render({
+      revealVotes,
+      state: {
+        votes: {
+          TheUser: 'not-voted',
+          OtherUser: '5',
+        },
+      },
+    });
+
+    fireEvent.click(getByText('Reveal Votes'));
+    expect(revealVotes).toHaveBeenCalled();
+  });
+
+  it('auto-updates the view and auto-reveals once missing votes have been added, not counting your own vote', () => {
     const revealVotes = jest.fn();
     const { getByText, rerender } = render({
       revealVotes,
@@ -61,32 +77,48 @@ describe('The RevealButton', () => {
         votes: {
           TheUser: 'not-voted',
           OtherUser: 'not-voted',
+          ThirdUser: 'not-voted',
         },
       },
     });
 
     fireEvent.click(getByText('Reveal Votes'));
     expect(revealVotes).not.toHaveBeenCalled();
-    getByText('2 people did not vote');
+    getByText('waiting for 2 missing votes…');
 
     rerender({
       revealVotes,
       state: {
         votes: {
           TheUser: 'not-voted',
-          OtherUser: '5',
+          OtherUser: '3',
+          ThirdUser: 'not-voted',
         },
       },
     });
     expect(revealVotes).not.toHaveBeenCalled();
-    getByText('1 people did not vote');
+    getByText('waiting for 1 missing votes…');
 
     rerender({
       revealVotes,
       state: {
         votes: {
-          TheUser: '3',
-          OtherUser: '5',
+          TheUser: '2',
+          OtherUser: '3',
+          ThirdUser: 'not-voted',
+        },
+      },
+    });
+    expect(revealVotes).not.toHaveBeenCalled();
+    getByText('waiting for 1 missing votes…');
+
+    rerender({
+      revealVotes,
+      state: {
+        votes: {
+          TheUser: '2',
+          OtherUser: '3',
+          ThirdUser: '5',
         },
       },
     });
