@@ -20,7 +20,7 @@ const COHEN_SCALE = [
   '∞',
 ];
 
-const EXPIRY_TIME_IN_HOUR = process.env.EXPIRY_TIME_IN_HOUR || '1';
+const EXPIRY_TIME_IN_HOUR = process.env.EXPIRY_TIME_IN_HOUR || '16';
 
 export async function loginUser(userId: string, groupId: string, config: Config) {
   const updateConnectionParams = {
