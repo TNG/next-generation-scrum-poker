@@ -6,7 +6,7 @@ const ddb = new AWS.DynamoDB.DocumentClient({
   region: process.env.AWS_REGION,
 });
 
-const EXPIRY_TIME_IN_HOUR = process.env.EXPIRY_TIME_IN_HOUR || '1';
+const EXPIRY_TIME_IN_HOUR = process.env.EXPIRY_TIME_IN_HOUR || '16';
 const TABLE_NAME = process.env.TABLE_NAME || 'scrum_poker';
 
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -17,7 +17,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     Item: {
       primaryKey: `connectionId:${event.requestContext.connectionId}`,
       connectionId: event.requestContext.connectionId,
-      ttl: Math.floor(expiryDate.getDate() / 1000),
+      ttl: Math.floor(expiryDate.getTime() / 1000),
     },
   };
 
