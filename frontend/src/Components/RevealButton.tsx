@@ -1,4 +1,4 @@
-import { WebSocketApi } from '../types/WebSocket';
+import { Votes, WebSocketApi } from '../types/WebSocket';
 import classes from './RevealButton.module.css';
 import { connectToWebSocket } from './WebSocket';
 import { BUTTON_REVEAL_VOTES, VOTE_NOTE_VOTED } from '../constants';
@@ -6,6 +6,7 @@ import { useEffect, useState } from 'preact/hooks';
 
 const ProtoRevealButton = ({
   socket: {
+    loginData: { user },
     revealVotes,
     state: { votes },
   },
@@ -14,16 +15,15 @@ const ProtoRevealButton = ({
 }) => {
   const [hasRequestedReveal, setHasRequestedReveal] = useState(false);
   useEffect(() => {
-    if (hasRequestedReveal && Object.values(votes).every((vote) => vote !== VOTE_NOTE_VOTED)) {
+    if (hasRequestedReveal && getNumberOfMissingVotes(votes, user) === 0) {
       revealVotes();
     }
-  }, [votes]);
+  }, [votes, user]);
 
   if (hasRequestedReveal) {
-    const missingVotes = Object.values(votes).filter((vote) => vote === VOTE_NOTE_VOTED).length;
     return (
       <div class={classes.revealButtonContainer}>
-        <div>{missingVotes} people did not vote</div>
+        <div>waiting for {getNumberOfMissingVotes(votes, user)} missing votes…</div>
         <button class={classes.revealNowButton} onClick={revealVotes}>
           Reveal Now
         </button>
@@ -35,7 +35,7 @@ const ProtoRevealButton = ({
       <button
         class={classes.revealButton}
         onClick={() => {
-          if (Object.values(votes).some((vote) => vote === VOTE_NOTE_VOTED)) {
+          if (getNumberOfMissingVotes(votes, user) > 0) {
             setHasRequestedReveal(true);
           } else {
             revealVotes();
@@ -47,5 +47,9 @@ const ProtoRevealButton = ({
     </div>
   );
 };
+
+const getNumberOfMissingVotes = (votes: Votes, currentUser: string): number =>
+  Object.entries(votes).filter(([user, vote]) => vote === VOTE_NOTE_VOTED && user !== currentUser)
+    .length;
 
 export const RevealButton = connectToWebSocket(ProtoRevealButton);
