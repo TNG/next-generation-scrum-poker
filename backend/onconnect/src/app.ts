@@ -17,7 +17,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     Item: {
       primaryKey: `connectionId:${event.requestContext.connectionId}`,
       connectionId: event.requestContext.connectionId,
-      ttl: Math.floor(expiryDate.getDate() / 1000),
+      ttl: Math.floor(expiryDate.getTime() / 1000),
     },
   };
 

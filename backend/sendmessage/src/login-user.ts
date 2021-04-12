@@ -64,7 +64,7 @@ export async function loginUser(userId: string, groupId: string, config: Config)
       TableName: config.tableName,
       Item: {
         primaryKey: `groupId:${groupId}`,
-        ttl: Math.floor(expiryDate.getDate() / 1000),
+        ttl: Math.floor(expiryDate.getTime() / 1000),
         [userId]: { connectionId: config.connectionId },
         groupId,
         scale: COHEN_SCALE,
