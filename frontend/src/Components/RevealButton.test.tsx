@@ -33,7 +33,7 @@ describe('The RevealButton', () => {
     expect(revealVotes).toHaveBeenCalled();
   });
 
-  it('does not reveal votes but shows a different view if votes are missing', () => {
+  it('shows a different reveal button if votes are missing', () => {
     const revealVotes = jest.fn();
     const { getByText } = render({
       revealVotes,
@@ -45,27 +45,7 @@ describe('The RevealButton', () => {
       },
     });
 
-    fireEvent.click(getByText('Reveal Votes'));
-    expect(revealVotes).not.toHaveBeenCalled();
-    getByText('waiting for 1 missing votes…');
-
     fireEvent.click(getByText('Reveal Now'));
-    expect(revealVotes).toHaveBeenCalled();
-  });
-
-  it('reveals if only the vote of the current user is missing', () => {
-    const revealVotes = jest.fn();
-    const { getByText } = render({
-      revealVotes,
-      state: {
-        votes: {
-          TheUser: 'not-voted',
-          OtherUser: '5',
-        },
-      },
-    });
-
-    fireEvent.click(getByText('Reveal Votes'));
     expect(revealVotes).toHaveBeenCalled();
   });
 
@@ -81,10 +61,7 @@ describe('The RevealButton', () => {
         },
       },
     });
-
-    fireEvent.click(getByText('Reveal Votes'));
-    expect(revealVotes).not.toHaveBeenCalled();
-    getByText('waiting for 2 missing votes…');
+    expect(getByText('Reveal Now')).toHaveTextContent('2 missing votes');
 
     rerender({
       revealVotes,
@@ -96,8 +73,7 @@ describe('The RevealButton', () => {
         },
       },
     });
-    expect(revealVotes).not.toHaveBeenCalled();
-    getByText('waiting for 1 missing votes…');
+    expect(getByText('Reveal Now')).toHaveTextContent('1 missing votes');
 
     rerender({
       revealVotes,
@@ -109,8 +85,7 @@ describe('The RevealButton', () => {
         },
       },
     });
-    expect(revealVotes).not.toHaveBeenCalled();
-    getByText('waiting for 1 missing votes…');
+    expect(getByText('Reveal Now')).toHaveTextContent('1 missing votes');
 
     rerender({
       revealVotes,
@@ -122,6 +97,6 @@ describe('The RevealButton', () => {
         },
       },
     });
-    expect(revealVotes).toHaveBeenCalled();
+    getByText('Reveal Votes');
   });
 });
