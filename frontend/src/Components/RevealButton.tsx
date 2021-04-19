@@ -5,17 +5,16 @@ import { BUTTON_REVEAL_NOW, BUTTON_REVEAL_VOTES, VOTE_NOTE_VOTED } from '../cons
 
 const ProtoRevealButton = ({
   socket: {
-    loginData: { user },
     revealVotes,
     state: { votes },
   },
 }: {
   socket: WebSocketApi;
 }) => {
-  const missingVotes = getNumberOfMissingVotes(votes, user);
+  const missingVotes = getNumberOfMissingVotes(votes);
   if (missingVotes > 0) {
     return (
-      <button class={classes.revealNowButton} onClick={revealVotes}>
+      <button class={classes.revealButton} onClick={revealVotes}>
         <div class={classes.revealNowButtonInfo}>{missingVotes} missing votes</div>
         {BUTTON_REVEAL_NOW}
       </button>
@@ -28,8 +27,7 @@ const ProtoRevealButton = ({
   );
 };
 
-const getNumberOfMissingVotes = (votes: Votes, currentUser: string): number =>
-  Object.entries(votes).filter(([user, vote]) => vote === VOTE_NOTE_VOTED && user !== currentUser)
-    .length;
+const getNumberOfMissingVotes = (votes: Votes): number =>
+  Object.values(votes).reduce((count, vote) => (vote === VOTE_NOTE_VOTED ? count + 1 : count), 0);
 
 export const RevealButton = connectToWebSocket(ProtoRevealButton);

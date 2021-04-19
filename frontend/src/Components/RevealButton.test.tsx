@@ -49,7 +49,7 @@ describe('The RevealButton', () => {
     expect(revealVotes).toHaveBeenCalled();
   });
 
-  it('auto-updates the view and auto-reveals once missing votes have been added, not counting your own vote', () => {
+  it('auto-updates the view and auto-reveals once missing votes have been added', () => {
     const revealVotes = jest.fn();
     const { getByText, rerender } = render({
       revealVotes,
@@ -61,7 +61,7 @@ describe('The RevealButton', () => {
         },
       },
     });
-    expect(getByText('Reveal Now')).toHaveTextContent('2 missing votes');
+    expect(getByText('Reveal Now')).toHaveTextContent('3 missing votes');
 
     rerender({
       revealVotes,
@@ -73,7 +73,7 @@ describe('The RevealButton', () => {
         },
       },
     });
-    expect(getByText('Reveal Now')).toHaveTextContent('1 missing votes');
+    expect(getByText('Reveal Now')).toHaveTextContent('2 missing votes');
 
     rerender({
       revealVotes,

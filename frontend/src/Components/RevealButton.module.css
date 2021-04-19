@@ -5,22 +5,8 @@
   height: 4.5rem;
 }
 
-.revealNowButton {
-  composes: revealButton;
-  background-color: var(--dark-red);
-}
-
 .revealNowButtonInfo {
   font-size: 0.75rem;
+  margin-top: 0.75rem;
   line-height: 1;
-}
-
-:global(.no-touch) .revealNowButton:hover,
-.revealNowButton:focus {
-  color: white;
-  background: var(--red);
-}
-
-:global(.no-touch) .revealNowButton:hover:active {
-  background: var(--dark-red);
 }
