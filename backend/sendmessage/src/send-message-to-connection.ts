@@ -4,7 +4,7 @@ const { getConnectionItem } = require('./get-item.js');
 
 export async function sendMessageToConnection(message: string, config: Config) {
   try {
-    await config.apigwManagementApi
+    await config
       .postToConnection({ ConnectionId: config.connectionId as string, Data: message })
       .promise();
   } catch (e) {
