@@ -1,0 +1,12 @@
+.revealButton {
+  composes: button from '../styles.module.css';
+  margin-top: 2.5rem;
+  margin-bottom: 0.5rem;
+  height: 4.5rem;
+}
+
+.revealNowButtonInfo {
+  font-size: 0.75rem;
+  margin-top: 0.75rem;
+  line-height: 1;
+}
