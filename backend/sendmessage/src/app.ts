@@ -1,7 +1,7 @@
 import * as AWS from 'aws-sdk';
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import { Config } from './types';
-import { message } from './message';
+import { onMessage } from './on-message';
 import { TABLE_NAME } from './const';
 
 const ddb = new AWS.DynamoDB.DocumentClient({
@@ -9,9 +9,9 @@ const ddb = new AWS.DynamoDB.DocumentClient({
   region: process.env.AWS_REGION,
 });
 
-export const handler: APIGatewayProxyHandler = async (event) => {
+export const handler: APIGatewayProxyHandler = (event) => {
   const connectionId = event.requestContext.connectionId;
-  const { type, payload } = JSON.parse(event.body as string).data;
+  const message = JSON.parse(event.body as string).data;
   const config: Config = {
     connectionId,
     tableName: TABLE_NAME,
@@ -22,5 +22,5 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     }).postToConnection,
   };
 
-  return await message(type, payload, config);
+  return onMessage(message, config);
 };

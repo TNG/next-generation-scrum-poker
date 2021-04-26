@@ -4,22 +4,22 @@ import { revealVotes } from './reveal-votes';
 import { setVote } from './set-vote';
 import { resetVotes } from './reset-votes';
 import { removeUsersNotVoted } from './remove-users-not-voted';
-import { Config, Payload } from './types';
+import { Config, Message } from './types';
 
-export const message = async (type: any, payload: Payload, config: Config) => {
+export const onMessage = async (message: Message, config: Config) => {
   try {
-    switch (type) {
+    switch (message.type) {
       case 'login':
-        await loginUser(payload.user!, payload.session!, config);
+        await loginUser(message.payload!.user!, message.payload!.session!, config);
         break;
       case 'set-scale':
-        await setScale(payload.scale!, config);
+        await setScale(message.payload!.scale!, config);
         break;
       case 'reveal-votes':
         await revealVotes(config);
         break;
       case 'set-vote':
-        await setVote(payload.vote!, config);
+        await setVote(message.payload!.vote!, config);
         break;
       case 'reset-votes':
         await resetVotes(config);

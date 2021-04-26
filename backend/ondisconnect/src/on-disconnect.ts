@@ -1,7 +1,10 @@
 import * as AWS from 'aws-sdk';
 import { TABLE_NAME } from './const';
 
-export const disconnect = async (ddb: AWS.DynamoDB.DocumentClient, connectionId: any) => {
+export const onDisconnect = async (
+  ddb: AWS.DynamoDB.DocumentClient,
+  connectionId: string | undefined
+) => {
   const deleteParams = {
     TableName: TABLE_NAME,
     Key: {

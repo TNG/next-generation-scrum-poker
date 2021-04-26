@@ -1,7 +1,10 @@
 import * as AWS from 'aws-sdk';
 import { EXPIRY_TIME_IN_HOUR, TABLE_NAME } from './const';
 
-export const connect = async (ddb: AWS.DynamoDB.DocumentClient, connectionId: any) => {
+export const onConnect = async (
+  ddb: AWS.DynamoDB.DocumentClient,
+  connectionId: string | undefined
+) => {
   const expiryDate = new Date(Date.now());
   expiryDate.setHours(expiryDate.getHours() + parseFloat(EXPIRY_TIME_IN_HOUR));
   const putParams = {

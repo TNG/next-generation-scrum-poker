@@ -25,3 +25,8 @@ export interface Payload {
   scale?: string;
   vote?: string;
 }
+
+export interface Message {
+  type: string;
+  payload?: Payload;
+}
