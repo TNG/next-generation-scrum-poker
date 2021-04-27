@@ -1,10 +1,11 @@
 import * as AWS from 'aws-sdk';
+import { PostToConnectionRequest } from 'aws-sdk/clients/apigatewaymanagementapi';
 
 export interface Config {
   connectionId?: string;
   tableName: string;
   ddb: AWS.DynamoDB.DocumentClient;
-  apigwManagementApi: AWS.ApiGatewayManagementApi;
+  postToConnection: (arg: PostToConnectionRequest) => { promise(): Promise<unknown> };
 }
 
 export interface GroupItem {
@@ -16,4 +17,16 @@ export interface GroupItem {
 
 export interface ConnectionItem {
   groupId?: string;
+}
+
+export interface Payload {
+  user?: string;
+  session?: string;
+  scale?: string;
+  vote?: string;
+}
+
+export interface Message {
+  type: string;
+  payload?: Payload;
 }
