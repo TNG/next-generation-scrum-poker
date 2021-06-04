@@ -38,8 +38,7 @@
   margin-left: 0.5rem;
 }
 
-.card:active,
-.card:focus,
+.card:focus-visible,
 :global(.no-touch) .card:hover {
   background: var(--light-blue);
   color: white;
