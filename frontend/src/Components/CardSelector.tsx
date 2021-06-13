@@ -1,10 +1,35 @@
 import classNames from 'classnames';
-import { WebSocketApi } from '../types/WebSocket';
+import { CardValue, WebSocketApi } from '../types/WebSocket';
 import classes from './CardSelector.module.css';
 import { IconCoffee } from './IconCoffee';
 import { connectToWebSocket } from './WebSocket';
 import { IconObserver } from './IconObserver';
 import { BUTTON_OBSERVER, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../constants';
+import { JSX } from 'preact';
+
+const SPECIAL_ICONS: { [value in CardValue]?: JSX.Element } = {
+  [VOTE_OBSERVER]: <IconObserver />,
+  [VOTE_COFFEE]: <IconCoffee />,
+};
+const getCard = (
+  cardValue: CardValue,
+  isSelected: boolean,
+  isObserver: boolean,
+  socket: WebSocketApi
+) => (
+  <button
+    key={cardValue}
+    class={classNames({
+      [classes.buttonObserver]: isObserver,
+      [classes.largeCard]: !isObserver,
+      [classes.selected]: isSelected,
+    })}
+    onClick={() => socket.setVote(isSelected ? VOTE_NOTE_VOTED : cardValue)}
+  >
+    {SPECIAL_ICONS[cardValue] || cardValue}
+    {isObserver && <div class={classes.buttonObserverText}>{BUTTON_OBSERVER}</div>}
+  </button>
+);
 
 const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
   const selectedCard = socket.state.votes[socket.loginData.user];
@@ -12,34 +37,11 @@ const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
   return (
     <>
       <div class={classes.cardCollection}>
-        {socket.state.scale.map((cardValue) => {
-          return (
-            <button
-              key={cardValue}
-              class={selectedCard === cardValue ? classNames([classes.largeCard, classes.selected]) : classNames([classes.largeCard])}
-              onClick={() => {
-                if (selectedCard === cardValue) {
-                  socket.setVote(VOTE_NOTE_VOTED);
-                } else {
-                  socket.setVote(cardValue);
-                }
-              }}
-            >
-              {cardValue === VOTE_COFFEE ? <IconCoffee /> : cardValue}
-            </button>
-          );
-        })}
+        {socket.state.scale.map((cardValue) =>
+          getCard(cardValue, selectedCard === cardValue, false, socket)
+        )}
       </div>
-      <button
-        class={classNames([
-          classes.buttonObserver,
-          { [classes.selected]: selectedCard === VOTE_OBSERVER },
-        ])}
-        onClick={() => socket.setVote(VOTE_OBSERVER)}
-      >
-        <IconObserver />
-        <div class={classes.buttonObserverText}>{BUTTON_OBSERVER}</div>
-      </button>
+      {getCard(VOTE_OBSERVER, selectedCard === VOTE_OBSERVER, true, socket)}
     </>
   );
 };
