@@ -40,7 +40,7 @@ describe('The CardSelector', () => {
     fireEvent.click(getByTitle('Need a break'));
 
     // then
-    expect(setVote).toHaveBeenNthCalledWith(2,'coffee');
+    expect(setVote).toHaveBeenNthCalledWith(2, 'coffee');
   });
 
   it('lets the user unselect a card', () => {
@@ -77,6 +77,6 @@ describe('The CardSelector', () => {
     fireEvent.click(getByText('1'));
 
     // then
-    expect(setVote).toHaveBeenNthCalledWith(2,'not-voted');
+    expect(setVote).toHaveBeenNthCalledWith(2, 'not-voted');
   });
 });

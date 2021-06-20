@@ -11,25 +11,24 @@ const SPECIAL_ICONS: { [value in CardValue]?: JSX.Element } = {
   [VOTE_OBSERVER]: <IconObserver />,
   [VOTE_COFFEE]: <IconCoffee />,
 };
-const getCard = (
-  cardValue: CardValue,
-  isSelected: boolean,
-  isObserver: boolean,
-  socket: WebSocketApi
-) => (
-  <button
-    key={cardValue}
-    class={classNames({
-      [classes.buttonObserver]: isObserver,
-      [classes.largeCard]: !isObserver,
-      [classes.selected]: isSelected,
-    })}
-    onClick={() => socket.setVote(isSelected ? VOTE_NOTE_VOTED : cardValue)}
-  >
-    {SPECIAL_ICONS[cardValue] || cardValue}
-    {isObserver && <div class={classes.buttonObserverText}>{BUTTON_OBSERVER}</div>}
-  </button>
-);
+const getCard = (cardValue: CardValue, isSelected: boolean, setVote: WebSocketApi['setVote']) => {
+  const isObserver = cardValue === VOTE_OBSERVER;
+
+  return (
+    <button
+      key={cardValue}
+      class={classNames({
+        [classes.buttonObserver]: isObserver,
+        [classes.largeCard]: !isObserver,
+        [classes.selected]: isSelected,
+      })}
+      onClick={() => setVote(isSelected ? VOTE_NOTE_VOTED : cardValue)}
+    >
+      {SPECIAL_ICONS[cardValue] || cardValue}
+      {isObserver && <div class={classes.buttonObserverText}>{BUTTON_OBSERVER}</div>}
+    </button>
+  );
+};
 
 const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
   const selectedCard = socket.state.votes[socket.loginData.user];
@@ -38,10 +37,10 @@ const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
     <>
       <div class={classes.cardCollection}>
         {socket.state.scale.map((cardValue) =>
-          getCard(cardValue, selectedCard === cardValue, false, socket)
+          getCard(cardValue, selectedCard === cardValue, socket.setVote)
         )}
       </div>
-      {getCard(VOTE_OBSERVER, selectedCard === VOTE_OBSERVER, true, socket)}
+      {getCard(VOTE_OBSERVER, selectedCard === VOTE_OBSERVER, socket.setVote)}
     </>
   );
 };
