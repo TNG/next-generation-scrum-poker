@@ -1,5 +1,5 @@
 import { getRenderWithWebSocket } from '../test-helpers/renderWithWebSocker';
-import { fireEvent, prettyDOM } from '@testing-library/preact';
+import { fireEvent } from '@testing-library/preact';
 import { RevealButton } from './RevealButton';
 import { SCALES } from '../constants';
 
