@@ -16,10 +16,10 @@ export const handler: APIGatewayProxyHandler = (event) => {
     connectionId,
     tableName: TABLE_NAME,
     ddb,
-    postToConnection: new AWS.ApiGatewayManagementApi({
+    handler: new AWS.ApiGatewayManagementApi({
       apiVersion: '2018-11-29',
       endpoint: event.requestContext.domainName,
-    }).postToConnection,
+    }),
   };
 
   return onMessage(message, config);
