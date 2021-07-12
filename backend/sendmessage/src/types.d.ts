@@ -5,7 +5,9 @@ export interface Config {
   connectionId?: string;
   tableName: string;
   ddb: AWS.DynamoDB.DocumentClient;
-  postToConnection: (arg: PostToConnectionRequest) => { promise(): Promise<unknown> };
+  handler: {
+    postToConnection: (arg: PostToConnectionRequest) => { promise(): Promise<unknown> };
+  };
 }
 
 export interface GroupItem {
