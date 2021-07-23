@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     preact(),
     replace({
-      API_URL: JSON.stringify('wss://api.scrum-poker.aws.tngtech.com'),
+      API_URL: JSON.stringify('ws://localhost:8080'),
       preventAssignment: true,
     }),
   ],

@@ -1,8 +1,8 @@
 import { Config, ConnectionItem, GroupItem } from './types';
 
-const { validUserId } = require('./filter-userId.js');
-const { getConnectionItem, getGroupItem } = require('./get-item.js');
-const { broadcastState } = require('./broadcast-state.js');
+const { validUserId } = require('./filter-userId');
+const { getConnectionItem, getGroupItem } = require('./get-item');
+const { broadcastState } = require('./broadcast-state');
 
 export function getResetVotesUpdateParams(
   groupItem: GroupItem,

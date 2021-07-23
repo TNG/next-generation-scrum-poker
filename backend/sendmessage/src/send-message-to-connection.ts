@@ -1,6 +1,6 @@
 import { Config } from './types';
 
-const { getConnectionItem } = require('./get-item.js');
+const { getConnectionItem } = require('./get-item');
 
 export async function sendMessageToConnection(message: string, config: Config) {
   try {

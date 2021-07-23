@@ -1,8 +1,8 @@
 import { Config } from './types';
 
-const { validUserId } = require('./filter-userId.js');
-const { getGroupItem } = require('./get-item.js');
-const { sendMessageToConnection } = require('./send-message-to-connection.js');
+import { validUserId } from './filter-userId';
+import { getGroupItem } from './get-item';
+import { sendMessageToConnection } from './send-message-to-connection';
 
 export async function broadcastState(groupId: string, config: Config) {
   const { tableName, ddb } = config;
