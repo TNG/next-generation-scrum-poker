@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useEffect } from 'preact/hooks';
 import { CardValue, WebSocketApi } from '../types/WebSocket';
 import classes from './CardSelector.module.css';
 import { IconCoffee } from './IconCoffee';
@@ -30,8 +31,27 @@ const getCard = (cardValue: CardValue, isSelected: boolean, setVote: WebSocketAp
   );
 };
 
+function arrayContainsValue<T>(array: T[], value: unknown): value is T {
+  return !!array.find(elem => elem === value)
+}
+
 const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
   const selectedCard = socket.state.votes[socket.loginData.user];
+
+  const onKeyDown = (event: KeyboardEvent) => {
+    const keyValue = event.key;
+    if (arrayContainsValue(socket.state.scale, keyValue)) {
+      socket.setVote(keyValue)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("keydown", onKeyDown)
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    }
+  })
 
   return (
     <>

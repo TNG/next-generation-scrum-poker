@@ -17,6 +17,23 @@ const render = getRenderWithWebSocket(<CardSelector />, {
 });
 
 describe('The CardSelector', () => {
+  let onKeyDown: EventListener;
+  let originalAddEventListener: typeof window.addEventListener;
+
+  beforeAll(() => {
+    originalAddEventListener = window.addEventListener;
+  })
+
+  beforeEach(() => {
+    window.addEventListener = jest.fn((event: string, handler: EventListenerOrEventListenerObject) => {
+      onKeyDown = handler as EventListener
+    })
+  })
+
+  afterAll(() => {
+    window.addEventListener = originalAddEventListener;
+  })
+
   it('lets the user pick different card values', () => {
     // given
     const setVote = jest.fn();
@@ -78,5 +95,38 @@ describe('The CardSelector', () => {
 
     // then
     expect(setVote).toHaveBeenNthCalledWith(2, 'not-voted');
+  });
+
+  it('lets the user pick different card values with the keyboard', () => {
+    // given
+    const setVote = jest.fn();
+    render({
+      setVote,
+      state: { votes: { TheUser: 'not-voted',  OtherUser: '5' } },
+    });
+
+    // when
+    onKeyDown({ key: "1" } as unknown as Event)
+
+    // then
+    expect(setVote).toHaveBeenNthCalledWith(1, '1');
+
+    // when
+    onKeyDown({ key: "2" } as unknown as Event)
+
+    // then
+    expect(setVote).toHaveBeenNthCalledWith(2, '2');
+
+    // when
+    onKeyDown({ key: "4" } as unknown as Event) // Not available in the Cohen scale
+
+    // then
+    expect(setVote).toHaveBeenCalledTimes(2);
+
+    // when
+    onKeyDown({ key: "a" } as unknown as Event)
+
+    // then
+    expect(setVote).toHaveBeenCalledTimes(2);
   });
 });
