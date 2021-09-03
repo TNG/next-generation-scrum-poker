@@ -38,10 +38,9 @@ function arrayContainsValue<T>(array: T[], value: unknown): value is T {
 const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
   const selectedCard = socket.state.votes[socket.loginData.user];
 
-  const onKeyDown = (event: KeyboardEvent) => {
-    const keyValue = event.key;
-    if (arrayContainsValue(socket.state.scale, keyValue)) {
-      socket.setVote(keyValue)
+  const onKeyDown = ({ key }: KeyboardEvent) => {
+    if (arrayContainsValue(socket.state.scale, key)) {
+      socket.setVote(key)
     }
   }
 
