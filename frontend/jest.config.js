@@ -3,6 +3,7 @@ module.exports = {
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig-test.json',
+      packageJson: 'package.json',
     },
     API_URL: 'wss://api.url',
   },
