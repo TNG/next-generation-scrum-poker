@@ -156,19 +156,7 @@ describe('The CardSelector', () => {
   it('lets the user unselect cards with the keyboard', () => {
     // given
     const setVote = jest.fn();
-    const { rerender } = render({
-      setVote,
-      state: { votes: { TheUser: 'not-voted', OtherUser: '5' } },
-    });
-
-    // when
-    onKeyDown(({ key: '3' } as unknown) as Event);
-
-    // then
-    expect(setVote).toHaveBeenNthCalledWith(1, '3');
-
-    // when
-    rerender({
+    render({
       setVote,
       state: { votes: { TheUser: '3', OtherUser: '5' } },
     });
@@ -177,7 +165,7 @@ describe('The CardSelector', () => {
     onKeyDown(({ key: '3' } as unknown) as Event);
 
     // then
-    expect(setVote).toHaveBeenNthCalledWith(2, VOTE_NOTE_VOTED);
+    expect(setVote).toHaveBeenCalledWith(VOTE_NOTE_VOTED);
   });
 
   it('lets the user cycle through cards with the keyboard', () => {
