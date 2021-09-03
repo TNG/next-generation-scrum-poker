@@ -31,26 +31,27 @@ const getCard = (cardValue: CardValue, isSelected: boolean, setVote: WebSocketAp
   );
 };
 
-function arrayContainsValue<T>(array: T[], value: unknown): value is T {
-  return !!array.find(elem => elem === value)
-}
-
 const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
   const selectedCard = socket.state.votes[socket.loginData.user];
 
   const onKeyDown = ({ key }: KeyboardEvent) => {
-    if (arrayContainsValue(socket.state.scale, key)) {
-      socket.setVote(key)
+    const matchingCards = socket.state.scale.filter(
+      (card: string) => card[0].toLowerCase() === key.toLowerCase()
+    );
+
+    if (matchingCards.length) {
+      const nextKey = matchingCards[matchingCards.indexOf(selectedCard) + 1] || VOTE_NOTE_VOTED;
+      socket.setVote(nextKey);
     }
-  }
+  };
 
   useEffect(() => {
-    window.addEventListener("keydown", onKeyDown)
+    window.addEventListener('keydown', onKeyDown);
 
     return () => {
-      window.removeEventListener("keydown", onKeyDown);
-    }
-  })
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  });
 
   return (
     <>
