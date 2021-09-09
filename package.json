@@ -5,7 +5,7 @@
   "scripts": {
     "start": "cd frontend && vite",
     "preview": "npm run build:frontend && cd frontend && vite preview",
-    "test": "npx jest --config frontend/jest.config.js",
+    "test": "jest --config frontend/jest.config.js",
     "build": "run-p build:backend build:frontend",
     "lint": "prettier . --write",
     "prepare": "husky install",
