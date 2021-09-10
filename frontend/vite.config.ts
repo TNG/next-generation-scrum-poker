@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     preact(),
     replace({
-      API_URL: JSON.stringify('ws://localhost:8080'),
+      API_URL: JSON.stringify(process.env.API_URL || 'ws://localhost:8080'),
       preventAssignment: true,
     }),
   ],
