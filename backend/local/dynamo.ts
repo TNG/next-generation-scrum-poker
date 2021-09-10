@@ -1,5 +1,4 @@
-import { AWSError } from 'aws-sdk';
-import { CreateTableOutput, GetItemOutput, PutItemOutput } from 'aws-sdk/clients/dynamodb';
+import { promisify } from 'util';
 
 const AWS = require('aws-sdk');
 AWS.config.update({
@@ -14,8 +13,10 @@ export const ddb = new AWS.DynamoDB.DocumentClient({
   endpoint: 'http://localhost:8000',
 });
 
+const TableName = 'scrum-poker-local';
+
 const params = {
-  TableName: 'scrum-poker-local',
+  TableName,
   KeySchema: [{ AttributeName: 'primaryKey', KeyType: 'HASH' }],
   AttributeDefinitions: [{ AttributeName: 'primaryKey', AttributeType: 'S' }],
   ProvisionedThroughput: {
@@ -24,46 +25,24 @@ const params = {
   },
 };
 
-export const createTable = () =>
-  dynamodb.createTable(params, function (err: AWSError, data: CreateTableOutput) {
-    if (err) {
-      console.error('Error JSON.', JSON.stringify(err, null, 2));
-    } else {
-      console.log('Created table.', JSON.stringify(data, null, 2));
-    }
-  });
+const createTable = promisify(dynamodb.createTable.bind(dynamodb));
 
-const putItem = (connectionId: string) => {
-  ddb.put(
-    {
-      TableName: 'scrum-poker-local',
-      Item: {
-        primaryKey: `connectionId:${connectionId}`,
-        connectionId: connectionId,
-      },
-    },
-    (err: AWSError, data: PutItemOutput) => {
-      console.log(err);
-      console.log(data);
+export const prepareTable = async () => {
+  while (true) {
+    try {
+      const data = await createTable(params);
+      console.log('Created table:', JSON.stringify(data, null, 2));
+      return;
+    } catch (err) {
+      if (err.code === 'ResourceInUseException') {
+        console.log(`Table "${TableName}" already exists`);
+        return;
+      } else if (err.code === 'UnknownEndpoint') {
+        console.log('Database not found, retrying...');
+      } else {
+        console.error('Error creating table:', JSON.stringify(err, null, 2));
+        return;
+      }
     }
-  );
+  }
 };
-
-const getItem = (connectionId: string) => {
-  ddb.get(
-    {
-      TableName: 'scrum-poker-local',
-      Key: {
-        primaryKey: `connectionId:${connectionId}`,
-      },
-    },
-    (err: AWSError, data: GetItemOutput) => {
-      console.log(err);
-      console.log(data);
-    }
-  );
-};
-
-// a simple test - remove me
-// putItem('4');
-// getItem('4');

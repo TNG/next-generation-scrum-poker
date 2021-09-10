@@ -1,50 +1,9 @@
-import * as WebSocket from 'ws';
-import { onConnect } from '../onconnect/src/on-connect';
-import { createTable, ddb } from './dynamo';
-import { onMessage } from '../sendmessage/src/on-message';
+import { prepareTable } from './dynamo';
+import { startWebSocketServer } from './socket';
 
-interface WebsocketWithId extends WebSocket {
-  id?: string;
-}
+const start = async () => {
+  await prepareTable();
+  startWebSocketServer();
+};
 
-export function generateId(length: number): string {
-  const mask = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let result = '';
-  for (let i = length; i > 0; --i) result += mask[Math.round(Math.random() * (mask.length - 1))];
-  return result;
-}
-
-createTable();
-
-const wss = new WebSocket.Server({
-  port: 8080,
-  host: 'localhost',
-});
-
-wss.on('connection', function connection(ws, req) {
-  (ws as WebsocketWithId).id = generateId(16);
-  onConnect(ddb, (ws as WebsocketWithId).id).then((e) => {
-    console.log('onConnect', e);
-  });
-
-  ws.on('message', function incoming(data) {
-    const message = JSON.parse(data as string);
-    const config = {
-      connectionId: (ws as WebsocketWithId).id,
-      tableName: 'scrum-poker-local',
-      ddb,
-      handler: {
-        postToConnection: (postData: { ConnectionId: string; Data: unknown }) => {
-          const wsc = Array.from(wss.clients.values()).filter(
-            (wssc) => postData.ConnectionId === (wssc as WebsocketWithId).id
-          );
-          if (wsc.length === 1) {
-            wsc[0].send(postData.Data);
-          }
-          return { promise: () => Promise.resolve() }; // a hck to be aws compliant
-        },
-      },
-    };
-    onMessage(message.data, config).then(console.log).catch(console.log);
-  });
-});
+start();
