@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useEffect } from 'preact/hooks';
 import { CardValue, WebSocketApi } from '../types/WebSocket';
 import classes from './CardSelector.module.css';
 import { IconCoffee } from './IconCoffee';
@@ -32,6 +33,25 @@ const getCard = (cardValue: CardValue, isSelected: boolean, setVote: WebSocketAp
 
 const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
   const selectedCard = socket.state.votes[socket.loginData.user];
+
+  const onKeyDown = ({ key }: KeyboardEvent) => {
+    const matchingCards = socket.state.scale.filter(
+      (card) => card[0].toLowerCase() === key.toLowerCase()
+    );
+
+    if (matchingCards.length) {
+      const nextKey = matchingCards[matchingCards.indexOf(selectedCard) + 1] || VOTE_NOTE_VOTED;
+      socket.setVote(nextKey);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  });
 
   return (
     <>
