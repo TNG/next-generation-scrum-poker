@@ -67,6 +67,10 @@
   border-color: var(--light-blue);
 }
 
+:global a {
+  color: var(--tng-blue);
+}
+
 :global a:focus {
   outline: 0.125rem solid var(--light-blue);
   outline-offset: 0.125rem;
