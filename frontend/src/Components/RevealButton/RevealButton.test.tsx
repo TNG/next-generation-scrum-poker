@@ -1,7 +1,7 @@
-import { getRenderWithWebSocket } from '../test-helpers/renderWithWebSocket';
+import { getRenderWithWebSocket } from '../../test-helpers/renderWithWebSocket';
 import { fireEvent } from '@testing-library/preact';
 import { RevealButton } from './RevealButton';
-import { SCALES } from '../constants';
+import { SCALES } from '../../constants';
 
 const render = getRenderWithWebSocket(<RevealButton />, {
   connected: true,

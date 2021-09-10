@@ -1,9 +1,9 @@
-import { Footer } from './Footer';
-import { Header } from './Header';
-import { LoginPage } from './LoginPage/LoginPage';
-import { ResultsPage } from './ResultsPage/ResultsPage';
-import { VotingPage } from './VotingPage';
-import { connectToWebSocket } from './WebSocket';
+import { Footer } from '../Footer/Footer';
+import { Header } from '../Header/Header';
+import { LoginPage } from '../LoginPage/LoginPage';
+import { ResultsPage } from '../ResultsPage/ResultsPage';
+import { VotingPage } from '../VotingPage/VotingPage';
+import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './PageSelector.module.css';
 
 export const PageSelector = connectToWebSocket(({ socket }) => {

@@ -1,7 +1,7 @@
 import { RefObject } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import tngLogo from '../../img/tng.svg';
-import { connectToWebSocket } from '../WebSocket';
+import { connectToWebSocket } from '../WebSocket/WebSocket';
 import { generateId } from './generateId';
 import classes from './LoginPage.module.css';
 import {

@@ -1,6 +1,6 @@
-import { SCALES, SELECT_CHANGE_SCALE } from '../constants';
+import { SCALES, SELECT_CHANGE_SCALE } from '../../constants';
 import classes from './ScaleSelector.module.css';
-import { connectToWebSocket } from './WebSocket';
+import { connectToWebSocket } from '../WebSocket/WebSocket';
 
 export const ScaleSelector = connectToWebSocket(({ socket }) => (
   <select

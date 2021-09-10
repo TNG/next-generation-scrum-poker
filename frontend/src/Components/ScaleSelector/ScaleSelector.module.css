@@ -1,5 +1,5 @@
 .select {
-  composes: button from '../styles.module.css';
+  composes: button from '../../styles.module.css';
   margin-bottom: 1rem;
   padding-left: 3.75rem;
 }

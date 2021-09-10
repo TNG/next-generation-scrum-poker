@@ -1,7 +1,7 @@
 import { ComponentType, createContext } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { WEBSOCKET_URL } from '../config';
-import { SCALES, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../constants';
+import { WEBSOCKET_URL } from '../../config';
+import { SCALES, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../constants';
 import {
   getLoginRequest,
   getRemoveUsersNotVotedRequest,
@@ -9,7 +9,7 @@ import {
   getRevealVotesRequest,
   getSetScaleRequest,
   getSetVoteRequest,
-} from '../requests/websocket-requests';
+} from '../../requests/websocket-requests';
 import {
   CardValue,
   Votes,
@@ -17,7 +17,7 @@ import {
   WebSocketLoginData,
   WebsocketMessage,
   WebSocketState,
-} from '../types/WebSocket';
+} from '../../types/WebSocket';
 
 const doNothing = () => {};
 

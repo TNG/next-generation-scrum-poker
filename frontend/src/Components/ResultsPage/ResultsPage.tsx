@@ -1,9 +1,9 @@
 import sharedClasses from '../../styles.module.css';
 import { CardValue, Votes } from '../../types/WebSocket';
-import { IconCoffee } from '../IconCoffee';
-import { IconNotVoted } from '../IconNotVoted';
-import { IconObserver } from '../IconObserver';
-import { connectToWebSocket } from '../WebSocket';
+import { IconCoffee } from '../IconCoffee/IconCoffee';
+import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
+import { IconObserver } from '../IconObserver/IconObserver';
+import { connectToWebSocket } from '../WebSocket/WebSocket';
 import { compareVotes } from './compareVotes';
 import classes from './ResultsPage.module.css';
 import {

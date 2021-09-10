@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import { useEffect } from 'preact/hooks';
-import { CardValue, WebSocketApi } from '../types/WebSocket';
+import { CardValue, WebSocketApi } from '../../types/WebSocket';
 import classes from './CardSelector.module.css';
-import { IconCoffee } from './IconCoffee';
-import { connectToWebSocket } from './WebSocket';
-import { IconObserver } from './IconObserver';
-import { BUTTON_OBSERVER, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../constants';
+import { IconCoffee } from '../IconCoffee/IconCoffee';
+import { connectToWebSocket } from '../WebSocket/WebSocket';
+import { IconObserver } from '../IconObserver/IconObserver';
+import { BUTTON_OBSERVER, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../constants';
 import { JSX } from 'preact';
 
 const SPECIAL_ICONS: { [value in CardValue]?: JSX.Element } = {
