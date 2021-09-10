@@ -36,7 +36,7 @@ const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
 
   const onKeyDown = ({ key }: KeyboardEvent) => {
     const matchingCards = socket.state.scale.filter(
-      (card: string) => card[0].toLowerCase() === key.toLowerCase()
+      (card) => card[0].toLowerCase() === key.toLowerCase()
     );
 
     if (matchingCards.length) {

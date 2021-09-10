@@ -17,26 +17,6 @@ const render = getRenderWithWebSocket(<CardSelector />, {
 });
 
 describe('The CardSelector', () => {
-  let onKeyDown: EventListener;
-  let originalAddEventListener: typeof window.addEventListener;
-
-  beforeAll(() => {
-    originalAddEventListener = window.addEventListener;
-  });
-
-  beforeEach(() => {
-    jest.resetAllMocks();
-    window.addEventListener = jest.fn(
-      (event: string, handler: EventListenerOrEventListenerObject) => {
-        onKeyDown = handler as EventListener;
-      }
-    );
-  });
-
-  afterAll(() => {
-    window.addEventListener = originalAddEventListener;
-  });
-
   it('lets the user pick different card values', () => {
     // given
     const setVote = jest.fn();
@@ -109,25 +89,25 @@ describe('The CardSelector', () => {
     });
 
     // when
-    onKeyDown(({ key: '1' } as unknown) as Event);
+    fireEvent.keyDown(window, { key: '1' });
 
     // then
     expect(setVote).toHaveBeenNthCalledWith(1, '1');
 
     // when
-    onKeyDown(({ key: '2' } as unknown) as Event);
+    fireEvent.keyDown(window, { key: '2' });
 
     // then
     expect(setVote).toHaveBeenNthCalledWith(2, '2');
 
     // when
-    onKeyDown(({ key: '9' } as unknown) as Event); // Not available in the Cohen scale
+    fireEvent.keyDown(window, { key: '9' });
 
     // then
     expect(setVote).toHaveBeenCalledTimes(2);
 
     // when
-    onKeyDown(({ key: 'a' } as unknown) as Event);
+    fireEvent.keyDown(window, { key: 'A' });
 
     // then
     expect(setVote).toHaveBeenCalledTimes(2);
@@ -147,7 +127,7 @@ describe('The CardSelector', () => {
     });
 
     // when
-    onKeyDown(({ key } as unknown) as Event);
+    fireEvent.keyDown(window, { key });
 
     // then
     expect(setVote).toHaveBeenCalledWith(selectedCard);
@@ -162,7 +142,7 @@ describe('The CardSelector', () => {
     });
 
     // when
-    onKeyDown(({ key: '3' } as unknown) as Event);
+    fireEvent.keyDown(window, { key: '3' });
 
     // then
     expect(setVote).toHaveBeenCalledWith(VOTE_NOTE_VOTED);
@@ -177,7 +157,7 @@ describe('The CardSelector', () => {
     });
 
     // when
-    onKeyDown(({ key: '1' } as unknown) as Event);
+    fireEvent.keyDown(window, { key: '1' });
 
     // then
     expect(setVote).toHaveBeenNthCalledWith(1, '1');
@@ -186,7 +166,7 @@ describe('The CardSelector', () => {
     rerender({ setVote, state: { votes: { TheUser: '1', OtherUser: '5' } } });
 
     // when
-    onKeyDown(({ key: '1' } as unknown) as Event);
+    fireEvent.keyDown(window, { key: '1' });
 
     // then
     expect(setVote).toHaveBeenNthCalledWith(2, '13');
@@ -195,7 +175,7 @@ describe('The CardSelector', () => {
     rerender({ setVote, state: { votes: { TheUser: '13', OtherUser: '5' } } });
 
     // when
-    onKeyDown(({ key: '1' } as unknown) as Event);
+    fireEvent.keyDown(window, { key: '1' });
 
     // then
     expect(setVote).toHaveBeenNthCalledWith(3, '100');
@@ -207,7 +187,7 @@ describe('The CardSelector', () => {
     });
 
     // when
-    onKeyDown(({ key: '1' } as unknown) as Event);
+    fireEvent.keyDown(window, { key: '1' });
 
     // then
     expect(setVote).toHaveBeenNthCalledWith(4, VOTE_NOTE_VOTED);
@@ -228,7 +208,7 @@ describe('The CardSelector', () => {
     });
 
     // when
-    onKeyDown(({ key: 's' } as unknown) as Event);
+    fireEvent.keyDown(window, { key: 's' });
 
     // then
     expect(setVote).toHaveBeenNthCalledWith(1, 'S');
@@ -243,7 +223,7 @@ describe('The CardSelector', () => {
     });
 
     // when
-    onKeyDown(({ key: 'S' } as unknown) as Event);
+    fireEvent.keyDown(window, { key: 'S' });
 
     // then
     expect(setVote).toHaveBeenNthCalledWith(2, 'S');
