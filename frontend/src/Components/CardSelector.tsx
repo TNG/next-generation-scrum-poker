@@ -31,7 +31,7 @@ const getCard = (cardValue: CardValue, isSelected: boolean, setVote: WebSocketAp
   );
 };
 
-const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
+export const CardSelector = connectToWebSocket(({ socket }) => {
   const selectedCard = socket.state.votes[socket.loginData.user];
 
   const onKeyDown = ({ key }: KeyboardEvent) => {
@@ -63,6 +63,4 @@ const ProtoCardSelector = ({ socket }: { socket: WebSocketApi }) => {
       {getCard(VOTE_OBSERVER, selectedCard === VOTE_OBSERVER, socket.setVote)}
     </>
   );
-};
-
-export const CardSelector = connectToWebSocket(ProtoCardSelector);
+});

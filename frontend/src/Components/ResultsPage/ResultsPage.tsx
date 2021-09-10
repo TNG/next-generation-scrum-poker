@@ -1,5 +1,5 @@
 import sharedClasses from '../../styles.module.css';
-import { CardValue, Votes, WebSocketApi } from '../../types/WebSocket';
+import { CardValue, Votes } from '../../types/WebSocket';
 import { IconCoffee } from '../IconCoffee';
 import { IconNotVoted } from '../IconNotVoted';
 import { IconObserver } from '../IconObserver';
@@ -36,7 +36,7 @@ const getVote = (vote: CardValue) => {
 const getClassName = (vote: CardValue) =>
   vote === VOTE_NOTE_VOTED || vote === VOTE_OBSERVER ? classes.notVotedEntry : classes.votedEntry;
 
-const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
+export const ResultsPage = connectToWebSocket(({ socket }) => (
   <div class={classes.resultsPage}>
     <div class={sharedClasses.heading}>{HEADING_RESULTS}</div>
     <div class={sharedClasses.blueBorder}>
@@ -68,6 +68,4 @@ const ProtoResultsPage = ({ socket }: { socket: WebSocketApi }) => (
       Reset votes
     </button>
   </div>
-);
-
-export const ResultsPage = connectToWebSocket(ProtoResultsPage);
+));

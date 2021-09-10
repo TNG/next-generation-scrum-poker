@@ -1,7 +1,6 @@
 import { RefObject } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import tngLogo from '../../img/tng.svg';
-import { WebSocketApi } from '../../types/WebSocket';
 import { connectToWebSocket } from '../WebSocket';
 import { generateId } from './generateId';
 import classes from './LoginPage.module.css';
@@ -19,7 +18,7 @@ import {
 // During server-side-rendering, window/history cannot be accessed
 const isSSR = typeof window === 'undefined';
 
-const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
+export const LoginPage = connectToWebSocket(({ socket }) => {
   const firstInputRef: RefObject<HTMLInputElement> = useRef(null);
   const [user, setUser] = useState(socket.loginData.user);
   let sessionId = '';
@@ -78,6 +77,4 @@ const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
       </a>
     </form>
   );
-};
-
-export const LoginPage = connectToWebSocket(ProtoLoginPage);
+});

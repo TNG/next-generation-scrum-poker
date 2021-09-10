@@ -1,5 +1,4 @@
 import sharedClasses from '../styles.module.css';
-import { WebSocketApi } from '../types/WebSocket';
 import { CardSelector } from './CardSelector';
 import { ScaleSelector } from './ScaleSelector';
 import classes from './VotingPage.module.css';
@@ -8,7 +7,7 @@ import { connectToWebSocket } from './WebSocket';
 import { BUTTON_KICK_NOT_VOTED, HEADING_SELECT_CARD } from '../constants';
 import { RevealButton } from './RevealButton';
 
-const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => (
+export const VotingPage = connectToWebSocket(({ socket }) => (
   <div class={classes.votingPage}>
     <div class={sharedClasses.heading}>{HEADING_SELECT_CARD}</div>
     <CardSelector />
@@ -19,6 +18,4 @@ const ProtoVotingPage = ({ socket }: { socket: WebSocketApi }) => (
     </button>
     <ScaleSelector />
   </div>
-);
-
-export const VotingPage = connectToWebSocket(ProtoVotingPage);
+));

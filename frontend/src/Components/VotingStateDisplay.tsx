@@ -1,5 +1,5 @@
 import sharedClasses from '../styles.module.css';
-import { Votes, WebSocketApi } from '../types/WebSocket';
+import { Votes } from '../types/WebSocket';
 import { IconNotVoted } from './IconNotVoted';
 import { IconObserver } from './IconObserver';
 import { IconVoted } from './IconVoted';
@@ -53,7 +53,7 @@ const getIcon = (voted: boolean, observer: boolean) => {
   return <IconNotVoted />;
 };
 
-const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
+export const VotingStateDisplay = connectToWebSocket(({ socket }) => (
   <div class={sharedClasses.blueBorder}>
     <table class={sharedClasses.table}>
       <thead>
@@ -74,6 +74,4 @@ const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
       </tbody>
     </table>
   </div>
-);
-
-export const VotingStateDisplay = connectToWebSocket(ProtoVotingStateDisplay);
+));

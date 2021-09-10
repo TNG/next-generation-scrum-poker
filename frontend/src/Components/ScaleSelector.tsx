@@ -1,9 +1,8 @@
 import { SCALES, SELECT_CHANGE_SCALE } from '../constants';
-import { WebSocketApi } from '../types/WebSocket';
 import classes from './ScaleSelector.module.css';
 import { connectToWebSocket } from './WebSocket';
 
-const ProtoScaleSelector = ({ socket }: { socket: WebSocketApi }) => (
+export const ScaleSelector = connectToWebSocket(({ socket }) => (
   <select
     name="scale"
     class={classes.select}
@@ -19,6 +18,4 @@ const ProtoScaleSelector = ({ socket }: { socket: WebSocketApi }) => (
       </option>
     ))}
   </select>
-);
-
-export const ScaleSelector = connectToWebSocket(ProtoScaleSelector);
+));

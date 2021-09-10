@@ -1,4 +1,3 @@
-import { WebSocketApi } from '../types/WebSocket';
 import { Footer } from './Footer';
 import { Header } from './Header';
 import { LoginPage } from './LoginPage/LoginPage';
@@ -7,7 +6,7 @@ import { VotingPage } from './VotingPage';
 import { connectToWebSocket } from './WebSocket';
 import classes from './PageSelector.module.css';
 
-const ProtoPageSelector = ({ socket }: { socket: WebSocketApi }) => {
+export const PageSelector = connectToWebSocket(({ socket }) => {
   if (!socket.loginData.user || !socket.loggedIn) {
     return <LoginPage />;
   }
@@ -18,6 +17,4 @@ const ProtoPageSelector = ({ socket }: { socket: WebSocketApi }) => {
       <Footer />
     </div>
   );
-};
-
-export const PageSelector = connectToWebSocket(ProtoPageSelector);
+});
