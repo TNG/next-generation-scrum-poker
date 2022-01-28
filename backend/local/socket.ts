@@ -20,7 +20,7 @@ export const startWebSocketServer = () => {
     });
 
     ws.on('message', (data) => {
-      const message = JSON.parse(data as string);
+      const message = JSON.parse(String(data));
       const config = {
         connectionId: (ws as WebsocketWithId).id,
         tableName: 'scrum-poker-local',

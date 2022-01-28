@@ -33,7 +33,7 @@ export const prepareTable = async () => {
       const data = await createTable(params);
       console.log('Created table:', JSON.stringify(data, null, 2));
       return;
-    } catch (err) {
+    } catch (err: any) {
       if (err.code === 'ResourceInUseException') {
         console.log(`Table "${TableName}" already exists`);
         return;
