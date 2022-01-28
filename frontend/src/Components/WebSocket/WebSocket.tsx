@@ -150,21 +150,17 @@ export const WebSocketProvider = ({ children }: any) => {
 export const WebSocketConsumer = WebSocketContext.Consumer;
 
 type ConnectToWebSocket<P extends {} = {}> = (
-  Component: ComponentType<
-    {
-      [K in keyof P | 'socket']: K extends 'socket'
-        ? WebSocketApi
-        : K extends keyof P
-        ? P[K]
-        : never;
-    }
-  >
+  Component: ComponentType<{
+    [K in keyof P | 'socket']: K extends 'socket' ? WebSocketApi : K extends keyof P ? P[K] : never;
+  }>
 ) => ComponentType<P>;
 
-export const connectToWebSocket: ConnectToWebSocket = (Component) => (...props) => {
-  return (
-    <WebSocketConsumer>
-      {(socket: WebSocketApi) => <Component socket={socket} {...props} />}
-    </WebSocketConsumer>
-  );
-};
+export const connectToWebSocket: ConnectToWebSocket =
+  (Component) =>
+  (...props) => {
+    return (
+      <WebSocketConsumer>
+        {(socket: WebSocketApi) => <Component socket={socket} {...props} />}
+      </WebSocketConsumer>
+    );
+  };

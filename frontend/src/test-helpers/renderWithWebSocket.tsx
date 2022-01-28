@@ -34,23 +34,22 @@ const getApi = (
   },
 });
 
-export const getRenderWithWebSocket = (
-  children: ComponentChildren,
-  defaultApi: PartialWebsocketApi = {}
-) => (api: PartialWebsocketApi = {}) => {
-  const rendered = render(
-    <WebSocketContext.Provider value={getApi(defaultApi, api)}>
-      {children}
-    </WebSocketContext.Provider>
-  );
-  return {
-    ...rendered,
-    rerender(apiUpdate: PartialWebsocketApi = {}) {
-      rendered.rerender(
-        <WebSocketContext.Provider value={getApi(defaultApi, apiUpdate)}>
-          {children}
-        </WebSocketContext.Provider>
-      );
-    },
+export const getRenderWithWebSocket =
+  (children: ComponentChildren, defaultApi: PartialWebsocketApi = {}) =>
+  (api: PartialWebsocketApi = {}) => {
+    const rendered = render(
+      <WebSocketContext.Provider value={getApi(defaultApi, api)}>
+        {children}
+      </WebSocketContext.Provider>
+    );
+    return {
+      ...rendered,
+      rerender(apiUpdate: PartialWebsocketApi = {}) {
+        rendered.rerender(
+          <WebSocketContext.Provider value={getApi(defaultApi, apiUpdate)}>
+            {children}
+          </WebSocketContext.Provider>
+        );
+      },
+    };
   };
-};

@@ -28,7 +28,7 @@ export const onMessage = async (message: Message, config: Config) => {
         await removeUsersNotVoted(config);
         break;
     }
-  } catch (e) {
+  } catch (e: any) {
     return { statusCode: 500, body: e.stack };
   }
 

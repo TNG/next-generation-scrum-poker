@@ -1,9 +1,9 @@
 import { Config, ConnectionItem, GroupItem } from './types';
 
-const { validUserId } = require('./filter-userId.js');
-const { getConnectionItem, getGroupItem } = require('./get-item.js');
-const { broadcastState } = require('./broadcast-state.js');
-const { sendMessageToConnection } = require('./send-message-to-connection.js');
+const { validUserId } = require('./filter-userId');
+const { getConnectionItem, getGroupItem } = require('./get-item');
+const { broadcastState } = require('./broadcast-state');
+const { sendMessageToConnection } = require('./send-message-to-connection');
 
 function getRemoveUsersFromGroupParams(
   userIdsNotVoted: string[],
