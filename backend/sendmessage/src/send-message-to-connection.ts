@@ -1,13 +1,13 @@
 import { Config } from './types';
 
-const { getConnectionItem } = require('./get-item.js');
+const { getConnectionItem } = require('./get-item');
 
 export async function sendMessageToConnection(message: string, config: Config) {
   try {
     await config.handler
       .postToConnection({ ConnectionId: config.connectionId as string, Data: message })
       .promise();
-  } catch (e) {
+  } catch (e: any) {
     if (e.statusCode === 410) {
       console.log(`Found stale connection, deleting ${config.connectionId}`);
       const connectionItem = getConnectionItem(config.connectionId, config.tableName, config.ddb);

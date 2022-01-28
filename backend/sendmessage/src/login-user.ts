@@ -1,7 +1,7 @@
 import { Config } from './types';
 
-const { broadcastState } = require('./broadcast-state.js');
-const { getGroupItem } = require('./get-item.js');
+const { broadcastState } = require('./broadcast-state');
+const { getGroupItem } = require('./get-item');
 
 const COHEN_SCALE = [
   'coffee',
