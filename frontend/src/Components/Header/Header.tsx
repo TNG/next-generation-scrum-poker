@@ -1,6 +1,6 @@
-import tngLogo from '../img/tng.svg';
+import tngLogo from '../../img/tng.svg';
 import classes from './Header.module.css';
-import { ALT_TNG_LOGO, TNG_URL } from '../constants';
+import { ALT_TNG_LOGO, TNG_URL } from '../../constants';
 
 export const Header = () => (
   <header class={classes.header}>

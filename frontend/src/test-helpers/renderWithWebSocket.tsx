@@ -2,7 +2,7 @@ import { ComponentChildren } from 'preact';
 import { WebSocketApi } from '../types/WebSocket';
 import { SCALES } from '../constants';
 import { render } from '@testing-library/preact';
-import { WebSocketContext } from '../Components/WebSocket';
+import { WebSocketContext } from '../Components/WebSocket/WebSocket';
 
 const doNothing = () => {};
 
