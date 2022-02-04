@@ -1,5 +1,4 @@
 import classes from './App.module.css';
-import { ColorModeSwitch } from './ColorModeSwitch/ColorModeSwitch';
 import { PageSelector } from './PageSelector';
 import { TouchDetector } from './TouchDetector';
 import { WebSocketProvider } from './WebSocket';
