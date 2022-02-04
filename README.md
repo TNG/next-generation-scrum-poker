@@ -4,7 +4,7 @@ Prototype for a new Scrum Poker
 
 ## Development
 
-You need a running docker demon for local development. To test and develop backend and frontend, run
+You need a running [docker](https://docs.docker.com/get-docker/) demon for local development. To test and develop backend and frontend, run
 
 ```shell
 npm start
@@ -13,6 +13,12 @@ npm start
 This will spin up the database via `docker` and launch the local API gateway.
 
 In parallel, it will use [Vite](https://vitejs.dev) to serve your app on [http://localhost:3000](http://localhost:3000). Vite will automatically update the browser via hot module reloading on save while providing extremely fast rebuilds.
+
+For the parallel execution, you will need to have `npm-run-all` installed:
+
+```shell
+npm install -g npm-run-all
+```
 
 ## Production Build
 
