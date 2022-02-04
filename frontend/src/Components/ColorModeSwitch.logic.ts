@@ -7,7 +7,7 @@ enum Mode {
 const storageKey = 'color-mode';
 const attributeKey = 'data-color-mode';
 
-function getInitialThemeState(): boolean {
+function getInitialColorMode(): boolean {
   const storedValue = localStorage.getItem(storageKey);
 
   return storedValue === undefined
@@ -16,7 +16,7 @@ function getInitialThemeState(): boolean {
 }
 
 export function useColorMode(): { isDark: boolean; toggleColorMode: () => void } {
-  const [isDark, setIsDark] = useState<boolean>(getInitialThemeState);
+  const [isDark, setIsDark] = useState<boolean>(getInitialColorMode);
 
   useLayoutEffect(() => {
     const mode = isDark ? Mode.DARK : Mode.LIGHT;
