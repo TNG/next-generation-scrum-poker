@@ -13,19 +13,17 @@
   --success: hsl(120, 100%, 25%);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --primary: hsl(205, 95%, 42%);
-    --primary-light: hsl(205, 95%, 38%);
-    --secondary: hsl(0, 0%, 10%);
-    --tertiary: hsl(0, 0%, 25%);
-    --background: hsl(0, 0%, 12%);
-    --text-primary: hsl(240, 13%, 92%);
-    --text-secondary: hsl(240, 13%, 100%);
-    --text-tertiary: hsl(240, 0%, 66%);
-    --warning: hsl(0, 100%, 55%);
-    --success: hsl(100, 90%, 40%);
-  }
+[data-color-mode='dark'] {
+  --primary: hsl(205, 95%, 42%);
+  --primary-light: hsl(205, 95%, 38%);
+  --secondary: hsl(0, 0%, 10%);
+  --tertiary: hsl(0, 0%, 25%);
+  --background: hsl(0, 0%, 12%);
+  --text-primary: hsl(240, 13%, 92%);
+  --text-secondary: hsl(240, 13%, 100%);
+  --text-tertiary: hsl(240, 0%, 66%);
+  --warning: hsl(0, 100%, 55%);
+  --success: hsl(100, 90%, 40%);
 }
 
 @media (min-width: 300px) {
