@@ -1,11 +1,12 @@
+import { useContext } from 'preact/hooks';
 import { SWITCH_TO_DARK, SWITCH_TO_LIGHT } from '../../constants';
-import classes from './ColorModeSwitch.module.css';
 import sharedClasses from '../../styles.module.css';
-import { useColorMode } from './ColorModeSwitch.logic';
+import { ColorMode } from '../ColorModeProvider/ColorModeProvider';
+import classes from './ColorModeSwitch.module.css';
 
 // icons taken from material ui icons
 export const ColorModeSwitch = () => {
-  const { isDark, toggleColorMode } = useColorMode();
+  const { isDark, toggleColorMode } = useContext(ColorMode);
 
   return (
     <button

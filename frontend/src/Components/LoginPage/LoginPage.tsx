@@ -15,13 +15,11 @@ import {
   LABEL_USERNAME,
   TNG_URL,
 } from '../../constants';
-import { useColorMode } from '../ColorModeSwitch/ColorModeSwitch.logic';
 
 // During server-side-rendering, window/history cannot be accessed
 const isSSR = typeof window === 'undefined';
 
 const ProtoLoginPage = ({ socket }: { socket: WebSocketApi }) => {
-  useColorMode();
   const firstInputRef: RefObject<HTMLInputElement> = useRef(null);
   const [user, setUser] = useState(socket.loginData.user);
   let sessionId = '';
