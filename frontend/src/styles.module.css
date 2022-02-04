@@ -56,20 +56,3 @@
   display: block;
   margin: auto;
 }
-
-.colorModeSwitch {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  color: var(--text-secondary);
-  fill: var(--text-secondary);
-  background: var(--primary);
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  padding: 0.125rem;
-}
-
-.colorModeSwitch:hover,
-.colorModeSwitch:focus {
-  background: var(--primary-light);
-}

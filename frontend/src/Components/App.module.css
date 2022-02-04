@@ -1,10 +1,10 @@
 :root {
   --border-radius: 0.5rem;
   --button-width: 90vw;
-  --primary: rgb(5, 99, 165);
+  --primary: rgb(5, 99, 165); /* TNG Blue */
   --primary-light: hsl(205, 95%, 40%);
   --secondary: hsl(217, 8%, 94%);
-  --tertiary: rgb(161, 166, 174);
+  --tertiary: rgb(161, 166, 174); /* TNG Gray */
   --background: rgb(255, 255, 255);
   --text-primary: rgb(42, 43, 56);
   --text-secondary: hsl(240, 13%, 100%);

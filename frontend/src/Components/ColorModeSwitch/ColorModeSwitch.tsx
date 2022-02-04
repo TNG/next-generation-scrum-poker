@@ -1,5 +1,6 @@
-import { SWITCH_TO_DARK, SWITCH_TO_LIGHT } from '../constants';
-import sharedClasses from '../styles.module.css';
+import { SWITCH_TO_DARK, SWITCH_TO_LIGHT } from '../../constants';
+import classes from './ColorModeSwitch.module.css';
+import sharedClasses from '../../styles.module.css';
 import { useColorMode } from './ColorModeSwitch.logic';
 
 // icons taken from material ui icons
@@ -8,7 +9,7 @@ export const ColorModeSwitch = () => {
 
   return (
     <button
-      class={sharedClasses.colorModeSwitch}
+      class={classes.root}
       onClick={toggleColorMode}
       role="button"
       title={isDark ? SWITCH_TO_LIGHT : SWITCH_TO_DARK}

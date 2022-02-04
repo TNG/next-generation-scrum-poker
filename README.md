@@ -14,12 +14,6 @@ This will spin up the database via `docker` and launch the local API gateway.
 
 In parallel, it will use [Vite](https://vitejs.dev) to serve your app on [http://localhost:3000](http://localhost:3000). Vite will automatically update the browser via hot module reloading on save while providing extremely fast rebuilds.
 
-For the parallel execution, you will need to have `npm-run-all` installed:
-
-```shell
-npm install -g npm-run-all
-```
-
 ## Production Build
 
 To generate a production build for the frontend, run
