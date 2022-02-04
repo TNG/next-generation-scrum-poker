@@ -7,12 +7,12 @@
 }
 
 .card {
-  border: 0.125rem solid var(--tng-blue);
+  border: 0.125rem solid var(--primary);
   border-radius: 0.5rem;
-  color: var(--tng-blue);
-  fill: var(--tng-blue);
+  color: var(--primary);
+  fill: var(--primary);
   cursor: pointer;
-  background-color: var(--light-gray);
+  background-color: var(--secondary);
 }
 
 .largeCard {
@@ -40,22 +40,22 @@
 
 .card:focus-visible,
 :global(.no-touch) .card:hover {
-  background: var(--light-blue);
-  color: white;
-  fill: white;
-  border-color: var(--light-blue);
+  background: var(--primary-light);
+  color: var(--text-secondary);
+  fill: var(--text-secondary);
+  border-color: var(--primary-light);
 }
 
 .card.selected {
-  background: var(--tng-blue);
-  color: var(--light-gray);
-  fill: var(--light-gray);
+  background: var(--primary);
+  color: var(--text-secondary);
+  fill: var(--text-secondary);
 }
 
 :global(.no-touch) .card.selected:hover {
-  color: white;
-  fill: white;
-  border-color: var(--light-blue);
+  color: var(--text-secondary);
+  fill: var(--text-secondary);
+  border-color: var(--primary-light);
 }
 
 @media (min-width: 300px) {
