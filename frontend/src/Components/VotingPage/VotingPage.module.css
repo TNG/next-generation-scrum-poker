@@ -6,6 +6,6 @@
 }
 
 .button {
-  composes: button from '../styles.module.css';
+  composes: button from '../../styles.module.css';
   margin-bottom: 0.75rem;
 }

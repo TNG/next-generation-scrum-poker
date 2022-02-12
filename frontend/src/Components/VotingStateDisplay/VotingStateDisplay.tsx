@@ -1,11 +1,11 @@
-import sharedClasses from '../styles.module.css';
-import { Votes, WebSocketApi } from '../types/WebSocket';
-import { IconNotVoted } from './IconNotVoted';
-import { IconObserver } from './IconObserver';
-import { IconVoted } from './IconVoted';
+import sharedClasses from '../../styles.module.css';
+import { Votes } from '../../types/WebSocket';
+import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
+import { IconObserver } from '../IconObserver/IconObserver';
+import { IconVoted } from '../IconVoted/IconVoted';
 import classes from './VotingStateDisplay.module.css';
-import { connectToWebSocket } from './WebSocket';
-import { COLUMN_NAME, COLUMN_VOTED, VOTE_OBSERVER } from '../constants';
+import { connectToWebSocket } from '../WebSocket/WebSocket';
+import { COLUMN_NAME, COLUMN_VOTED, VOTE_OBSERVER } from '../../constants';
 
 const getSortedVotingState = (votes: Votes) => {
   const votedUsers = Object.keys(votes).map((user) => ({
@@ -53,7 +53,7 @@ const getIcon = (voted: boolean, observer: boolean) => {
   return <IconNotVoted />;
 };
 
-const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
+export const VotingStateDisplay = connectToWebSocket(({ socket }) => (
   <div class={sharedClasses.blueBorder}>
     <table class={sharedClasses.table}>
       <thead>
@@ -74,6 +74,4 @@ const ProtoVotingStateDisplay = ({ socket }: { socket: WebSocketApi }) => (
       </tbody>
     </table>
   </div>
-);
-
-export const VotingStateDisplay = connectToWebSocket(ProtoVotingStateDisplay);
+));

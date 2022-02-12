@@ -1,5 +1,5 @@
-import sharedClasses from '../styles.module.css';
-import { TOOLTIP_COFFEE } from '../constants';
+import sharedClasses from '../../styles.module.css';
+import { TOOLTIP_COFFEE } from '../../constants';
 
 // taken from material ui icons
 export const IconCoffee = () => (

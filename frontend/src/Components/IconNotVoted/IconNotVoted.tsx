@@ -1,5 +1,5 @@
-import sharedClasses from '../styles.module.css';
-import { TOOLTIP_NOT_VOTED } from '../constants';
+import sharedClasses from '../../styles.module.css';
+import { TOOLTIP_NOT_VOTED } from '../../constants';
 
 // taken from material ui icons
 export const IconNotVoted = () => (
