@@ -1,7 +1,6 @@
 import { createContext } from 'preact';
-import { useCallback, useLayoutEffect } from 'preact/hooks';
+import { useCallback, useLayoutEffect, useState } from 'preact/hooks';
 import { JSXInternal } from 'preact/src/jsx';
-import { useLocalStorage } from './useLocalStorage';
 
 interface ColorModeContext {
   isDark: boolean;
@@ -14,7 +13,7 @@ export const ColorMode = createContext<ColorModeContext>({
 });
 
 export const ColorModeProvider = ({ children }: { children: JSXInternal.Element }) => {
-  const [theme, setTheme] = useLocalStorage('theme', () =>
+  const [theme, setTheme] = useState<'dark' | 'light'>(() =>
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   );
 
