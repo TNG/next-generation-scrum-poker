@@ -45,6 +45,20 @@ const loginUser = () => {
 };
 
 describe('The App component', () => {
+  beforeAll(() => {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
+  });
+
   it('displays the login screen with a login indicator initially', () => {
     const { container } = render(<App />);
     expect(document.activeElement).toBe(container.querySelector('input#user'));
