@@ -13,22 +13,15 @@ export const ColorMode = createContext<ColorModeContext>({
 });
 
 export const ColorModeProvider = ({ children }: { children: JSXInternal.Element }) => {
-  const [theme, setTheme] = useState<'dark' | 'light'>(() =>
-    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  const [isDark, setIsDark] = useState<boolean>(
+    () => window.matchMedia('(prefers-color-scheme: dark)').matches
   );
 
   useLayoutEffect(() => {
-    document.body.setAttribute('data-color-mode', theme);
-  }, [theme]);
+    document.body.setAttribute('data-color-mode', isDark ? 'dark' : 'light');
+  }, [isDark]);
 
-  const toggleColorMode = useCallback(
-    () => setTheme((theme) => (theme === 'dark' ? 'light' : 'dark')),
-    []
-  );
+  const toggleColorMode = useCallback(() => setIsDark((theme) => !theme), []);
 
-  return (
-    <ColorMode.Provider value={{ isDark: theme === 'dark', toggleColorMode }}>
-      {children}
-    </ColorMode.Provider>
-  );
+  return <ColorMode.Provider value={{ isDark, toggleColorMode }}>{children}</ColorMode.Provider>;
 };
