@@ -5,7 +5,7 @@
   "scripts": {
     "start": "run-p start:local-backend start:frontend",
     "preview": "run-p start:local-backend preview:frontend",
-    "test": "npx jest --config frontend/jest.config.js",
+    "test": "cd frontend && jest",
     "build": "run-p build:backend build:frontend",
     "lint": "prettier . --write",
     "prepare": "husky install",
