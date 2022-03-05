@@ -91,6 +91,10 @@
   background-color: var(--background);
 }
 
+:global a {
+  color: var(--tng-blue);
+}
+
 :global a:focus {
   outline: 0.125rem solid var(--primary-light);
   outline-offset: 0.125rem;

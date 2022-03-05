@@ -1,0 +1,21 @@
+.privacyNotice {
+  font-size: 0.75rem;
+  font-weight: lighter;
+  word-break: break-word;
+}
+
+.privacyNotice p {
+  margin: 0.25rem 0;
+}
+
+.privacyNotice h1 {
+  font-size: 0.75rem;
+  color: var(--tng-blue);
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.privacyNotice ul {
+  padding: 0 1rem;
+  margin: 0.25rem 0;
+}
