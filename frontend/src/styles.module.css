@@ -1,31 +1,32 @@
 .heading {
-  color: var(--tng-blue);
+  color: var(--primary);
   font-size: 1.5rem;
   text-align: center;
   margin-top: 1rem;
 }
 
 .button {
-  color: var(--light-gray);
-  background: var(--tng-blue);
+  color: var(--text-secondary);
+  fill: var(--text-secondary);
+  background: var(--primary);
   width: var(--button-width);
 }
 
 :global(.no-touch) .button:hover,
 .button:focus {
-  color: white;
-  background: var(--light-blue);
+  color: var(--text-secondary);
+  background: var(--primary-light);
 }
 
 .button:disabled,
 .button:disabled:hover {
-  color: var(--light-gray);
-  background: var(--tng-gray);
+  color: var(--text-secondary);
+  background: var(--tertiary);
   cursor: not-allowed;
 }
 
 :global(.no-touch) .button:hover:active {
-  background: var(--tng-blue);
+  background: var(--primary);
 }
 
 .table {
@@ -37,7 +38,7 @@
 }
 
 .blueBorder {
-  border: 0.125rem solid var(--tng-blue);
+  border: 0.125rem solid var(--primary);
   width: min-content;
   border-radius: var(--border-radius);
   margin: 0.25rem 0 0.75rem 0;
@@ -45,7 +46,7 @@
 }
 
 .headerRow {
-  color: var(--tng-blue);
+  color: var(--primary);
   line-height: 35px;
 }
 

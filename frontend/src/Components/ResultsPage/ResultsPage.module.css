@@ -6,8 +6,8 @@
 }
 
 .notVotedEntry {
-  color: var(--tng-gray);
-  fill: var(--tng-gray);
+  color: var(--text-tertiary);
+  fill: var(--text-tertiary);
 }
 
 .votedEntry {

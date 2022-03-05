@@ -6,10 +6,10 @@ export const ScaleSelector = connectToWebSocket(({ socket }) => (
   <select
     name="scale"
     class={classes.select}
-    onChange={(e) => socket.setScale(SCALES[(e.target as HTMLSelectElement).value].values)}
+    onChange={({ target }) => socket.setScale(SCALES[(target as HTMLSelectElement).value].values)}
     value={'CHANGE_SCALE'}
   >
-    <option value="CHANGE_SCALE" disabled>
+    <option value="CHANGE_SCALE" disabled hidden>
       {SELECT_CHANGE_SCALE}
     </option>
     {Object.keys(SCALES).map((id) => (

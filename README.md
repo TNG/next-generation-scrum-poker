@@ -4,7 +4,7 @@ Prototype for a new Scrum Poker
 
 ## Development
 
-You need a running docker demon for local development. To test and develop backend and frontend, run
+You need a running [docker](https://docs.docker.com/get-docker/) demon for local development. To test and develop backend and frontend, run
 
 ```shell
 npm start

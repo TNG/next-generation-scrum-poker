@@ -1,0 +1,13 @@
+.root {
+  color: var(--text-secondary);
+  fill: var(--text-secondary);
+  background: var(--primary);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  padding: 0.125rem;
+}
+
+.root:hover,
+.root:focus {
+  background: var(--primary-light);
+}

@@ -52,3 +52,6 @@ export const TOOLTIP_VOTED = 'Voted';
 export const COLUMN_NAME = 'Name';
 export const COLUMN_VOTE = 'Vote';
 export const COLUMN_VOTED = 'Voted';
+
+export const SWITCH_TO_DARK = 'Switch to dark color mode';
+export const SWITCH_TO_LIGHT = 'Switch to light color mode';

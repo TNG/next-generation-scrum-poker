@@ -1,12 +1,29 @@
 :root {
   --border-radius: 0.5rem;
   --button-width: 90vw;
-  --tng-blue: rgb(5, 99, 165);
-  --light-blue: hsl(205, 95%, 40%);
-  --tng-gray: rgb(161, 166, 174);
-  --light-gray: hsl(217, 8%, 94%);
-  --dark-red: hsl(0, 100%, 40%);
-  --red: hsl(0, 100%, 50%);
+  --primary: rgb(5, 99, 165); /* TNG Blue */
+  --primary-light: hsl(205, 95%, 40%);
+  --secondary: hsl(217, 8%, 94%);
+  --tertiary: rgb(161, 166, 174); /* TNG Gray */
+  --background: rgb(255, 255, 255);
+  --text-primary: rgb(42, 43, 56);
+  --text-secondary: hsl(240, 13%, 100%);
+  --text-tertiary: rgb(161, 166, 174);
+  --warning: hsl(0, 100%, 40%);
+  --success: hsl(120, 100%, 25%);
+}
+
+[data-color-mode='dark'] {
+  --primary: hsl(205, 95%, 42%);
+  --primary-light: hsl(205, 95%, 38%);
+  --secondary: hsl(0, 0%, 10%);
+  --tertiary: hsl(0, 0%, 25%);
+  --background: hsl(0, 0%, 12%);
+  --text-primary: hsl(240, 13%, 92%);
+  --text-secondary: hsl(240, 13%, 100%);
+  --text-tertiary: hsl(240, 0%, 66%);
+  --warning: hsl(0, 100%, 55%);
+  --success: hsl(100, 90%, 40%);
 }
 
 @media (min-width: 300px) {
@@ -26,6 +43,8 @@
 :global body {
   font: 16px sans-serif;
   margin: 0;
+  color: var(--text-primary);
+  background-color: var(--background);
 }
 
 :global input[type='text'],
@@ -54,7 +73,9 @@
 }
 
 :global input[type='text'] {
-  border: 0.125rem solid var(--tng-blue);
+  border: 0.125rem solid var(--primary);
+  color: var(--text-primary);
+  background-color: var(--background);
 }
 
 :global button,
@@ -63,8 +84,11 @@
   cursor: pointer;
 }
 
+:global input[type='text'],
 :global input[type='text']:focus {
-  border-color: var(--light-blue);
+  border-color: var(--primary-light);
+  color: var(--text-primary);
+  background-color: var(--background);
 }
 
 :global a {
@@ -72,6 +96,15 @@
 }
 
 :global a:focus {
-  outline: 0.125rem solid var(--light-blue);
+  outline: 0.125rem solid var(--primary-light);
   outline-offset: 0.125rem;
+}
+
+:global input:-webkit-autofill,
+:global input:-webkit-autofill:hover,
+:global input:-webkit-autofill:focus {
+  border-color: var(--primary-light);
+  -webkit-text-fill-color: var(--text-primary);
+  -webkit-box-shadow: 0 0 0px 1000px var(--background) inset;
+  transition: background-color 5000s ease-in-out 0s;
 }
