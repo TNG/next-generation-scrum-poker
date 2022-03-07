@@ -92,7 +92,7 @@
 }
 
 :global a {
-  color: var(--tng-blue);
+  color: var(--primary);
 }
 
 :global a:focus {
@@ -105,6 +105,6 @@
 :global input:-webkit-autofill:focus {
   border-color: var(--primary-light);
   -webkit-text-fill-color: var(--text-primary);
-  -webkit-box-shadow: 0 0 0px 1000px var(--background) inset;
+  -webkit-box-shadow: 0 0 0 1000px var(--background) inset;
   transition: background-color 5000s ease-in-out 0s;
 }
