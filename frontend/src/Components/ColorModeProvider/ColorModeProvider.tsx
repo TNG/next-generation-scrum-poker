@@ -15,9 +15,12 @@ export const ColorMode = createContext<ColorModeContext>({
   toggleColorMode: () => {},
 });
 
+// During server-side-rendering, window cannot be accessed
+const isSSR = typeof window === 'undefined';
+
 export const ColorModeProvider = ({ children }: { children: JSXInternal.Element }) => {
-  const [isDark, setIsDark] = useState<boolean>(
-    () => window.matchMedia('(prefers-color-scheme: dark)').matches
+  const [isDark, setIsDark] = useState<boolean>(() =>
+    isSSR ? false : window.matchMedia('(prefers-color-scheme: dark)').matches
   );
 
   useLayoutEffect(() => {
