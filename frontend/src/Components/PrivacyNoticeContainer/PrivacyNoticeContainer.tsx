@@ -6,18 +6,17 @@ import { PrivacyNotice } from '../PrivacyNotice/PrivacyNotice';
 export const PrivacyNoticeContainer = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const expand = (event: JSXInternal.TargetedMouseEvent<HTMLAnchorElement>) => {
-    setIsExpanded(true);
+    setIsExpanded(!isExpanded);
     event.preventDefault();
   };
-  return isExpanded ? (
-    <PrivacyNotice />
-  ) : (
+  return (
     <div class={classes.privacyNoticeContainer}>
-      Learn how we respect your&nbsp;
+      Check&nbsp;
       <a href="#" onClick={expand}>
-        privacy
+        privacy&nbsp;notice
       </a>
-      .
+      &nbsp;(German,&nbsp;unfortunately)
+      {isExpanded ? <PrivacyNotice /> : null}
     </div>
   );
 };

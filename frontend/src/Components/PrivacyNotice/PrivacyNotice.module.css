@@ -1,21 +1,36 @@
 .privacyNotice {
   font-size: 0.75rem;
-  font-weight: lighter;
   word-break: break-word;
+  padding-bottom: 1rem;
+  animation: appear 1s;
 }
 
 .privacyNotice p {
   margin: 0.25rem 0;
 }
 
-.privacyNotice h1 {
+.privacyNotice h1,
+.privacyNotice h2 {
   font-size: 0.75rem;
-  color: var(--primary);
-  margin-top: 0.75rem;
   margin-bottom: 0.25rem;
+}
+
+.privacyNotice h1 {
+  margin-top: 1.5rem;
+  color: var(--primary);
+}
+
+.privacyNotice h2 {
+  margin-top: 0.75rem;
 }
 
 .privacyNotice ul {
   padding: 0 1rem;
   margin: 0.25rem 0;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
 }
