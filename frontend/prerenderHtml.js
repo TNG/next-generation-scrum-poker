@@ -15,7 +15,7 @@ if (prerenderedHtml === html) {
 }
 
 console.log('minifying HTML...');
-const minifiedHtml = minify(prerenderedHtml, {
+minify(prerenderedHtml, {
   collapseBooleanAttributes: true,
   collapseWhitespace: true,
   minifyCSS: true,
@@ -23,5 +23,4 @@ const minifiedHtml = minify(prerenderedHtml, {
   minifyURLs: true,
   removeAttributeQuotes: true,
   removeComments: true,
-});
-fs.writeFileSync(htmlPath, minifiedHtml);
+}).then((minifiedHtml) => fs.writeFileSync(htmlPath, minifiedHtml));
