@@ -86,13 +86,18 @@ export const PrivacyNotice = () => (
       <li>IP-Adresse</li>
     </ul>
     <p>Es findet keine Zusammenführung dieser Daten mit anderen Datenquellen statt.</p>
+    <h3>Vorhaltezeit</h3>
+    <p>
+      Wir halten keine Logs für Startseite vor.
+      Alle anderen Logs werden nach spätestens 7 Tagen gelöscht.
+    </p>
     <h2>Session Daten</h2>
     <p>
       Sessions sind öffentlich. Jeder der Ihre SessionId kennt kann daran teilnehmen, behandeln sie
       diese mit Vorsicht. Es ist jedoch nicht möglich Informationen über die Session zu bekommen
       ohne daran teilzunehmen.
     </p>
-    <h2>Vorhaltezeit</h2>
+    <h3>Vorhaltezeit</h3>
     <p>Session-Daten werden maximal 16h gespeichert.</p>
     <h2>AWS Services</h2>
     <p>

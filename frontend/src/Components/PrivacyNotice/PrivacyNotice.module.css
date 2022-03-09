@@ -10,7 +10,8 @@
 }
 
 .privacyNotice h1,
-.privacyNotice h2 {
+.privacyNotice h2,
+.privacyNotice h3 {
   font-size: 0.75rem;
   margin-bottom: 0.25rem;
 }
@@ -22,6 +23,10 @@
 
 .privacyNotice h2 {
   margin-top: 0.75rem;
+}
+
+.privacyNotice h3 {
+  margin-top: 0.5rem;
 }
 
 .privacyNotice ul {
