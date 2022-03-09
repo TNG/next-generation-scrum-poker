@@ -1,16 +1,15 @@
-import { render } from '@testing-library/preact';
+import { fireEvent, render } from '@testing-library/preact';
 import { PrivacyNoticeContainer } from './PrivacyNoticeContainer';
-import { fireEvent } from '@testing-library/preact';
 
 describe('The PrivacyNoticeContainer', () => {
-  it('displays the privacy notice when clicked', () => {
-    const { getByText, queryAllByText } = render(<PrivacyNoticeContainer />);
-    expect(queryAllByText('Datenschutzerklärung')).toHaveLength(0);
-    const privacyLink = getByText('privacy');
+  it('displays and hides the privacy notice when clicked', () => {
+    const { getByText, queryByText } = render(<PrivacyNoticeContainer />);
+    expect(queryByText('Datenschutzerklärung')).toBe(null);
 
-    fireEvent.click(privacyLink);
+    fireEvent.click(getByText('privacy notice'));
+    expect(getByText('Datenschutzerklärung')).toBeVisible();
 
-    expect(queryAllByText('privacy')).toHaveLength(0);
-    getByText('Datenschutzerklärung');
+    fireEvent.click(getByText('privacy notice'));
+    expect(queryByText('Datenschutzerklärung')).toBe(null);
   });
 });
