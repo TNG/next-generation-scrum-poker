@@ -15,7 +15,7 @@ export const PrivacyNoticeContainer = () => {
       <a href="#" onClick={expand}>
         privacy&nbsp;notice
       </a>
-      &nbsp;(German,&nbsp;unfortunately)
+      &nbsp;(German)
       {isExpanded ? <PrivacyNotice /> : null}
     </div>
   );
