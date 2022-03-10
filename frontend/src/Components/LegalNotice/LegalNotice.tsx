@@ -1,7 +1,9 @@
-import classes from './PrivacyNotice.module.css';
+import classes from './LegalNotice.module.css';
 
-export const PrivacyNotice = () => (
-  <div class={classes.privacyNotice}>
+export const LegalNotice = () => (
+  <div class={classes.legalNotice}>
+    <h1>Impressum</h1>
+    <p> Unsere Kontaktdaten finden sie <a href="https://www.tngtech.com/kontakt-und-impressum.html">hier</a>.</p>
     <h1>Datenschutzerklärung</h1>
     <h2>Allgemeiner Hinweis und Pflichtinformationen</h2>
     <h2>Benennung der verantwortlichen Stelle</h2>

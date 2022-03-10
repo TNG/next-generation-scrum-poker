@@ -17,3 +17,9 @@
   margin: 0 0.5rem;
   white-space: nowrap;
 }
+
+.legalNotice {
+  margin-top: 0.5rem;
+  width: var(--button-width);
+  justify-self: center;
+}
