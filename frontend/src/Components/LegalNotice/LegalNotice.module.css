@@ -1,4 +1,4 @@
-.privacyNotice {
+.legalNotice {
   font-size: 0.75rem;
   word-break: break-word;
   padding-bottom: 1rem;
@@ -6,31 +6,31 @@
   text-align: left;
 }
 
-.privacyNotice p {
+.legalNotice p {
   margin: 0.25rem 0;
 }
 
-.privacyNotice h1,
-.privacyNotice h2,
-.privacyNotice h3 {
+.legalNotice h1,
+.legalNotice h2,
+.legalNotice h3 {
   font-size: 0.75rem;
   margin-bottom: 0.25rem;
 }
 
-.privacyNotice h1 {
+.legalNotice h1 {
   margin-top: 1.5rem;
   color: var(--primary);
 }
 
-.privacyNotice h2 {
+.legalNotice h2 {
   margin-top: 0.75rem;
 }
 
-.privacyNotice h3 {
+.legalNotice h3 {
   margin-top: 0.5rem;
 }
 
-.privacyNotice ul {
+.legalNotice ul {
   padding: 0 1rem;
   margin: 0.25rem 0;
 }

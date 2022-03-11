@@ -14,7 +14,7 @@ import {
   LABEL_USERNAME,
   TNG_URL,
 } from '../../constants';
-import { PrivacyNoticeContainer } from '../PrivacyNoticeContainer/PrivacyNoticeContainer';
+import { LegalNoticeContainer } from '../LegalNoticeContainer/LegalNoticeContainer';
 
 // During server-side-rendering, window/history cannot be accessed
 const isSSR = typeof window === 'undefined';
@@ -76,8 +76,8 @@ export const LoginPage = connectToWebSocket(({ socket }) => {
       <a href={TNG_URL} target="_blank" class={classes.logo}>
         <img src={tngLogo} alt={ALT_TNG_LOGO} class={classes.logoImage} />
       </a>
-      <div class={classes.privacyNotice}>
-        <PrivacyNoticeContainer />
+      <div class={classes.legalNotice}>
+        <LegalNoticeContainer />
       </div>
     </form>
   );

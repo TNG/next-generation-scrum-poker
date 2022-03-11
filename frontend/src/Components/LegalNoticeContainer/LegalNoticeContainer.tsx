@@ -1,22 +1,22 @@
-import classes from './PrivacyNoticeContainer.module.css';
+import classes from './LegalNoticeContainer.module.css';
 import { useState } from 'preact/hooks';
 import { JSXInternal } from 'preact/src/jsx';
-import { PrivacyNotice } from '../PrivacyNotice/PrivacyNotice';
+import { LegalNotice } from '../LegalNotice/LegalNotice';
 
-export const PrivacyNoticeContainer = () => {
+export const LegalNoticeContainer = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const expand = (event: JSXInternal.TargetedMouseEvent<HTMLAnchorElement>) => {
     setIsExpanded(!isExpanded);
     event.preventDefault();
   };
   return (
-    <div class={classes.privacyNoticeContainer}>
+    <div class={classes.legalNoticeContainer}>
       Check&nbsp;
       <a href="#" onClick={expand}>
-        privacy&nbsp;notice
+        privacy&nbsp;notice&nbsp;&amp;&nbsp;imprint
       </a>
       &nbsp;(German)
-      {isExpanded ? <PrivacyNotice /> : null}
+      {isExpanded ? <LegalNotice /> : null}
     </div>
   );
 };

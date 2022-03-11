@@ -2,6 +2,7 @@ import { CopyToClipboardButton } from '../CopyToClipboardButton/CopyToClipboardB
 import classes from './Footer.module.css';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import { LABEL_SESSION, LABEL_USERNAME } from '../../constants';
+import {LegalNoticeContainer} from "../LegalNoticeContainer/LegalNoticeContainer";
 
 export const Footer = connectToWebSocket(({ socket }) => (
   <footer class={classes.footer}>
@@ -15,5 +16,8 @@ export const Footer = connectToWebSocket(({ socket }) => (
       </span>
     </div>
     <CopyToClipboardButton />
+    <div className={classes.legalNotice}>
+      <LegalNoticeContainer/>
+    </div>
   </footer>
 ));
