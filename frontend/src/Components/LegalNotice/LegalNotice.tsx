@@ -3,7 +3,11 @@ import classes from './LegalNotice.module.css';
 export const LegalNotice = () => (
   <div class={classes.legalNotice}>
     <h1>Impressum</h1>
-    <p> Unsere Kontaktdaten finden sie <a href="https://www.tngtech.com/kontakt-und-impressum.html">hier</a>.</p>
+    <p>
+      {' '}
+      Unsere Kontaktdaten finden sie{' '}
+      <a href="https://www.tngtech.com/kontakt-und-impressum.html">hier</a>.
+    </p>
     <h1>Datenschutzerklärung</h1>
     <h2>Allgemeiner Hinweis und Pflichtinformationen</h2>
     <h2>Benennung der verantwortlichen Stelle</h2>
@@ -90,8 +94,8 @@ export const LegalNotice = () => (
     <p>Es findet keine Zusammenführung dieser Daten mit anderen Datenquellen statt.</p>
     <h3>Vorhaltezeit</h3>
     <p>
-      Wir halten keine Logs für Startseite vor.
-      Alle anderen Logs werden nach spätestens 7 Tagen gelöscht.
+      Wir halten keine Logs für Startseite vor. Alle anderen Logs werden nach spätestens 7 Tagen
+      gelöscht.
     </p>
     <h2>Session Daten</h2>
     <p>

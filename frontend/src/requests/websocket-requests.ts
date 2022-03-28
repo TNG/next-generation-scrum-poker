@@ -1,4 +1,4 @@
-import { CardValue, WebsocketMessage } from '../types/WebSocket';
+import { CardValue, ClientMessage } from '../shared/WebSocketMessages';
 
 export const getLoginRequest = (user: string, session: string) =>
   buildRequest({
@@ -40,4 +40,4 @@ export const getRemoveUsersNotVotedRequest = () =>
     type: 'remove-users-not-voted',
   });
 
-const buildRequest = (data: WebsocketMessage) => JSON.stringify({ message: 'sendmessage', data });
+const buildRequest = (data: ClientMessage) => JSON.stringify({ message: 'sendmessage', data });

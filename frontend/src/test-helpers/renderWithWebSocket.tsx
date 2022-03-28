@@ -3,8 +3,7 @@ import { WebSocketApi } from '../types/WebSocket';
 import { SCALES } from '../constants';
 import { render } from '@testing-library/preact';
 import { WebSocketContext } from '../Components/WebSocket/WebSocket';
-
-const doNothing = () => {};
+import { doNothing } from '../helpers/helpers';
 
 type PartialWebsocketApi = {
   [P in keyof WebSocketApi]?: P extends 'state' ? Partial<WebSocketApi['state']> : WebSocketApi[P];

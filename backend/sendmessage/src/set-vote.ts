@@ -1,19 +1,19 @@
 import { Config } from './types';
-
-const { getConnectionItem } = require('./get-item');
-const { broadcastState } = require('./broadcast-state');
+import { getConnectionItem } from './get-item';
+import { broadcastState } from './broadcast-state';
 
 export async function setVote(vote: string, config: Config) {
-  const connectionItem = await getConnectionItem(config.connectionId, config.tableName, config.ddb);
+  const { tableName, ddb } = config;
+  const { groupId, userId } = await getConnectionItem(config);
 
   const updateGroupParams = {
-    TableName: config.tableName,
+    TableName: tableName,
     Key: {
-      primaryKey: `groupId:${connectionItem.groupId}`,
+      primaryKey: `groupId:${groupId}`,
     },
-    UpdateExpression: 'SET #userId.vote = :vote',
+    UpdateExpression: `SET connections.#userId.vote = :vote`,
     ExpressionAttributeNames: {
-      '#userId': connectionItem.userId,
+      '#userId': userId,
     },
     ExpressionAttributeValues: {
       ':vote': vote,
@@ -21,6 +21,6 @@ export async function setVote(vote: string, config: Config) {
     ReturnValues: 'UPDATED_NEW',
   };
 
-  await config.ddb.update(updateGroupParams).promise();
-  await Promise.all(await broadcastState(connectionItem.groupId, config));
+  await ddb.update(updateGroupParams).promise();
+  await broadcastState(groupId, config);
 }

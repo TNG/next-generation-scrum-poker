@@ -1,8 +1,9 @@
 import * as AWS from 'aws-sdk';
 import { PostToConnectionRequest } from 'aws-sdk/clients/apigatewaymanagementapi';
+import { CardValue } from './shared/WebSocketMessages';
 
 export interface Config {
-  connectionId?: string;
+  connectionId: string;
   tableName: string;
   ddb: AWS.DynamoDB.DocumentClient;
   handler: {
@@ -11,24 +12,20 @@ export interface Config {
 }
 
 export interface GroupItem {
-  [id: string]: {
-    connectionId?: string;
-    vote?: string;
+  scale: Array<CardValue>;
+  ttl: number;
+  groupId: string;
+  primaryKey: `groupId:${string}`;
+  visible: boolean;
+  connections: {
+    [id: string]: {
+      connectionId: string;
+      vote: CardValue;
+    };
   };
 }
 
 export interface ConnectionItem {
-  groupId?: string;
-}
-
-export interface Payload {
-  user?: string;
-  session?: string;
-  scale?: string;
-  vote?: string;
-}
-
-export interface Message {
-  type: string;
-  payload?: Payload;
+  groupId: string;
+  userId: string;
 }

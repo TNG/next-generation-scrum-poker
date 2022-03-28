@@ -2,6 +2,7 @@ import { createContext } from 'preact';
 import { useCallback, useLayoutEffect, useRef, useState } from 'preact/hooks';
 import { JSXInternal } from 'preact/src/jsx';
 import './ColorModeProvider.module.css';
+import { doNothing } from '../../helpers/helpers';
 
 const COLOR_SWITCH_TIME_MS = 1000;
 
@@ -12,7 +13,7 @@ interface ColorModeContext {
 
 export const ColorMode = createContext<ColorModeContext>({
   isDark: false,
-  toggleColorMode: () => {},
+  toggleColorMode: doNothing,
 });
 
 // During server-side-rendering, window cannot be accessed

@@ -2,6 +2,8 @@
 .cache
 .idea
 .vscode
+.eslintcache
+.DS_Store
 aws.config
 backend/onconnect/build
 backend/ondisconnect/build

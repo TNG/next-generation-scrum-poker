@@ -1,11 +1,6 @@
-import { CardValue } from './types/WebSocket';
+import { CardValue, VOTE_COFFEE } from './shared/WebSocketMessages';
 
 export const TNG_URL = 'https://www.tngtech.com/en';
-
-// Special card values
-export const VOTE_COFFEE = 'coffee';
-export const VOTE_OBSERVER = 'observer';
-export const VOTE_NOTE_VOTED = 'not-voted';
 
 // Scales
 export const SCALES: { [id: string]: { name: string; values: Array<CardValue> } } = {

@@ -1,41 +1,45 @@
 import { Config, ConnectionItem, GroupItem } from './types';
+import { getConnectionItem, getGroupItem } from './get-item';
+import { broadcastState } from './broadcast-state';
+import { VOTE_NOTE_VOTED } from './shared/WebSocketMessages';
 
-const { validUserId } = require('./filter-userId');
-const { getConnectionItem, getGroupItem } = require('./get-item');
-const { broadcastState } = require('./broadcast-state');
-
-export function getResetVotesUpdateParams(
+export function persistResetVotes(
   groupItem: GroupItem,
-  tableName: string,
-  connectionItem: ConnectionItem
-) {
-  const userIds = Object.keys(groupItem)
-    .filter(validUserId)
-    .filter((userId) => groupItem[userId].vote !== 'observer');
-  const removeUserVotes = userIds.map((id, idx) => `#${idx}.vote`).join(',');
-
-  const expressionAttributeNames = userIds.reduce(
-    (attributeNames, currentId, currentIdx) => ({
-      ...attributeNames,
-      [`#${currentIdx}`]: currentId,
-    }),
-    {}
+  connectionItem: ConnectionItem,
+  { tableName, ddb }: Config
+): Promise<unknown> {
+  const userIds = Object.keys(groupItem.connections).filter(
+    (userId) => groupItem.connections[userId].vote !== 'observer'
   );
-  return {
-    TableName: tableName,
-    Key: {
-      primaryKey: `groupId:${connectionItem.groupId}`,
-    },
-    UpdateExpression: removeUserVotes ? `REMOVE visible, ${removeUserVotes}` : 'REMOVE visible',
-    ExpressionAttributeNames: removeUserVotes ? expressionAttributeNames : undefined,
-  };
+  const userIdAttributeNames = Object.fromEntries(
+    userIds.map((userId, index) => [`#${index}`, userId])
+  );
+  const updates = [
+    'visible = :visible',
+    ...Object.keys(userIdAttributeNames).map(
+      (attributeName) => `connections.${attributeName}.vote = :notVoted`
+    ),
+  ];
+  return ddb
+    .update({
+      TableName: tableName,
+      Key: {
+        primaryKey: `groupId:${connectionItem.groupId}`,
+      },
+      UpdateExpression: `SET ${updates.join(',')}`,
+      ExpressionAttributeValues: {
+        ':visible': false,
+        ':notVoted': VOTE_NOTE_VOTED,
+      },
+      ExpressionAttributeNames: userIdAttributeNames,
+    })
+    .promise();
 }
 
 export async function resetVotes(config: Config) {
-  const { connectionId, tableName, ddb } = config;
-  const connectionItem = await getConnectionItem(connectionId, tableName, ddb);
-  const groupItem = await getGroupItem(connectionItem.groupId, tableName, ddb);
-  const updateParams = getResetVotesUpdateParams(groupItem, tableName, connectionItem);
-  await ddb.update(updateParams).promise();
-  await Promise.all(await broadcastState(connectionItem.groupId, config));
+  const connectionItem = await getConnectionItem(config);
+  const groupItem = await getGroupItem(connectionItem.groupId, config);
+  if (!groupItem) return;
+  await persistResetVotes(groupItem, connectionItem, config);
+  await broadcastState(connectionItem.groupId, config);
 }

@@ -1,7 +1,7 @@
-import { ComponentType, createContext } from 'preact';
+import { ComponentChildren, ComponentType, createContext } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { WEBSOCKET_URL } from '../../config';
-import { SCALES, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../constants';
+import { SCALES } from '../../constants';
 import {
   getLoginRequest,
   getRemoveUsersNotVotedRequest,
@@ -10,16 +10,16 @@ import {
   getSetScaleRequest,
   getSetVoteRequest,
 } from '../../requests/websocket-requests';
+import { WebSocketApi, WebSocketLoginData } from '../../types/WebSocket';
+import { doNothing } from '../../helpers/helpers';
 import {
   CardValue,
+  ServerMessage,
+  VOTE_NOTE_VOTED,
+  VOTE_OBSERVER,
   Votes,
-  WebSocketApi,
-  WebSocketLoginData,
-  WebsocketMessage,
   WebSocketState,
-} from '../../types/WebSocket';
-
-const doNothing = () => {};
+} from '../../shared/WebSocketMessages';
 
 const initialWebSocketState: WebSocketState = {
   resultsVisible: false,
@@ -51,7 +51,7 @@ function getInitialVotes(votes: Votes): Votes {
   );
 }
 
-export const WebSocketProvider = ({ children }: any) => {
+export const WebSocketProvider = ({ children }: { children: ComponentChildren }) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [state, setState] = useState(initialWebSocketState);
   const [loginData, setLoginData] = useState(initialLoginData);
@@ -66,14 +66,15 @@ export const WebSocketProvider = ({ children }: any) => {
         }
         setSocket(webSocket);
       };
-      webSocket.onmessage = (event: any) => {
-        const message: WebsocketMessage = JSON.parse(event.data);
-        if (message.type === 'state') {
-          setState(message.payload);
-        }
-        if (message.type === 'not-logged-in') {
-          setState(initialWebSocketState);
-          setLoggedIn(false);
+      webSocket.onmessage = (event: MessageEvent) => {
+        const message: ServerMessage = JSON.parse(event.data);
+        switch (message.type) {
+          case 'state':
+            return setState(message.payload);
+          case 'not-logged-in':
+            return setLoggedIn(false);
+          default:
+            console.error(`Unexpected Websocket message ${event.data}`);
         }
       };
       webSocket.onclose = () => {
@@ -83,7 +84,7 @@ export const WebSocketProvider = ({ children }: any) => {
   }, [socket]);
 
   const login = (user: string, session: string) => {
-    socket!.send(getLoginRequest(user, session));
+    socket?.send(getLoginRequest(user, session));
     setLoginData({ user, session });
     setLoggedIn(true);
     // Optimistically show the non-voted state of the current user
@@ -96,17 +97,17 @@ export const WebSocketProvider = ({ children }: any) => {
   };
 
   const setVote = (vote: CardValue) => {
-    socket!.send(getSetVoteRequest(vote));
+    socket?.send(getSetVoteRequest(vote));
     setState({ ...state, votes: { ...state.votes, [loginData.user]: vote } });
   };
 
   const setScale = (scale: Array<CardValue>) => {
-    socket!.send(getSetScaleRequest(scale));
+    socket?.send(getSetScaleRequest(scale));
     setState({ ...state, votes: getInitialVotes(state.votes), scale });
   };
 
   const revealVotes = () => {
-    socket!.send(getRevealVotesRequest());
+    socket?.send(getRevealVotesRequest());
     setState({
       ...state,
       resultsVisible: true,
@@ -114,7 +115,7 @@ export const WebSocketProvider = ({ children }: any) => {
   };
 
   const removeUsersNotVoted = () => {
-    socket!.send(getRemoveUsersNotVotedRequest());
+    socket?.send(getRemoveUsersNotVotedRequest());
     setState({
       ...state,
       votes: Object.fromEntries(
@@ -124,7 +125,7 @@ export const WebSocketProvider = ({ children }: any) => {
   };
 
   const resetVotes = () => {
-    socket!.send(getResetVotesRequest());
+    socket?.send(getResetVotesRequest());
     setState({
       votes: getInitialVotes(state.votes),
       resultsVisible: false,
@@ -149,18 +150,15 @@ export const WebSocketProvider = ({ children }: any) => {
 
 export const WebSocketConsumer = WebSocketContext.Consumer;
 
-type ConnectToWebSocket<P extends {} = {}> = (
-  Component: ComponentType<{
-    [K in keyof P | 'socket']: K extends 'socket' ? WebSocketApi : K extends keyof P ? P[K] : never;
-  }>
-) => ComponentType<P>;
+type ConnectToWebSocket = (
+  Component: ComponentType<{ socket: WebSocketApi }>
+) => ComponentType<Record<string, never>>;
 
 export const connectToWebSocket: ConnectToWebSocket =
   (Component) =>
-  (...props) => {
-    return (
+  (...props) =>
+    (
       <WebSocketConsumer>
         {(socket: WebSocketApi) => <Component socket={socket} {...props} />}
       </WebSocketConsumer>
     );
-  };

@@ -1,7 +1,8 @@
 import { fireEvent } from '@testing-library/preact';
-import { SCALES, VOTE_COFFEE, VOTE_NOTE_VOTED } from '../../constants';
+import { SCALES } from '../../constants';
 import { getRenderWithWebSocket } from '../../test-helpers/renderWithWebSocket';
 import { CardSelector } from './CardSelector';
+import { VOTE_COFFEE, VOTE_NOTE_VOTED } from '../../shared/WebSocketMessages';
 
 const render = getRenderWithWebSocket(<CardSelector />, {
   connected: true,

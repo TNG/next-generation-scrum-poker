@@ -21,7 +21,7 @@ const ConfigureMockWebSocket = () => {
     }
   }
 
-  window.WebSocket = MockWebSocket as any;
+  window.WebSocket = MockWebSocket as unknown as typeof window.WebSocket;
   return instances;
 };
 
@@ -110,7 +110,7 @@ describe('The App component', () => {
 
   it('updates, reveals and resets votes and kicks non-voting users optimistically', () => {
     // given
-    const { socket, container, getByText, getAllByTestId } = loginUser();
+    const { socket, container, getByText } = loginUser();
     act(() =>
       socket.onmessage!({
         data: JSON.stringify({

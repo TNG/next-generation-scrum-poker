@@ -4,7 +4,7 @@ import { ddb } from './dynamo';
 import { onMessage } from '../sendmessage/src/on-message';
 
 interface WebsocketWithId extends WebSocket {
-  id?: string;
+  id: string;
 }
 
 export const startWebSocketServer = () => {
@@ -37,7 +37,9 @@ export const startWebSocketServer = () => {
           },
         },
       };
-      onMessage(message.data, config).then(console.log).catch(console.log);
+      onMessage(message.data, config)
+        .then((result) => console.log('Processed message', result))
+        .catch((error) => console.log('Error processing message', error));
     });
   });
 };
