@@ -1,26 +1,27 @@
-import { Config } from './types';
 import { getConnectionItem } from './get-item';
 import { broadcastState } from './broadcast-state';
+import { ConfigWithHandler } from './shared/backendTypes';
 
-export async function setVote(vote: string, config: Config) {
+export async function setVote(vote: string, config: ConfigWithHandler) {
   const { tableName, ddb } = config;
   const { groupId, userId } = await getConnectionItem(config);
+  if (!(groupId && userId)) return;
 
-  const updateGroupParams = {
-    TableName: tableName,
-    Key: {
-      primaryKey: `groupId:${groupId}`,
-    },
-    UpdateExpression: `SET connections.#userId.vote = :vote`,
-    ExpressionAttributeNames: {
-      '#userId': userId,
-    },
-    ExpressionAttributeValues: {
-      ':vote': vote,
-    },
-    ReturnValues: 'UPDATED_NEW',
-  };
-
-  await ddb.update(updateGroupParams).promise();
+  await ddb
+    .update({
+      TableName: tableName,
+      Key: {
+        primaryKey: `groupId:${groupId}`,
+      },
+      UpdateExpression: `SET connections.#userId.vote = :vote`,
+      ExpressionAttributeNames: {
+        '#userId': userId,
+      },
+      ExpressionAttributeValues: {
+        ':vote': vote,
+      },
+      ReturnValues: 'UPDATED_NEW',
+    })
+    .promise();
   await broadcastState(groupId, config);
 }

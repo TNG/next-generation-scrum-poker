@@ -1,39 +1,41 @@
-import * as AWS from 'aws-sdk';
-import { TABLE_NAME } from './const';
+import { Config } from './shared/backendTypes';
 
-export const onDisconnect = async (
-  ddb: AWS.DynamoDB.DocumentClient,
-  connectionId: string | undefined
-) => {
-  const deleteParams = {
-    TableName: TABLE_NAME,
-    Key: {
-      primaryKey: `connectionId:${connectionId}`,
-    },
-  };
-  const queryItemParams = {
-    TableName: TABLE_NAME,
-    ConsistentRead: true,
-    Key: {
-      primaryKey: `connectionId:${connectionId}`,
-    },
-  };
-
+export const onDisconnect = async ({ ddb, connectionId, tableName }: Config) => {
   try {
-    const connectionItem = (await ddb.get(queryItemParams).promise()).Item;
-    await ddb.delete(deleteParams).promise();
-    if (connectionItem && connectionItem.groupId) {
-      const updateParams = {
-        TableName: TABLE_NAME,
+    // TODO Lukas this could be shared code?
+    // TODO Lukas can we run requests together?
+    const connectionItem = (
+      await ddb
+        .get({
+          TableName: tableName,
+          ConsistentRead: true,
+          Key: {
+            primaryKey: `connectionId:${connectionId}`,
+          },
+        })
+        .promise()
+    ).Item;
+    await ddb
+      .delete({
+        TableName: tableName,
         Key: {
-          primaryKey: `groupId:${connectionItem.groupId}`,
+          primaryKey: `connectionId:${connectionId}`,
         },
-        UpdateExpression: 'REMOVE #1.connectionId',
-        ExpressionAttributeNames: {
-          '#1': connectionItem.userId,
-        },
-      };
-      await ddb.update(updateParams).promise();
+      })
+      .promise();
+    if (connectionItem && connectionItem.groupId) {
+      await ddb
+        .update({
+          TableName: tableName,
+          Key: {
+            primaryKey: `groupId:${connectionItem.groupId}`,
+          },
+          UpdateExpression: 'REMOVE connections.#1.connectionId',
+          ExpressionAttributeNames: {
+            '#1': connectionItem.userId,
+          },
+        })
+        .promise();
     }
   } catch (err) {
     return { statusCode: 500, body: 'Failed to disconnect: ' + JSON.stringify(err) };

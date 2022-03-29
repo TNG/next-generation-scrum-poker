@@ -1,7 +1,7 @@
-import { Config } from './types';
 import { broadcastState } from './broadcast-state';
 import { getGroupItem } from './get-item';
 import { VOTE_NOTE_VOTED } from './shared/WebSocketMessages';
+import { ConfigWithHandler } from './shared/backendTypes';
 
 // TODO Lukas move to shared constants
 const COHEN_SCALE = [
@@ -24,7 +24,7 @@ const COHEN_SCALE = [
 const EXPIRY_TIME_IN_HOUR = process.env.EXPIRY_TIME_IN_HOUR || '16';
 
 // TODO Lukas extract named updates
-export async function loginUser(userId: string, groupId: string, config: Config) {
+export async function loginUser(userId: string, groupId: string, config: ConfigWithHandler) {
   const { tableName, ddb, connectionId } = config;
   const groupItem = await getGroupItem(groupId, config);
   const groupUpdate = groupItem
@@ -40,7 +40,7 @@ export async function loginUser(userId: string, groupId: string, config: Config)
           },
           ExpressionAttributeValues: {
             ':connection': {
-              connectionId: connectionId,
+              connectionId,
               vote: groupItem.connections[userId]?.vote || VOTE_NOTE_VOTED,
             },
           },

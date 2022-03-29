@@ -1,27 +1,31 @@
 import * as AWS from 'aws-sdk';
-import { Config, ConnectionItem, GroupItem } from './types';
+import { ConnectionItem, GroupItem } from './types';
+import { Config } from './shared/backendTypes';
 
-async function getItem<T>(
+const getItem = async <T>(
   itemKey: string,
   itemId: string,
   tableName: string,
   ddb: AWS.DynamoDB.DocumentClient
-): Promise<T> {
-  const queryItem = {
-    TableName: tableName,
-    ConsistentRead: true,
-    Key: {
-      primaryKey: `${itemKey}:${itemId}`,
-    },
-  };
-  return (await ddb.get(queryItem).promise()).Item as T;
-}
+): Promise<T> =>
+  (
+    await ddb
+      .get({
+        TableName: tableName,
+        ConsistentRead: true,
+        Key: {
+          primaryKey: `${itemKey}:${itemId}`,
+        },
+      })
+      .promise()
+  ).Item as T;
 
 export const getGroupItem = async (
   groupId: string,
   { tableName, ddb }: Config
 ): Promise<GroupItem | null> => {
   const item = await getItem<GroupItem>('groupId', groupId, tableName, ddb);
+  // TODO Lukas remove
   console.log('getGroupItem', item);
   if (!item) return null;
   if (!item.connections) {

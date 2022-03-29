@@ -1,12 +1,9 @@
-import { Config } from './types';
 import { getGroupItem } from './get-item';
 import { sendMessageToConnection } from './send-message-to-connection';
 import { CardValue } from './shared/WebSocketMessages';
+import { ConfigWithHandler } from './shared/backendTypes';
 
-export async function broadcastState(groupId: string, config: Config): Promise<unknown> {
-  // TODO Lukas could groupId be missing?
-  if (!groupId) return;
-
+export async function broadcastState(groupId: string, config: ConfigWithHandler): Promise<unknown> {
   const groupItem = await getGroupItem(groupId, config);
   if (!groupItem) return;
 

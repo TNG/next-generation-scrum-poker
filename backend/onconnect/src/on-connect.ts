@@ -1,23 +1,18 @@
-import * as AWS from 'aws-sdk';
-import { EXPIRY_TIME_IN_HOUR, TABLE_NAME } from './const';
+import { EXPIRY_TIME_IN_HOUR } from './const';
+import { Config } from './shared/backendTypes';
 
-export const onConnect = async (
-  ddb: AWS.DynamoDB.DocumentClient,
-  connectionId: string | undefined
-) => {
-  const expiryDate = new Date(Date.now());
-  expiryDate.setHours(expiryDate.getHours() + parseFloat(EXPIRY_TIME_IN_HOUR));
-  const putParams = {
-    TableName: TABLE_NAME,
-    Item: {
-      primaryKey: `connectionId:${connectionId}`,
-      connectionId: connectionId,
-      ttl: Math.floor(expiryDate.getTime() / 1000),
-    },
-  };
-
+export const onConnect = async ({ ddb, connectionId, tableName }: Config) => {
   try {
-    await ddb.put(putParams).promise();
+    await ddb
+      .put({
+        TableName: tableName,
+        Item: {
+          primaryKey: `connectionId:${connectionId}`,
+          connectionId,
+          ttl: Math.floor(Date.now() / 1000 + parseFloat(EXPIRY_TIME_IN_HOUR) * 60 * 60),
+        },
+      })
+      .promise();
   } catch (err) {
     return { statusCode: 500, body: 'Failed to connect: ' + JSON.stringify(err) };
   }

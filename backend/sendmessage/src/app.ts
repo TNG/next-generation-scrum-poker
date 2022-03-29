@@ -13,7 +13,7 @@ export const handler: APIGatewayProxyHandler = ({
   body,
 }) => {
   if (!connectionId || !body) {
-    console.log(`Unexpected event without body or connectionId.`);
+    console.log(`Unexpected request without body or connectionId.`);
     return;
   }
   const message = JSON.parse(body).data;

@@ -1,11 +1,12 @@
-import { Config, ConnectionItem, GroupItem } from './types';
+import { GroupItem } from './types';
 import { getConnectionItem, getGroupItem } from './get-item';
 import { broadcastState } from './broadcast-state';
 import { VOTE_NOTE_VOTED } from './shared/WebSocketMessages';
+import { Config, ConfigWithHandler } from './shared/backendTypes';
 
 export function persistResetVotes(
   groupItem: GroupItem,
-  connectionItem: ConnectionItem,
+  groupId: string,
   { tableName, ddb }: Config
 ): Promise<unknown> {
   const userIds = Object.keys(groupItem.connections).filter(
@@ -24,7 +25,7 @@ export function persistResetVotes(
     .update({
       TableName: tableName,
       Key: {
-        primaryKey: `groupId:${connectionItem.groupId}`,
+        primaryKey: `groupId:${groupId}`,
       },
       UpdateExpression: `SET ${updates.join(',')}`,
       ExpressionAttributeValues: {
@@ -36,10 +37,11 @@ export function persistResetVotes(
     .promise();
 }
 
-export async function resetVotes(config: Config) {
-  const connectionItem = await getConnectionItem(config);
-  const groupItem = await getGroupItem(connectionItem.groupId, config);
+export async function resetVotes(config: ConfigWithHandler) {
+  const { groupId } = await getConnectionItem(config);
+  if (!groupId) return;
+  const groupItem = await getGroupItem(groupId, config);
   if (!groupItem) return;
-  await persistResetVotes(groupItem, connectionItem, config);
-  await broadcastState(connectionItem.groupId, config);
+  await persistResetVotes(groupItem, groupId, config);
+  await broadcastState(groupId, config);
 }

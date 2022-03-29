@@ -1,4 +1,3 @@
-// TODO Lukas consider using TypeScript projects?
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',

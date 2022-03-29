@@ -4,11 +4,10 @@ import { revealVotes } from './reveal-votes';
 import { setVote } from './set-vote';
 import { resetVotes } from './reset-votes';
 import { removeUsersNotVoted } from './remove-users-not-voted';
-import { Config } from './types';
 import { ClientMessage } from './shared/WebSocketMessages';
+import { ConfigWithHandler } from './shared/backendTypes';
 
-export const onMessage = async (message: ClientMessage, config: Config) => {
-  console.log('onMessage', message);
+export const onMessage = async (message: ClientMessage, config: ConfigWithHandler) => {
   try {
     switch (message.type) {
       case 'login':

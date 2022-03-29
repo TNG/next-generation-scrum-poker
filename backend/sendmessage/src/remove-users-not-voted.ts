@@ -1,14 +1,15 @@
-import { Config, ConnectionItem, GroupItem } from './types';
+import { GroupItem } from './types';
 import { getConnectionItem, getGroupItem } from './get-item';
 import { sendMessageToConnection } from './send-message-to-connection';
 import { broadcastState } from './broadcast-state';
 import { VOTE_NOTE_VOTED } from './shared/WebSocketMessages';
+import { ConfigWithHandler } from './shared/backendTypes';
 
 // TODO Lukas make remote logout work when kicking yourself
 function getRemoveUsersFromGroupParams(
   userIdsNotVoted: string[],
   tableName: string,
-  connectionItem: ConnectionItem
+  groupId: string
 ) {
   const userIdAttributeNames = Object.fromEntries(
     userIdsNotVoted.map((userId, index) => [`#${index}`, userId])
@@ -16,7 +17,7 @@ function getRemoveUsersFromGroupParams(
   return {
     TableName: tableName,
     Key: {
-      primaryKey: `groupId:${connectionItem.groupId}`,
+      primaryKey: `groupId:${groupId}`,
     },
     UpdateExpression: `REMOVE ${Object.keys(userIdAttributeNames)
       .map((attributeName) => `connections.${attributeName}`)
@@ -35,9 +36,10 @@ function getRemoveGroupFromConnectionParams(tableName: string, groupItem: GroupI
   };
 }
 
-export async function removeUsersNotVoted(config: Config): Promise<void> {
-  const connectionItem = await getConnectionItem(config);
-  const groupItem = await getGroupItem(connectionItem.groupId, config);
+export async function removeUsersNotVoted(config: ConfigWithHandler): Promise<void> {
+  const { groupId } = await getConnectionItem(config);
+  if (!groupId) return;
+  const groupItem = await getGroupItem(groupId, config);
   if (!groupItem) return;
   const { connections } = groupItem;
   const userIdsNotVoted = Object.keys(connections).filter(
@@ -46,6 +48,7 @@ export async function removeUsersNotVoted(config: Config): Promise<void> {
 
   const { tableName, ddb } = config;
   // TODO Lukas batch updates into a single one
+  // TODO Lukas extract db update methods
   const dbUpdates = [];
   if (userIdsNotVoted) {
     dbUpdates.push(
@@ -55,15 +58,13 @@ export async function removeUsersNotVoted(config: Config): Promise<void> {
     );
 
     dbUpdates.push(
-      ddb
-        .update(getRemoveUsersFromGroupParams(userIdsNotVoted, tableName, connectionItem))
-        .promise()
+      ddb.update(getRemoveUsersFromGroupParams(userIdsNotVoted, tableName, groupId)).promise()
     );
   }
 
   await Promise.all(dbUpdates);
   await Promise.all([
-    broadcastState(connectionItem.groupId, config),
+    broadcastState(groupId, config),
     ...userIdsNotVoted.map((id) =>
       sendMessageToConnection(
         { type: 'not-logged-in' },
