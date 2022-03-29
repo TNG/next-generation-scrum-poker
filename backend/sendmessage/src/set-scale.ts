@@ -1,27 +1,18 @@
-import { getConnectionItem, getGroupItem } from './get-item';
-import { persistResetVotes } from './reset-votes';
 import { broadcastState } from './broadcast-state';
-import { CardValue } from './shared/WebSocketMessages';
-import { ConfigWithHandler } from './shared/backendTypes';
+import { resetPersistedVotes } from './reset-votes';
+import { CardValue } from './shared/cards';
+import { ConfigWithHandler } from './sharedBackend/config';
+import { getConnectionItem } from './sharedBackend/getConnectionItem';
+import { getGroupItem } from './sharedBackend/getGroupItem';
 
-export async function setScale(scale: CardValue[], config: ConfigWithHandler): Promise<void> {
-  const { groupId } = await getConnectionItem(config);
+export const setScale = async (scale: CardValue[], config: ConfigWithHandler): Promise<void> => {
+  const connectionItem = await getConnectionItem(config);
+  if (!connectionItem) return;
+  const { groupId } = connectionItem;
   if (!groupId) return;
   const groupItem = await getGroupItem(groupId, config);
   if (!groupItem) return;
-  await config.ddb
-    .update({
-      TableName: config.tableName,
-      Key: {
-        primaryKey: `groupId:${groupId}`,
-      },
-      UpdateExpression: 'SET scale = :scale',
-      ExpressionAttributeValues: {
-        ':scale': scale,
-      },
-      ReturnValues: 'UPDATED_NEW',
-    })
-    .promise();
-  await persistResetVotes(groupItem, groupId, config);
+
+  await resetPersistedVotes(groupId, groupItem.connections, scale, config);
   await broadcastState(groupId, config);
-}
+};

@@ -1,13 +1,20 @@
-import { getConnectionItem } from './get-item';
 import { broadcastState } from './broadcast-state';
-import { ConfigWithHandler } from './shared/backendTypes';
+import { CardValue } from './shared/cards';
+import { Config, ConfigWithHandler } from './sharedBackend/config';
+import { getConnectionItem } from './sharedBackend/getConnectionItem';
 
-export async function setVote(vote: string, config: ConfigWithHandler) {
-  const { tableName, ddb } = config;
-  const { groupId, userId } = await getConnectionItem(config);
+export const setVote = async (vote: CardValue, config: ConfigWithHandler) => {
+  const connectionItem = await getConnectionItem(config);
+  if (!connectionItem) return;
+  const { groupId, userId } = connectionItem;
   if (!(groupId && userId)) return;
 
-  await ddb
+  await updateVote(groupId, userId, vote, config);
+  await broadcastState(groupId, config);
+};
+
+const updateVote = (groupId: string, userId: string, vote: CardValue, { ddb, tableName }: Config) =>
+  ddb
     .update({
       TableName: tableName,
       Key: {
@@ -23,5 +30,3 @@ export async function setVote(vote: string, config: ConfigWithHandler) {
       ReturnValues: 'UPDATED_NEW',
     })
     .promise();
-  await broadcastState(groupId, config);
-}

@@ -1,9 +1,11 @@
 import { broadcastState } from './broadcast-state';
-import { getConnectionItem } from './get-item';
-import { ConfigWithHandler } from './shared/backendTypes';
+import { ConfigWithHandler } from './sharedBackend/config';
+import { getConnectionItem } from './sharedBackend/getConnectionItem';
 
-export async function revealVotes(config: ConfigWithHandler) {
-  const { groupId } = await getConnectionItem(config);
+export const revealVotes = async (config: ConfigWithHandler) => {
+  const connectionItem = await getConnectionItem(config);
+  if (!connectionItem) return;
+  const { groupId } = connectionItem;
   if (!groupId) return;
 
   await config.ddb
@@ -20,4 +22,4 @@ export async function revealVotes(config: ConfigWithHandler) {
     })
     .promise();
   await broadcastState(groupId, config);
-}
+};

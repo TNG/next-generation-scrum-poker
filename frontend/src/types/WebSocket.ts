@@ -1,4 +1,5 @@
-import { CardValue, WebSocketState } from '../shared/WebSocketMessages';
+import { CardValue } from '../shared/cards';
+import { WebSocketState } from '../shared/serverMessages';
 
 export interface WebSocketApi {
   connected: boolean;

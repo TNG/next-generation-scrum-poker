@@ -1,43 +1,14 @@
-import { GroupItem } from './types';
-import { getConnectionItem, getGroupItem } from './get-item';
-import { sendMessageToConnection } from './send-message-to-connection';
 import { broadcastState } from './broadcast-state';
-import { VOTE_NOTE_VOTED } from './shared/WebSocketMessages';
-import { ConfigWithHandler } from './shared/backendTypes';
+import { sendMessageToConnection } from './send-message-to-connection';
+import { VOTE_NOTE_VOTED } from './shared/cards';
+import { Config, ConfigWithHandler } from './sharedBackend/config';
+import { getConnectionItem } from './sharedBackend/getConnectionItem';
+import { getGroupItem } from './sharedBackend/getGroupItem';
 
-// TODO Lukas make remote logout work when kicking yourself
-function getRemoveUsersFromGroupParams(
-  userIdsNotVoted: string[],
-  tableName: string,
-  groupId: string
-) {
-  const userIdAttributeNames = Object.fromEntries(
-    userIdsNotVoted.map((userId, index) => [`#${index}`, userId])
-  );
-  return {
-    TableName: tableName,
-    Key: {
-      primaryKey: `groupId:${groupId}`,
-    },
-    UpdateExpression: `REMOVE ${Object.keys(userIdAttributeNames)
-      .map((attributeName) => `connections.${attributeName}`)
-      .join(',')}`,
-    ExpressionAttributeNames: userIdAttributeNames,
-  };
-}
-
-function getRemoveGroupFromConnectionParams(tableName: string, groupItem: GroupItem, id: string) {
-  return {
-    TableName: tableName,
-    Key: {
-      primaryKey: `connectionId:${groupItem.connections[id].connectionId}`,
-    },
-    UpdateExpression: `REMOVE userId, groupId`,
-  };
-}
-
-export async function removeUsersNotVoted(config: ConfigWithHandler): Promise<void> {
-  const { groupId } = await getConnectionItem(config);
+export const removeUsersNotVoted = async (config: ConfigWithHandler): Promise<void> => {
+  const connectionItem = await getConnectionItem(config);
+  if (!connectionItem) return;
+  const { groupId } = connectionItem;
   if (!groupId) return;
   const groupItem = await getGroupItem(groupId, config);
   if (!groupItem) return;
@@ -46,30 +17,58 @@ export async function removeUsersNotVoted(config: ConfigWithHandler): Promise<vo
     (userId) => connections[userId].vote === VOTE_NOTE_VOTED
   );
 
-  const { tableName, ddb } = config;
-  // TODO Lukas batch updates into a single one
-  // TODO Lukas extract db update methods
-  const dbUpdates = [];
-  if (userIdsNotVoted) {
-    dbUpdates.push(
-      userIdsNotVoted.map((id) =>
-        ddb.update(getRemoveGroupFromConnectionParams(tableName, groupItem, id)).promise()
-      )
-    );
-
-    dbUpdates.push(
-      ddb.update(getRemoveUsersFromGroupParams(userIdsNotVoted, tableName, groupId)).promise()
-    );
+  if (userIdsNotVoted.length) {
+    const dbUpdates = [
+      ...userIdsNotVoted.map((id) =>
+        removeGroupFromConnection({
+          ...config,
+          connectionId: groupItem.connections[id].connectionId,
+        })
+      ),
+      removeUsersFromGroup(groupId, userIdsNotVoted, config),
+    ];
+    await Promise.all(dbUpdates);
   }
-
-  await Promise.all(dbUpdates);
   await Promise.all([
     broadcastState(groupId, config),
-    ...userIdsNotVoted.map((id) =>
+    ...userIdsNotVoted.map((userId) =>
       sendMessageToConnection(
         { type: 'not-logged-in' },
-        (config = { ...config, connectionId: connections[id].connectionId })
+        (config = { ...config, connectionId: connections[userId].connectionId })
       )
     ),
   ]);
-}
+};
+
+const removeGroupFromConnection = ({ ddb, tableName, connectionId }: Config) =>
+  ddb
+    .update({
+      TableName: tableName,
+      Key: {
+        primaryKey: `connectionId:${connectionId}`,
+      },
+      UpdateExpression: `REMOVE userId, groupId`,
+    })
+    .promise();
+
+const removeUsersFromGroup = (
+  groupId: string,
+  removedUserIds: string[],
+  { ddb, tableName }: Config
+) => {
+  const userIdAttributeNames = Object.fromEntries(
+    removedUserIds.map((userId, index) => [`#${index}`, userId])
+  );
+  return ddb
+    .update({
+      TableName: tableName,
+      Key: {
+        primaryKey: `groupId:${groupId}`,
+      },
+      UpdateExpression: `REMOVE ${Object.keys(userIdAttributeNames)
+        .map((attributeName) => `connections.${attributeName}`)
+        .join(',')}`,
+      ExpressionAttributeNames: userIdAttributeNames,
+    })
+    .promise();
+};

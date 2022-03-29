@@ -1,11 +1,11 @@
 import { loginUser } from './login-user';
-import { setScale } from './set-scale';
-import { revealVotes } from './reveal-votes';
-import { setVote } from './set-vote';
-import { resetVotes } from './reset-votes';
 import { removeUsersNotVoted } from './remove-users-not-voted';
-import { ClientMessage } from './shared/WebSocketMessages';
-import { ConfigWithHandler } from './shared/backendTypes';
+import { resetVotes } from './reset-votes';
+import { revealVotes } from './reveal-votes';
+import { setScale } from './set-scale';
+import { setVote } from './set-vote';
+import { ClientMessage } from './shared/clientMessages';
+import { ConfigWithHandler } from './sharedBackend/config';
 
 export const onMessage = async (message: ClientMessage, config: ConfigWithHandler) => {
   try {

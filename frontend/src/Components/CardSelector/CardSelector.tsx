@@ -1,18 +1,13 @@
 import classNames from 'classnames';
-import { useEffect } from 'preact/hooks';
-import { WebSocketApi } from '../../types/WebSocket';
-import classes from './CardSelector.module.css';
-import { IconCoffee } from '../IconCoffee/IconCoffee';
-import { connectToWebSocket } from '../WebSocket/WebSocket';
-import { IconObserver } from '../IconObserver/IconObserver';
-import { BUTTON_OBSERVER } from '../../constants';
 import { JSX } from 'preact';
-import {
-  CardValue,
-  VOTE_COFFEE,
-  VOTE_NOTE_VOTED,
-  VOTE_OBSERVER,
-} from '../../shared/WebSocketMessages';
+import { useEffect } from 'preact/hooks';
+import { BUTTON_OBSERVER } from '../../constants';
+import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../shared/cards';
+import { WebSocketApi } from '../../types/WebSocket';
+import { IconCoffee } from '../IconCoffee/IconCoffee';
+import { IconObserver } from '../IconObserver/IconObserver';
+import { connectToWebSocket } from '../WebSocket/WebSocket';
+import classes from './CardSelector.module.css';
 
 const SPECIAL_ICONS: { [value in CardValue]?: JSX.Element } = {
   [VOTE_OBSERVER]: <IconObserver />,

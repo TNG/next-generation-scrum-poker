@@ -1,5 +1,5 @@
 import { act, fireEvent, render } from '@testing-library/preact';
-import { SCALES } from '../../constants';
+import { SCALES } from '../../shared/scales';
 import { App } from './App';
 
 const ConfigureMockWebSocket = () => {

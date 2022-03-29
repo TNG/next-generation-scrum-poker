@@ -1,12 +1,12 @@
-import { getConnectionItem } from './get-item';
-import { ServerMessage } from './shared/WebSocketMessages';
-import { ConfigWithHandler } from './shared/backendTypes';
+import { ServerMessage } from './shared/serverMessages';
+import { ConfigWithHandler } from './sharedBackend/config';
+import { removeConnection } from './sharedBackend/removeConnection';
 
-export async function sendMessageToConnection(
+export const sendMessageToConnection = async (
   message: ServerMessage,
   config: ConfigWithHandler
-): Promise<void> {
-  const { handler, connectionId, ddb, tableName } = config;
+): Promise<unknown> => {
+  const { handler, connectionId } = config;
   try {
     await handler
       .postToConnection({
@@ -18,31 +18,9 @@ export async function sendMessageToConnection(
   } catch (e: any) {
     if (e.statusCode === 410) {
       console.log(`Found stale connection, deleting ${connectionId}`);
-      // TODO Lukas all requests should be wrapped into methods together with the ddb and a config
-      const [{ groupId, userId }] = await Promise.all([
-        getConnectionItem(config),
-        ddb
-          .delete({
-            TableName: tableName,
-            Key: { primaryKey: `connectionId:${connectionId}` },
-          })
-          .promise(),
-      ]);
-      if (!(groupId && userId)) return;
-      await ddb
-        .update({
-          TableName: tableName,
-          Key: {
-            primaryKey: `groupId:${groupId}`,
-          },
-          UpdateExpression: 'REMOVE #1.connectionId',
-          ExpressionAttributeNames: {
-            '#1': userId,
-          },
-        })
-        .promise();
+      return removeConnection(config);
     } else {
       throw e;
     }
   }
-}
+};

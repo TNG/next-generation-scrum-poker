@@ -1,11 +1,12 @@
+import { COLUMN_NAME, COLUMN_VOTED } from '../../constants';
+import { VOTE_OBSERVER } from '../../shared/cards';
+import { Votes } from '../../shared/serverMessages';
 import sharedClasses from '../../styles.module.css';
 import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
 import { IconObserver } from '../IconObserver/IconObserver';
 import { IconVoted } from '../IconVoted/IconVoted';
-import classes from './VotingStateDisplay.module.css';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
-import { COLUMN_NAME, COLUMN_VOTED } from '../../constants';
-import { VOTE_OBSERVER, Votes } from '../../shared/WebSocketMessages';
+import classes from './VotingStateDisplay.module.css';
 
 const getSortedVotingState = (votes: Votes) => {
   const votedUsers = Object.keys(votes).map((user) => ({

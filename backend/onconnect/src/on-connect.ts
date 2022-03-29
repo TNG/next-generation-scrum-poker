@@ -1,5 +1,5 @@
 import { EXPIRY_TIME_IN_HOUR } from './const';
-import { Config } from './shared/backendTypes';
+import { Config } from './sharedBackend/config';
 
 export const onConnect = async ({ ddb, connectionId, tableName }: Config) => {
   try {

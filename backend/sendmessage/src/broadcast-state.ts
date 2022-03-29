@@ -1,9 +1,12 @@
-import { getGroupItem } from './get-item';
 import { sendMessageToConnection } from './send-message-to-connection';
-import { CardValue } from './shared/WebSocketMessages';
-import { ConfigWithHandler } from './shared/backendTypes';
+import { CardValue } from './shared/cards';
+import { ConfigWithHandler } from './sharedBackend/config';
+import { getGroupItem } from './sharedBackend/getGroupItem';
 
-export async function broadcastState(groupId: string, config: ConfigWithHandler): Promise<unknown> {
+export const broadcastState = async (
+  groupId: string,
+  config: ConfigWithHandler
+): Promise<unknown> => {
   const groupItem = await getGroupItem(groupId, config);
   if (!groupItem) return;
 
@@ -33,4 +36,4 @@ export async function broadcastState(groupId: string, config: ConfigWithHandler)
       )
     )
   );
-}
+};

@@ -1,7 +1,7 @@
 import { ComponentChildren, ComponentType, createContext } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { WEBSOCKET_URL } from '../../config';
-import { SCALES } from '../../constants';
+import { doNothing } from '../../helpers/helpers';
 import {
   getLoginRequest,
   getRemoveUsersNotVotedRequest,
@@ -10,16 +10,10 @@ import {
   getSetScaleRequest,
   getSetVoteRequest,
 } from '../../requests/websocket-requests';
+import { CardValue, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../shared/cards';
+import { SCALES } from '../../shared/scales';
+import { ServerMessage, Votes, WebSocketState } from '../../shared/serverMessages';
 import { WebSocketApi, WebSocketLoginData } from '../../types/WebSocket';
-import { doNothing } from '../../helpers/helpers';
-import {
-  CardValue,
-  ServerMessage,
-  VOTE_NOTE_VOTED,
-  VOTE_OBSERVER,
-  Votes,
-  WebSocketState,
-} from '../../shared/WebSocketMessages';
 
 const initialWebSocketState: WebSocketState = {
   resultsVisible: false,

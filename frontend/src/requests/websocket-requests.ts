@@ -1,4 +1,5 @@
-import { CardValue, ClientMessage } from '../shared/WebSocketMessages';
+import { CardValue } from '../shared/cards';
+import { ClientMessage } from '../shared/clientMessages';
 
 export const getLoginRequest = (user: string, session: string) =>
   buildRequest({
