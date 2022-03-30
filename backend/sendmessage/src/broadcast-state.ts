@@ -14,8 +14,7 @@ export const broadcastState = async (
   const connectionEntries = Object.entries(connections);
   const votes: Votes = {};
   for (const [userId, { vote }] of connectionEntries) {
-    // This fallback is no longer needed once all pre-migration sessions have expired
-    votes[userId] = vote || 'not-voted';
+    votes[userId] = vote;
   }
 
   return Promise.all(
