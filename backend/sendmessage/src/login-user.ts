@@ -3,6 +3,7 @@ import { CardValue, VOTE_NOTE_VOTED } from './shared/cards';
 import { SCALES } from './shared/scales';
 import { Config, ConfigWithHandler } from './sharedBackend/config';
 import { getGroupItem } from './sharedBackend/getGroupItem';
+import { getTtl } from './sharedBackend/getTtl';
 
 const EXPIRY_TIME_IN_HOUR = process.env.EXPIRY_TIME_IN_HOUR || '16';
 
@@ -55,7 +56,7 @@ const createGroupWithUser = (
       TableName: tableName,
       Item: {
         primaryKey: `groupId:${groupId}`,
-        ttl: Math.floor(Date.now() / 1000 + parseFloat(EXPIRY_TIME_IN_HOUR) * 60 * 60),
+        ttl: getTtl(EXPIRY_TIME_IN_HOUR),
         connections: {
           [userId]: { connectionId: connectionId, vote: VOTE_NOTE_VOTED },
         },

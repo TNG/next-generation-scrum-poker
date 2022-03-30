@@ -1,5 +1,6 @@
 import { EXPIRY_TIME_IN_HOUR } from './const';
 import { Config } from './sharedBackend/config';
+import { getTtl } from './sharedBackend/getTtl';
 
 export const onConnect = async ({ ddb, connectionId, tableName }: Config) => {
   try {
@@ -9,7 +10,7 @@ export const onConnect = async ({ ddb, connectionId, tableName }: Config) => {
         Item: {
           primaryKey: `connectionId:${connectionId}`,
           connectionId,
-          ttl: Math.floor(Date.now() / 1000 + parseFloat(EXPIRY_TIME_IN_HOUR) * 60 * 60),
+          ttl: getTtl(EXPIRY_TIME_IN_HOUR),
         },
       })
       .promise();
