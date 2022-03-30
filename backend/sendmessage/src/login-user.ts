@@ -42,7 +42,6 @@ const addUserToGroup = (
           vote,
         },
       },
-      ReturnValues: 'UPDATED_NEW',
     })
     .promise();
 
@@ -82,6 +81,5 @@ const addUserAndGroupToConnection = (
         ':userId': userId,
         ':groupId': groupId,
       },
-      ReturnValues: 'UPDATED_NEW',
     })
     .promise();

@@ -27,6 +27,5 @@ const updateVote = (groupId: string, userId: string, vote: CardValue, { ddb, tab
       ExpressionAttributeValues: {
         ':vote': vote,
       },
-      ReturnValues: 'UPDATED_NEW',
     })
     .promise();

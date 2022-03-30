@@ -18,7 +18,6 @@ export const revealVotes = async (config: ConfigWithHandler) => {
       ExpressionAttributeValues: {
         ':visibility': true,
       },
-      ReturnValues: 'UPDATED_NEW',
     })
     .promise();
   await broadcastState(groupId, config);
