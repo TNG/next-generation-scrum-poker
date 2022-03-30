@@ -1,8 +1,9 @@
 import * as WebSocket from 'ws';
 import { onConnect } from '../onconnect/src/on-connect';
-import { ddb } from './dynamo';
-import { onMessage } from '../sendmessage/src/on-message';
 import { onDisconnect } from '../ondisconnect/src/on-disconnect';
+import { onMessage } from '../sendmessage/src/on-message';
+import { ddb } from './dynamo';
+import { generateId } from './shared/generateId';
 
 interface WebsocketWithId extends WebSocket {
   id: string;
@@ -42,27 +43,20 @@ export const startWebSocketServer = () => {
     ws.on('close', () =>
       onDisconnect(config)
         .then((result) => console.log('Disconnected', socketId, result))
-        .catch((error) => console.log('Error disconnecting', error))
+        .catch((error) => console.error('Error disconnecting', error))
     );
 
     ws.on('unexpected-response', (request, message) =>
-      console.log(`Unexpected socket response`, request, message)
+      console.error(`Unexpected socket response`, request, message)
     );
 
-    ws.on('error', (error) => console.log('Socket error', error));
+    ws.on('error', (error) => console.error('Socket error', error));
 
     ws.on('message', (data) => {
       const message = JSON.parse(String(data));
-      onMessage(message.data, config)
-        .then((result) => console.log('Processed message', message, result))
-        .catch((error) => console.log('Error processing message', error));
+      onMessage(message.data, config).catch((error) =>
+        console.error('Error processing message', error)
+      );
     });
   });
-};
-
-const generateId = (length: number): string => {
-  const mask = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let result = '';
-  for (let i = length; i > 0; --i) result += mask[Math.round(Math.random() * (mask.length - 1))];
-  return result;
 };

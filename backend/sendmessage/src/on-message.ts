@@ -29,9 +29,11 @@ export const onMessage = async (message: ClientMessage, config: ConfigWithHandle
         await removeUsersNotVoted(config);
         break;
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (e: any) {
-    return { statusCode: 500, body: e.stack };
+  } catch (e) {
+    return {
+      statusCode: 500,
+      body: e instanceof Error ? e.stack || e.message : 'Error cannot be parsed',
+    };
   }
 
   return { statusCode: 200, body: 'Data sent.' };

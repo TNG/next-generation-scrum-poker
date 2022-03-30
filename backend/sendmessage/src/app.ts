@@ -1,7 +1,8 @@
-import * as AWS from 'aws-sdk';
 import { APIGatewayProxyHandler } from 'aws-lambda';
-import { onMessage } from './on-message';
+import * as AWS from 'aws-sdk';
 import { TABLE_NAME } from './const';
+import { onMessage } from './on-message';
+import { captureException } from './sharedBackend/exceptions';
 
 const ddb = new AWS.DynamoDB.DocumentClient({
   apiVersion: '2012-08-10',
@@ -13,8 +14,7 @@ export const handler: APIGatewayProxyHandler = ({
   body,
 }) => {
   if (!connectionId || !body) {
-    console.log(`Unexpected request without body or connectionId.`);
-    return;
+    return captureException(new Error('Unexpected request without body or connectionId.'));
   }
   const message = JSON.parse(body).data;
   return onMessage(message, {

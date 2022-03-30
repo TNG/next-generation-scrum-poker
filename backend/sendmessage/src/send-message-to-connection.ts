@@ -1,3 +1,4 @@
+import { AWSError } from 'aws-sdk';
 import { ServerMessage } from './shared/serverMessages';
 import { ConfigWithHandler } from './sharedBackend/config';
 import { removeConnection } from './sharedBackend/removeConnection';
@@ -14,10 +15,11 @@ export const sendMessageToConnection = async (
         Data: JSON.stringify(message),
       })
       .promise();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (e: any) {
-    if (e.statusCode === 410) {
-      console.log(`Found stale connection, deleting ${connectionId}`);
+  } catch (e) {
+    if (!(e instanceof Error)) {
+      return;
+    }
+    if ((e as AWSError).statusCode === 410) {
       return removeConnection(config);
     } else {
       throw e;
