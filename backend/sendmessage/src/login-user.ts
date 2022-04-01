@@ -1,9 +1,9 @@
+import { CardValue, VOTE_NOTE_VOTED } from '../../../shared/cards';
+import { SCALES } from '../../../shared/scales';
+import { Config, ConfigWithHandler } from '../../shared/config';
+import { getGroupItem } from '../../shared/getGroupItem';
+import { getTtl } from '../../shared/getTtl';
 import { broadcastState } from './broadcast-state';
-import { CardValue, VOTE_NOTE_VOTED } from './shared/cards';
-import { SCALES } from './shared/scales';
-import { Config, ConfigWithHandler } from './sharedBackend/config';
-import { getGroupItem } from './sharedBackend/getGroupItem';
-import { getTtl } from './sharedBackend/getTtl';
 
 const EXPIRY_TIME_IN_HOUR = process.env.EXPIRY_TIME_IN_HOUR || '16';
 

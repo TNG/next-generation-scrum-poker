@@ -1,5 +1,5 @@
-import { CardValue } from '../shared/cards';
-import { ClientMessage } from '../shared/clientMessages';
+import { CardValue } from '../../../shared/cards';
+import { ClientMessage } from '../../../shared/clientMessages';
 
 export const getLoginRequest = (user: string, session: string) =>
   buildRequest({

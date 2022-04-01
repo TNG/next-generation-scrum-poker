@@ -1,5 +1,5 @@
 import { fireEvent } from '@testing-library/preact';
-import { SCALES } from '../../shared/scales';
+import { SCALES } from '../../../../shared/scales';
 import { getRenderWithWebSocket } from '../../test-helpers/renderWithWebSocket';
 import { RevealButton } from './RevealButton';
 

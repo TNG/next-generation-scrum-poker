@@ -1,5 +1,5 @@
+import { ScaleName, SCALES } from '../../../../shared/scales';
 import { SELECT_CHANGE_SCALE } from '../../constants';
-import { ScaleName, SCALES } from '../../shared/scales';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './ScaleSelector.module.css';
 

@@ -8,6 +8,6 @@
     "strict": true,
     "target": "es2019"
   },
-  "include": ["**/*"],
+  "include": ["**/*", "../../shared/**/*"],
   "exclude": ["**/*.test.ts"]
 }

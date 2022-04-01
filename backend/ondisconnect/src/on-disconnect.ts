@@ -1,5 +1,5 @@
-import { Config } from './sharedBackend/config';
-import { removeConnection } from './sharedBackend/removeConnection';
+import { Config } from '../../shared/config';
+import { removeConnection } from '../../shared/removeConnection';
 
 export const onDisconnect = async (config: Config) => {
   try {

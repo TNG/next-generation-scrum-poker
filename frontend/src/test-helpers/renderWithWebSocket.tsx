@@ -1,8 +1,8 @@
 import { render } from '@testing-library/preact';
 import { ComponentChildren } from 'preact';
+import { SCALES } from '../../../shared/scales';
 import { WebSocketContext } from '../Components/WebSocket/WebSocket';
 import { doNothing } from '../helpers/helpers';
-import { SCALES } from '../shared/scales';
 import { WebSocketApi } from '../types/WebSocket';
 
 type PartialWebsocketApi = {

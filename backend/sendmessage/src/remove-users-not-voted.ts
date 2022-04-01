@@ -1,9 +1,9 @@
+import { VOTE_NOTE_VOTED } from '../../../shared/cards';
+import { Config, ConfigWithHandler } from '../../shared/config';
+import { getConnectionItem } from '../../shared/getConnectionItem';
+import { getGroupItem } from '../../shared/getGroupItem';
 import { broadcastState } from './broadcast-state';
 import { sendMessageToConnection } from './send-message-to-connection';
-import { VOTE_NOTE_VOTED } from './shared/cards';
-import { Config, ConfigWithHandler } from './sharedBackend/config';
-import { getConnectionItem } from './sharedBackend/getConnectionItem';
-import { getGroupItem } from './sharedBackend/getGroupItem';
 
 export const removeUsersNotVoted = async (config: ConfigWithHandler): Promise<void> => {
   const connectionItem = await getConnectionItem(config);

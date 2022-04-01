@@ -1,5 +1,8 @@
 import { ComponentChildren, ComponentType, createContext } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
+import { CardValue, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
+import { SCALES } from '../../../../shared/scales';
+import { ServerMessage, Votes, WebSocketState } from '../../../../shared/serverMessages';
 import { WEBSOCKET_URL } from '../../config';
 import { doNothing } from '../../helpers/helpers';
 import {
@@ -10,9 +13,6 @@ import {
   getSetScaleRequest,
   getSetVoteRequest,
 } from '../../requests/websocket-requests';
-import { CardValue, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../shared/cards';
-import { SCALES } from '../../shared/scales';
-import { ServerMessage, Votes, WebSocketState } from '../../shared/serverMessages';
 import { WebSocketApi, WebSocketLoginData } from '../../types/WebSocket';
 
 const initialWebSocketState: WebSocketState = {

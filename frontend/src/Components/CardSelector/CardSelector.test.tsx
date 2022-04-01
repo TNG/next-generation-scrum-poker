@@ -1,6 +1,6 @@
 import { fireEvent } from '@testing-library/preact';
-import { VOTE_COFFEE, VOTE_NOTE_VOTED } from '../../shared/cards';
-import { SCALES } from '../../shared/scales';
+import { VOTE_COFFEE, VOTE_NOTE_VOTED } from '../../../../shared/cards';
+import { SCALES } from '../../../../shared/scales';
 import { getRenderWithWebSocket } from '../../test-helpers/renderWithWebSocket';
 import { CardSelector } from './CardSelector';
 

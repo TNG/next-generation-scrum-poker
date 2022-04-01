@@ -1,6 +1,6 @@
+import { ConfigWithHandler } from '../../shared/config';
+import { getConnectionItem } from '../../shared/getConnectionItem';
 import { broadcastState } from './broadcast-state';
-import { ConfigWithHandler } from './sharedBackend/config';
-import { getConnectionItem } from './sharedBackend/getConnectionItem';
 
 export const revealVotes = async (config: ConfigWithHandler) => {
   const connectionItem = await getConnectionItem(config);

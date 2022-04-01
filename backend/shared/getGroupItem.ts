@@ -1,4 +1,4 @@
-import { CardValue } from '../shared/cards';
+import { CardValue } from '../../shared/cards';
 import { Config } from './config';
 import { getItem } from './item';
 

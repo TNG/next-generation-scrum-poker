@@ -1,7 +1,7 @@
+import { CardValue } from '../../../shared/cards';
+import { Config, ConfigWithHandler } from '../../shared/config';
+import { getConnectionItem } from '../../shared/getConnectionItem';
 import { broadcastState } from './broadcast-state';
-import { CardValue } from './shared/cards';
-import { Config, ConfigWithHandler } from './sharedBackend/config';
-import { getConnectionItem } from './sharedBackend/getConnectionItem';
 
 export const setVote = async (vote: CardValue, config: ConfigWithHandler) => {
   const connectionItem = await getConnectionItem(config);

@@ -1,5 +1,6 @@
 import { RefObject } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
+import { generateId } from '../../../../shared/generateId';
 import {
   ALT_TNG_LOGO,
   APP_NAME_FIRST,
@@ -11,7 +12,6 @@ import {
   TNG_URL,
 } from '../../constants';
 import tngLogo from '../../img/tng.svg';
-import { generateId } from '../../shared/generateId';
 import { LegalNoticeContainer } from '../LegalNoticeContainer/LegalNoticeContainer';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './LoginPage.module.css';

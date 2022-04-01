@@ -1,6 +1,6 @@
+import { VOTE_OBSERVER } from '../../../../shared/cards';
+import { Votes } from '../../../../shared/serverMessages';
 import { COLUMN_NAME, COLUMN_VOTED } from '../../constants';
-import { VOTE_OBSERVER } from '../../shared/cards';
-import { Votes } from '../../shared/serverMessages';
 import sharedClasses from '../../styles.module.css';
 import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
 import { IconObserver } from '../IconObserver/IconObserver';

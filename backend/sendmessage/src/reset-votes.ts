@@ -1,8 +1,8 @@
+import { VOTE_NOTE_VOTED } from '../../../shared/cards';
+import { Config, ConfigWithHandler } from '../../shared/config';
+import { getConnectionItem } from '../../shared/getConnectionItem';
+import { getGroupItem, GroupConnections } from '../../shared/getGroupItem';
 import { broadcastState } from './broadcast-state';
-import { VOTE_NOTE_VOTED } from './shared/cards';
-import { Config, ConfigWithHandler } from './sharedBackend/config';
-import { getConnectionItem } from './sharedBackend/getConnectionItem';
-import { getGroupItem, GroupConnections } from './sharedBackend/getGroupItem';
 
 export const resetVotes = async (config: ConfigWithHandler) => {
   const connectionItem = await getConnectionItem(config);

@@ -1,6 +1,6 @@
+import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
+import { Votes } from '../../../../shared/serverMessages';
 import { COLUMN_NAME, COLUMN_VOTE, HEADING_RESULTS } from '../../constants';
-import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../shared/cards';
-import { Votes } from '../../shared/serverMessages';
 import sharedClasses from '../../styles.module.css';
 import { IconCoffee } from '../IconCoffee/IconCoffee';
 import { IconNotVoted } from '../IconNotVoted/IconNotVoted';

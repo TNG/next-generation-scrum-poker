@@ -1,6 +1,6 @@
+import { VOTE_NOTE_VOTED } from '../../../../shared/cards';
+import { Votes } from '../../../../shared/serverMessages';
 import { BUTTON_REVEAL_NOW, BUTTON_REVEAL_VOTES } from '../../constants';
-import { VOTE_NOTE_VOTED } from '../../shared/cards';
-import { Votes } from '../../shared/serverMessages';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './RevealButton.module.css';
 

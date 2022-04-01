@@ -3,11 +3,10 @@
     "baseUrl": ".",
     "module": "esnext",
     "moduleResolution": "Node",
-    "outDir": "build",
     "sourceMap": false,
     "strict": true,
     "target": "es2019"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../shared/**/*", "../../shared/**/*"],
   "exclude": ["src/**/*.test.ts"]
 }

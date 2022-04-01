@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { JSX } from 'preact';
 import { useEffect } from 'preact/hooks';
+import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { BUTTON_OBSERVER } from '../../constants';
-import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../shared/cards';
 import { WebSocketApi } from '../../types/WebSocket';
 import { IconCoffee } from '../IconCoffee/IconCoffee';
 import { IconObserver } from '../IconObserver/IconObserver';

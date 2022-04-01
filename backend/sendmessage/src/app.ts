@@ -1,8 +1,8 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import { ApiGatewayManagementApi, DynamoDB } from 'aws-sdk';
+import { captureException } from '../../shared/exceptions';
 import { TABLE_NAME } from './const';
 import { onMessage } from './on-message';
-import { captureException } from './sharedBackend/exceptions';
 
 const ddb = new DynamoDB.DocumentClient({
   apiVersion: '2012-08-10',

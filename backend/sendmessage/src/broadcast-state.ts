@@ -1,7 +1,7 @@
+import { Votes } from '../../../shared/serverMessages';
+import { ConfigWithHandler } from '../../shared/config';
+import { getGroupItem } from '../../shared/getGroupItem';
 import { sendMessageToConnection } from './send-message-to-connection';
-import { Votes } from './shared/serverMessages';
-import { ConfigWithHandler } from './sharedBackend/config';
-import { getGroupItem } from './sharedBackend/getGroupItem';
 
 export const broadcastState = async (
   groupId: string,

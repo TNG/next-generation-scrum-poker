@@ -17,6 +17,6 @@
     "target": "ESNext",
     "types": ["vite/client", "node"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../shared/**/*"],
   "exclude": ["src/**/*.test.*"]
 }

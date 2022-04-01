@@ -1,11 +1,11 @@
+import { ClientMessage } from '../../../shared/clientMessages';
+import { ConfigWithHandler } from '../../shared/config';
 import { loginUser } from './login-user';
 import { removeUsersNotVoted } from './remove-users-not-voted';
 import { resetVotes } from './reset-votes';
 import { revealVotes } from './reveal-votes';
 import { setScale } from './set-scale';
 import { setVote } from './set-vote';
-import { ClientMessage } from './shared/clientMessages';
-import { ConfigWithHandler } from './sharedBackend/config';
 
 export const onMessage = async (message: ClientMessage, config: ConfigWithHandler) => {
   try {

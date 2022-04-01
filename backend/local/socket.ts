@@ -1,9 +1,9 @@
 import * as WebSocket from 'ws';
+import { generateId } from '../../shared/generateId';
 import { onConnect } from '../onconnect/src/on-connect';
 import { onDisconnect } from '../ondisconnect/src/on-disconnect';
 import { onMessage } from '../sendmessage/src/on-message';
 import { ddb } from './dynamo';
-import { generateId } from './shared/generateId';
 
 interface WebsocketWithId extends WebSocket {
   id: string;
