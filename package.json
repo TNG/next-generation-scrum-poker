@@ -14,10 +14,7 @@
     "start:local-backend:db": "docker run --rm -p 8000:8000 amazon/dynamodb-local",
     "start:local-backend:gateway": "nodemon backend/local/main.ts",
     "preview:frontend": "npm run build:frontend && cd frontend && vite preview",
-    "build:backend": "run-p build:backend:onconnect build:backend:ondisconnect build:backend:sendmessage",
-    "build:backend:onconnect": "cd backend/onconnect && rimraf build && tsc -p .",
-    "build:backend:ondisconnect": "cd backend/ondisconnect && rimraf build && tsc -p .",
-    "build:backend:sendmessage": "cd backend/sendmessage && rimraf build && tsc -p .",
+    "build:backend": "rollup -c backend/rollup.config.ts --configPlugin 'typescript={include:\"backend/rollup.config.ts\"}'",
     "build:frontend": "run-p build:frontend:vite build:frontend:typecheck",
     "build:frontend:vite": "cd frontend && rimraf dist && rimraf dist-ssr && vite build && vite build --ssr src/index-ssr.tsx --outDir dist-ssr && node prerenderHtml.js",
     "build:frontend:typecheck": "tsc -p frontend --noEmit"
@@ -32,6 +29,7 @@
   "dependencies": {
     "@preact/preset-vite": "^2.2.0",
     "@rollup/plugin-replace": "^4.0.0",
+    "@rollup/plugin-typescript": "^8.3.1",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/preact": "^2.0.1",
     "@types/aws-lambda": "^8.10.93",
@@ -55,6 +53,7 @@
     "preact-render-to-string": "^5.1.20",
     "prettier": "^2.6.1",
     "rimraf": "^3.0.2",
+    "rollup": "^2.70.1",
     "ts-jest": "^27.1.4",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.3",

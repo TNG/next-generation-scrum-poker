@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "Node",
     "outDir": "build",
     "sourceMap": false,

@@ -1,10 +1,10 @@
-import * as AWS from 'aws-sdk';
+import { DynamoDB } from 'aws-sdk';
 
 export const getItem = async <T>(
   itemKey: string,
   itemId: string,
   tableName: string,
-  ddb: AWS.DynamoDB.DocumentClient
+  ddb: DynamoDB.DocumentClient
 ): Promise<T | void> =>
   (
     await ddb
