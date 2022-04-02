@@ -11,6 +11,6 @@ export const resetVotes = async (config: ConfigWithHandler) => {
   if (!groupId) return;
   const groupItem = await getGroup(groupId, config);
   if (!groupItem) return;
-  await resetGroupVotes(groupId, groupItem.connections, false, config);
-  await broadcastState(groupId, config);
+  const updatedGroupItem = await resetGroupVotes(groupId, groupItem.connections, false, config);
+  await broadcastState(updatedGroupItem, config);
 };

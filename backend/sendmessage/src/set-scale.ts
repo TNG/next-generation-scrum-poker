@@ -13,6 +13,6 @@ export const setScale = async (scale: CardValue[], config: ConfigWithHandler): P
   const groupItem = await getGroup(groupId, config);
   if (!groupItem) return;
 
-  await resetGroupVotes(groupId, groupItem.connections, scale, config);
-  await broadcastState(groupId, config);
+  const updatedGroupItem = await resetGroupVotes(groupId, groupItem.connections, scale, config);
+  await broadcastState(updatedGroupItem, config);
 };

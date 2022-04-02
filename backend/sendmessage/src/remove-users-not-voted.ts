@@ -20,24 +20,23 @@ export const removeUsersNotVoted = async (config: ConfigWithHandler): Promise<vo
   );
 
   if (userIdsNotVoted.length) {
-    const dbUpdates = [
+    const [updatedGroupItem] = await Promise.all([
+      removeConnectionsFromGroup(groupId, userIdsNotVoted, config),
       ...userIdsNotVoted.map((id) =>
         removeGroupFromConnection({
           ...config,
           connectionId: groupItem.connections[id].connectionId,
         })
       ),
-      removeConnectionsFromGroup(groupId, userIdsNotVoted, config),
-    ];
-    await Promise.all(dbUpdates);
+    ]);
+    await Promise.all([
+      broadcastState(updatedGroupItem, config),
+      ...userIdsNotVoted.map((userId) =>
+        sendMessageToConnection(
+          { type: 'not-logged-in' },
+          (config = { ...config, connectionId: connections[userId].connectionId })
+        )
+      ),
+    ]);
   }
-  await Promise.all([
-    broadcastState(groupId, config),
-    ...userIdsNotVoted.map((userId) =>
-      sendMessageToConnection(
-        { type: 'not-logged-in' },
-        (config = { ...config, connectionId: connections[userId].connectionId })
-      )
-    ),
-  ]);
 };

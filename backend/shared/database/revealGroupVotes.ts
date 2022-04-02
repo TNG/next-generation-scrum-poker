@@ -1,16 +1,20 @@
-import { Config } from '../types';
+import { Config, GroupItem } from '../types';
 
-export const revealGroupVotes = (groupId: string, { tableName, ddb }: Config): Promise<unknown> => {
-  return ddb
-    .update({
-      TableName: tableName,
-      Key: {
-        primaryKey: `groupId:${groupId}`,
-      },
-      UpdateExpression: 'SET visible = :visibility',
-      ExpressionAttributeValues: {
-        ':visibility': true,
-      },
-    })
-    .promise();
-};
+export const revealGroupVotes = async (
+  groupId: string,
+  { tableName, ddb }: Config
+): Promise<GroupItem> =>
+  (
+    await ddb
+      .update({
+        TableName: tableName,
+        Key: {
+          primaryKey: `groupId:${groupId}`,
+        },
+        UpdateExpression: 'SET visible = :visibility',
+        ExpressionAttributeValues: {
+          ':visibility': true,
+        },
+      })
+      .promise()
+  ).Attributes as GroupItem;

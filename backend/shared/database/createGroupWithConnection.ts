@@ -1,24 +1,28 @@
 import { VOTE_NOTE_VOTED } from '../../../shared/cards';
 import { SCALES } from '../../../shared/scales';
-import { Config } from '../types';
+import { Config, GroupItem } from '../types';
 
-export const createGroupWithConnection = (
+export const createGroupWithConnection = async (
   groupId: string,
   userId: string,
   ttl: number,
   { ddb, tableName, connectionId }: Config
-) =>
-  ddb
+): Promise<GroupItem> => {
+  const groupItem: GroupItem & { primaryKey: string } = {
+    primaryKey: `groupId:${groupId}`,
+    ttl,
+    connections: {
+      [userId]: { connectionId: connectionId, vote: VOTE_NOTE_VOTED },
+    },
+    groupId,
+    scale: SCALES.COHEN_SCALE.values,
+    visible: false,
+  };
+  await ddb
     .put({
       TableName: tableName,
-      Item: {
-        primaryKey: `groupId:${groupId}`,
-        ttl,
-        connections: {
-          [userId]: { connectionId: connectionId, vote: VOTE_NOTE_VOTED },
-        },
-        groupId,
-        scale: SCALES.COHEN_SCALE.values,
-      },
+      Item: groupItem,
     })
     .promise();
+  return groupItem;
+};

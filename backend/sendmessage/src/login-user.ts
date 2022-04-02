@@ -18,6 +18,9 @@ export const loginUser = async (userId: string, groupId: string, config: ConfigW
         config
       )
     : createGroupWithConnection(groupId, userId, getTtl(EXPIRY_TIME_IN_HOUR), config);
-  await Promise.all([addUserAndGroupToConnection(groupId, userId, config), groupUpdate]);
-  await broadcastState(groupId, config);
+  const [updatedGroupItem] = await Promise.all([
+    groupUpdate,
+    addUserAndGroupToConnection(groupId, userId, config),
+  ]);
+  await broadcastState(updatedGroupItem, config);
 };

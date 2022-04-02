@@ -8,6 +8,6 @@ export const revealVotes = async (config: ConfigWithHandler) => {
   if (!connectionItem) return;
   const { groupId } = connectionItem;
   if (!groupId) return;
-  await revealGroupVotes(groupId, config);
-  await broadcastState(groupId, config);
+  const updatedGroupItem = await revealGroupVotes(groupId, config);
+  await broadcastState(updatedGroupItem, config);
 };
