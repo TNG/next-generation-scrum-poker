@@ -1,24 +1,13 @@
-import { ConfigWithHandler } from '../../shared/config';
-import { getConnectionItem } from '../../shared/getConnectionItem';
+import { getConnection } from '../../shared/database/getConnection';
+import { revealGroupVotes } from '../../shared/database/revealGroupVotes';
+import { ConfigWithHandler } from '../../shared/types';
 import { broadcastState } from './broadcast-state';
 
 export const revealVotes = async (config: ConfigWithHandler) => {
-  const connectionItem = await getConnectionItem(config);
+  const connectionItem = await getConnection(config);
   if (!connectionItem) return;
   const { groupId } = connectionItem;
   if (!groupId) return;
-
-  await config.ddb
-    .update({
-      TableName: config.tableName,
-      Key: {
-        primaryKey: `groupId:${groupId}`,
-      },
-      UpdateExpression: 'SET visible = :visibility',
-      ExpressionAttributeValues: {
-        ':visibility': true,
-      },
-    })
-    .promise();
+  await revealGroupVotes(groupId, config);
   await broadcastState(groupId, config);
 };

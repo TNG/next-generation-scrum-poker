@@ -1,18 +1,18 @@
 import { CardValue } from '../../../shared/cards';
-import { ConfigWithHandler } from '../../shared/config';
-import { getConnectionItem } from '../../shared/getConnectionItem';
-import { getGroupItem } from '../../shared/getGroupItem';
+import { getConnection } from '../../shared/database/getConnection';
+import { getGroup } from '../../shared/database/getGroup';
+import { resetGroupVotes } from '../../shared/database/resetGroupVotes';
+import { ConfigWithHandler } from '../../shared/types';
 import { broadcastState } from './broadcast-state';
-import { resetPersistedVotes } from './reset-votes';
 
 export const setScale = async (scale: CardValue[], config: ConfigWithHandler): Promise<void> => {
-  const connectionItem = await getConnectionItem(config);
+  const connectionItem = await getConnection(config);
   if (!connectionItem) return;
   const { groupId } = connectionItem;
   if (!groupId) return;
-  const groupItem = await getGroupItem(groupId, config);
+  const groupItem = await getGroup(groupId, config);
   if (!groupItem) return;
 
-  await resetPersistedVotes(groupId, groupItem.connections, scale, config);
+  await resetGroupVotes(groupId, groupItem.connections, scale, config);
   await broadcastState(groupId, config);
 };

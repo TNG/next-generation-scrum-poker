@@ -1,19 +1,11 @@
-import { Config } from '../../shared/config';
+import { createConnection } from '../../shared/database/createConnection';
 import { getTtl } from '../../shared/getTtl';
+import { Config } from '../../shared/types';
 import { EXPIRY_TIME_IN_HOUR } from './const';
 
-export const onConnect = async ({ ddb, connectionId, tableName }: Config) => {
+export const onConnect = async (config: Config) => {
   try {
-    await ddb
-      .put({
-        TableName: tableName,
-        Item: {
-          primaryKey: `connectionId:${connectionId}`,
-          connectionId,
-          ttl: getTtl(EXPIRY_TIME_IN_HOUR),
-        },
-      })
-      .promise();
+    await createConnection(getTtl(EXPIRY_TIME_IN_HOUR), config);
   } catch (err) {
     return { statusCode: 500, body: 'Failed to connect: ' + JSON.stringify(err) };
   }

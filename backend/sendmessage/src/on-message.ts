@@ -1,5 +1,5 @@
 import { ClientMessage } from '../../../shared/clientMessages';
-import { ConfigWithHandler } from '../../shared/config';
+import { ConfigWithHandler } from '../../shared/types';
 import { loginUser } from './login-user';
 import { removeUsersNotVoted } from './remove-users-not-voted';
 import { resetVotes } from './reset-votes';

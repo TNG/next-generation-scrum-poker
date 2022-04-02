@@ -1,13 +1,13 @@
 import { Votes } from '../../../shared/serverMessages';
-import { ConfigWithHandler } from '../../shared/config';
-import { getGroupItem } from '../../shared/getGroupItem';
+import { getGroup } from '../../shared/database/getGroup';
+import { ConfigWithHandler } from '../../shared/types';
 import { sendMessageToConnection } from './send-message-to-connection';
 
 export const broadcastState = async (
   groupId: string,
   config: ConfigWithHandler
 ): Promise<unknown> => {
-  const groupItem = await getGroupItem(groupId, config);
+  const groupItem = await getGroup(groupId, config);
   if (!groupItem) return;
 
   const { connections, visible, scale } = groupItem;

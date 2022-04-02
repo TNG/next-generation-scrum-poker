@@ -1,36 +1,14 @@
-import { Config } from './config';
-import { getConnectionItem } from './getConnectionItem';
-
-const deleteConnectionItem = ({ connectionId, tableName, ddb }: Config) =>
-  ddb
-    .delete({
-      TableName: tableName,
-      Key: {
-        primaryKey: `connectionId:${connectionId}`,
-      },
-    })
-    .promise();
-
-const removeConnectionFromGroup = (userId: string, groupId: string, { tableName, ddb }: Config) =>
-  ddb
-    .update({
-      TableName: tableName,
-      Key: {
-        primaryKey: `groupId:${groupId}`,
-      },
-      UpdateExpression: 'REMOVE connections.#1.connectionId',
-      ExpressionAttributeNames: {
-        '#1': userId,
-      },
-    })
-    .promise();
+import { deleteConnection } from './database/deleteConnection';
+import { getConnection } from './database/getConnection';
+import { removeConnectionFromGroup } from './database/removeConnectionFromGroup';
+import { Config } from './types';
 
 export const removeConnection = async (config: Config): Promise<unknown> => {
-  const connectionItem = await getConnectionItem(config);
+  const connectionItem = await getConnection(config);
   if (!connectionItem) return;
   const { groupId, userId } = connectionItem;
   return Promise.all([
-    deleteConnectionItem(config),
+    deleteConnection(config),
     userId && groupId && removeConnectionFromGroup(userId, groupId, config),
   ]);
 };

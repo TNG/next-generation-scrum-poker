@@ -1,16 +1,18 @@
 import { VOTE_NOTE_VOTED } from '../../../shared/cards';
-import { Config, ConfigWithHandler } from '../../shared/config';
-import { getConnectionItem } from '../../shared/getConnectionItem';
-import { getGroupItem } from '../../shared/getGroupItem';
+import { getConnection } from '../../shared/database/getConnection';
+import { getGroup } from '../../shared/database/getGroup';
+import { removeConnectionsFromGroup } from '../../shared/database/removeConnectionsFromGroup';
+import { removeGroupFromConnection } from '../../shared/database/removeGroupFromConnection';
+import { ConfigWithHandler } from '../../shared/types';
 import { broadcastState } from './broadcast-state';
 import { sendMessageToConnection } from './send-message-to-connection';
 
 export const removeUsersNotVoted = async (config: ConfigWithHandler): Promise<void> => {
-  const connectionItem = await getConnectionItem(config);
+  const connectionItem = await getConnection(config);
   if (!connectionItem) return;
   const { groupId } = connectionItem;
   if (!groupId) return;
-  const groupItem = await getGroupItem(groupId, config);
+  const groupItem = await getGroup(groupId, config);
   if (!groupItem) return;
   const { connections } = groupItem;
   const userIdsNotVoted = Object.keys(connections).filter(
@@ -25,7 +27,7 @@ export const removeUsersNotVoted = async (config: ConfigWithHandler): Promise<vo
           connectionId: groupItem.connections[id].connectionId,
         })
       ),
-      removeUsersFromGroup(groupId, userIdsNotVoted, config),
+      removeConnectionsFromGroup(groupId, userIdsNotVoted, config),
     ];
     await Promise.all(dbUpdates);
   }
@@ -38,37 +40,4 @@ export const removeUsersNotVoted = async (config: ConfigWithHandler): Promise<vo
       )
     ),
   ]);
-};
-
-const removeGroupFromConnection = ({ ddb, tableName, connectionId }: Config) =>
-  ddb
-    .update({
-      TableName: tableName,
-      Key: {
-        primaryKey: `connectionId:${connectionId}`,
-      },
-      UpdateExpression: `REMOVE userId, groupId`,
-    })
-    .promise();
-
-const removeUsersFromGroup = (
-  groupId: string,
-  removedUserIds: string[],
-  { ddb, tableName }: Config
-) => {
-  const userIdAttributeNames = Object.fromEntries(
-    removedUserIds.map((userId, index) => [`#${index}`, userId])
-  );
-  return ddb
-    .update({
-      TableName: tableName,
-      Key: {
-        primaryKey: `groupId:${groupId}`,
-      },
-      UpdateExpression: `REMOVE ${Object.keys(userIdAttributeNames)
-        .map((attributeName) => `connections.${attributeName}`)
-        .join(',')}`,
-      ExpressionAttributeNames: userIdAttributeNames,
-    })
-    .promise();
 };
