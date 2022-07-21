@@ -1,26 +1,15 @@
-import { Config } from './types';
+import { CardValue } from '../../../shared/cards';
+import { getConnection } from '../../shared/database/getConnection';
+import { setGroupConnectionVote } from '../../shared/database/setGroupConnectionVote';
+import { ConfigWithHandler } from '../../shared/types';
+import { broadcastState } from './broadcast-state';
 
-const { getConnectionItem } = require('./get-item');
-const { broadcastState } = require('./broadcast-state');
+export const setVote = async (vote: CardValue, config: ConfigWithHandler) => {
+  const connectionItem = await getConnection(config);
+  if (!connectionItem) return;
+  const { groupId, userId } = connectionItem;
+  if (!(groupId && userId)) return;
 
-export async function setVote(vote: string, config: Config) {
-  const connectionItem = await getConnectionItem(config.connectionId, config.tableName, config.ddb);
-
-  const updateGroupParams = {
-    TableName: config.tableName,
-    Key: {
-      primaryKey: `groupId:${connectionItem.groupId}`,
-    },
-    UpdateExpression: 'SET #userId.vote = :vote',
-    ExpressionAttributeNames: {
-      '#userId': connectionItem.userId,
-    },
-    ExpressionAttributeValues: {
-      ':vote': vote,
-    },
-    ReturnValues: 'UPDATED_NEW',
-  };
-
-  await config.ddb.update(updateGroupParams).promise();
-  await Promise.all(await broadcastState(connectionItem.groupId, config));
-}
+  const updatedGroupItem = await setGroupConnectionVote(groupId, userId, vote, config);
+  await broadcastState(updatedGroupItem, config);
+};

@@ -1,37 +1,28 @@
-import { Config } from './types';
+import { AWSError } from 'aws-sdk';
+import { ServerMessage } from '../../../shared/serverMessages';
+import { removeConnection } from '../../shared/removeConnection';
+import { ConfigWithHandler } from '../../shared/types';
 
-const { getConnectionItem } = require('./get-item');
-
-export async function sendMessageToConnection(message: string, config: Config) {
+export const sendMessageToConnection = async (
+  message: ServerMessage,
+  config: ConfigWithHandler
+): Promise<unknown> => {
+  const { handler, connectionId } = config;
   try {
-    await config.handler
-      .postToConnection({ ConnectionId: config.connectionId as string, Data: message })
+    await handler
+      .postToConnection({
+        ConnectionId: connectionId,
+        Data: JSON.stringify(message),
+      })
       .promise();
-  } catch (e: any) {
-    if (e.statusCode === 410) {
-      console.log(`Found stale connection, deleting ${config.connectionId}`);
-      const connectionItem = getConnectionItem(config.connectionId, config.tableName, config.ddb);
-      await config.ddb
-        .delete({
-          TableName: config.tableName,
-          Key: { primaryKey: `connectionId:${config.connectionId}` },
-        })
-        .promise();
-      if (connectionItem.groupId) {
-        const updateParams = {
-          TableName: config.tableName,
-          Key: {
-            primaryKey: `groupId:${connectionItem.groupId}`,
-          },
-          UpdateExpression: 'REMOVE #1.connectionId',
-          ExpressionAttributeNames: {
-            '#1': connectionItem.userId,
-          },
-        };
-        await config.ddb.update(updateParams).promise();
-      }
+  } catch (e) {
+    if (!(e instanceof Error)) {
+      return;
+    }
+    if ((e as AWSError).statusCode === 410) {
+      return removeConnection(config);
     } else {
       throw e;
     }
   }
-}
+};

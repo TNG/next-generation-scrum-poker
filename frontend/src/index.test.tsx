@@ -12,6 +12,7 @@ describe('the entry point', () => {
       })),
     });
   });
+
   it('displays the login screen initially', () => {
     jest.isolateModules(() => {
       require('./index');

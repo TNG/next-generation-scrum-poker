@@ -1,9 +1,6 @@
 import { RefObject } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
-import tngLogo from '../../img/tng.svg';
-import { connectToWebSocket } from '../WebSocket/WebSocket';
-import { generateId } from './generateId';
-import classes from './LoginPage.module.css';
+import { generateId } from '../../../../shared/generateId';
 import {
   ALT_TNG_LOGO,
   APP_NAME_FIRST,
@@ -14,7 +11,10 @@ import {
   LABEL_USERNAME,
   TNG_URL,
 } from '../../constants';
+import tngLogo from '../../img/tng.svg';
 import { LegalNoticeContainer } from '../LegalNoticeContainer/LegalNoticeContainer';
+import { connectToWebSocket } from '../WebSocket/WebSocket';
+import classes from './LoginPage.module.css';
 
 // During server-side-rendering, window/history cannot be accessed
 const isSSR = typeof window === 'undefined';

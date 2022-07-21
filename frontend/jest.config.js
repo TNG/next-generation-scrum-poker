@@ -8,8 +8,8 @@ module.exports = {
   },
   moduleFileExtensions: ['js', 'ts', 'tsx', 'mjs'],
   moduleNameMapper: {
-    '\\.svg$': '<rootDir>/src/__mocks__/fileMock.js',
-    '\\.module.css$': '<rootDir>/src/__mocks__/identityObjectProxy.js',
+    '\\.svg$': '<rootDir>/src/__mocks__/fileMock.ts',
+    '\\.module.css$': '<rootDir>/src/__mocks__/identityObjectProxy.ts',
   },
   setupFilesAfterEnv: ['./jest.setup.js'],
   testPathIgnorePatterns: ['/node_modules/', '/build/', '/dist/'],

@@ -1,35 +1,18 @@
-import { Config } from './types';
-import { getConnectionItem, getGroupItem } from './get-item';
-import { getResetVotesUpdateParams } from './reset-votes';
+import { CardValue } from '../../../shared/cards';
+import { getConnection } from '../../shared/database/getConnection';
+import { getGroup } from '../../shared/database/getGroup';
+import { resetGroupVotes } from '../../shared/database/resetGroupVotes';
+import { ConfigWithHandler } from '../../shared/types';
 import { broadcastState } from './broadcast-state';
 
-export async function setScale(scale: string, config: Config) {
-  const connectionItem = await getConnectionItem(
-    config.connectionId as string,
-    config.tableName,
-    config.ddb
-  );
-  const groupItem = await getGroupItem(
-    connectionItem.groupId as string,
-    config.tableName,
-    config.ddb
-  );
+export const setScale = async (scale: CardValue[], config: ConfigWithHandler): Promise<void> => {
+  const connectionItem = await getConnection(config);
+  if (!connectionItem) return;
+  const { groupId } = connectionItem;
+  if (!groupId) return;
+  const groupItem = await getGroup(groupId, config);
+  if (!groupItem) return;
 
-  const updateParams = {
-    TableName: config.tableName,
-    Key: {
-      primaryKey: `groupId:${connectionItem.groupId}`,
-    },
-    UpdateExpression: 'SET scale = :scale',
-    ExpressionAttributeValues: {
-      ':scale': scale,
-    },
-    ReturnValues: 'UPDATED_NEW',
-  };
-
-  await config.ddb.update(updateParams).promise();
-  await config.ddb
-    .update(getResetVotesUpdateParams(groupItem, config.tableName, connectionItem))
-    .promise();
-  await Promise.all((await broadcastState(connectionItem.groupId as string, config)) as any);
-}
+  const updatedGroupItem = await resetGroupVotes(groupId, groupItem.connections, scale, config);
+  await broadcastState(updatedGroupItem, config);
+};

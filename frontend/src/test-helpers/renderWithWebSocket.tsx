@@ -1,10 +1,9 @@
-import { ComponentChildren } from 'preact';
-import { WebSocketApi } from '../types/WebSocket';
-import { SCALES } from '../constants';
 import { render } from '@testing-library/preact';
+import { ComponentChildren } from 'preact';
+import { SCALES } from '../../../shared/scales';
 import { WebSocketContext } from '../Components/WebSocket/WebSocket';
-
-const doNothing = () => {};
+import { doNothing } from '../helpers/helpers';
+import { WebSocketApi } from '../types/WebSocket';
 
 type PartialWebsocketApi = {
   [P in keyof WebSocketApi]?: P extends 'state' ? Partial<WebSocketApi['state']> : WebSocketApi[P];

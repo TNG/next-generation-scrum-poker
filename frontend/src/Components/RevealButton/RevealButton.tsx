@@ -1,7 +1,8 @@
-import { Votes } from '../../types/WebSocket';
-import classes from './RevealButton.module.css';
+import { VOTE_NOTE_VOTED } from '../../../../shared/cards';
+import { Votes } from '../../../../shared/serverMessages';
+import { BUTTON_REVEAL_NOW, BUTTON_REVEAL_VOTES } from '../../constants';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
-import { BUTTON_REVEAL_NOW, BUTTON_REVEAL_VOTES, VOTE_NOTE_VOTED } from '../../constants';
+import classes from './RevealButton.module.css';
 
 const getNumberOfMissingVotes = (votes: Votes): number =>
   Object.values(votes).reduce((count, vote) => (vote === VOTE_NOTE_VOTED ? count + 1 : count), 0);

@@ -1,40 +1,9 @@
-import * as AWS from 'aws-sdk';
-import { TABLE_NAME } from './const';
+import { removeConnection } from '../../shared/removeConnection';
+import { Config } from '../../shared/types';
 
-export const onDisconnect = async (
-  ddb: AWS.DynamoDB.DocumentClient,
-  connectionId: string | undefined
-) => {
-  const deleteParams = {
-    TableName: TABLE_NAME,
-    Key: {
-      primaryKey: `connectionId:${connectionId}`,
-    },
-  };
-  const queryItemParams = {
-    TableName: TABLE_NAME,
-    ConsistentRead: true,
-    Key: {
-      primaryKey: `connectionId:${connectionId}`,
-    },
-  };
-
+export const onDisconnect = async (config: Config) => {
   try {
-    const connectionItem = (await ddb.get(queryItemParams).promise()).Item;
-    await ddb.delete(deleteParams).promise();
-    if (connectionItem && connectionItem.groupId) {
-      const updateParams = {
-        TableName: TABLE_NAME,
-        Key: {
-          primaryKey: `groupId:${connectionItem.groupId}`,
-        },
-        UpdateExpression: 'REMOVE #1.connectionId',
-        ExpressionAttributeNames: {
-          '#1': connectionItem.userId,
-        },
-      };
-      await ddb.update(updateParams).promise();
-    }
+    await removeConnection(config);
   } catch (err) {
     return { statusCode: 500, body: 'Failed to disconnect: ' + JSON.stringify(err) };
   }

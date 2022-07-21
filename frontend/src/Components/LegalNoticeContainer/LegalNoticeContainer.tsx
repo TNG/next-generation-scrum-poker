@@ -14,10 +14,10 @@ export const LegalNoticeContainer = () => {
   };
   useEffect(() => {
     if (isExpanded && containerRef.current) {
-      const {top} = containerRef.current.getBoundingClientRect();
-      const visibleHeight = (window.innerHeight || document.documentElement.clientHeight) - top
+      const { top } = containerRef.current.getBoundingClientRect();
+      const visibleHeight = (window.innerHeight || document.documentElement.clientHeight) - top;
       if (visibleHeight < MIN_VISIBLE_INITIAL_HEIGHT) {
-        window.scrollBy({top: MIN_VISIBLE_INITIAL_HEIGHT - visibleHeight, behavior: 'smooth'})
+        window.scrollBy({ top: MIN_VISIBLE_INITIAL_HEIGHT - visibleHeight, behavior: 'smooth' });
       }
     }
   }, [isExpanded]);

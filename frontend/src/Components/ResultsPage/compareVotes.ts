@@ -1,4 +1,4 @@
-import { CardValue } from '../../types/WebSocket';
+import { CardValue } from '../../../../shared/cards';
 
 export const compareVotes = (
   userAndVote1: [string, CardValue],

@@ -1,77 +1,26 @@
-import { Config } from './types';
+import { VOTE_NOTE_VOTED } from '../../../shared/cards';
+import { addConnectionToGroup } from '../../shared/database/addConnectionToGroup';
+import { addUserAndGroupToConnection } from '../../shared/database/addUserAndGroupToConnection';
+import { createGroupWithConnection } from '../../shared/database/createGroupWithConnection';
+import { getGroup } from '../../shared/database/getGroup';
+import { getTtl } from '../../shared/getTtl';
+import { ConfigWithHandler } from '../../shared/types';
+import { broadcastState } from './broadcast-state';
+import { EXPIRY_TIME_IN_HOUR } from './const';
 
-const { broadcastState } = require('./broadcast-state');
-const { getGroupItem } = require('./get-item');
-
-const COHEN_SCALE = [
-  'coffee',
-  '?',
-  '0',
-  '0.5',
-  '1',
-  '2',
-  '3',
-  '5',
-  '8',
-  '13',
-  '20',
-  '40',
-  '100',
-  '∞',
-];
-
-const EXPIRY_TIME_IN_HOUR = process.env.EXPIRY_TIME_IN_HOUR || '16';
-
-export async function loginUser(userId: string, groupId: string, config: Config) {
-  const updateConnectionParams = {
-    TableName: config.tableName,
-    Key: {
-      primaryKey: `connectionId:${config.connectionId}`,
-    },
-    UpdateExpression: 'set userId = :userId, groupId = :groupId',
-    ExpressionAttributeValues: {
-      ':userId': userId,
-      ':groupId': groupId,
-    },
-    ReturnValues: 'UPDATED_NEW',
-  };
-
-  const groupItem = await getGroupItem(groupId, config.tableName, config.ddb);
-  let updateGroupParams;
-  let groupUpdate;
-
-  if (groupItem) {
-    const vote = groupItem[userId] ? groupItem[userId].vote : undefined;
-    updateGroupParams = {
-      TableName: config.tableName,
-      Key: {
-        primaryKey: `groupId:${groupId}`,
-      },
-      UpdateExpression: 'SET #userId = :userId',
-      ExpressionAttributeNames: {
-        '#userId': userId,
-      },
-      ExpressionAttributeValues: {
-        ':userId': { connectionId: config.connectionId, vote },
-      },
-      ReturnValues: 'UPDATED_NEW',
-    };
-    groupUpdate = config.ddb.update(updateGroupParams).promise();
-  } else {
-    const expiryDate = new Date(Date.now());
-    expiryDate.setHours(expiryDate.getHours() + parseFloat(EXPIRY_TIME_IN_HOUR));
-    const putParams = {
-      TableName: config.tableName,
-      Item: {
-        primaryKey: `groupId:${groupId}`,
-        ttl: Math.floor(expiryDate.getTime() / 1000),
-        [userId]: { connectionId: config.connectionId },
+export const loginUser = async (userId: string, groupId: string, config: ConfigWithHandler) => {
+  const groupItem = await getGroup(groupId, config);
+  const groupUpdate = groupItem
+    ? addConnectionToGroup(
         groupId,
-        scale: COHEN_SCALE,
-      },
-    };
-    groupUpdate = config.ddb.put(putParams).promise();
-  }
-  await Promise.all([config.ddb.update(updateConnectionParams).promise(), groupUpdate]);
-  await Promise.all(await broadcastState(groupId, config));
-}
+        userId,
+        groupItem.connections[userId]?.vote || VOTE_NOTE_VOTED,
+        config
+      )
+    : createGroupWithConnection(groupId, userId, getTtl(EXPIRY_TIME_IN_HOUR), config);
+  const [updatedGroupItem] = await Promise.all([
+    groupUpdate,
+    addUserAndGroupToConnection(groupId, userId, config),
+  ]);
+  await broadcastState(updatedGroupItem, config);
+};
