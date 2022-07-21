@@ -1,5 +1,5 @@
 import { createContext } from 'preact';
-import { useCallback, useLayoutEffect, useState } from 'preact/hooks';
+import { useCallback, useLayoutEffect, useRef, useState } from 'preact/hooks';
 import { JSXInternal } from 'preact/src/jsx';
 import './ColorModeProvider.module.css';
 
@@ -19,12 +19,19 @@ export const ColorMode = createContext<ColorModeContext>({
 const isSSR = typeof window === 'undefined';
 
 export const ColorModeProvider = ({ children }: { children: JSXInternal.Element }) => {
+  // We use a ref to track the initial render to avoid a white flash when using dark mode;
+  // useState would cause additional unnecessary rerendering
+  const didMount = useRef(false);
   const [isDark, setIsDark] = useState<boolean>(() =>
     isSSR ? false : window.matchMedia('(prefers-color-scheme: dark)').matches
   );
 
   useLayoutEffect(() => {
-    document.body.setAttribute('data-changing-color-mode', 'changing');
+    if (didMount.current) {
+      document.body.setAttribute('data-changing-color-mode', 'changing');
+    } else {
+      didMount.current = true;
+    }
     document.body.setAttribute('data-color-mode', isDark ? 'dark' : 'light');
     const timeout = setTimeout(
       () => document.body.removeAttribute('data-changing-color-mode'),
