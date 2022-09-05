@@ -5,6 +5,7 @@ config.update(
   {
     region: 'local',
     endpoint: 'http://localhost:8000',
+    credentials: { accessKeyId: 'accessKeyId', secretAccessKey: 'secretAccessKey' },
   },
   true
 );
