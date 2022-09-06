@@ -1,5 +1,6 @@
 import { fireEvent } from '@testing-library/preact';
 import { SCALES } from '../../../../shared/scales';
+import { BUTTON_CONNECTING } from '../../constants';
 import { getRenderWithWebSocket } from '../../test-helpers/renderWithWebSocket';
 import { RevealButton } from './RevealButton';
 
@@ -47,6 +48,16 @@ describe('The RevealButton', () => {
 
     fireEvent.click(getByText('Reveal Now'));
     expect(revealVotes).toHaveBeenCalled();
+  });
+
+  it('disables button if not connected', () => {
+    const revealVotes = jest.fn();
+    const { getByRole } = render({
+      revealVotes,
+      connected: false,
+    });
+
+    expect(getByRole('button', { name: BUTTON_CONNECTING })).toBeDisabled();
   });
 
   it('auto-updates the view and auto-reveals once missing votes have been added', () => {

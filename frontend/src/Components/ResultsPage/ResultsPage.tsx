@@ -1,6 +1,12 @@
 import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { Votes } from '../../../../shared/serverMessages';
-import { COLUMN_NAME, COLUMN_VOTE, HEADING_RESULTS } from '../../constants';
+import {
+  BUTTON_CONNECTING,
+  BUTTON_RESET_VOTES,
+  COLUMN_NAME,
+  COLUMN_VOTE,
+  HEADING_RESULTS,
+} from '../../constants';
 import sharedClasses from '../../styles.module.css';
 import { IconCoffee } from '../IconCoffee/IconCoffee';
 import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
@@ -58,8 +64,9 @@ export const ResultsPage = connectToWebSocket(({ socket }) => (
       onClick={() => {
         socket.resetVotes();
       }}
+      disabled={!socket.connected}
     >
-      Reset votes
+      {socket.connected ? BUTTON_RESET_VOTES : BUTTON_CONNECTING}
     </button>
   </div>
 ));

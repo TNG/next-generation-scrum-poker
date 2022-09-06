@@ -9,13 +9,14 @@ export const HEADING_RESULTS = 'RESULTS';
 export const LABEL_USERNAME = 'Name:';
 export const LABEL_SESSION = 'Session:';
 
-export const BUTTON_LOGIN = 'Login';
 export const BUTTON_CONNECTING = 'Connecting…';
-export const BUTTON_OBSERVER = 'Observer';
-export const BUTTON_REVEAL_VOTES = 'Reveal Votes';
-export const BUTTON_REVEAL_NOW = 'Reveal Now';
-export const BUTTON_KICK = (user: string) => `Kick ${user}`;
 export const BUTTON_COPY_TO_CLIPBOARD = 'Copy Link to Clipboard';
+export const BUTTON_KICK = (user: string) => `Kick ${user}`;
+export const BUTTON_LOGIN = 'Login';
+export const BUTTON_OBSERVER = 'Observer';
+export const BUTTON_RESET_VOTES = 'Reset votes';
+export const BUTTON_REVEAL_NOW = 'Reveal Now';
+export const BUTTON_REVEAL_VOTES = 'Reveal Votes';
 export const SELECT_CHANGE_SCALE = 'Change Scale';
 
 export const ALT_TNG_LOGO = 'TNG Logo';
