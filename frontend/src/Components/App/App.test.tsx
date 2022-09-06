@@ -108,9 +108,9 @@ describe('The App component', () => {
     expect(container.querySelector('input[type=submit]')).toBeVisible();
   });
 
-  it('updates, reveals and resets votes and kicks non-voting users optimistically', () => {
+  it('updates, reveals and resets votes and kicks optimistically', () => {
     // given
-    const { socket, container, getByText } = loginUser();
+    const { socket, container, getByRole } = loginUser();
     act(() =>
       socket.onmessage!({
         data: JSON.stringify({
@@ -148,17 +148,17 @@ describe('The App component', () => {
     socket.test_messages = [];
 
     // when
-    fireEvent.click(getByText('Kick users without vote', { selector: 'button' }));
+    fireEvent.click(getByRole('button', { name: 'Kick Non-voting User' }));
 
     // then
     expect(container.querySelector('tbody')).toHaveTextContent('Happy UserVoting User');
     expect(socket.test_messages).toEqual([
-      '{"message":"sendmessage","data":{"type":"remove-users-not-voted"}}',
+      '{"message":"sendmessage","data":{"type":"remove-user","payload":{"user":"Non-voting User"}}}',
     ]);
     socket.test_messages = [];
 
     // when
-    fireEvent.click(getByText('Reveal Votes', { selector: 'button' }));
+    fireEvent.click(getByRole('button', { name: 'Reveal Votes' }));
 
     // then
     expect(container.querySelector('tbody')).toHaveTextContent('Happy User2Voting User13');
@@ -168,7 +168,7 @@ describe('The App component', () => {
     socket.test_messages = [];
 
     // when
-    fireEvent.click(getByText('Reset votes', { selector: 'button' }));
+    fireEvent.click(getByRole('button', { name: 'Reset votes' }));
 
     // then
     expect(container.querySelector('tbody')).toHaveTextContent('Happy UserVoting User');

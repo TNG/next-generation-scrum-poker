@@ -7,7 +7,7 @@ import { WEBSOCKET_URL } from '../../config';
 import { doNothing } from '../../helpers/helpers';
 import {
   getLoginRequest,
-  getRemoveUsersNotVotedRequest,
+  getRemoveUserRequest,
   getResetVotesRequest,
   getRevealVotesRequest,
   getSetScaleRequest,
@@ -33,7 +33,7 @@ export const WebSocketContext = createContext<WebSocketApi>({
   setScale: doNothing,
   revealVotes: doNothing,
   resetVotes: doNothing,
-  removeUsersNotVoted: doNothing,
+  removeUser: doNothing,
 });
 
 function getInitialVotes(votes: Votes): Votes {
@@ -108,13 +108,11 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
     });
   };
 
-  const removeUsersNotVoted = () => {
-    socket?.send(getRemoveUsersNotVotedRequest());
+  const removeUser = (user: string) => {
+    socket?.send(getRemoveUserRequest(user));
     setState({
       ...state,
-      votes: Object.fromEntries(
-        Object.entries(state.votes).filter(([, voted]) => voted !== VOTE_NOTE_VOTED)
-      ),
+      votes: Object.fromEntries(Object.entries(state.votes).filter(([userId]) => userId !== user)),
     });
   };
 
@@ -137,22 +135,18 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
     setScale,
     revealVotes,
     resetVotes,
-    removeUsersNotVoted,
+    removeUser,
   };
   return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>;
 };
 
 export const WebSocketConsumer = WebSocketContext.Consumer;
 
-type ConnectToWebSocket = (
-  Component: ComponentType<{ socket: WebSocketApi }>
-) => ComponentType<Record<string, never>>;
-
-export const connectToWebSocket: ConnectToWebSocket =
-  (Component) =>
-  (...props) =>
+export const connectToWebSocket =
+  <Props extends object>(Component: ComponentType<{ socket: WebSocketApi } & Props>) =>
+  (props: Props) =>
     (
       <WebSocketConsumer>
-        {(socket: WebSocketApi) => <Component socket={socket} {...props} />}
+        {(socket: WebSocketApi) => <Component {...props} socket={socket} />}
       </WebSocketConsumer>
     );

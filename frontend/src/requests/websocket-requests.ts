@@ -36,9 +36,12 @@ export const getResetVotesRequest = () =>
     type: 'reset-votes',
   });
 
-export const getRemoveUsersNotVotedRequest = () =>
+export const getRemoveUserRequest = (user: string) =>
   buildRequest({
-    type: 'remove-users-not-voted',
+    type: 'remove-user',
+    payload: {
+      user,
+    },
   });
 
 const buildRequest = (data: ClientMessage) => JSON.stringify({ message: 'sendmessage', data });

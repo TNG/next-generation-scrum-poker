@@ -11,7 +11,7 @@ export interface WebSocketApi {
   setScale(scale: Array<CardValue>): void;
   revealVotes(): void;
   resetVotes(): void;
-  removeUsersNotVoted(): void;
+  removeUser(user: string): void;
 }
 
 export type WebSocketLoginData = { user: string; session: string };

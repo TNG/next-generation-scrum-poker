@@ -1,10 +1,11 @@
 import { VOTE_OBSERVER } from '../../../../shared/cards';
 import { Votes } from '../../../../shared/serverMessages';
-import { COLUMN_NAME, COLUMN_VOTED } from '../../constants';
+import { COLUMN_KICK, COLUMN_NAME, COLUMN_VOTED } from '../../constants';
 import sharedClasses from '../../styles.module.css';
 import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
 import { IconObserver } from '../IconObserver/IconObserver';
 import { IconVoted } from '../IconVoted/IconVoted';
+import { KickButton } from '../KickButton/KickButton';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './VotingStateDisplay.module.css';
 
@@ -61,6 +62,7 @@ export const VotingStateDisplay = connectToWebSocket(({ socket }) => (
         <tr class={sharedClasses.headerRow}>
           <th>{COLUMN_NAME}</th>
           <th>{COLUMN_VOTED}</th>
+          <th>{COLUMN_KICK}</th>
         </tr>
       </thead>
       <tbody>
@@ -69,6 +71,9 @@ export const VotingStateDisplay = connectToWebSocket(({ socket }) => (
             <tr key={user} class={getClassName(voted, observer)}>
               <td>{user}</td>
               <td>{getIcon(voted, observer)}</td>
+              <td>
+                <KickButton user={user} />
+              </td>
             </tr>
           );
         })}

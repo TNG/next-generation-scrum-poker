@@ -21,7 +21,7 @@ const getApi = (
   setScale: doNothing,
   revealVotes: doNothing,
   resetVotes: doNothing,
-  removeUsersNotVoted: doNothing,
+  removeUser: doNothing,
   ...defaultContext,
   ...context,
   state: {

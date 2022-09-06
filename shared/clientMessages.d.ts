@@ -30,8 +30,11 @@ interface ResetVotesMessage {
   type: 'reset-votes';
 }
 
-interface RemoveUsersNotVotedMessage {
-  type: 'remove-users-not-voted';
+interface RemoveUser {
+  type: 'remove-user';
+  payload: {
+    user: string;
+  };
 }
 
 export type ClientMessage =
@@ -40,4 +43,4 @@ export type ClientMessage =
   | SetScaleMessage
   | RevealVotesMessage
   | ResetVotesMessage
-  | RemoveUsersNotVotedMessage;
+  | RemoveUser;
