@@ -30,6 +30,8 @@ export const onMessage = async (message: ClientMessage, config: ConfigWithHandle
         break;
     }
   } catch (e) {
+    console.error(e);
+
     return {
       statusCode: 500,
       body: e instanceof Error ? e.stack || e.message : 'Error cannot be parsed',

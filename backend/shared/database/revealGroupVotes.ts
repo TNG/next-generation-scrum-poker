@@ -15,6 +15,7 @@ export const revealGroupVotes = async (
         ExpressionAttributeValues: {
           ':visibility': true,
         },
+        ReturnValues: 'ALL_NEW',
       })
       .promise()
   ).Attributes as GroupItem;
