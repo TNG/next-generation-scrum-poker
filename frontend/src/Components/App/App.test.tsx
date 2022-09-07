@@ -27,6 +27,7 @@ const ConfigureMockWebSocket = () => {
 };
 
 const loginUser = () => {
+  window.confirm = jest.fn().mockReturnValue(true);
   window.history.pushState({}, 'Test Title', '?sessionId=xvdBFRA6FyLZFcKo');
   const socketInstances = ConfigureMockWebSocket();
   const rendered = render(<App />);
