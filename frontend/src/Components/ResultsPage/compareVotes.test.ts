@@ -1,4 +1,4 @@
-import { compareVotes } from './compareVotes';
+import { compareCardValues, compareVotes } from './compareVotes';
 
 describe('The compareVotes function', () => {
   it.each`
@@ -16,4 +16,20 @@ describe('The compareVotes function', () => {
       expect(sortedResults).toEqual(result);
     }
   );
+});
+
+describe('The compareCardValues function', () => {
+  it.each`
+    value1      | value2         | result
+    ${'∞'}      | ${'100'}       | ${1}
+    ${'100'}    | ${'5'}         | ${1}
+    ${'0.5'}    | ${'5'}         | ${-1}
+    ${'5'}      | ${'coffee'}    | ${-1}
+    ${'coffee'} | ${'5'}         | ${1}
+    ${'coffee'} | ${'coffee'}    | ${0}
+    ${'coffee'} | ${'not-voted'} | ${-1}
+  `('return $result when $value1 and $value2 are passed', ({ value1, value2, result }) => {
+    const sortedResults = compareCardValues(value1, value2);
+    expect(sortedResults).toEqual(result);
+  });
 });
