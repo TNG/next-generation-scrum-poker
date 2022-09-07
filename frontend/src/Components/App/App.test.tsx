@@ -1,5 +1,6 @@
 import { act, fireEvent, render } from '@testing-library/preact';
 import { SCALES } from '../../../../shared/scales';
+import { ServerMessage } from '../../../../shared/serverMessages';
 import { App } from './App';
 
 const ConfigureMockWebSocket = () => {
@@ -42,6 +43,10 @@ const loginUser = () => {
   ]);
   socket.test_messages = [];
   return { socket, ...rendered };
+};
+
+const buildEventMessage = (message: ServerMessage): MessageEvent => {
+  return { data: JSON.stringify(message) } as MessageEvent;
 };
 
 describe('The App component', () => {
@@ -90,6 +95,7 @@ describe('The App component', () => {
 
   it('logs the user in and displays the voting page, then displays the login page if the user is kicked out', () => {
     // given
+    const logoutReason = 'You were removed!';
     const { socket, container } = loginUser();
 
     expect(container).toHaveTextContent('Session: xvdBFRA6FyLZFcKoName: Happy User');
@@ -97,11 +103,14 @@ describe('The App component', () => {
 
     // when
     act(() =>
-      socket.onmessage!({ data: JSON.stringify({ type: 'not-logged-in' }) } as MessageEvent)
+      socket.onmessage!(
+        buildEventMessage({ type: 'not-logged-in', payload: { reason: logoutReason } })
+      )
     );
 
     // then
     expect(container).not.toHaveTextContent('Connecting...');
+    expect(container).toHaveTextContent(logoutReason);
     expect(container.querySelector('input#user')).toHaveValue('Happy User');
     expect(container.querySelector('a#session')).toBeVisible();
     expect(container.querySelector('a#session')).toHaveTextContent(/^[a-zA-Z0-9]{16}$/i);
@@ -112,8 +121,8 @@ describe('The App component', () => {
     // given
     const { socket, container, getByRole } = loginUser();
     act(() =>
-      socket.onmessage!({
-        data: JSON.stringify({
+      socket.onmessage!(
+        buildEventMessage({
           type: 'state',
           payload: {
             votes: {
@@ -124,8 +133,8 @@ describe('The App component', () => {
             resultsVisible: false,
             scale: SCALES.COHEN_SCALE.values,
           },
-        }),
-      } as MessageEvent)
+        })
+      )
     );
     const selectedCard = container.querySelectorAll('button.largeCard')[5];
     expect(selectedCard).toHaveTextContent('2');

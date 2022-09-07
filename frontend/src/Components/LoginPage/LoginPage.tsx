@@ -45,6 +45,7 @@ export const LoginPage = connectToWebSocket(({ socket }) => {
         socket.login(user, sessionId);
       }}
     >
+      {!!socket.logoutReason && <span class={classes.warning}>{socket.logoutReason}</span>}
       <div class={classes.heading}>
         {APP_NAME_FIRST}
         <br />

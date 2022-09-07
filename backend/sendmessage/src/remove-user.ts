@@ -9,7 +9,7 @@ import { sendMessageToConnection } from './send-message-to-connection';
 export const removeUser = async (user: string, config: ConfigWithHandler): Promise<void> => {
   const connectionItem = await getConnection(config);
   if (!connectionItem) return;
-  const { groupId } = connectionItem;
+  const { groupId, userId } = connectionItem;
   if (!groupId) return;
   const groupItem = await getGroup(groupId, config);
   if (!groupItem) return;
@@ -25,7 +25,7 @@ export const removeUser = async (user: string, config: ConfigWithHandler): Promi
     await Promise.all([
       broadcastState(updatedGroupItem, config),
       sendMessageToConnection(
-        { type: 'not-logged-in' },
+        { type: 'not-logged-in', payload: { reason: `You have been kicked by ${userId}.` } },
         (config = { ...config, connectionId: connections[user].connectionId })
       ),
     ]);

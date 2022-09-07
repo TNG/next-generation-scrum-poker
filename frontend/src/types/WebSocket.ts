@@ -3,15 +3,16 @@ import { WebSocketState } from '../../../shared/serverMessages';
 
 export interface WebSocketApi {
   connected: boolean;
-  state: WebSocketState;
-  loginData: WebSocketLoginData;
   loggedIn: boolean;
   login(user: string, session: string): void;
-  setVote(vote: CardValue): void;
-  setScale(scale: Array<CardValue>): void;
-  revealVotes(): void;
-  resetVotes(): void;
+  loginData: WebSocketLoginData;
+  logoutReason: string | undefined;
   removeUser(user: string): void;
+  resetVotes(): void;
+  revealVotes(): void;
+  setScale(scale: Array<CardValue>): void;
+  setVote(vote: CardValue): void;
+  state: WebSocketState;
 }
 
 export type WebSocketLoginData = { user: string; session: string };

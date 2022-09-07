@@ -15,6 +15,7 @@ const getApi = (
 ): WebSocketApi => ({
   connected: false,
   login: doNothing,
+  logoutReason: undefined,
   loginData: { user: '', session: '' },
   loggedIn: false,
   setVote: doNothing,

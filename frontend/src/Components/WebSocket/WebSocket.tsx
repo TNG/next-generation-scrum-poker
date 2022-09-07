@@ -25,15 +25,16 @@ const initialLoginData: WebSocketLoginData = { user: '', session: '' };
 
 export const WebSocketContext = createContext<WebSocketApi>({
   connected: false,
+  loggedIn: false,
   login: doNothing,
   loginData: initialLoginData,
-  loggedIn: false,
-  state: initialWebSocketState,
-  setVote: doNothing,
-  setScale: doNothing,
-  revealVotes: doNothing,
-  resetVotes: doNothing,
+  logoutReason: undefined,
   removeUser: doNothing,
+  resetVotes: doNothing,
+  revealVotes: doNothing,
+  setScale: doNothing,
+  setVote: doNothing,
+  state: initialWebSocketState,
 });
 
 function getInitialVotes(votes: Votes): Votes {
@@ -50,6 +51,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
   const [state, setState] = useState(initialWebSocketState);
   const [loginData, setLoginData] = useState(initialLoginData);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [logoutReason, setLogoutReason] = useState<string>();
 
   useEffect(() => {
     if (!socket) {
@@ -66,6 +68,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
           case 'state':
             return setState(message.payload);
           case 'not-logged-in':
+            setLogoutReason(message.payload.reason);
             return setLoggedIn(false);
           default:
             console.error(`Unexpected Websocket message ${event.data}`);
@@ -81,6 +84,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
     socket?.send(getLoginRequest(user, session));
     setLoginData({ user, session });
     setLoggedIn(true);
+    setLogoutReason(undefined);
     // Optimistically show the non-voted state of the current user
     setState({
       ...initialWebSocketState,
@@ -127,15 +131,16 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
 
   const value: WebSocketApi = {
     connected: Boolean(socket),
+    loggedIn,
     login,
     loginData,
-    loggedIn,
-    state,
-    setVote,
-    setScale,
-    revealVotes,
-    resetVotes,
+    logoutReason,
     removeUser,
+    resetVotes,
+    revealVotes,
+    setScale,
+    setVote,
+    state,
   };
   return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>;
 };
