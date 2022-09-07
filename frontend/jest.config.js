@@ -11,7 +11,7 @@ module.exports = {
     '\\.svg$': '<rootDir>/src/__mocks__/fileMock.ts',
     '\\.module.css$': '<rootDir>/src/__mocks__/identityObjectProxy.ts',
   },
-  setupFilesAfterEnv: ['./jest.setup.js'],
+  setupFilesAfterEnv: ['./jest.setup.js', 'jest-canvas-mock'],
   testPathIgnorePatterns: ['/node_modules/', '/build/', '/dist/'],
   testEnvironment: 'jsdom',
 };
