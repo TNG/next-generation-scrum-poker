@@ -62,6 +62,14 @@ describe('The App component', () => {
         dispatchEvent: jest.fn(),
       })),
     });
+    Object.defineProperty(global, 'ResizeObserver', {
+      writable: true,
+      value: jest.fn().mockImplementation(() => ({
+        observe: jest.fn(),
+        unobserve: jest.fn(),
+        disconnect: jest.fn(),
+      })),
+    });
   });
 
   it('displays the login screen with a login indicator initially', () => {
