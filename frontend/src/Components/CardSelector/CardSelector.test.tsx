@@ -20,7 +20,7 @@ const render = getRenderWithWebSocket(<CardSelector />, {
 describe('The CardSelector', () => {
   it('lets the user pick different card values', () => {
     // given
-    const setVote = jest.fn();
+    const setVote = vi.fn();
     const { getByText, getByTitle } = render({
       setVote,
       state: {
@@ -46,7 +46,7 @@ describe('The CardSelector', () => {
 
   it('lets the user unselect a card', () => {
     // given
-    const setVote = jest.fn();
+    const setVote = vi.fn();
     const { getByText, rerender } = render({
       setVote,
       state: {
@@ -83,7 +83,7 @@ describe('The CardSelector', () => {
 
   it('lets the user pick different card values with the keyboard', () => {
     // given
-    const setVote = jest.fn();
+    const setVote = vi.fn();
     render({
       setVote,
       state: { votes: { TheUser: 'not-voted', OtherUser: '5' } },
@@ -114,14 +114,13 @@ describe('The CardSelector', () => {
     expect(setVote).toHaveBeenCalledTimes(2);
   });
 
-  it.each`
-    key    | selectedCard
-    ${'c'} | ${VOTE_COFFEE}
-    ${'C'} | ${VOTE_COFFEE}
-    ${'?'} | ${'?'}
-  `('lets the user pick the $selectedCard card with the keyboard', ({ key, selectedCard }) => {
+  it.each([
+    ['c', VOTE_COFFEE],
+    ['C', VOTE_COFFEE],
+    ['?', '?'],
+  ])('lets the user pick the $selectedCard card with the keyboard', (key, selectedCard) => {
     // given
-    const setVote = jest.fn();
+    const setVote = vi.fn();
     render({
       setVote,
       state: { votes: { TheUser: 'not-voted', OtherUser: '5' } },
@@ -136,7 +135,7 @@ describe('The CardSelector', () => {
 
   it('lets the user unselect cards with the keyboard', () => {
     // given
-    const setVote = jest.fn();
+    const setVote = vi.fn();
     render({
       setVote,
       state: { votes: { TheUser: '3', OtherUser: '5' } },
@@ -151,7 +150,7 @@ describe('The CardSelector', () => {
 
   it('lets the user cycle through cards with the keyboard', () => {
     // given
-    const setVote = jest.fn();
+    const setVote = vi.fn();
     const { rerender } = render({
       setVote,
       state: { votes: { TheUser: 'not-voted', OtherUser: '5' } },
@@ -202,7 +201,7 @@ describe('The CardSelector', () => {
 
   it('behaves case-insensitive when user selects cards via keyboard', () => {
     // given
-    const setVote = jest.fn();
+    const setVote = vi.fn();
     const { rerender } = render({
       setVote,
       state: { votes: { TheUser: 'not-voted', OtherUser: '5' }, scale: SCALES.SIZES_SCALE.values },

@@ -1,8 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "allowJs": true,
-    "esModuleInterop": true,
-    "types": ["vite/client", "node", "jest", "@testing-library/jest-dom"]
-  }
-}

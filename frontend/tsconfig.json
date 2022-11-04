@@ -15,8 +15,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "ESNext",
-    "types": ["vite/client", "node"]
+    "types": ["vite/client", "node", "vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src/**/*", "../shared/**/*"],
-  "exclude": ["src/**/*.test.*"]
+  "include": ["src/**/*", "../shared/**/*"]
 }

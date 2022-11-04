@@ -1,5 +1,5 @@
 import { fireEvent } from '@testing-library/preact';
-import { BUTTON_RESET_VOTES, BUTTON_CONNECTING } from '../../constants';
+import { BUTTON_CONNECTING, BUTTON_RESET_VOTES } from '../../constants';
 import { getRenderWithWebSocket } from '../../test-helpers/renderWithWebSocket';
 import { ResetButton } from './ResetButton';
 
@@ -7,8 +7,8 @@ const render = getRenderWithWebSocket(<ResetButton />);
 
 describe('The ResetButton', () => {
   beforeAll(() => {
-    jest.useFakeTimers();
-    jest.spyOn(global, 'setTimeout');
+    vi.useFakeTimers();
+    vi.spyOn(global, 'setTimeout');
   });
 
   it('disables button if not connected', () => {
@@ -28,8 +28,8 @@ describe('The ResetButton', () => {
   });
 
   it('asks the user to confirm on a quick reset', () => {
-    const resetVotes = jest.fn();
-    const confirm = jest.fn().mockReturnValue(true);
+    const resetVotes = vi.fn();
+    const confirm = vi.fn().mockReturnValue(true);
     window.confirm = confirm;
     const { getByRole } = render({
       resetVotes,
@@ -41,8 +41,8 @@ describe('The ResetButton', () => {
   });
 
   it('does not reset without confirmation', () => {
-    const resetVotes = jest.fn();
-    const confirm = jest.fn().mockReturnValue(false);
+    const resetVotes = vi.fn();
+    const confirm = vi.fn().mockReturnValue(false);
     window.confirm = confirm;
     const { getByRole } = render({
       resetVotes,
@@ -54,14 +54,14 @@ describe('The ResetButton', () => {
   });
 
   it('does not ask the user to confirm after grace period', () => {
-    const resetVotes = jest.fn();
-    const confirm = jest.fn().mockReturnValue(false);
+    const resetVotes = vi.fn();
+    const confirm = vi.fn().mockReturnValue(false);
     window.confirm = confirm;
     const { getByRole } = render({
       resetVotes,
     });
 
-    jest.runOnlyPendingTimers();
+    vi.runOnlyPendingTimers();
 
     fireEvent.click(getByRole('button'));
     expect(confirm).not.toHaveBeenCalled();
