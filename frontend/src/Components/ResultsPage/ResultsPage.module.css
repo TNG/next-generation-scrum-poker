@@ -12,4 +12,6 @@
 
 .votedEntry {
   text-align: center;
+  color: var(--text-primary);
+  fill: var(--text-primary);
 }

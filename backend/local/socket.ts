@@ -26,7 +26,7 @@ export const startWebSocketServer = () => {
       handler: {
         postToConnection: (postData: { ConnectionId: string; Data: unknown }) => {
           const client = [...wss.clients].find(
-            (client) => (postData.ConnectionId = (client as WebsocketWithId).id)
+            (client) => postData.ConnectionId === (client as WebsocketWithId).id
           );
           const resultPromise = client
             ? new Promise<void>((resolve, reject) =>

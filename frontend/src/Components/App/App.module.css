@@ -22,8 +22,8 @@
   --text-primary: hsl(240, 13%, 92%);
   --text-secondary: hsl(240, 13%, 100%);
   --text-tertiary: hsl(240, 0%, 66%);
-  --warning: hsl(0, 100%, 55%);
-  --success: hsl(100, 90%, 40%);
+  --warning: hsl(3, 75%, 55%);
+  --success: hsl(122, 33%, 51%);
 }
 
 @media (min-width: 300px) {

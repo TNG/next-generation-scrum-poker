@@ -21,6 +21,7 @@ export const setGroupConnectionVote = async (
         ExpressionAttributeValues: {
           ':vote': vote,
         },
+        ReturnValues: 'ALL_NEW',
       })
       .promise()
   ).Attributes as GroupItem;
