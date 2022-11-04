@@ -1,17 +1,12 @@
 import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { Votes } from '../../../../shared/serverMessages';
-import {
-  BUTTON_CONNECTING,
-  BUTTON_RESET_VOTES,
-  COLUMN_NAME,
-  COLUMN_VOTE,
-  HEADING_RESULTS,
-} from '../../constants';
+import { COLUMN_NAME, COLUMN_VOTE, HEADING_RESULTS } from '../../constants';
 import sharedClasses from '../../styles.module.css';
 import { IconCoffee } from '../IconCoffee/IconCoffee';
 import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
 import { IconObserver } from '../IconObserver/IconObserver';
 import { PieChart } from '../PieChart/PieChart';
+import { ResetButton } from '../ResetButton/ResetButton';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import { compareVotes } from './compareVotes';
 import classes from './ResultsPage.module.css';
@@ -63,14 +58,6 @@ export const ResultsPage = connectToWebSocket(({ socket }) => (
         </tbody>
       </table>
     </div>
-    <button
-      class={sharedClasses.button}
-      onClick={() => {
-        socket.resetVotes();
-      }}
-      disabled={!socket.connected}
-    >
-      {socket.connected ? BUTTON_RESET_VOTES : BUTTON_CONNECTING}
-    </button>
+    <ResetButton />
   </div>
 ));
