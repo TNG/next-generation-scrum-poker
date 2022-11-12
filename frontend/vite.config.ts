@@ -10,6 +10,9 @@ export default defineConfig({
       preventAssignment: true,
     }),
   ],
+  ssr: {
+    format: 'cjs',
+  },
   test: {
     globals: true,
     environment: 'jsdom',
