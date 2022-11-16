@@ -17,27 +17,27 @@ export const RevealButton = connectToWebSocket(
   }) => {
     return (
       <button class={classes.revealButton} onClick={revealVotes} disabled={!connected}>
-        {renderContent()}
+        {getButtonText({ connected, votes })}
       </button>
     );
-
-    function renderContent() {
-      if (!connected) {
-        return BUTTON_CONNECTING;
-      }
-
-      const missingVotes = getNumberOfMissingVotes(votes);
-
-      if (missingVotes) {
-        return (
-          <>
-            <div class={classes.revealNowButtonInfo}>{missingVotes} missing votes</div>
-            {BUTTON_REVEAL_NOW}
-          </>
-        );
-      }
-
-      return BUTTON_REVEAL_VOTES;
-    }
   }
 );
+
+function getButtonText({ connected, votes }: { connected: boolean; votes: Votes }) {
+  if (!connected) {
+    return BUTTON_CONNECTING;
+  }
+
+  const missingVotes = getNumberOfMissingVotes(votes);
+
+  if (missingVotes) {
+    return (
+      <>
+        <div class={classes.revealNowButtonInfo}>{missingVotes} missing votes</div>
+        {BUTTON_REVEAL_NOW}
+      </>
+    );
+  }
+
+  return BUTTON_REVEAL_VOTES;
+}
