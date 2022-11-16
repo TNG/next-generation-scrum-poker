@@ -27,6 +27,7 @@ const ConfigureMockWebSocket = () => {
 };
 
 const loginUser = () => {
+  window.confirm = jest.fn().mockReturnValue(true);
   window.history.pushState({}, 'Test Title', '?sessionId=xvdBFRA6FyLZFcKo');
   const socketInstances = ConfigureMockWebSocket();
   const rendered = render(<App />);
@@ -60,6 +61,14 @@ describe('The App component', () => {
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
         dispatchEvent: jest.fn(),
+      })),
+    });
+    Object.defineProperty(global, 'ResizeObserver', {
+      writable: true,
+      value: jest.fn().mockImplementation(() => ({
+        observe: jest.fn(),
+        unobserve: jest.fn(),
+        disconnect: jest.fn(),
       })),
     });
   });

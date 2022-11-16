@@ -33,3 +33,5 @@ export const COLUMN_KICK = 'Kick';
 
 export const SWITCH_TO_DARK = 'Switch to dark color mode';
 export const SWITCH_TO_LIGHT = 'Switch to light color mode';
+
+export const RESET_VOTES_CONFIRMATION = 'Do you really want to reset the votes so quickly?';
