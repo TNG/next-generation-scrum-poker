@@ -6,24 +6,14 @@ import { compareCardValues } from '../ResultsPage/compareVotes';
 export const getPieChartVoteData = (
   votes: Votes
 ): { labels: CardValue[]; datasets: ChartDataset<'pie', number[]>[] } => {
-  const accumulatedVotes = Object.entries(
-    Object.values(votes).reduce(
-      (
-        votesByValue: Partial<Record<CardValue, number>>,
-        value: CardValue
-      ): Partial<Record<CardValue, number>> => {
-        if ([VOTE_OBSERVER, VOTE_NOTE_VOTED, VOTE_COFFEE].includes(value)) {
-          return votesByValue;
-        }
+  const votesByValue: Partial<Record<CardValue, number>> = {};
+  for (const value of Object.values(votes)) {
+    if (![VOTE_OBSERVER, VOTE_NOTE_VOTED, VOTE_COFFEE].includes(value)) {
+      votesByValue[value] = (votesByValue[value] ?? 0) + 1;
+    }
+  }
 
-        return {
-          ...votesByValue,
-          [value]: (votesByValue[value] ?? 0) + 1,
-        };
-      },
-      {}
-    )
-  ) as [CardValue, number][];
+  const accumulatedVotes = Object.entries(votesByValue) as [CardValue, number][];
 
   accumulatedVotes.sort(([value1], [value2]) => compareCardValues(value1, value2));
 
