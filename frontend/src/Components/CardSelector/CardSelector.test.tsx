@@ -115,10 +115,10 @@ describe('The CardSelector', () => {
   });
 
   it.each([
-    ['c', VOTE_COFFEE],
-    ['C', VOTE_COFFEE],
-    ['?', '?'],
-  ])('lets the user pick the $selectedCard card with the keyboard', (key, selectedCard) => {
+    { key: 'c', selectedCard: VOTE_COFFEE },
+    { key: 'C', selectedCard: VOTE_COFFEE },
+    { key: '?', selectedCard: '?' },
+  ])('lets the user pick the $selectedCard card with keyboard $key', ({ key, selectedCard }) => {
     // given
     const setVote = vi.fn();
     render({
