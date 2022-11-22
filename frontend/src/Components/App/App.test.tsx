@@ -27,7 +27,7 @@ const ConfigureMockWebSocket = () => {
 };
 
 const loginUser = () => {
-  window.confirm = jest.fn().mockReturnValue(true);
+  window.confirm = vi.fn().mockReturnValue(true);
   window.history.pushState({}, 'Test Title', '?sessionId=xvdBFRA6FyLZFcKo');
   const socketInstances = ConfigureMockWebSocket();
   const rendered = render(<App />);
@@ -54,21 +54,21 @@ describe('The App component', () => {
   beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
-      value: jest.fn().mockImplementation((query) => ({
+      value: vi.fn().mockImplementation((query) => ({
         matches: false,
         media: query,
         onchange: null,
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
       })),
     });
     Object.defineProperty(global, 'ResizeObserver', {
       writable: true,
-      value: jest.fn().mockImplementation(() => ({
-        observe: jest.fn(),
-        unobserve: jest.fn(),
-        disconnect: jest.fn(),
+      value: vi.fn().mockImplementation(() => ({
+        observe: vi.fn(),
+        unobserve: vi.fn(),
+        disconnect: vi.fn(),
       })),
     });
   });
@@ -87,7 +87,7 @@ describe('The App component', () => {
     const { container } = render(<App />);
     expect(socketInstances).toHaveLength(1);
     const socket = socketInstances[0];
-    expect(socket.test_url).toBe('wss://api.url');
+    expect(socket.test_url).toBe('ws://localhost:8080');
     expect(typeof socket.onopen).toBe('function');
     expect(typeof socket.onmessage).toBe('function');
 
@@ -105,9 +105,10 @@ describe('The App component', () => {
   it('logs the user in and displays the voting page, then displays the login page if the user is kicked out', () => {
     // given
     const logoutReason = 'You were removed!';
-    const { socket, container } = loginUser();
+    const { socket, container, getByText } = loginUser();
 
-    expect(container).toHaveTextContent('Session: xvdBFRA6FyLZFcKoName: Happy User');
+    expect(getByText(/^Session:/)).toHaveTextContent('Session: xvdBFRA6FyLZFcKo');
+    expect(getByText(/^Name:/)).toHaveTextContent('Name: Happy User');
     expect(container.querySelectorAll('button.largeCard')).toHaveLength(14);
 
     // when

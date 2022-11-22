@@ -12,7 +12,7 @@ npm start
 
 This will spin up the database via `docker` and launch the local API gateway.
 
-In parallel, it will use [Vite](https://vitejs.dev) to serve your app on [http://localhost:3000](http://localhost:3000). Vite will automatically update the browser via hot module reloading on save while providing extremely fast rebuilds.
+In parallel, it will use [Vite](https://vitejs.dev) to serve your app on [http://localhost:5173](http://localhost:5173). Vite will automatically update the browser via hot module reloading on save while providing extremely fast rebuilds.
 
 ## Production Build
 

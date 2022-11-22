@@ -19,7 +19,7 @@ const render = getRenderWithWebSocket(<RevealButton />, {
 
 describe('The RevealButton', () => {
   it('reveals votes after everyone voted', () => {
-    const revealVotes = jest.fn();
+    const revealVotes = vi.fn();
     const { getByText } = render({
       revealVotes,
       state: {
@@ -35,7 +35,7 @@ describe('The RevealButton', () => {
   });
 
   it('shows a different reveal button if votes are missing', () => {
-    const revealVotes = jest.fn();
+    const revealVotes = vi.fn();
     const { getByText } = render({
       revealVotes,
       state: {
@@ -51,7 +51,7 @@ describe('The RevealButton', () => {
   });
 
   it('disables button if not connected', () => {
-    const revealVotes = jest.fn();
+    const revealVotes = vi.fn();
     const { getByRole } = render({
       revealVotes,
       connected: false,
@@ -61,7 +61,7 @@ describe('The RevealButton', () => {
   });
 
   it('auto-updates the view and auto-reveals once missing votes have been added', () => {
-    const revealVotes = jest.fn();
+    const revealVotes = vi.fn();
     const { getByText, rerender } = render({
       revealVotes,
       state: {
