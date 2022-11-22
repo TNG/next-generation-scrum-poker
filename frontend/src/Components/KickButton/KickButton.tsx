@@ -10,7 +10,7 @@ export const KickButton = connectToWebSocket<Props>(({ socket, user }) => {
   return (
     <button class={classes.root} title={BUTTON_KICK(user)} onClick={() => socket.removeUser(user)}>
       {/* icon taken from material ui icons */}
-      <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px">
+      <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px">
         <g>
           <rect fill="none" height="24" width="24" />
         </g>
