@@ -1,7 +1,7 @@
 import { ClientMessage } from '../../../shared/clientMessages';
 import { ConfigWithHandler } from '../../shared/types';
 import { loginUser } from './login-user';
-import { removeUsersNotVoted } from './remove-users-not-voted';
+import { removeUser } from './remove-user';
 import { resetVotes } from './reset-votes';
 import { revealVotes } from './reveal-votes';
 import { setScale } from './set-scale';
@@ -25,8 +25,8 @@ export const onMessage = async (message: ClientMessage, config: ConfigWithHandle
       case 'reset-votes':
         await resetVotes(config);
         break;
-      case 'remove-users-not-voted':
-        await removeUsersNotVoted(config);
+      case 'remove-user':
+        await removeUser(message.payload.user, config);
         break;
     }
   } catch (e) {

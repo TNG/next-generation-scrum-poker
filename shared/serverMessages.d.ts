@@ -15,8 +15,13 @@ export interface StateMessage {
   payload: WebSocketState;
 }
 
+export interface Reason {
+  reason: string;
+}
+
 export interface NotLoggedInMessage {
   type: 'not-logged-in';
+  payload: Reason;
 }
 
 export type ServerMessage = StateMessage | NotLoggedInMessage;

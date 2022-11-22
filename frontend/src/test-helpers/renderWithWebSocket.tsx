@@ -15,13 +15,14 @@ const getApi = (
 ): WebSocketApi => ({
   connected: false,
   login: doNothing,
+  logoutReason: undefined,
   loginData: { user: '', session: '' },
   loggedIn: false,
   setVote: doNothing,
   setScale: doNothing,
   revealVotes: doNothing,
   resetVotes: doNothing,
-  removeUsersNotVoted: doNothing,
+  removeUser: doNothing,
   ...defaultContext,
   ...context,
   state: {
