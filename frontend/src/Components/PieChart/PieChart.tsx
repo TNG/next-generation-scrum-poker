@@ -8,7 +8,7 @@ Chart.register(PieController, ArcElement, Legend, Tooltip);
 
 export const PieChart = connectToWebSocket(({ socket }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const chartRef = useRef<Chart | null>(null);
+  const chartRef = useRef<Chart<'pie'> | null>(null);
   const { isDark } = useContext(ColorMode);
   const { labels, datasets } = getPieChartVoteData(socket.state.votes);
 
