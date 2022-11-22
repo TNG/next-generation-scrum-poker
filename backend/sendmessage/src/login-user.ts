@@ -7,6 +7,7 @@ import { getTtl } from '../../shared/getTtl';
 import { ConfigWithHandler } from '../../shared/types';
 import { broadcastState } from './broadcast-state';
 import { EXPIRY_TIME_IN_HOUR } from './const';
+import { sendMessageToConnection } from './send-message-to-connection';
 
 export const loginUser = async (userId: string, groupId: string, config: ConfigWithHandler) => {
   const groupItem = await getGroup(groupId, config);
@@ -18,6 +19,17 @@ export const loginUser = async (userId: string, groupId: string, config: ConfigW
         config
       )
     : createGroupWithConnection(groupId, userId, getTtl(EXPIRY_TIME_IN_HOUR), config);
+
+  if (groupItem && userId in groupItem.connections) {
+    await sendMessageToConnection(
+      {
+        type: 'not-logged-in',
+        payload: { reason: 'Your session was taken over by another user with the same name.' },
+      },
+      { ...config, connectionId: groupItem.connections[userId].connectionId }
+    );
+  }
+
   const [updatedGroupItem] = await Promise.all([
     groupUpdate,
     addUserAndGroupToConnection(groupId, userId, config),

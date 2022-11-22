@@ -5,12 +5,14 @@ import sharedClasses from '../../styles.module.css';
 import { IconCoffee } from '../IconCoffee/IconCoffee';
 import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
 import { IconObserver } from '../IconObserver/IconObserver';
+import { PieChart } from '../PieChart/PieChart';
+import { ResetButton } from '../ResetButton/ResetButton';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import { compareVotes } from './compareVotes';
 import classes from './ResultsPage.module.css';
 
-const getSortedResultsArray = (unsortedResults: Votes) => {
-  const dataArray: [string, CardValue][] = Object.entries(unsortedResults);
+const getSortedResultsArray = (unsortedResults: Votes): [string, CardValue][] => {
+  const dataArray = Object.entries(unsortedResults);
   return dataArray.sort(compareVotes);
 };
 
@@ -33,6 +35,9 @@ const getClassName = (vote: CardValue) =>
 export const ResultsPage = connectToWebSocket(({ socket }) => (
   <div class={classes.resultsPage}>
     <div class={sharedClasses.heading}>{HEADING_RESULTS}</div>
+    <div>
+      <PieChart />
+    </div>
     <div class={sharedClasses.blueBorder}>
       <table class={sharedClasses.table}>
         <thead>
@@ -53,13 +58,6 @@ export const ResultsPage = connectToWebSocket(({ socket }) => (
         </tbody>
       </table>
     </div>
-    <button
-      class={sharedClasses.button}
-      onClick={() => {
-        socket.resetVotes();
-      }}
-    >
-      Reset votes
-    </button>
+    <ResetButton />
   </div>
 ));

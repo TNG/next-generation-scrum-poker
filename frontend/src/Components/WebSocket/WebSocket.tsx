@@ -1,5 +1,5 @@
 import { ComponentChildren, ComponentType, createContext } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { CardValue, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { SCALES } from '../../../../shared/scales';
 import { ServerMessage, Votes, WebSocketState } from '../../../../shared/serverMessages';
@@ -52,33 +52,48 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
   const [loginData, setLoginData] = useState(initialLoginData);
   const [loggedIn, setLoggedIn] = useState(false);
   const [logoutReason, setLogoutReason] = useState<string>();
+  const loginDataRef = useRef(loginData);
+  const clearReconnectTimeout = useRef<() => void>(doNothing);
+  loginDataRef.current = loginData;
+
+  const connect = useCallback((retries = 0) => {
+    const webSocket = new WebSocket(WEBSOCKET_URL);
+    webSocket.onopen = () => {
+      if (loginDataRef.current.user && loginDataRef.current.session) {
+        webSocket.send(getLoginRequest(loginDataRef.current.user, loginDataRef.current.session));
+      }
+      setSocket(webSocket);
+    };
+    webSocket.onmessage = (event: MessageEvent) => {
+      const message: ServerMessage = JSON.parse(event.data);
+      switch (message.type) {
+        case 'state':
+          return setState(message.payload);
+        case 'not-logged-in':
+          setLogoutReason(message.payload.reason);
+          return setLoggedIn(false);
+        default:
+          console.error(`Unexpected Websocket message ${event.data}`);
+      }
+    };
+    webSocket.onclose = () => {
+      setSocket(null);
+      const timeout = setTimeout(() => connect(retries + 1), 500 * 2 ** (retries / 2));
+      clearReconnectTimeout.current = () => {
+        clearTimeout(timeout);
+      };
+    };
+
+    webSocket.onerror = () => {
+      console.error('Unexpected Websocket error.');
+      webSocket.close();
+    };
+  }, []);
 
   useEffect(() => {
-    if (!socket) {
-      const webSocket = new WebSocket(WEBSOCKET_URL);
-      webSocket.onopen = () => {
-        if (loginData.user && loginData.session) {
-          webSocket.send(getLoginRequest(loginData.user, loginData.session));
-        }
-        setSocket(webSocket);
-      };
-      webSocket.onmessage = (event: MessageEvent) => {
-        const message: ServerMessage = JSON.parse(event.data);
-        switch (message.type) {
-          case 'state':
-            return setState(message.payload);
-          case 'not-logged-in':
-            setLogoutReason(message.payload.reason);
-            return setLoggedIn(false);
-          default:
-            console.error(`Unexpected Websocket message ${event.data}`);
-        }
-      };
-      webSocket.onclose = () => {
-        setSocket(null);
-      };
-    }
-  }, [socket]);
+    connect();
+    return clearReconnectTimeout.current;
+  }, [connect]);
 
   const login = (user: string, session: string) => {
     socket?.send(getLoginRequest(user, session));

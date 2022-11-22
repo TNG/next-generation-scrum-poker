@@ -1,5 +1,6 @@
 import { fireEvent } from '@testing-library/preact';
 import { SCALES } from '../../../../shared/scales';
+import { BUTTON_CONNECTING } from '../../constants';
 import { getRenderWithWebSocket } from '../../test-helpers/renderWithWebSocket';
 import { RevealButton } from './RevealButton';
 
@@ -18,7 +19,7 @@ const render = getRenderWithWebSocket(<RevealButton />, {
 
 describe('The RevealButton', () => {
   it('reveals votes after everyone voted', () => {
-    const revealVotes = jest.fn();
+    const revealVotes = vi.fn();
     const { getByText } = render({
       revealVotes,
       state: {
@@ -34,7 +35,7 @@ describe('The RevealButton', () => {
   });
 
   it('shows a different reveal button if votes are missing', () => {
-    const revealVotes = jest.fn();
+    const revealVotes = vi.fn();
     const { getByText } = render({
       revealVotes,
       state: {
@@ -49,8 +50,18 @@ describe('The RevealButton', () => {
     expect(revealVotes).toHaveBeenCalled();
   });
 
+  it('disables button if not connected', () => {
+    const revealVotes = vi.fn();
+    const { getByRole } = render({
+      revealVotes,
+      connected: false,
+    });
+
+    expect(getByRole('button', { name: BUTTON_CONNECTING })).toBeDisabled();
+  });
+
   it('auto-updates the view and auto-reveals once missing votes have been added', () => {
-    const revealVotes = jest.fn();
+    const revealVotes = vi.fn();
     const { getByText, rerender } = render({
       revealVotes,
       state: {
