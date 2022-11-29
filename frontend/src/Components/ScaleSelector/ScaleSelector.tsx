@@ -12,12 +12,12 @@ export const ScaleSelector = connectToWebSocket(({ socket }) => (
     }
     value={'CHANGE_SCALE'}
   >
-    <option value="CHANGE_SCALE" disabled hidden>
+    <option value="CHANGE_SCALE" selected disabled hidden>
       {SELECT_CHANGE_SCALE}
     </option>
-    {Object.keys(SCALES).map((id) => (
+    {Object.entries(SCALES).map(([id, { name }]) => (
       <option value={id} key={id}>
-        {SCALES[id as ScaleName].name}
+        {name}
       </option>
     ))}
   </select>
