@@ -30,10 +30,10 @@ export const resetGroupVotes = async (
         UpdateExpression: `SET ${updates.join(',')}`,
         ExpressionAttributeValues: {
           ':visible': false,
-          ':notVoted': VOTE_NOTE_VOTED,
+          ...(userIds.length ? { ':notVoted': VOTE_NOTE_VOTED } : {}),
           ...(updateScale ? { ':scale': updateScale } : {}),
         },
-        ExpressionAttributeNames: userIdAttributeNames,
+        ...(userIds.length ? { ExpressionAttributeNames: userIdAttributeNames } : {}),
         ReturnValues: 'ALL_NEW',
       })
       .promise()
