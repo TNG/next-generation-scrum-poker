@@ -1,4 +1,5 @@
 import { act, fireEvent, render } from '@testing-library/preact';
+import { VOTE_NOTE_VOTED } from '../../../../shared/cards';
 import { SCALES } from '../../../../shared/scales';
 import { ServerMessage } from '../../../../shared/serverMessages';
 import { App } from './App';
@@ -136,9 +137,9 @@ describe('The App component', () => {
           type: 'state',
           payload: {
             votes: {
-              'Happy User': 'not-voted',
+              'Happy User': VOTE_NOTE_VOTED,
               'Voting User': '13',
-              'Non-voting User': 'not-voted',
+              'Non-voting User': VOTE_NOTE_VOTED,
             },
             resultsVisible: false,
             scale: SCALES.COHEN_SCALE.values,

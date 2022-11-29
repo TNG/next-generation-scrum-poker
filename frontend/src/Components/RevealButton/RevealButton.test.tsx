@@ -1,6 +1,7 @@
 import { fireEvent } from '@testing-library/preact';
+import { VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { SCALES } from '../../../../shared/scales';
-import { BUTTON_CONNECTING } from '../../constants';
+import { BUTTON_CONNECTING, BUTTON_REVEAL_NOW, BUTTON_REVEAL_VOTES } from '../../constants';
 import { getRenderWithWebSocket } from '../../test-helpers/renderWithWebSocket';
 import { RevealButton } from './RevealButton';
 
@@ -11,7 +12,7 @@ const render = getRenderWithWebSocket(<RevealButton />, {
   state: {
     resultsVisible: false,
     votes: {
-      TheUser: 'not-voted',
+      TheUser: VOTE_NOTE_VOTED,
     },
     scale: SCALES.COHEN_SCALE.values,
   },
@@ -41,13 +42,29 @@ describe('The RevealButton', () => {
       state: {
         votes: {
           TheUser: '3',
-          OtherUser: 'not-voted',
+          OtherUser: VOTE_NOTE_VOTED,
         },
       },
     });
 
-    fireEvent.click(getByText('Reveal Now'));
+    fireEvent.click(getByText(BUTTON_REVEAL_NOW));
     expect(revealVotes).toHaveBeenCalled();
+  });
+
+  it('shows a different reveal button and disables it if there are no votes', () => {
+    const revealVotes = vi.fn();
+    const { getByText } = render({
+      revealVotes,
+      state: {
+        votes: {
+          TheUser: VOTE_OBSERVER,
+          OtherUser: VOTE_NOTE_VOTED,
+        },
+      },
+    });
+
+    expect(getByText(BUTTON_REVEAL_VOTES)).toHaveTextContent('Waiting for votes...');
+    expect(getByText(BUTTON_REVEAL_VOTES)).toBeDisabled();
   });
 
   it('disables button if not connected', () => {
@@ -66,25 +83,25 @@ describe('The RevealButton', () => {
       revealVotes,
       state: {
         votes: {
-          TheUser: 'not-voted',
-          OtherUser: 'not-voted',
-          ThirdUser: 'not-voted',
+          TheUser: VOTE_NOTE_VOTED,
+          OtherUser: VOTE_NOTE_VOTED,
+          ThirdUser: VOTE_NOTE_VOTED,
         },
       },
     });
-    expect(getByText('Reveal Now')).toHaveTextContent('3 missing votes');
+    expect(getByText(BUTTON_REVEAL_VOTES)).toHaveTextContent('Waiting for votes...');
 
     rerender({
       revealVotes,
       state: {
         votes: {
-          TheUser: 'not-voted',
+          TheUser: VOTE_NOTE_VOTED,
           OtherUser: '3',
-          ThirdUser: 'not-voted',
+          ThirdUser: VOTE_NOTE_VOTED,
         },
       },
     });
-    expect(getByText('Reveal Now')).toHaveTextContent('2 missing votes');
+    expect(getByText(BUTTON_REVEAL_NOW)).toHaveTextContent('2 missing votes');
 
     rerender({
       revealVotes,
@@ -92,11 +109,11 @@ describe('The RevealButton', () => {
         votes: {
           TheUser: '2',
           OtherUser: '3',
-          ThirdUser: 'not-voted',
+          ThirdUser: VOTE_NOTE_VOTED,
         },
       },
     });
-    expect(getByText('Reveal Now')).toHaveTextContent('1 missing votes');
+    expect(getByText(BUTTON_REVEAL_NOW)).toHaveTextContent('1 missing votes');
 
     rerender({
       revealVotes,
@@ -108,6 +125,6 @@ describe('The RevealButton', () => {
         },
       },
     });
-    getByText('Reveal Votes');
+    expect(getByText(BUTTON_REVEAL_VOTES)).toBeInTheDocument();
   });
 });

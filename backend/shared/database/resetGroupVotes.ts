@@ -1,4 +1,4 @@
-import { VOTE_NOTE_VOTED } from '../../../shared/cards';
+import { VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../shared/cards';
 import { Config, GroupConnections, GroupItem } from '../types';
 
 export const resetGroupVotes = async (
@@ -8,7 +8,7 @@ export const resetGroupVotes = async (
   { tableName, ddb }: Config
 ): Promise<GroupItem> => {
   const userIds = Object.keys(connections).filter(
-    (userId) => connections[userId].vote !== 'observer'
+    (userId) => connections[userId].vote !== VOTE_OBSERVER
   );
   const userIdAttributeNames = Object.fromEntries(
     userIds.map((userId, index) => [`#${index}`, userId])

@@ -1,11 +1,25 @@
-import { VOTE_NOTE_VOTED } from '../../../../shared/cards';
+import { VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { Votes } from '../../../../shared/serverMessages';
 import { BUTTON_CONNECTING, BUTTON_REVEAL_NOW, BUTTON_REVEAL_VOTES } from '../../constants';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './RevealButton.module.css';
 
-const getNumberOfMissingVotes = (votes: Votes): number =>
-  Object.values(votes).reduce((count, vote) => (vote === VOTE_NOTE_VOTED ? count + 1 : count), 0);
+interface NumberOfVotes {
+  missing: number;
+  voted: number;
+}
+
+const getNumberOfVotes = (votes: Votes): NumberOfVotes =>
+  Object.values(votes).reduce(
+    ({ missing, voted }, vote) => ({
+      missing: vote === VOTE_NOTE_VOTED ? missing + 1 : missing,
+      voted: [VOTE_NOTE_VOTED, VOTE_OBSERVER].includes(vote) ? voted : voted + 1,
+    }),
+    {
+      missing: 0,
+      voted: 0,
+    }
+  );
 
 export const RevealButton = connectToWebSocket(
   ({
@@ -15,25 +29,34 @@ export const RevealButton = connectToWebSocket(
       connected,
     },
   }) => {
+    const { missing, voted } = getNumberOfVotes(votes);
+
     return (
-      <button class={classes.revealButton} onClick={revealVotes} disabled={!connected}>
-        {getButtonText({ connected, votes })}
+      <button class={classes.revealButton} onClick={revealVotes} disabled={!connected || !voted}>
+        {getButtonText({ connected, missing, voted })}
       </button>
     );
   }
 );
 
-function getButtonText({ connected, votes }: { connected: boolean; votes: Votes }) {
+function getButtonText({ connected, missing, voted }: { connected: boolean } & NumberOfVotes) {
   if (!connected) {
     return BUTTON_CONNECTING;
   }
 
-  const missingVotes = getNumberOfMissingVotes(votes);
-
-  if (missingVotes) {
+  if (!voted) {
     return (
       <>
-        <div class={classes.revealNowButtonInfo}>{missingVotes} missing votes</div>
+        <div class={classes.revealNowButtonInfo}>Waiting for votes...</div>
+        {BUTTON_REVEAL_VOTES}
+      </>
+    );
+  }
+
+  if (missing) {
+    return (
+      <>
+        <div class={classes.revealNowButtonInfo}>{missing} missing votes</div>
         {BUTTON_REVEAL_NOW}
       </>
     );
