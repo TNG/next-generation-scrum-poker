@@ -1,4 +1,4 @@
-import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED } from '../../../../shared/cards';
+import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { compareCardValues, compareVotes } from './compareVotes';
 
 describe('The compareVotes function', () => {
@@ -14,6 +14,7 @@ describe('The compareVotes function', () => {
         userAndVote2: ['user2', VOTE_NOTE_VOTED],
         result: -1,
       },
+      { userAndVote1: ['user1', 'S'], userAndVote2: ['user2', VOTE_OBSERVER], result: -1 },
     ]
   )(
     'returns $result when $userAndVote1 and $userAndVote2 are passed',
@@ -37,4 +38,20 @@ describe('The compareCardValues function', () => {
     const sortedResults = compareCardValues(value1, value2);
     expect(sortedResults).toEqual(result);
   });
+
+  it.each<{ value1: CardValue; value2: CardValue; result: number }>([
+    { value1: '∞', value2: 'M', result: 1 },
+    { value1: 'S', value2: 'M', result: -1 },
+    { value1: 'XL', value2: VOTE_OBSERVER, result: -1 },
+    { value1: 'XS', value2: 'M', result: -1 },
+    { value1: 'XXL', value2: 'XS', result: 1 },
+    { value1: VOTE_OBSERVER, value2: 'S', result: 1 },
+    { value1: VOTE_COFFEE, value2: 'XL', result: 1 },
+  ])(
+    'returns $result when $value1 and $value2 are passed for sizes',
+    ({ value1, value2, result }) => {
+      const sortedResults = compareCardValues(value1, value2);
+      expect(sortedResults).toEqual(result);
+    }
+  );
 });

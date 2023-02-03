@@ -3,18 +3,17 @@ export const VOTE_COFFEE = 'coffee';
 export const VOTE_OBSERVER = 'observer';
 export const VOTE_NOTE_VOTED = 'not-voted';
 
+export const SIZES_ORDERED = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
+export const isSize = (card: CardValue): card is typeof SIZES_ORDERED[number] =>
+  SIZES_ORDERED.some((value) => value === card);
+
 export type CardValue =
   | typeof VOTE_OBSERVER
   | typeof VOTE_NOTE_VOTED
   | typeof VOTE_COFFEE
   | '?'
   | '∞'
-  | 'XS'
-  | 'S'
-  | 'M'
-  | 'L'
-  | 'XL'
-  | 'XXL'
+  | typeof SIZES_ORDERED[number]
   | '0'
   | '0.5'
   | '1'
