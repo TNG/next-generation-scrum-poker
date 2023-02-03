@@ -1,4 +1,4 @@
-import { CardValue } from '../../../../shared/cards';
+import { CardValue, isSize, SIZES_ORDERED } from '../../../../shared/cards';
 
 export const compareVotes = (
   [user1, value1]: [string, CardValue],
@@ -8,14 +8,16 @@ export const compareVotes = (
 };
 
 export const compareCardValues = (value1: CardValue, value2: CardValue) => {
-  if (isNaN(Number(value1)) && !isNaN(Number(value2))) return 1;
-  if (!isNaN(Number(value1)) && isNaN(Number(value2))) return -1;
-  if (isNaN(Number(value1)) && isNaN(Number(value2))) {
+  const numericValue1 = isSize(value1) ? SIZES_ORDERED.indexOf(value1) : Number(value1);
+  const numericValue2 = isSize(value2) ? SIZES_ORDERED.indexOf(value2) : Number(value2);
+  if (isNaN(numericValue1) && !isNaN(numericValue2)) return 1;
+  if (!isNaN(numericValue1) && isNaN(numericValue2)) return -1;
+  if (isNaN(numericValue1) && isNaN(numericValue2)) {
     if (value1.toLowerCase() > value2.toLowerCase()) return 1;
     if (value1.toLowerCase() < value2.toLowerCase()) return -1;
   } else {
-    if (Number(value1) > Number(value2)) return 1;
-    if (Number(value1) < Number(value2)) return -1;
+    if (numericValue1 > numericValue2) return 1;
+    if (numericValue1 < numericValue2) return -1;
   }
 
   return 0;

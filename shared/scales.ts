@@ -1,4 +1,4 @@
-import { CardValue, VOTE_COFFEE } from './cards';
+import { CardValue, SIZES_ORDERED, VOTE_COFFEE } from './cards';
 
 export type ScaleName = 'FIBONACCI_SCALE' | 'COHEN_SCALE' | 'FIXED_RATIO_SCALE' | 'SIZES_SCALE';
 
@@ -15,5 +15,5 @@ export const SCALES: { [id in ScaleName]: { name: string; values: Array<CardValu
     name: 'Fixed Ratio',
     values: [VOTE_COFFEE, '?', '1', '2', '4', '8', '16', '32', '64', '128', '∞'],
   },
-  SIZES_SCALE: { name: 'Sizes', values: [VOTE_COFFEE, '?', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '∞'] },
+  SIZES_SCALE: { name: 'Sizes', values: [VOTE_COFFEE, '?', ...SIZES_ORDERED, '∞'] },
 };
