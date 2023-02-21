@@ -1,4 +1,4 @@
-import { VOTE_OBSERVER } from '../../../../shared/cards';
+import { VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { Votes } from '../../../../shared/serverMessages';
 import { COLUMN_KICK, COLUMN_NAME, COLUMN_VOTED } from '../../constants';
 import sharedClasses from '../../styles.module.css';
@@ -12,7 +12,7 @@ import classes from './VotingStateDisplay.module.css';
 const getSortedVotingState = (votes: Votes) => {
   const votedUsers = Object.keys(votes).map((user) => ({
     user,
-    voted: votes[user] !== 'not-voted',
+    voted: votes[user] !== VOTE_NOTE_VOTED,
     observer: votes[user] === VOTE_OBSERVER,
   }));
   return votedUsers.sort((a, b) => {

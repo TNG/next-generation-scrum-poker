@@ -11,7 +11,7 @@ const render = getRenderWithWebSocket(<CardSelector />, {
   state: {
     resultsVisible: false,
     votes: {
-      TheUser: 'not-voted',
+      TheUser: VOTE_NOTE_VOTED,
     },
     scale: SCALES.COHEN_SCALE.values,
   },
@@ -25,7 +25,7 @@ describe('The CardSelector', () => {
       setVote,
       state: {
         votes: {
-          TheUser: 'not-voted',
+          TheUser: VOTE_NOTE_VOTED,
           OtherUser: '5',
         },
       },
@@ -41,7 +41,7 @@ describe('The CardSelector', () => {
     fireEvent.click(getByTitle('Need a break'));
 
     // then
-    expect(setVote).toHaveBeenNthCalledWith(2, 'coffee');
+    expect(setVote).toHaveBeenNthCalledWith(2, VOTE_COFFEE);
   });
 
   it('lets the user unselect a card', () => {
@@ -51,7 +51,7 @@ describe('The CardSelector', () => {
       setVote,
       state: {
         votes: {
-          TheUser: 'not-voted',
+          TheUser: VOTE_NOTE_VOTED,
           OtherUser: '5',
         },
       },
@@ -78,7 +78,7 @@ describe('The CardSelector', () => {
     fireEvent.click(getByText('1'));
 
     // then
-    expect(setVote).toHaveBeenNthCalledWith(2, 'not-voted');
+    expect(setVote).toHaveBeenNthCalledWith(2, VOTE_NOTE_VOTED);
   });
 
   it('lets the user pick different card values with the keyboard', () => {
@@ -86,7 +86,7 @@ describe('The CardSelector', () => {
     const setVote = vi.fn();
     render({
       setVote,
-      state: { votes: { TheUser: 'not-voted', OtherUser: '5' } },
+      state: { votes: { TheUser: VOTE_NOTE_VOTED, OtherUser: '5' } },
     });
 
     // when
@@ -123,7 +123,7 @@ describe('The CardSelector', () => {
     const setVote = vi.fn();
     render({
       setVote,
-      state: { votes: { TheUser: 'not-voted', OtherUser: '5' } },
+      state: { votes: { TheUser: VOTE_NOTE_VOTED, OtherUser: '5' } },
     });
 
     // when
@@ -153,7 +153,7 @@ describe('The CardSelector', () => {
     const setVote = vi.fn();
     const { rerender } = render({
       setVote,
-      state: { votes: { TheUser: 'not-voted', OtherUser: '5' } },
+      state: { votes: { TheUser: VOTE_NOTE_VOTED, OtherUser: '5' } },
     });
 
     // when
@@ -204,7 +204,10 @@ describe('The CardSelector', () => {
     const setVote = vi.fn();
     const { rerender } = render({
       setVote,
-      state: { votes: { TheUser: 'not-voted', OtherUser: '5' }, scale: SCALES.SIZES_SCALE.values },
+      state: {
+        votes: { TheUser: VOTE_NOTE_VOTED, OtherUser: '5' },
+        scale: SCALES.SIZES_SCALE.values,
+      },
     });
 
     // when
@@ -217,7 +220,7 @@ describe('The CardSelector', () => {
     rerender({
       setVote,
       state: {
-        votes: { TheUser: 'not-voted', OtherUser: '5' },
+        votes: { TheUser: VOTE_NOTE_VOTED, OtherUser: '5' },
         scale: SCALES.SIZES_SCALE.values,
       },
     });
