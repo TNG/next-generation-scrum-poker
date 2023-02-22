@@ -73,12 +73,6 @@
   justify-self: end;
 }
 
-.sessionLink {
-  grid-column: 2 / 3;
-  align-self: center;
-  color: var(--primary);
-}
-
 .submit {
   composes: button from '../../styles.module.css';
   --button-width: 100%;
@@ -88,4 +82,42 @@
 .legalNotice {
   grid-column: 1 / 3;
   justify-self: center;
+}
+
+.sessionContainer {
+  display: grid;
+  gap: 1ch;
+  grid-template-columns: 1fr min-content;
+  grid-column: 2 / 3;
+  align-self: center;
+  align-items: center;
+}
+
+.sessionLink {
+  color: var(--primary);
+  min-width: 19ch;
+}
+
+.refreshButton {
+  color: var(--primary);
+  fill: var(--primary);
+  border: unset;
+  border: 1px solid var(--primary);
+  background: var(--secondary);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  height: 22px;
+  width: 22px;
+  padding: 2px;
+  display: block;
+  line-height: unset;
+  margin: auto;
+}
+
+.refreshButton:hover,
+.refreshButton:focus {
+  background: var(--primary-light);
+  border-color: var(--primary-light);
+  color: var(--text-secondary);
+  fill: var(--text-secondary);
 }
