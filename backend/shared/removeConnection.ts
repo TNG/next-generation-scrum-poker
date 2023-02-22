@@ -1,6 +1,6 @@
 import { deleteConnection } from './database/deleteConnection';
 import { getConnection } from './database/getConnection';
-import { removeConnectionFromGroup } from './database/removeConnectionFromGroup';
+import { removeConnectionsFromGroup } from './database/removeConnectionsFromGroup';
 import { Config } from './types';
 
 export const removeConnection = async (config: Config): Promise<unknown> => {
@@ -9,6 +9,6 @@ export const removeConnection = async (config: Config): Promise<unknown> => {
   const { groupId, userId } = connectionItem;
   return Promise.all([
     deleteConnection(config),
-    userId && groupId && removeConnectionFromGroup(userId, groupId, config),
+    userId && groupId && removeConnectionsFromGroup(groupId, [userId], config),
   ]);
 };
