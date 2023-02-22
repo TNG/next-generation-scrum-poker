@@ -17,7 +17,7 @@ export const PieChart = connectToWebSocket(({ socket }) => {
       chartRef.current.config.data.datasets = datasets;
       chartRef.current.config.data.labels = labels;
       chartRef.current.config.options = getChartOptions();
-      chartRef.current.update();
+      chartRef.current.update('none');
     }
   }, [datasets, labels, isDark]);
 
