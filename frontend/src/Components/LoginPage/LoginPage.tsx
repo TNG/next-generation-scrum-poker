@@ -65,7 +65,7 @@ export const LoginPage = connectToWebSocket(({ socket }) => {
       <label for="session" class={classes.sessionLabel}>
         {LABEL_SESSION}
       </label>
-      <a id="session" href={`?sessionId=${sessionId}`} class={classes.sessionLink}>
+      <a id="session" href={sessionId && `?sessionId=${sessionId}`} class={classes.sessionLink}>
         {sessionId}
       </a>
       <input
