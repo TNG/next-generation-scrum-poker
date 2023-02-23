@@ -15,19 +15,22 @@ export const removeUser = async (user: string, config: ConfigWithHandler): Promi
   if (!groupItem) return;
   const { connections } = groupItem;
   if (user in connections) {
+    const userConnectionId = connections[user].connectionId;
     const [updatedGroupItem] = await Promise.all([
       removeConnectionsFromGroup(groupId, [user], config),
-      removeGroupFromConnection({
-        ...config,
-        connectionId: connections[user].connectionId,
-      }),
+      userConnectionId &&
+        removeGroupFromConnection({
+          ...config,
+          connectionId: userConnectionId,
+        }),
     ]);
     await Promise.all([
       broadcastState(updatedGroupItem, config),
-      sendMessageToConnection(
-        { type: 'not-logged-in', payload: { reason: `You have been kicked by ${userId}.` } },
-        (config = { ...config, connectionId: connections[user].connectionId })
-      ),
+      userConnectionId &&
+        sendMessageToConnection(
+          { type: 'not-logged-in', payload: { reason: `You have been kicked by ${userId}.` } },
+          { ...config, connectionId: userConnectionId }
+        ),
     ]);
   }
 };

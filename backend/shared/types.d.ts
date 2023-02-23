@@ -21,7 +21,7 @@ export interface ConnectionItem {
 
 export interface GroupConnections {
   [id: string]: {
-    connectionId: string;
+    connectionId?: string;
     vote: CardValue;
   };
 }

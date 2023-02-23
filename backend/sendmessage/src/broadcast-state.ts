@@ -13,21 +13,23 @@ export const broadcastState = async (
   }
 
   return Promise.all(
-    connectionEntries.map(([, { connectionId }]) =>
-      sendMessageToConnection(
-        {
-          type: 'state',
-          payload: {
-            resultsVisible: visible,
-            votes,
-            scale,
+    connectionEntries.map(
+      ([, { connectionId }]) =>
+        connectionId &&
+        sendMessageToConnection(
+          {
+            type: 'state',
+            payload: {
+              resultsVisible: visible,
+              votes,
+              scale,
+            },
           },
-        },
-        {
-          ...config,
-          connectionId,
-        }
-      )
+          {
+            ...config,
+            connectionId,
+          }
+        )
     )
   );
 };
