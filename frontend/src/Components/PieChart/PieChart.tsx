@@ -1,5 +1,6 @@
 import { ArcElement, Chart, ChartOptions, Legend, PieController, Tooltip } from 'chart.js';
 import { useContext, useEffect, useRef } from 'preact/hooks';
+import { useDeepCompareMemoize } from '../../helpers/helpers';
 import { ColorMode } from '../ColorModeProvider/ColorModeProvider';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import { getPieChartVoteData } from './getPieChartVoteData';
@@ -10,7 +11,7 @@ export const PieChart = connectToWebSocket(({ socket }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const chartRef = useRef<Chart<'pie'> | null>(null);
   const { isDark } = useContext(ColorMode);
-  const { labels, datasets } = getPieChartVoteData(socket.state.votes);
+  const { labels, datasets } = useDeepCompareMemoize(getPieChartVoteData(socket.state.votes));
 
   useEffect(() => {
     if (chartRef.current) {
