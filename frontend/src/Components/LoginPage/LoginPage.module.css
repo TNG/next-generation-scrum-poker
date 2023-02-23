@@ -97,27 +97,3 @@
   color: var(--primary);
   min-width: 19ch;
 }
-
-.refreshButton {
-  color: var(--primary);
-  fill: var(--primary);
-  border: unset;
-  border: 1px solid var(--primary);
-  background: var(--secondary);
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  height: 22px;
-  width: 22px;
-  padding: 2px;
-  display: block;
-  line-height: unset;
-  margin: auto;
-}
-
-.refreshButton:hover,
-.refreshButton:focus {
-  background: var(--primary-light);
-  border-color: var(--primary-light);
-  color: var(--text-secondary);
-  fill: var(--text-secondary);
-}

@@ -7,13 +7,13 @@ import {
   APP_NAME_SECOND,
   BUTTON_CONNECTING,
   BUTTON_LOGIN,
-  BUTTON_REFRESH_SESSION,
   LABEL_SESSION,
   LABEL_USERNAME,
   TNG_URL,
 } from '../../constants';
 import tngLogo from '../../img/tng.svg';
 import { LegalNoticeContainer } from '../LegalNoticeContainer/LegalNoticeContainer';
+import { RefreshSessionButton } from '../RefreshSessionButton/RefreshSessionButton';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './LoginPage.module.css';
 
@@ -63,18 +63,7 @@ export const LoginPage = connectToWebSocket(({ socket }) => {
         <a id="session" href={sessionId && `?sessionId=${sessionId}`} class={classes.sessionLink}>
           {sessionId}
         </a>
-        <button
-          type="button"
-          class={classes.refreshButton}
-          onClick={() => setSessionId(refreshSessionId())}
-          title={BUTTON_REFRESH_SESSION}
-        >
-          {/* icon taken from material icons */}
-          <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px">
-            <path d="M0 0h24v24H0V0z" fill="none" />
-            <path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z" />
-          </svg>
-        </button>
+        <RefreshSessionButton onClick={() => setSessionId(refreshSessionId())} />
       </div>
       <input
         type="submit"
