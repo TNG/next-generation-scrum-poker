@@ -1,4 +1,4 @@
-import { CardValue, isSize, SIZES_ORDERED } from '../../../../shared/cards';
+import { ALL_VALUES_ORDERED, CardValue } from '../../../../shared/cards';
 
 export const compareVotes = (
   [user1, value1]: [string, CardValue],
@@ -8,17 +8,7 @@ export const compareVotes = (
 };
 
 export const compareCardValues = (value1: CardValue, value2: CardValue) => {
-  const numericValue1 = isSize(value1) ? SIZES_ORDERED.indexOf(value1) : Number(value1);
-  const numericValue2 = isSize(value2) ? SIZES_ORDERED.indexOf(value2) : Number(value2);
-  if (isNaN(numericValue1) && !isNaN(numericValue2)) return 1;
-  if (!isNaN(numericValue1) && isNaN(numericValue2)) return -1;
-  if (isNaN(numericValue1) && isNaN(numericValue2)) {
-    if (value1.toLowerCase() > value2.toLowerCase()) return 1;
-    if (value1.toLowerCase() < value2.toLowerCase()) return -1;
-  } else {
-    if (numericValue1 > numericValue2) return 1;
-    if (numericValue1 < numericValue2) return -1;
-  }
-
+  if (ALL_VALUES_ORDERED.indexOf(value1) > ALL_VALUES_ORDERED.indexOf(value2)) return 1;
+  if (ALL_VALUES_ORDERED.indexOf(value1) < ALL_VALUES_ORDERED.indexOf(value2)) return -1;
   return 0;
 };
