@@ -168,7 +168,7 @@ describe('The App component', () => {
     expect(changeScaleButton).toBeEnabled();
 
     // when
-    const selectedCard = container.querySelectorAll('button.largeCard')[5];
+    const selectedCard = container.querySelectorAll('button.largeCard')[3];
 
     // then
     expect(selectedCard).toHaveTextContent('2');
@@ -178,7 +178,7 @@ describe('The App component', () => {
     );
 
     // when
-    fireEvent.click(container.querySelectorAll('button.largeCard')[5]);
+    fireEvent.click(container.querySelectorAll('button.largeCard')[3]);
 
     // then
     expect(selectedCard).toHaveClass('selected');
