@@ -16,13 +16,10 @@ export const sendMessageToConnection = async (
       })
       .promise();
   } catch (e) {
-    if (!(e instanceof Error)) {
-      return;
-    }
-    if ((e as AWSError).statusCode === 410) {
+    if (e && (e as AWSError).statusCode === 410) {
       return removeConnection(config);
     } else {
-      throw e;
+      console.error(`Unexpected error when posting message to connection ${connectionId}:`, e);
     }
   }
 };

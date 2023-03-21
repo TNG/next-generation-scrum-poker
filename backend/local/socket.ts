@@ -24,15 +24,19 @@ export const startWebSocketServer = () => {
       tableName: 'scrum-poker-local',
       ddb,
       handler: {
-        postToConnection: (postData: { ConnectionId: string; Data: unknown }) => {
+        postToConnection: ({ ConnectionId, Data }: { ConnectionId: string; Data: unknown }) => {
           const client = [...wss.clients].find(
-            (client) => postData.ConnectionId === (client as WebsocketWithId).id
+            (client) => ConnectionId === (client as WebsocketWithId).id
           );
           const resultPromise = client
             ? new Promise<void>((resolve, reject) =>
-                client.send(postData.Data, (error) => (error ? reject(error) : resolve()))
+                client.send(Data, (error) => (error ? reject(error) : resolve()))
               )
-            : Promise.reject(new Error(`Could not find client with id ${postData.ConnectionId}`));
+            : Promise.reject(
+                Object.assign(new Error(`Could not find client with id ${ConnectionId}`), {
+                  statusCode: 410,
+                })
+              );
           return { promise: () => resultPromise };
         },
       },

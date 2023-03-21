@@ -5,4 +5,10 @@ export const getConnection = ({
   connectionId,
   tableName,
   ddb,
-}: Config): Promise<ConnectionItem | void> => getItem('connectionId', connectionId, tableName, ddb);
+}: Config): Promise<ConnectionItem | undefined> => {
+  const connection = getItem<ConnectionItem>('connectionId', connectionId, tableName, ddb);
+  if (!connection) {
+    console.error('No connection found for connectionId', connectionId, connection);
+  }
+  return connection;
+};
