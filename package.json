@@ -6,6 +6,8 @@
     "start": "run-p start:local-backend start:frontend",
     "preview": "run-p start:local-backend preview:frontend",
     "test": "cd frontend && vitest",
+    "e2e": "playwright test",
+    "e2e-ui": "playwright test --ui",
     "build": "run-p build:backend build:frontend",
     "lint": "eslint --cache --fix --ext .js,.ts,.tsx .",
     "prepare": "husky install",
@@ -27,6 +29,7 @@
   },
   "homepage": "https://github.com/tng/next-generation-scrum-poker#readme",
   "dependencies": {
+    "@playwright/test": "^1.32.1",
     "@preact/preset-vite": "^2.4.0",
     "@rollup/plugin-replace": "^5.0.1",
     "@rollup/plugin-typescript": "^9.0.2",

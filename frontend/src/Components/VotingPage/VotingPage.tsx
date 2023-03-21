@@ -8,7 +8,7 @@ import classes from './VotingPage.module.css';
 
 export const VotingPage = () => (
   <div class={classes.votingPage}>
-    <div class={sharedClasses.heading}>{HEADING_SELECT_CARD}</div>
+    <h1 class={sharedClasses.heading}>{HEADING_SELECT_CARD}</h1>
     <CardSelector />
     <RevealButton />
     <VotingStateDisplay />

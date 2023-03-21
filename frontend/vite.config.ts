@@ -1,6 +1,7 @@
 import preact from '@preact/preset-vite';
 import replace from '@rollup/plugin-replace';
 import { defineConfig } from 'vitest/config';
+import { frontendPort } from './config';
 
 export default defineConfig({
   plugins: [
@@ -12,6 +13,10 @@ export default defineConfig({
   ],
   ssr: {
     format: 'cjs',
+  },
+  server: {
+    port: frontendPort,
+    strictPort: true,
   },
   test: {
     globals: true,
