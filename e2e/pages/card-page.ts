@@ -35,6 +35,13 @@ export class CardPage {
     );
     await expect(this.votes).toHaveCount(states.length);
   }
+
+  async kickUser(name: string) {
+    const kickButton = this.votes
+      .filter({ has: this.page.locator(`:has-text("${name}")`) })
+      .locator('td:nth-child(3) button');
+    await kickButton.click();
+  }
 }
 
 export const assertOnCardPage = async (page: Page): Promise<CardPage> => {
