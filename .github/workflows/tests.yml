@@ -1,4 +1,4 @@
-name: Tests
+name: Unit Tests
 
 on:
   push:
@@ -8,8 +8,9 @@ on:
 
 jobs:
   build:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
-    name: Unit Tests
+    name: Frontend
     steps:
       - name: Checkout Commit
         uses: actions/checkout@v2

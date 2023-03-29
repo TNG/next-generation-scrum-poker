@@ -51,6 +51,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
   const [state, setState] = useState(initialWebSocketState);
   const [loginData, setLoginData] = useState(initialLoginData);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [logoutReason, setLogoutReason] = useState<string>();
   const loginDataRef = useRef(loginData);
   const clearReconnectTimeout = useRef<() => void>(doNothing);
@@ -60,6 +61,10 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
     const webSocket = new WebSocket(WEBSOCKET_URL);
     webSocket.onopen = () => {
       if (loginDataRef.current.user && loginDataRef.current.session) {
+        // The login is considered to be "processing" until the server sends a state
+        // message. During that time, the user should not be able to trigger backend
+        // updates as otherwise votes might not be registered.
+        setIsProcessing(true);
         webSocket.send(getLoginRequest(loginDataRef.current.user, loginDataRef.current.session));
       }
       setSocket(webSocket);
@@ -68,6 +73,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
       const message: ServerMessage = JSON.parse(event.data);
       switch (message.type) {
         case 'state':
+          setIsProcessing(false);
           return setState(message.payload);
         case 'not-logged-in':
           setLogoutReason(message.payload.reason);
@@ -96,6 +102,10 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
   }, [connect]);
 
   const login = (user: string, session: string) => {
+    // The login is considered to be "processing" until the server sends a state
+    // message. During that time, the user should not be able to trigger backend
+    // updates as otherwise votes might not be registered.
+    setIsProcessing(true);
     socket?.send(getLoginRequest(user, session));
     setLoginData({ user, session });
     setLoggedIn(true);
@@ -145,7 +155,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
   };
 
   const value: WebSocketApi = {
-    connected: Boolean(socket),
+    connected: Boolean(socket && !isProcessing),
     loggedIn,
     login,
     loginData,

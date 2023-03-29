@@ -3,12 +3,13 @@ import { SELECT_CHANGE_SCALE } from '../../constants';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './ScaleSelector.module.css';
 
-export const ScaleSelector = connectToWebSocket(({ socket }) => (
+export const ScaleSelector = connectToWebSocket(({ socket: { connected, setScale } }) => (
   <select
+    disabled={!connected}
     name="scale"
     class={classes.select}
     onChange={({ target }) =>
-      socket.setScale(SCALES[(target as HTMLSelectElement).value as ScaleName].values)
+      setScale(SCALES[(target as HTMLSelectElement).value as ScaleName].values)
     }
     value={'CHANGE_SCALE'}
   >
