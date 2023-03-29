@@ -21,6 +21,8 @@ const ConfigureMockWebSocket = () => {
     send(message: string) {
       this.test_messages.push(message);
     }
+
+    close() {}
   }
 
   window.WebSocket = MockWebSocket as unknown as typeof window.WebSocket;
