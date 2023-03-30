@@ -2,8 +2,7 @@ import { expect, Page } from '@playwright/test';
 import { CardValue } from '../../shared/cards';
 
 export class CardPage {
-  readonly revealButton = this.page.getByRole('button', { name: 'Reveal Votes' });
-  readonly revealNowButton = this.page.getByRole('button', { name: 'Reveal Now' });
+  readonly revealButton = this.page.getByTestId('reveal-button');
   readonly userName = this.page.getByText(/^Name: .*/);
   readonly votes = this.page.getByRole('table').locator('tbody tr');
   readonly heading = this.page.getByRole('heading');
