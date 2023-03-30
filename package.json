@@ -14,7 +14,7 @@
     "start:frontend": "cd frontend && vite",
     "start:local-backend": "run-p start:local-backend:db start:local-backend:gateway",
     "start:local-backend:db": "docker start scrumpoker-db || docker run --name scrumpoker-db --rm -p 8000:8000 amazon/dynamodb-local",
-    "start:local-backend:gateway": "nodemon backend/local/main.ts",
+    "start:local-backend:gateway": "nodemon --watch backend backend/local/main.ts",
     "start:local-backend:gateway:ci": "ts-node backend/local/main.ts",
     "preview:frontend": "npm run build:frontend && cd frontend && vite preview",
     "build:backend": "rollup -c backend/rollup.config.ts --configPlugin 'typescript={include:\"backend/rollup.config.ts\"}'",
