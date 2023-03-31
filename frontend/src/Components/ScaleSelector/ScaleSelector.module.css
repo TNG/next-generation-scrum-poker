@@ -8,6 +8,7 @@
   width: 100%;
   border-radius: var(--border-radius);
   border: 0.125rem solid var(--primary);
+  box-shadow: 0 0.25rem 0.5rem var(--background);
   margin: 0.25rem 0 0;
   background-color: var(--background);
   list-style: none;
@@ -19,7 +20,7 @@
   cursor: pointer;
 }
 
-.dropDownItem:hover {
+.dropDownItem[aria-selected='true'] {
   color: var(--text-secondary);
   background: var(--primary-light);
   border-radius: 0.25rem;
