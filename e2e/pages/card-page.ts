@@ -13,10 +13,6 @@ export class CardPage {
     await expect(this.heading).toHaveText('SELECT A CARD');
   }
 
-  async selectCard(value: CardValue) {
-    await this.page.getByRole('button', { name: value, exact: true }).click();
-  }
-
   async assertUserNameIs(name: string) {
     await expect(this.userName).toHaveText(`Name: ${name}`);
   }
@@ -37,6 +33,10 @@ export class CardPage {
 
   async kickUser(name: string) {
     await this.votes.getByTitle(`Kick ${name}`).click();
+  }
+
+  async selectCard(value: CardValue) {
+    await this.page.getByRole('button', { name: value, exact: true }).click();
   }
 }
 
