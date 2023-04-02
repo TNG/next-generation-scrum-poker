@@ -11,6 +11,7 @@ test('allows to take over sessions from other users', async ({ page, context }) 
   const secondPage = await context.newPage();
   await loginWithSameSession(secondPage, 'User', page);
   const secondCardPage = await assertOnCardPage(secondPage);
+  await secondCardPage.assertSelectedCardIs('1');
   await secondCardPage.assertVotingStateIs([{ name: 'User', state: 'Voted' }]);
   await secondCardPage.selectCard('2');
 
@@ -18,6 +19,7 @@ test('allows to take over sessions from other users', async ({ page, context }) 
   await loginPage.assertSessionTakeover();
   await loginPage.login('User');
   await assertOnCardPage(page);
+  await cardPage.assertSelectedCardIs('2');
   await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted' }]);
   await cardPage.revealButton.click();
   const resultsPage = await assertOnResultsPage(page);

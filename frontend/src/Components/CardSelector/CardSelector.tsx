@@ -13,6 +13,7 @@ const SPECIAL_ICONS: { [value in CardValue]?: JSX.Element } = {
   [VOTE_OBSERVER]: <IconObserver />,
   [VOTE_COFFEE]: <IconCoffee />,
 };
+
 const getCard = (
   cardValue: CardValue,
   isSelected: boolean,
@@ -30,6 +31,9 @@ const getCard = (
         [classes.largeCard]: !isObserver,
         [classes.selected]: isSelected,
       })}
+      aria-selected={isSelected}
+      aria-label={cardValue}
+      role="option"
       onClick={() => setVote(isSelected ? VOTE_NOTE_VOTED : cardValue)}
     >
       {SPECIAL_ICONS[cardValue] || cardValue}
@@ -62,14 +66,14 @@ export const CardSelector = connectToWebSocket(
     });
 
     return (
-      <>
+      <div class={classes.cardCollectionWrapper} role="listbox" aria-label="selectable cards">
         <div class={classes.cardCollection}>
           {state.scale.map((cardValue) =>
             getCard(cardValue, selectedCard === cardValue, setVote, connected)
           )}
         </div>
         {getCard(VOTE_OBSERVER, selectedCard === VOTE_OBSERVER, setVote, connected)}
-      </>
+      </div>
     );
   }
 );

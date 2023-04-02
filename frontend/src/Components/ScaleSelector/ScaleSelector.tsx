@@ -85,6 +85,7 @@ export const ScaleSelector = connectToWebSocket(({ socket: { connected, setScale
           ref={dropdownRef}
           tabIndex={0}
           role="listbox"
+          aria-label="scales"
           onBlur={handleBlur}
           onKeyDown={handleKeyboardNavigation}
         >
