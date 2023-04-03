@@ -1,4 +1,4 @@
-import { render } from '@testing-library/preact';
+import { render, RenderResult } from '@testing-library/preact';
 import { ComponentChildren } from 'preact';
 import { SCALES } from '../../../shared/scales';
 import { WebSocketContext } from '../Components/WebSocket/WebSocket';
@@ -41,7 +41,7 @@ export const getRenderWithWebSocket =
       <WebSocketContext.Provider value={getApi(defaultApi, api)}>
         {children}
       </WebSocketContext.Provider>
-    );
+    ) as RenderResult & { container: HTMLElement };
     return {
       ...rendered,
       rerender(apiUpdate: PartialWebsocketApi = {}) {

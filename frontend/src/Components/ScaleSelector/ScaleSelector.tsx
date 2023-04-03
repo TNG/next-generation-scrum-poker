@@ -22,6 +22,7 @@ export const ScaleSelector = connectToWebSocket(({ socket: { connected, setScale
     if (open) {
       close();
     } else {
+      setSelected(0);
       setOpen(true);
     }
   };
@@ -42,20 +43,35 @@ export const ScaleSelector = connectToWebSocket(({ socket: { connected, setScale
         setSelected((Math.max(selected, 0) + availableScales.length - 1) % availableScales.length);
         event.preventDefault();
         break;
+      case 'Home':
+      case 'PageUp':
+        setSelected(0);
+        break;
+      case 'End':
+      case 'PageDown':
+        setSelected(availableScales.length - 1);
+        break;
+      case 'Escape':
+        close();
+        selectionButtonRef.current?.focus();
+        break;
       case 'Enter':
       case ' ':
         // Prevent "enter" from triggering the button if the dropdown is open
         event.preventDefault();
+        close();
+        selectionButtonRef.current?.focus();
         if (selected >= 0) {
-          close();
           setScale(availableScales[selected][1].values);
-          selectionButtonRef.current?.focus();
         }
+        break;
     }
   };
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      return;
+    }
     if (!connected) {
       close();
       return;
