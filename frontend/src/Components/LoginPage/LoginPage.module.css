@@ -73,12 +73,6 @@
   justify-self: end;
 }
 
-.sessionLink {
-  grid-column: 2 / 3;
-  align-self: center;
-  color: var(--primary);
-}
-
 .submit {
   composes: button from '../../styles.module.css';
   --button-width: 100%;
@@ -88,4 +82,18 @@
 .legalNotice {
   grid-column: 1 / 3;
   justify-self: center;
+}
+
+.sessionContainer {
+  display: grid;
+  gap: 1ch;
+  grid-template-columns: 1fr min-content;
+  grid-column: 2 / 3;
+  align-self: center;
+  align-items: center;
+}
+
+.sessionLink {
+  color: var(--primary);
+  min-width: 19ch;
 }
