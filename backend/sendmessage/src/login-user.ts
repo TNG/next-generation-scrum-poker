@@ -20,13 +20,14 @@ export const loginUser = async (userId: string, groupId: string, config: ConfigW
       )
     : createGroupWithConnection(groupId, userId, getTtl(EXPIRY_TIME_IN_HOUR), config);
 
-  if (groupItem && userId in groupItem.connections) {
+  const userConnectionId = groupItem?.connections[userId]?.connectionId;
+  if (userConnectionId) {
     await sendMessageToConnection(
       {
         type: 'not-logged-in',
         payload: { reason: 'Your session was taken over by another user with the same name.' },
       },
-      { ...config, connectionId: groupItem.connections[userId].connectionId }
+      { ...config, connectionId: userConnectionId }
     );
   }
 
