@@ -12,7 +12,7 @@ npm start
 
 This will spin up the database via `docker` and launch the local API gateway.
 
-In parallel, it will use [Vite](https://vitejs.dev) to serve your app on [http://localhost:5173](http://localhost:5175). Vite will automatically update the browser via hot module reloading on save while providing extremely fast rebuilds.
+In parallel, it will use [Vite](https://vitejs.dev) to serve your app on [http://localhost:5175](http://localhost:5175). Vite will automatically update the browser via hot module reloading on save while providing extremely fast rebuilds.
 
 ## Production Build
 
@@ -50,7 +50,7 @@ To run the frontend unit tests via [Vitest](https://vitest.dev), run
 npm test
 ```
 
-To run all E2E tests via [Playwright](https://playwright.dev), run
+To run all E2E tests via [Playwright](https://playwright.dev), install playwright first once with `npx playwright install`, then run
 
 ```shell
 npm run e2e
