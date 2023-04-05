@@ -13,6 +13,7 @@ import {
 } from '../../constants';
 import tngLogo from '../../img/tng.svg';
 import { LegalNoticeContainer } from '../LegalNoticeContainer/LegalNoticeContainer';
+import { RefreshSessionButton } from '../RefreshSessionButton/RefreshSessionButton';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './LoginPage.module.css';
 
@@ -22,14 +23,7 @@ const isSSR = typeof window === 'undefined';
 export const LoginPage = connectToWebSocket(({ socket }) => {
   const firstInputRef: RefObject<HTMLInputElement> = useRef(null);
   const [user, setUser] = useState(socket.loginData.user);
-  let sessionId = '';
-  if (!isSSR) {
-    sessionId = new URLSearchParams(window.location.search).get('sessionId') || '';
-    if (!sessionId.match(/^[a-zA-Z0-9]{16}$/i)) {
-      sessionId = generateId(16);
-      history.replaceState({}, 'Scrum Poker', `?sessionId=${sessionId}`);
-    }
-  }
+  const [sessionId, setSessionId] = useState(getInitialSessionId);
 
   useEffect(() => {
     if (firstInputRef.current) {
@@ -65,9 +59,12 @@ export const LoginPage = connectToWebSocket(({ socket }) => {
       <label for="session" class={classes.sessionLabel}>
         {LABEL_SESSION}
       </label>
-      <a id="session" href={`?sessionId=${sessionId}`} class={classes.sessionLink}>
-        {sessionId}
-      </a>
+      <div class={classes.sessionContainer}>
+        <a id="session" href={sessionId && `?sessionId=${sessionId}`} class={classes.sessionLink}>
+          {sessionId}
+        </a>
+        <RefreshSessionButton onClick={() => setSessionId(refreshSessionId())} />
+      </div>
       <input
         type="submit"
         value={socket.connected ? BUTTON_LOGIN : BUTTON_CONNECTING}
@@ -83,3 +80,22 @@ export const LoginPage = connectToWebSocket(({ socket }) => {
     </form>
   );
 });
+
+function refreshSessionId(): string {
+  const sessionId = generateId(16);
+  history.replaceState({}, 'Scrum Poker', `?sessionId=${sessionId}`);
+  return sessionId;
+}
+
+function getInitialSessionId(): string {
+  if (isSSR) {
+    return '';
+  }
+
+  const sessionId = new URLSearchParams(window.location.search).get('sessionId') || '';
+  if (sessionId.match(/^[a-zA-Z0-9]{16}$/i)) {
+    return sessionId;
+  }
+
+  return refreshSessionId();
+}

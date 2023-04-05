@@ -41,6 +41,7 @@
     "aws-sdk": "^2.1255.0",
     "chart.js": "^4.0.1",
     "classnames": "^2.3.2",
+    "dequal": "^2.0.3",
     "eslint": "^8.27.0",
     "eslint-plugin-prettier": "^4.2.1",
     "html-minifier-terser": "^7.0.0",
