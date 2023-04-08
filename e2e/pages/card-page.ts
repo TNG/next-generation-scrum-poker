@@ -2,7 +2,7 @@ import { expect, Page } from '@playwright/test';
 import { CardValue } from '../../shared/cards';
 
 export class CardPage {
-  readonly revealButton = this.page.getByTestId('reveal-button');
+  readonly revealButton = this.page.getByLabel('reveal votes');
   readonly userName = this.page.getByText(/^Name: .*/);
   readonly votes = this.page.getByRole('table').locator('tbody tr');
   readonly heading = this.page.getByRole('heading');
@@ -36,10 +36,7 @@ export class CardPage {
   }
 
   async kickUser(name: string) {
-    const kickButton = this.votes
-      .filter({ has: this.page.locator(`:has-text("${name}")`) })
-      .locator('td:nth-child(3) button');
-    await kickButton.click();
+    await this.votes.getByTitle(`Kick ${name}`).click();
   }
 }
 

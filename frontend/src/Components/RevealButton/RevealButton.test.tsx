@@ -1,7 +1,7 @@
 import { fireEvent } from '@testing-library/preact';
 import { VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { SCALES } from '../../../../shared/scales';
-import { BUTTON_CONNECTING, BUTTON_REVEAL_NOW, BUTTON_REVEAL_VOTES } from '../../constants';
+import { BUTTON_REVEAL_NOW, BUTTON_REVEAL_VOTES } from '../../constants';
 import { getRenderWithWebSocket } from '../../test-helpers/renderWithWebSocket';
 import { RevealButton } from './RevealButton';
 
@@ -74,7 +74,7 @@ describe('The RevealButton', () => {
       connected: false,
     });
 
-    expect(getByRole('button', { name: BUTTON_CONNECTING })).toBeDisabled();
+    expect(getByRole('button', { name: 'reveal votes' })).toBeDisabled();
   });
 
   it('auto-updates the view and auto-reveals once missing votes have been added', () => {

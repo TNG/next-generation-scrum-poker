@@ -22,8 +22,8 @@ const initialWebSocketState: WebSocketState = {
 };
 
 const initialLoginData: WebSocketLoginData = { user: '', session: '' };
-const baseRetryWait = 200;
-const maxRetryWait = 4000;
+const BASE_RETRY_WAIT = 200;
+const MAX_RETRY_WAIT = 4000;
 
 export const WebSocketContext = createContext<WebSocketApi>({
   connected: false,
@@ -93,7 +93,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
       setSocket(null);
       const timeout = setTimeout(
         () => connect(),
-        Math.min(baseRetryWait * 2 ** (reconnectRetries.current++ / 2), maxRetryWait)
+        Math.min(BASE_RETRY_WAIT * 2 ** (reconnectRetries.current++ / 2), MAX_RETRY_WAIT)
       );
       clearReconnectTimeout.current = () => clearTimeout(timeout);
     };

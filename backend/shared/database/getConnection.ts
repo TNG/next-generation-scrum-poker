@@ -8,7 +8,7 @@ export const getConnection = ({
 }: Config): Promise<ConnectionItem | undefined> => {
   const connection = getItem<ConnectionItem>('connectionId', connectionId, tableName, ddb);
   if (!connection) {
-    console.error('No connection found for connectionId', connectionId, connection);
+    console.error('No connection found for connectionId', connectionId);
   }
   return connection;
 };

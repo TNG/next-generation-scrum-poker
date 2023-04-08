@@ -2,6 +2,7 @@ import { act, fireEvent, render } from '@testing-library/preact';
 import { VOTE_NOTE_VOTED } from '../../../../shared/cards';
 import { SCALES } from '../../../../shared/scales';
 import { ServerMessage } from '../../../../shared/serverMessages';
+import { doNothing } from '../../helpers/helpers';
 import { App } from './App';
 
 const ConfigureMockWebSocket = () => {
@@ -22,7 +23,7 @@ const ConfigureMockWebSocket = () => {
       this.test_messages.push(message);
     }
 
-    close() {}
+    close = doNothing;
   }
 
   window.WebSocket = MockWebSocket as unknown as typeof window.WebSocket;
@@ -132,10 +133,10 @@ describe('The App component', () => {
 
   it('updates, reveals and resets votes and kicks optimistically once the first state message arrived', () => {
     // given
-    const { socket, container, getByRole, getAllByTitle, getByText } = loginUser();
+    const { socket, container, getByRole, getAllByTitle } = loginUser();
 
     // then
-    const revealButton = getByRole('button', { name: 'Connecting…' });
+    const revealButton = getByRole('button', { name: 'reveal votes' });
     expect(revealButton).toBeDisabled();
     container.querySelectorAll('button.largeCard').forEach((card) => expect(card).toBeDisabled());
     getAllByTitle(/^Kick/).forEach((button) => expect(button).toBeDisabled());

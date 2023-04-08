@@ -33,7 +33,7 @@ export const RevealButton = connectToWebSocket(
 
     return (
       <button
-        data-testid="reveal-button"
+        aria-label="reveal votes"
         class={classes.revealButton}
         onClick={revealVotes}
         disabled={!connected || !voted}
