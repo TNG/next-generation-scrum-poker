@@ -44,11 +44,13 @@ export const ScaleSelector = connectToWebSocket(
     const handleKeyboardNavigation = (event: KeyboardEvent) => {
       switch (event.code) {
         case 'ArrowDown':
-          setSelected((selected + 1) % availableScales.length);
+          setSelected((selected) => (selected + 1) % availableScales.length);
           event.preventDefault();
           break;
         case 'ArrowUp':
-          setSelected(unsignedModulo(Math.max(selected, 0) - 1, availableScales.length));
+          setSelected((selected) =>
+            unsignedModulo(Math.max(selected, 0) - 1, availableScales.length)
+          );
           event.preventDefault();
           break;
         case 'Home':
