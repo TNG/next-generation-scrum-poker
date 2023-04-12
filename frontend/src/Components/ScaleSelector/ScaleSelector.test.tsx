@@ -1,10 +1,4 @@
-import {
-  createEvent,
-  fireEvent,
-  getByRole,
-  queryAllByRole,
-  queryByRole,
-} from '@testing-library/preact';
+import { createEvent, fireEvent, queryAllByRole, screen } from '@testing-library/preact';
 import { VOTE_NOTE_VOTED } from '../../../../shared/cards';
 import { SCALES } from '../../../../shared/scales';
 import { getRenderWithWebSocket } from '../../test-helpers/renderWithWebSocket';
@@ -30,14 +24,14 @@ describe('The ScaleSelector', () => {
 
   it('can be opened to display the list of available scales', () => {
     // given
-    const { container, getByRole } = render();
-    assertDropdownIsClosed(container);
+    const { getByRole } = render();
+    assertDropdownIsClosed();
 
     // when
     fireEvent.click(getByRole('button', { name: 'Change Scale' }));
 
     // then
-    const dropdown = getDropdown(container);
+    const dropdown = getDropdown();
     expect(dropdown.scrollIntoView).toHaveBeenCalledWith({
       behavior: 'smooth',
       block: 'nearest',
@@ -54,19 +48,19 @@ describe('The ScaleSelector', () => {
 
   it('preselects the current scale', () => {
     // given
-    const { container, getByRole } = render({ state: { scale: SCALES.SIZES_SCALE.values } });
+    const { getByRole } = render({ state: { scale: SCALES.SIZES_SCALE.values } });
 
     // when
     fireEvent.click(getByRole('button', { name: 'Change Scale' }));
 
     // then
-    const dropdown = getDropdown(container);
+    const dropdown = getDropdown();
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
   });
 
   it('does not preselect a scale if the scale is does not match', () => {
     // given
-    const { container, getByRole } = render({
+    const { getByRole } = render({
       state: { scale: SCALES.SIZES_SCALE.values.slice(0, -1) },
     });
 
@@ -74,14 +68,14 @@ describe('The ScaleSelector', () => {
     fireEvent.click(getByRole('button', { name: 'Change Scale' }));
 
     // then
-    const dropdown = getDropdown(container);
+    const dropdown = getDropdown();
     expect(getSelectedOptions(dropdown)).toEqual([]);
   });
 
   it('allows to select a scale', () => {
     // given
     const setScale = jest.fn();
-    const { container, getByRole, getByText } = render({ setScale });
+    const { getByRole, getByText } = render({ setScale });
 
     // when
     fireEvent.click(getByRole('button', { name: 'Change Scale' }));
@@ -89,13 +83,13 @@ describe('The ScaleSelector', () => {
 
     // then
     expect(setScale).toHaveBeenCalledWith(SCALES.SIZES_SCALE.values);
-    assertDropdownIsClosed(container);
+    assertDropdownIsClosed();
   });
 
   it('supports keyboard navigation', () => {
     // given
     const setScale = jest.fn();
-    const { container, getByRole } = render({ setScale });
+    const { getByRole } = render({ setScale });
 
     // when
     // As this is a real button, we cannot use synthetic events to trigger it
@@ -103,7 +97,7 @@ describe('The ScaleSelector', () => {
     fireEvent.click(changeScaleButton);
 
     // then
-    const dropdown = getDropdown(container);
+    const dropdown = getDropdown();
     expect(getSelectedOptions(dropdown)).toEqual(['Cohen']);
 
     fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
@@ -138,36 +132,36 @@ describe('The ScaleSelector', () => {
     fireEvent(dropdown, keyDownEnterEvent);
     expect(keyDownEnterEvent.defaultPrevented).toBe(true);
     expect(setScale).toHaveBeenCalledWith(SCALES.SIZES_SCALE.values);
-    assertDropdownIsClosed(container);
+    assertDropdownIsClosed();
     expect(changeScaleButton).toHaveFocus();
   });
 
   it('supports selecting an element via space key', () => {
     // given
     const setScale = jest.fn();
-    const { container, getByRole } = render({ setScale });
+    const { getByRole } = render({ setScale });
 
     // when
     const changeScaleButton = getByRole('button', { name: 'Change Scale' });
     fireEvent.click(changeScaleButton);
-    const dropdown = getDropdown(container);
+    const dropdown = getDropdown();
     fireEvent.keyDown(dropdown, { code: 'Space' });
 
     // then
     expect(setScale).toHaveBeenCalledWith(SCALES.COHEN_SCALE.values);
-    assertDropdownIsClosed(container);
+    assertDropdownIsClosed();
     expect(changeScaleButton).toHaveFocus();
   });
 
   it('combines mouse and keyboard selection', () => {
     // given
     const setScale = jest.fn();
-    const { container, getByRole, getByText } = render({ setScale });
+    const { getByRole, getByText } = render({ setScale });
 
     // when
     const changeScaleButton = getByRole('button', { name: 'Change Scale' });
     fireEvent.click(changeScaleButton);
-    const dropdown = getDropdown(container);
+    const dropdown = getDropdown();
 
     // then
     fireEvent.mouseMove(getByText('Sizes'));
@@ -185,49 +179,49 @@ describe('The ScaleSelector', () => {
 
     fireEvent.keyDown(dropdown, { code: 'Enter' });
     expect(setScale).toHaveBeenCalledWith(SCALES.COHEN_SCALE.values);
-    assertDropdownIsClosed(container);
+    assertDropdownIsClosed();
     expect(changeScaleButton).toHaveFocus();
   });
 
   it('closes the popup without selection when enter is pressed without a selected item', () => {
     // given
     const setScale = jest.fn();
-    const { container, getByRole, getByText } = render({ setScale });
+    const { getByRole, getByText } = render({ setScale });
 
     // when
     const changeScaleButton = getByRole('button', { name: 'Change Scale' });
     fireEvent.click(changeScaleButton);
-    const dropdown = getDropdown(container);
+    const dropdown = getDropdown();
     fireEvent.mouseMove(getByText('Fibonacci'));
     fireEvent.mouseLeave(getByText('Fibonacci'));
     fireEvent.keyDown(dropdown, { code: 'Enter' });
 
     // then
     expect(setScale).not.toHaveBeenCalled();
-    assertDropdownIsClosed(container);
+    assertDropdownIsClosed();
     expect(changeScaleButton).toHaveFocus();
   });
 
   it('closes the popup without selection when escape is pressed', () => {
     // given
     const setScale = jest.fn();
-    const { container, getByRole } = render({ setScale });
+    const { getByRole } = render({ setScale });
 
     // when
     const changeScaleButton = getByRole('button', { name: 'Change Scale' });
     fireEvent.click(changeScaleButton);
-    const dropdown = getDropdown(container);
+    const dropdown = getDropdown();
     fireEvent.keyDown(dropdown, { code: 'Escape' });
 
     // then
     expect(setScale).not.toHaveBeenCalled();
-    assertDropdownIsClosed(container);
+    assertDropdownIsClosed();
     expect(changeScaleButton).toHaveFocus();
   });
 
   it('closes the popup when clicking the button again', () => {
     // given
-    const { container, getByRole } = render();
+    const { getByRole } = render();
 
     // when
     const changeScaleButton = getByRole('button', { name: 'Change Scale' });
@@ -235,12 +229,12 @@ describe('The ScaleSelector', () => {
     fireEvent.click(changeScaleButton);
 
     // then
-    assertDropdownIsClosed(container);
+    assertDropdownIsClosed();
   });
 
   it('closes the popup and disables the button when the connection is lost', () => {
     // given
-    const { container, getByRole, rerender } = render();
+    const { getByRole, rerender } = render();
 
     // when
     const changeScaleButton = getByRole('button', { name: 'Change Scale' });
@@ -248,38 +242,38 @@ describe('The ScaleSelector', () => {
     rerender({ connected: false });
 
     // then
-    assertDropdownIsClosed(container);
+    assertDropdownIsClosed();
     expect(changeScaleButton).toBeDisabled();
 
     // when
     rerender({ connected: true });
 
     // then
-    assertDropdownIsClosed(container);
+    assertDropdownIsClosed();
     expect(changeScaleButton).toBeEnabled();
   });
 
   it('closes the popup when focus is lost', () => {
     // given
-    const { container, getByRole } = render();
+    const { getByRole } = render();
 
     // when
     const changeScaleButton = getByRole('button', { name: 'Change Scale' });
     fireEvent.click(changeScaleButton);
-    fireEvent.blur(getDropdown(container));
+    fireEvent.blur(getDropdown());
 
     // then
-    assertDropdownIsClosed(container);
+    assertDropdownIsClosed();
   });
 
   it('does not close the popup when focus is lost to the button', () => {
     // given
-    const { container, getByRole } = render();
+    const { getByRole } = render();
 
     // when
     const changeScaleButton = getByRole('button', { name: 'Change Scale' });
     fireEvent.click(changeScaleButton);
-    const dropdown = getDropdown(container);
+    const dropdown = getDropdown();
     fireEvent.blur(dropdown, { relatedTarget: changeScaleButton });
     fireEvent.blur(changeScaleButton, { relatedTarget: dropdown });
 
@@ -288,10 +282,10 @@ describe('The ScaleSelector', () => {
   });
 });
 
-const assertDropdownIsClosed = (container: HTMLElement) =>
-  expect(queryByRole(container, 'listbox', { name: 'scales' })).toBeNull();
+const assertDropdownIsClosed = () =>
+  expect(screen.queryByRole('listbox', { name: 'scales' })).not.toBeInTheDocument();
 
-const getDropdown = (container: HTMLElement) => getByRole(container, 'listbox', { name: 'scales' });
+const getDropdown = () => screen.getByRole('listbox', { name: 'scales' });
 
 const getSelectedOptions = (container: HTMLElement) =>
   queryAllByRole(container, 'option')
