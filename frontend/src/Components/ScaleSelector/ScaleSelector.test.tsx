@@ -79,38 +79,38 @@ describe('The ScaleSelector', () => {
     const dropdown = getDropdown(container);
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
 
-    fireEvent.keyDown(dropdown, { key: 'ArrowDown' });
+    fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
     expect(getSelectedOptions(dropdown)).toEqual(['Cohen']);
 
-    fireEvent.keyDown(dropdown, { key: 'ArrowDown' });
+    fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fixed Ratio']);
 
-    fireEvent.keyDown(dropdown, { key: 'ArrowDown' });
+    fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
-    fireEvent.keyDown(dropdown, { key: 'ArrowDown' });
+    fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
 
-    fireEvent.keyDown(dropdown, { key: 'ArrowUp' });
+    fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
-    fireEvent.keyDown(dropdown, { key: 'ArrowUp' });
+    fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fixed Ratio']);
 
-    fireEvent.keyDown(dropdown, { key: 'PageUp' });
+    fireEvent.keyDown(dropdown, { code: 'PageUp' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
 
-    fireEvent.keyDown(dropdown, { key: 'PageDown' });
+    fireEvent.keyDown(dropdown, { code: 'PageDown' });
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
-    fireEvent.keyDown(dropdown, { key: 'Home' });
+    fireEvent.keyDown(dropdown, { code: 'Home' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
 
-    fireEvent.keyDown(dropdown, { key: 'End' });
+    fireEvent.keyDown(dropdown, { code: 'End' });
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
     expect(setScale).not.toHaveBeenCalled();
-    const keyDownEnterEvent = createEvent.keyDown(dropdown, { key: 'Enter' });
+    const keyDownEnterEvent = createEvent.keyDown(dropdown, { code: 'Enter' });
     fireEvent(dropdown, keyDownEnterEvent);
     expect(keyDownEnterEvent.defaultPrevented).toBe(true);
     expect(setScale).toHaveBeenCalledWith(SCALES.SIZES_SCALE.values);
@@ -127,7 +127,7 @@ describe('The ScaleSelector', () => {
     const changeScaleButton = getByRole('button', { name: 'Change Scale' });
     fireEvent.click(changeScaleButton);
     const dropdown = getDropdown(container);
-    fireEvent.keyDown(dropdown, { key: ' ' });
+    fireEvent.keyDown(dropdown, { code: 'Space' });
 
     // then
     expect(setScale).toHaveBeenCalledWith(SCALES.FIBONACCI_SCALE.values);
@@ -149,7 +149,7 @@ describe('The ScaleSelector', () => {
     fireEvent.mouseMove(getByText('Sizes'));
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
-    fireEvent.keyDown(dropdown, { key: 'ArrowUp' });
+    fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fixed Ratio']);
 
     fireEvent.mouseMove(getByText('Sizes'));
@@ -159,7 +159,7 @@ describe('The ScaleSelector', () => {
     fireEvent.mouseMove(getByText('Cohen'));
     expect(getSelectedOptions(dropdown)).toEqual(['Cohen']);
 
-    fireEvent.keyDown(dropdown, { key: 'Enter' });
+    fireEvent.keyDown(dropdown, { code: 'Enter' });
     expect(setScale).toHaveBeenCalledWith(SCALES.COHEN_SCALE.values);
     assertDropdownIsClosed(container);
     expect(changeScaleButton).toHaveFocus();
@@ -176,7 +176,7 @@ describe('The ScaleSelector', () => {
     const dropdown = getDropdown(container);
     fireEvent.mouseMove(getByText('Fibonacci'));
     fireEvent.mouseLeave(getByText('Fibonacci'));
-    fireEvent.keyDown(dropdown, { key: 'Enter' });
+    fireEvent.keyDown(dropdown, { code: 'Enter' });
 
     // then
     expect(setScale).not.toHaveBeenCalled();
@@ -193,7 +193,7 @@ describe('The ScaleSelector', () => {
     const changeScaleButton = getByRole('button', { name: 'Change Scale' });
     fireEvent.click(changeScaleButton);
     const dropdown = getDropdown(container);
-    fireEvent.keyDown(dropdown, { key: 'Escape' });
+    fireEvent.keyDown(dropdown, { code: 'Escape' });
 
     // then
     expect(setScale).not.toHaveBeenCalled();

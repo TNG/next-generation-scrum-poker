@@ -34,7 +34,7 @@ export const ScaleSelector = connectToWebSocket(({ socket: { connected, setScale
   };
 
   const handleKeyboardNavigation = (event: KeyboardEvent) => {
-    switch (event.key) {
+    switch (event.code) {
       case 'ArrowDown':
         setSelected((selected + 1) % availableScales.length);
         event.preventDefault();
@@ -56,7 +56,7 @@ export const ScaleSelector = connectToWebSocket(({ socket: { connected, setScale
         selectionButtonRef.current?.focus();
         break;
       case 'Enter':
-      case ' ':
+      case 'Space':
         // Prevent "enter" from triggering the button if the dropdown is open
         event.preventDefault();
         close();
