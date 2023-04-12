@@ -40,7 +40,7 @@ export const ScaleSelector = connectToWebSocket(({ socket: { connected, setScale
         event.preventDefault();
         break;
       case 'ArrowUp':
-        setSelected((Math.max(selected, 0) + availableScales.length - 1) % availableScales.length);
+        setSelected(unsignedModulo(Math.max(selected, 0) - 1, availableScales.length));
         event.preventDefault();
         break;
       case 'Home':
@@ -126,3 +126,8 @@ export const ScaleSelector = connectToWebSocket(({ socket: { connected, setScale
     </div>
   );
 });
+
+// Unfortunately, the % operator in JavaScript is not a true modulo operator.
+// This works for arbitrary dividends even though dividends >= -1 would be sufficient
+const unsignedModulo = (dividend: number, divisor: number) =>
+  ((dividend % divisor) + divisor) % divisor;
