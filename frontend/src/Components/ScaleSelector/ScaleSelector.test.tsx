@@ -49,6 +49,33 @@ describe('The ScaleSelector', () => {
       'Fixed Ratio',
       'Sizes',
     ]);
+    expect(getSelectedOptions(dropdown)).toEqual(['Cohen']);
+  });
+
+  it('preselects the current scale', () => {
+    // given
+    const { container, getByRole } = render({ state: { scale: SCALES.SIZES_SCALE.values } });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+
+    // then
+    const dropdown = getDropdown(container);
+    expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
+  });
+
+  it('does not preselect a scale if the scale is does not match', () => {
+    // given
+    const { container, getByRole } = render({
+      state: { scale: SCALES.SIZES_SCALE.values.slice(0, -1) },
+    });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+
+    // then
+    const dropdown = getDropdown(container);
+    expect(getSelectedOptions(dropdown)).toEqual([]);
   });
 
   it('allows to select a scale', () => {
@@ -77,9 +104,6 @@ describe('The ScaleSelector', () => {
 
     // then
     const dropdown = getDropdown(container);
-    expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
-
-    fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
     expect(getSelectedOptions(dropdown)).toEqual(['Cohen']);
 
     fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
@@ -130,7 +154,7 @@ describe('The ScaleSelector', () => {
     fireEvent.keyDown(dropdown, { code: 'Space' });
 
     // then
-    expect(setScale).toHaveBeenCalledWith(SCALES.FIBONACCI_SCALE.values);
+    expect(setScale).toHaveBeenCalledWith(SCALES.COHEN_SCALE.values);
     assertDropdownIsClosed(container);
     expect(changeScaleButton).toHaveFocus();
   });
