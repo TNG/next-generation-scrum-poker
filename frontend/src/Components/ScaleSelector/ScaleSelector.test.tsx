@@ -28,14 +28,16 @@ describe('The ScaleSelector', () => {
     assertDropdownIsClosed();
 
     // when
-    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    const changeScaleButton = getByRole('button', { name: 'Change Scale' });
+    changeScaleButton.getBoundingClientRect = () =>
+      ({
+        bottom: window.innerHeight - 500,
+      } as DOMRect);
+    fireEvent.click(changeScaleButton);
 
     // then
     const dropdown = getDropdown();
-    expect(dropdown.scrollIntoView).toHaveBeenCalledWith({
-      behavior: 'smooth',
-      block: 'nearest',
-    });
+    expect(dropdown).not.toHaveClass('onTop');
     expect(dropdown).toHaveFocus();
     expect(queryAllByRole(dropdown, 'option').map((option) => option.textContent)).toEqual([
       'Fibonacci',
@@ -44,6 +46,22 @@ describe('The ScaleSelector', () => {
       'Sizes',
     ]);
     expect(getSelectedOptions(dropdown)).toEqual(['Cohen']);
+  });
+
+  it('opens to the top if there is not enough space below', () => {
+    // given
+    const { getByRole } = render();
+
+    // when
+    const changeScaleButton = getByRole('button', { name: 'Change Scale' });
+    changeScaleButton.getBoundingClientRect = () =>
+      ({
+        bottom: window.innerHeight,
+      } as DOMRect);
+    fireEvent.click(changeScaleButton);
+
+    // then
+    expect(getDropdown()).toHaveClass('onTop');
   });
 
   it('preselects the current scale', () => {

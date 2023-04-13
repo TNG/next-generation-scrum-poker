@@ -9,14 +9,19 @@
   border-radius: var(--border-radius);
   border: 0.125rem solid var(--primary);
   box-shadow: 0 0.25rem 0.5rem var(--background);
-  margin: 0.25rem 0 0;
+  margin: 0.25rem 0;
   background-color: var(--background);
   list-style: none;
   padding: 0.25rem;
 }
 
+.dropDown.onTop {
+  top: unset;
+  bottom: 100%;
+}
+
 .dropDownItem {
-  padding: 0.3rem;
+  padding: 0.25rem;
   cursor: pointer;
 }
 

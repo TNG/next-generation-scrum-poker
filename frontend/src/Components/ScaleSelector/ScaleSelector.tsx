@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { CardValue } from '../../../../shared/cards';
 import { ScaleName, SCALES } from '../../../../shared/scales';
@@ -7,6 +8,10 @@ import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './ScaleSelector.module.css';
 
 const availableScales = Object.entries(SCALES);
+const DROPDOWN_HEIGHT =
+  Object.keys(SCALES).length * (18.5 /*height*/ + /*padding*/ 8) +
+  /*outer padding and border*/ 12 +
+  /*distance to button*/ 4;
 
 export const ScaleSelector = connectToWebSocket(
   ({
@@ -18,8 +23,18 @@ export const ScaleSelector = connectToWebSocket(
   }) => {
     const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState(-1);
+    const [dropdownOnTop, setDropdownOnTop] = useState(false);
     const selectionButtonRef = useRef<HTMLButtonElement>(null);
     const dropdownRef = useRef<HTMLUListElement>(null);
+
+    const updateDropdownPosition = () => {
+      if (selectionButtonRef.current) {
+        setDropdownOnTop(
+          selectionButtonRef.current.getBoundingClientRect().bottom + DROPDOWN_HEIGHT >
+            window.innerHeight
+        );
+      }
+    };
 
     const close = () => {
       setOpen(false);
@@ -31,6 +46,7 @@ export const ScaleSelector = connectToWebSocket(
         close();
       } else {
         setSelected(availableScales.findIndex(isScaleSelected(scale)) || 0);
+        updateDropdownPosition();
         setOpen(true);
       }
     };
@@ -87,7 +103,6 @@ export const ScaleSelector = connectToWebSocket(
         return;
       }
       if (dropdownRef.current) {
-        dropdownRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         dropdownRef.current.focus();
       }
     }, [open, connected]);
@@ -107,7 +122,7 @@ export const ScaleSelector = connectToWebSocket(
         </button>
         {open ? (
           <ul
-            class={classes.dropDown}
+            class={classNames(classes.dropDown, dropdownOnTop && classes.onTop)}
             ref={dropdownRef}
             tabIndex={0}
             role="listbox"
