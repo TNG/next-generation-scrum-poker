@@ -45,7 +45,7 @@ export const ScaleSelector = connectToWebSocket(
       if (open) {
         close();
       } else {
-        setSelected(availableScales.findIndex(isScaleSelected(scale)) || 0);
+        setSelected(availableScales.findIndex(getScaleMatcher(scale)));
         updateDropdownPosition();
         setOpen(true);
       }
@@ -158,7 +158,7 @@ export const ScaleSelector = connectToWebSocket(
 const unsignedModulo = (dividend: number, divisor: number) =>
   ((dividend % divisor) + divisor) % divisor;
 
-const isScaleSelected =
+const getScaleMatcher =
   (currentScale: CardValue[]) =>
   ([, { values }]: typeof availableScales[number]) =>
     values.length === currentScale.length &&

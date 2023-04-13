@@ -76,7 +76,7 @@ describe('The ScaleSelector', () => {
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
   });
 
-  it('does not preselect a scale if the scale is does not match', () => {
+  it('does not preselect a scale if the current scale does not match', () => {
     // given
     const { getByRole } = render({
       state: { scale: SCALES.SIZES_SCALE.values.slice(0, -1) },
