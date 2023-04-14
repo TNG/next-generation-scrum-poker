@@ -1,7 +1,7 @@
 import { AWSError } from 'aws-sdk';
-import { ServerMessage } from '../../../shared/serverMessages';
-import { removeConnection } from '../../shared/removeConnection';
-import { ConfigWithHandler } from '../../shared/types';
+import { ServerMessage } from '../../shared/serverMessages';
+import { removeConnection } from './removeConnection';
+import { ConfigWithHandler } from './types';
 
 export const sendMessageToConnection = async (
   message: ServerMessage,

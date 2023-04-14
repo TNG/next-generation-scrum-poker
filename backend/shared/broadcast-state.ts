@@ -1,6 +1,6 @@
-import { Votes } from '../../../shared/serverMessages';
-import { ConfigWithHandler, GroupItem } from '../../shared/types';
+import { Votes } from '../../shared/serverMessages';
 import { sendMessageToConnection } from './send-message-to-connection';
+import { ConfigWithHandler, GroupItem } from './types';
 
 export const broadcastState = async (
   { connections, visible, scale }: GroupItem,

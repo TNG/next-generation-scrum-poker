@@ -1,13 +1,13 @@
 import { VOTE_NOTE_VOTED } from '../../../shared/cards';
+import { broadcastState } from '../../shared/broadcast-state';
 import { addConnectionToGroup } from '../../shared/database/addConnectionToGroup';
 import { addUserAndGroupToConnection } from '../../shared/database/addUserAndGroupToConnection';
 import { createGroupWithConnection } from '../../shared/database/createGroupWithConnection';
 import { getGroup } from '../../shared/database/getGroup';
 import { getTtl } from '../../shared/getTtl';
+import { sendMessageToConnection } from '../../shared/send-message-to-connection';
 import { ConfigWithHandler } from '../../shared/types';
-import { broadcastState } from './broadcast-state';
 import { EXPIRY_TIME_IN_HOUR } from './const';
-import { sendMessageToConnection } from './send-message-to-connection';
 
 export const loginUser = async (userId: string, groupId: string, config: ConfigWithHandler) => {
   const groupItem = await getGroup(groupId, config);
