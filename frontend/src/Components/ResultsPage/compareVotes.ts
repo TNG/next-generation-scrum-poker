@@ -1,4 +1,4 @@
-import { CardValue } from '../../../../shared/cards';
+import { CARDS_ORDERED_BY_VALUE, CardValue } from '../../../../shared/cards';
 
 export const compareVotes = (
   [user1, value1]: [string, CardValue],
@@ -8,15 +8,9 @@ export const compareVotes = (
 };
 
 export const compareCardValues = (value1: CardValue, value2: CardValue) => {
-  if (isNaN(Number(value1)) && !isNaN(Number(value2))) return 1;
-  if (!isNaN(Number(value1)) && isNaN(Number(value2))) return -1;
-  if (isNaN(Number(value1)) && isNaN(Number(value2))) {
-    if (value1.toLowerCase() > value2.toLowerCase()) return 1;
-    if (value1.toLowerCase() < value2.toLowerCase()) return -1;
-  } else {
-    if (Number(value1) > Number(value2)) return 1;
-    if (Number(value1) < Number(value2)) return -1;
-  }
-
+  const numericValue1 = CARDS_ORDERED_BY_VALUE.get(value1) ?? Infinity;
+  const numericValue2 = CARDS_ORDERED_BY_VALUE.get(value2) ?? Infinity;
+  if (numericValue1 > numericValue2) return 1;
+  if (numericValue1 < numericValue2) return -1;
   return 0;
 };
