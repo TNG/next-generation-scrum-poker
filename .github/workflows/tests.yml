@@ -7,19 +7,39 @@ on:
   pull_request:
 
 jobs:
-  build:
+  unit:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     name: Unit Tests
     steps:
       - name: Checkout Commit
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 16
       - name: Install dependencies
-        run: npm ci && cd frontend && npm ci
+        run: npm ci
       - name: Run tests
-        run: cd frontend && npm test
+        run: npm test
+        env:
+          CI: true
+  e2e:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    name: E2E Tests
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Run Playwright tests
+        run: npm run e2e
         env:
           CI: true

@@ -128,9 +128,18 @@ describe('The App component', () => {
     expect(container.querySelector('input[type=submit]')).toBeVisible();
   });
 
-  it('updates, reveals and resets votes and kicks optimistically', () => {
+  it('updates, reveals and resets votes and kicks optimistically once the first state message arrived', () => {
     // given
-    const { socket, container, getByRole } = loginUser();
+    const { socket, container, getByRole, getAllByTitle, getByText } = loginUser();
+
+    // then
+    const revealButton = getByRole('button', { name: 'Connecting…' });
+    expect(revealButton).toBeDisabled();
+    container.querySelectorAll('button.largeCard').forEach((card) => expect(card).toBeDisabled());
+    getAllByTitle(/^Kick/).forEach((button) => expect(button).toBeDisabled());
+    expect(getByRole('combobox')).toBeDisabled();
+
+    // when
     act(() =>
       socket.onmessage!(
         buildEventMessage({
@@ -147,7 +156,17 @@ describe('The App component', () => {
         })
       )
     );
+
+    // then
+    expect(revealButton).toBeEnabled();
+    container.querySelectorAll('button.largeCard').forEach((card) => expect(card).toBeEnabled());
+    getAllByTitle(/^Kick/).forEach((button) => expect(button).toBeEnabled());
+    expect(getByRole('combobox')).toBeEnabled();
+
+    // when
     const selectedCard = container.querySelectorAll('button.largeCard')[5];
+
+    // then
     expect(selectedCard).toHaveTextContent('2');
     expect(selectedCard).not.toHaveClass('selectedCard');
     expect(container.querySelector('tbody')).toHaveTextContent(
@@ -178,7 +197,8 @@ describe('The App component', () => {
     socket.test_messages = [];
 
     // when
-    fireEvent.click(getByRole('button', { name: 'Reveal Votes' }));
+    expect(revealButton).toHaveTextContent('Reveal Votes');
+    fireEvent.click(revealButton);
 
     // then
     expect(container.querySelector('tbody')).toHaveTextContent('Happy User2Voting User13');

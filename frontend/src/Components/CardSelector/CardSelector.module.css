@@ -15,6 +15,10 @@
   background-color: var(--secondary);
 }
 
+.card:disabled {
+  cursor: not-allowed;
+}
+
 .largeCard {
   composes: card;
   display: flex;
@@ -44,6 +48,12 @@
   color: var(--text-secondary);
   fill: var(--text-secondary);
   border-color: var(--primary-light);
+}
+
+.card:disabled:focus-visible,
+:global(.no-touch) .card:disabled:hover {
+  background: var(--tertiary);
+  border-color: var(--tertiary);
 }
 
 .card.selected {

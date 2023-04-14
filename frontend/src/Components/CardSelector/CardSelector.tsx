@@ -13,11 +13,17 @@ const SPECIAL_ICONS: { [value in CardValue]?: JSX.Element } = {
   [VOTE_OBSERVER]: <IconObserver />,
   [VOTE_COFFEE]: <IconCoffee />,
 };
-const getCard = (cardValue: CardValue, isSelected: boolean, setVote: WebSocketApi['setVote']) => {
+const getCard = (
+  cardValue: CardValue,
+  isSelected: boolean,
+  setVote: WebSocketApi['setVote'],
+  enabled: boolean
+) => {
   const isObserver = cardValue === VOTE_OBSERVER;
 
   return (
     <button
+      disabled={!enabled}
       key={cardValue}
       class={classNames({
         [classes.buttonObserver]: isObserver,
@@ -32,36 +38,38 @@ const getCard = (cardValue: CardValue, isSelected: boolean, setVote: WebSocketAp
   );
 };
 
-export const CardSelector = connectToWebSocket(({ socket }) => {
-  const selectedCard = socket.state.votes[socket.loginData.user];
+export const CardSelector = connectToWebSocket(
+  ({ socket: { connected, loginData, setVote, state } }) => {
+    const selectedCard = state.votes[loginData.user];
 
-  const onKeyDown = ({ key }: KeyboardEvent) => {
-    const matchingCards = socket.state.scale.filter(
-      (card) => card[0].toLowerCase() === key.toLowerCase()
-    );
+    const onKeyDown = ({ key }: KeyboardEvent) => {
+      const matchingCards = state.scale.filter(
+        (card) => card[0].toLowerCase() === key.toLowerCase()
+      );
 
-    if (matchingCards.length) {
-      const nextKey = matchingCards[matchingCards.indexOf(selectedCard) + 1] || VOTE_NOTE_VOTED;
-      socket.setVote(nextKey);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('keydown', onKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
+      if (matchingCards.length) {
+        const nextKey = matchingCards[matchingCards.indexOf(selectedCard) + 1] || VOTE_NOTE_VOTED;
+        setVote(nextKey);
+      }
     };
-  });
 
-  return (
-    <>
-      <div class={classes.cardCollection}>
-        {socket.state.scale.map((cardValue) =>
-          getCard(cardValue, selectedCard === cardValue, socket.setVote)
-        )}
-      </div>
-      {getCard(VOTE_OBSERVER, selectedCard === VOTE_OBSERVER, socket.setVote)}
-    </>
-  );
-});
+    useEffect(() => {
+      window.addEventListener('keydown', onKeyDown);
+
+      return () => {
+        window.removeEventListener('keydown', onKeyDown);
+      };
+    });
+
+    return (
+      <>
+        <div class={classes.cardCollection}>
+          {state.scale.map((cardValue) =>
+            getCard(cardValue, selectedCard === cardValue, setVote, connected)
+          )}
+        </div>
+        {getCard(VOTE_OBSERVER, selectedCard === VOTE_OBSERVER, setVote, connected)}
+      </>
+    );
+  }
+);

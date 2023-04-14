@@ -34,7 +34,7 @@ const getClassName = (vote: CardValue) =>
 
 export const ResultsPage = connectToWebSocket(({ socket }) => (
   <div class={classes.resultsPage}>
-    <div class={sharedClasses.heading}>{HEADING_RESULTS}</div>
+    <h1 class={sharedClasses.heading}>{HEADING_RESULTS}</h1>
     <div>
       <PieChart />
     </div>
