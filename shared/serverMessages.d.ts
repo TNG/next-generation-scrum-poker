@@ -8,6 +8,7 @@ export interface WebSocketState {
   resultsVisible: boolean;
   votes: Votes;
   scale: Array<CardValue>;
+  pendingConnections: string[];
 }
 
 export interface StateMessage {

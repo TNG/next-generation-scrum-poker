@@ -19,6 +19,7 @@ const initialWebSocketState: WebSocketState = {
   resultsVisible: false,
   votes: {},
   scale: SCALES.COHEN_SCALE.values,
+  pendingConnections: [],
 };
 
 const initialLoginData: WebSocketLoginData = { user: '', session: '' };
@@ -167,6 +168,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
       votes: getInitialVotes(state.votes),
       resultsVisible: false,
       scale: state.scale,
+      pendingConnections: state.pendingConnections,
     });
   };
 

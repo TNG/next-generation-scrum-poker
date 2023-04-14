@@ -11,6 +11,9 @@ export const broadcastState = async (
   for (const [userId, { vote }] of connectionEntries) {
     votes[userId] = vote;
   }
+  const pendingConnections = connectionEntries
+    .filter(([, { connectionId }]) => !connectionId)
+    .map(([userId]) => userId);
 
   return Promise.all(
     connectionEntries.map(
@@ -23,6 +26,7 @@ export const broadcastState = async (
               resultsVisible: visible,
               votes,
               scale,
+              pendingConnections,
             },
           },
           {
