@@ -1,6 +1,11 @@
 import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { Votes } from '../../../../shared/serverMessages';
-import { COLUMN_NAME, COLUMN_VOTE, HEADING_RESULTS } from '../../constants';
+import {
+  COLUMN_NAME,
+  COLUMN_VOTE,
+  HEADING_RESULTS,
+  TOOLTIP_PENDING_CONNECTION,
+} from '../../constants';
 import sharedClasses from '../../styles.module.css';
 import { IconCoffee } from '../IconCoffee/IconCoffee';
 import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
@@ -47,11 +52,17 @@ export const ResultsPage = connectToWebSocket(({ socket }) => (
           </tr>
         </thead>
         <tbody>
-          {getSortedResultsArray(socket.state.votes).map((userAndVote) => {
+          {getSortedResultsArray(socket.state.votes).map(([user, vote]) => {
+            const pendingConnection = socket.state.pendingConnections.includes(user);
             return (
-              <tr key={userAndVote[0]}>
-                <td>{userAndVote[0]}</td>
-                <td class={getClassName(userAndVote[1])}>{getVote(userAndVote[1])}</td>
+              <tr key={user}>
+                <td
+                  class={pendingConnection ? classes.pendingConnection : undefined}
+                  title={pendingConnection ? TOOLTIP_PENDING_CONNECTION : undefined}
+                >
+                  {user}
+                </td>
+                <td class={getClassName(vote)}>{getVote(vote)}</td>
               </tr>
             );
           })}

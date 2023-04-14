@@ -26,6 +26,7 @@ export const TOOLTIP_COFFEE = 'Need a break';
 export const TOOLTIP_NOT_VOTED = 'Not voted';
 export const TOOLTIP_OBSERVER = 'Observer';
 export const TOOLTIP_VOTED = 'Voted';
+export const TOOLTIP_PENDING_CONNECTION = 'Pending connection';
 
 export const COLUMN_NAME = 'Name';
 export const COLUMN_VOTE = 'Vote';
