@@ -21,7 +21,10 @@ export const loginUser = async (userId: string, groupId: string, config: ConfigW
     : createGroupWithConnection(groupId, userId, getTtl(EXPIRY_TIME_IN_HOUR), config);
 
   const userConnectionId = groupItem?.connections[userId]?.connectionId;
-  if (userConnectionId) {
+  // While it should not be possible to log in while there already is a connection,
+  // this addresses some edge cases observed during local development and makes
+  // it possible to login more liberally.
+  if (userConnectionId && userConnectionId !== config.connectionId) {
     await sendMessageToConnection(
       {
         type: 'not-logged-in',

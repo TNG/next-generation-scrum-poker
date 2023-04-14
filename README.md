@@ -56,10 +56,10 @@ To run all E2E tests via [Playwright](https://playwright.dev), install playwrigh
 npm run e2e
 ```
 
-To work on single E2E tests, run
+Note that this will download a docker image on first run, which may lead to a test timeout. Subsequent runs should work without problems though. If the dev environment is already running, then the tests will reuse it. To work on single E2E tests, run
 
 ```shell
-npm run e2e-ui
+npm run e2e:ui
 ```
 
 which will start the Playwright test runner in UI mode. You can then select the tests you want to run and also watch tests.

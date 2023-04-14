@@ -22,6 +22,8 @@ const initialWebSocketState: WebSocketState = {
 };
 
 const initialLoginData: WebSocketLoginData = { user: '', session: '' };
+const BASE_RETRY_WAIT = 200;
+const MAX_RETRY_WAIT = 4000;
 
 export const WebSocketContext = createContext<WebSocketApi>({
   connected: false,
@@ -55,11 +57,14 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
   const [logoutReason, setLogoutReason] = useState<string>();
   const loginDataRef = useRef(loginData);
   const clearReconnectTimeout = useRef<() => void>(doNothing);
+  const reconnectRetries = useRef(0);
   loginDataRef.current = loginData;
 
-  const connect = useCallback((retries = 0) => {
+  const connect = useCallback(() => {
     const webSocket = new WebSocket(WEBSOCKET_URL);
     webSocket.onopen = () => {
+      // After a successful connection, we reset the exponential backoff wait
+      reconnectRetries.current = 0;
       if (loginDataRef.current.user && loginDataRef.current.session) {
         // The login is considered to be "processing" until the server sends a state
         // message. During that time, the user should not be able to trigger backend
@@ -69,6 +74,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
       }
       setSocket(webSocket);
     };
+
     webSocket.onmessage = (event: MessageEvent) => {
       const message: ServerMessage = JSON.parse(event.data);
       switch (message.type) {
@@ -82,23 +88,33 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
           console.error(`Unexpected Websocket message ${event.data}`);
       }
     };
+
     webSocket.onclose = () => {
       setSocket(null);
-      const timeout = setTimeout(() => connect(retries + 1), 500 * 2 ** (retries / 2));
-      clearReconnectTimeout.current = () => {
-        clearTimeout(timeout);
-      };
+      const timeout = setTimeout(
+        () => connect(),
+        Math.min(BASE_RETRY_WAIT * 2 ** (reconnectRetries.current++ / 2), MAX_RETRY_WAIT)
+      );
+      clearReconnectTimeout.current = () => clearTimeout(timeout);
     };
 
-    webSocket.onerror = () => {
-      console.error('Unexpected Websocket error.');
+    webSocket.onerror = (error) => {
+      console.error('Unexpected Websocket error', error);
       webSocket.close();
     };
+
+    return webSocket;
   }, []);
 
   useEffect(() => {
-    connect();
-    return clearReconnectTimeout.current;
+    const webSocket = connect();
+    return () => {
+      clearReconnectTimeout.current();
+      // As cleanup, we close the previous socket while ignoring any logic triggered
+      // on close
+      webSocket.onclose = doNothing;
+      webSocket.close();
+    };
   }, [connect]);
 
   const login = (user: string, session: string) => {

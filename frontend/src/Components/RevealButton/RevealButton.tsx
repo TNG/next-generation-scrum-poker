@@ -32,7 +32,12 @@ export const RevealButton = connectToWebSocket(
     const { missing, voted } = getNumberOfVotes(votes);
 
     return (
-      <button class={classes.revealButton} onClick={revealVotes} disabled={!connected || !voted}>
+      <button
+        aria-label="reveal votes"
+        class={classes.revealButton}
+        onClick={revealVotes}
+        disabled={!connected || !voted}
+      >
         {getButtonText({ connected, missing, voted })}
       </button>
     );
