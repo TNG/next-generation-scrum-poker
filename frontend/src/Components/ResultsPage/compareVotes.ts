@@ -1,4 +1,4 @@
-import { ALL_VALUES_ORDERED, CardValue } from '../../../../shared/cards';
+import { CARDS_ORDERED_BY_VALUE, CardValue } from '../../../../shared/cards';
 
 export const compareVotes = (
   [user1, value1]: [string, CardValue],
@@ -8,7 +8,9 @@ export const compareVotes = (
 };
 
 export const compareCardValues = (value1: CardValue, value2: CardValue) => {
-  if (ALL_VALUES_ORDERED.indexOf(value1) > ALL_VALUES_ORDERED.indexOf(value2)) return 1;
-  if (ALL_VALUES_ORDERED.indexOf(value1) < ALL_VALUES_ORDERED.indexOf(value2)) return -1;
+  const numericValue1 = CARDS_ORDERED_BY_VALUE.get(value1) ?? Infinity;
+  const numericValue2 = CARDS_ORDERED_BY_VALUE.get(value2) ?? Infinity;
+  if (numericValue1 > numericValue2) return 1;
+  if (numericValue1 < numericValue2) return -1;
   return 0;
 };

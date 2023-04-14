@@ -32,7 +32,7 @@ const NUMERIC_VALUES_ORDERED = [
   '128',
 ] as const;
 
-export const ALL_VALUES_ORDERED = [
+const ALL_VALUES_ORDERED = [
   ...NUMERIC_VALUES_ORDERED,
   ...SIZES_ORDERED,
   ...SPECIAL_VALUES_ORDERED,
@@ -40,3 +40,7 @@ export const ALL_VALUES_ORDERED = [
 ] as const;
 
 export type CardValue = typeof ALL_VALUES_ORDERED[number];
+
+export const CARDS_ORDERED_BY_VALUE = new Map(
+  ALL_VALUES_ORDERED.map((value, index) => [value, index])
+);
