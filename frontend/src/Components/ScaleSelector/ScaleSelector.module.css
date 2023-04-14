@@ -1,5 +1,31 @@
-.select {
-  composes: button from '../../styles.module.css';
-  margin-bottom: 1rem;
-  padding-left: 3.75rem;
+.scaleSelector {
+  position: relative;
+}
+
+.dropDown {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  border-radius: var(--border-radius);
+  border: 0.125rem solid var(--primary);
+  margin: 0.25rem 0;
+  background-color: var(--background);
+  list-style: none;
+  padding: 0.25rem;
+}
+
+.dropDown.onTop {
+  top: unset;
+  bottom: 100%;
+}
+
+.dropDownItem {
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.dropDownItem[aria-selected='true'] {
+  color: var(--text-secondary);
+  background: var(--primary-light);
+  border-radius: 0.25rem;
 }

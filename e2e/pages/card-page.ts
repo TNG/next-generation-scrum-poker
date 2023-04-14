@@ -6,15 +6,37 @@ export class CardPage {
   readonly userName = this.page.getByText(/^Name: .*/);
   readonly votes = this.page.getByRole('table').locator('tbody tr');
   readonly heading = this.page.getByRole('heading');
+  readonly cards = this.page.getByLabel('selectable cards');
+  readonly scaleSelectorButton = this.page.getByRole('button', { name: 'Change Scale' });
+  readonly scaleSelectorDropdown = this.page.getByRole('listbox', { name: 'scales' });
 
   constructor(readonly page: Page) {}
 
-  async assertShown() {
-    await expect(this.heading).toHaveText('SELECT A CARD');
+  async assertCardsAre(cards: CardValue[]) {
+    await Promise.all(
+      cards.map(async (card, index) => {
+        await expect(
+          this.cards.getByRole('option').nth(index),
+          `Label of card ${index}`
+        ).toHaveAttribute('aria-label', card);
+      })
+    );
+    await expect(this.cards.getByRole('option')).toHaveCount(cards.length);
   }
 
-  async selectCard(value: CardValue) {
-    await this.page.getByRole('button', { name: value, exact: true }).click();
+  async assertNoCardSelected() {
+    await expect(this.cards.locator('[aria-selected="true"]')).toHaveCount(0);
+  }
+
+  async assertSelectedCardIs(card: CardValue) {
+    await expect(this.cards.locator(`[aria-label="${card}"]`)).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+  }
+
+  async assertShown() {
+    await expect(this.heading).toHaveText('SELECT A CARD');
   }
 
   async assertUserNameIs(name: string) {
@@ -37,6 +59,15 @@ export class CardPage {
 
   async kickUser(name: string) {
     await this.votes.getByTitle(`Kick ${name}`).click();
+  }
+
+  async selectCard(value: CardValue) {
+    await this.cards.locator(`[aria-label="${value}"]`).click();
+  }
+
+  async selectScale(scale: string) {
+    await this.scaleSelectorButton.click();
+    await this.scaleSelectorDropdown.getByRole('option', { name: scale }).click();
   }
 }
 

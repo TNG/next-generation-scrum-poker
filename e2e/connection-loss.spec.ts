@@ -39,6 +39,7 @@ test('recovers after connection loss due to error', async ({ page }) => {
   await emitError();
   await expect(cardPage.revealButton).toHaveText('Connecting…');
   await expect(cardPage.revealButton).toHaveText('Reveal Votes');
+  await cardPage.assertSelectedCardIs('1');
 
   await cardPage.revealButton.click();
   const resultsPage = await assertOnResultsPage(page);

@@ -140,7 +140,8 @@ describe('The App component', () => {
     expect(revealButton).toBeDisabled();
     container.querySelectorAll('button.largeCard').forEach((card) => expect(card).toBeDisabled());
     getAllByTitle(/^Kick/).forEach((button) => expect(button).toBeDisabled());
-    expect(getByRole('combobox')).toBeDisabled();
+    const changeScaleButton = getByRole('button', { name: 'Change Scale' });
+    expect(changeScaleButton).toBeDisabled();
 
     // when
     act(() =>
@@ -164,7 +165,7 @@ describe('The App component', () => {
     expect(revealButton).toBeEnabled();
     container.querySelectorAll('button.largeCard').forEach((card) => expect(card).toBeEnabled());
     getAllByTitle(/^Kick/).forEach((button) => expect(button).toBeEnabled());
-    expect(getByRole('combobox')).toBeEnabled();
+    expect(changeScaleButton).toBeEnabled();
 
     // when
     const selectedCard = container.querySelectorAll('button.largeCard')[5];
