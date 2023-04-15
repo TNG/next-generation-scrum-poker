@@ -156,6 +156,7 @@ describe('The App component', () => {
             },
             resultsVisible: false,
             scale: SCALES.COHEN_SCALE.values,
+            pendingConnections: [],
           },
         })
       )

@@ -31,6 +31,7 @@ const getApi = (
     scale: SCALES.COHEN_SCALE.values,
     ...defaultContext.state,
     ...context.state,
+    pendingConnections: [],
   },
 });
 

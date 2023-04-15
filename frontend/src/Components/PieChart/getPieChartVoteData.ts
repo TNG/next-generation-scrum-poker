@@ -1,7 +1,7 @@
 import { ChartDataset } from 'chart.js';
 import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { Votes } from '../../../../shared/serverMessages';
-import { compareCardValues } from '../ResultsPage/compareVotes';
+import { compareCardValues } from '../../helpers/compareVotes';
 
 export const getPieChartVoteData = (
   votes: Votes

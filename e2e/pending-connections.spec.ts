@@ -54,20 +54,20 @@ test('indicates pending connections on result page', async ({ page, context }) =
   const secondCardPage = await assertOnCardPage(secondPage);
   await secondCardPage.selectCard('1');
   await secondCardPage.revealButton.click();
-  const secondResultPage = await assertOnResultsPage(secondPage);
-  await secondResultPage.assertResultsAre([
+  const secondResultsPage = await assertOnResultsPage(secondPage);
+  await secondResultsPage.assertResultsAre([
     { name: 'User 1', result: '1', disconnected: false },
     { name: 'User 2', result: '1', disconnected: false },
   ]);
-  const resultPage = await assertOnResultsPage(page);
-  await resultPage.assertResultsAre([
+  const resultsPage = await assertOnResultsPage(page);
+  await resultsPage.assertResultsAre([
     { name: 'User 1', result: '1', disconnected: false },
     { name: 'User 2', result: '1', disconnected: false },
   ]);
 
   // First logout
   await page.close();
-  await secondResultPage.assertResultsAre([
+  await secondResultsPage.assertResultsAre([
     { name: 'User 1', result: '1', disconnected: true },
     { name: 'User 2', result: '1', disconnected: false },
   ]);
@@ -75,12 +75,12 @@ test('indicates pending connections on result page', async ({ page, context }) =
   // First login again
   const thirdPage = await context.newPage();
   await loginWithSameSession(thirdPage, 'User 1', secondPage);
-  const thirdResultPage = await assertOnResultsPage(thirdPage);
-  await thirdResultPage.assertResultsAre([
+  const thirdResultsPage = await assertOnResultsPage(thirdPage);
+  await thirdResultsPage.assertResultsAre([
     { name: 'User 1', result: '1', disconnected: false },
     { name: 'User 2', result: '1', disconnected: false },
   ]);
-  await thirdResultPage.assertResultsAre([
+  await thirdResultsPage.assertResultsAre([
     { name: 'User 1', result: '1', disconnected: false },
     { name: 'User 2', result: '1', disconnected: false },
   ]);

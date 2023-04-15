@@ -1,5 +1,3 @@
-import { VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
-import { WebSocketState } from '../../../../shared/serverMessages';
 import {
   COLUMN_KICK,
   COLUMN_NAME,
@@ -7,33 +5,19 @@ import {
   TOOLTIP_PENDING_CONNECTION,
 } from '../../constants';
 import sharedClasses from '../../styles.module.css';
+import { WebSocketApi } from '../../types/WebSocket';
 import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
 import { IconObserver } from '../IconObserver/IconObserver';
 import { IconVoted } from '../IconVoted/IconVoted';
 import { KickButton } from '../KickButton/KickButton';
+import { UserState, getVotingState } from '../../helpers/getVotingState';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './VotingStateDisplay.module.css';
 
-type UserState = {
-  user: string;
-  voted: boolean;
-  observer: boolean;
-  pendingConnection: boolean;
-};
-
-const getSortedVotingState = ({
-  votes,
-  pendingConnections,
-}: Pick<WebSocketState, 'votes' | 'pendingConnections'>): UserState[] => {
-  const votedUsers = Object.keys(votes).map((user) => ({
-    user,
-    voted: votes[user] !== VOTE_NOTE_VOTED,
-    observer: votes[user] === VOTE_OBSERVER,
-    pendingConnection: pendingConnections.includes(user),
-  }));
-  return votedUsers.sort((a, b) => {
-    const rankA = getRank(a.voted, a.observer);
-    const rankB = getRank(b.voted, b.observer);
+const getSortedVotingState = (socket: WebSocketApi): UserState[] => {
+  return getVotingState(socket).sort((a, b) => {
+    const rankA = getRank(a);
+    const rankB = getRank(b);
     if (rankA === rankB) {
       return 0;
     }
@@ -41,7 +25,7 @@ const getSortedVotingState = ({
   });
 };
 
-const getRank = (voted: boolean, observer: boolean) => {
+const getRank = ({ observer, voted }: UserState) => {
   if (observer) {
     return -1;
   }
@@ -51,7 +35,7 @@ const getRank = (voted: boolean, observer: boolean) => {
   return 1;
 };
 
-const getClassName = ({ voted, observer, pendingConnection }: Omit<UserState, 'user'>) => {
+const getClassName = ({ voted, observer, pendingConnection }: UserState) => {
   if (pendingConnection) {
     return classes.pendingConnection;
   }
@@ -64,7 +48,7 @@ const getClassName = ({ voted, observer, pendingConnection }: Omit<UserState, 'u
   return classes.notVoted;
 };
 
-const getIcon = ({ voted, observer }: Pick<UserState, 'voted' | 'observer'>) => {
+const getIcon = ({ voted, observer }: UserState) => {
   if (observer) {
     return <IconObserver />;
   }
@@ -85,13 +69,15 @@ export const VotingStateDisplay = connectToWebSocket(({ socket }) => (
         </tr>
       </thead>
       <tbody>
-        {getSortedVotingState(socket.state).map(({ user, voted, observer, pendingConnection }) => {
+        {getSortedVotingState(socket).map((userState) => {
           return (
-            <tr key={user} class={getClassName({ voted, observer, pendingConnection })}>
-              <td title={pendingConnection ? TOOLTIP_PENDING_CONNECTION : undefined}>{user}</td>
-              <td>{getIcon({ voted, observer })}</td>
+            <tr key={userState.user} class={getClassName(userState)}>
+              <td title={userState.pendingConnection ? TOOLTIP_PENDING_CONNECTION : undefined}>
+                {userState.user}
+              </td>
+              <td>{getIcon(userState)}</td>
               <td>
-                <KickButton user={user} />
+                <KickButton user={userState.user} />
               </td>
             </tr>
           );

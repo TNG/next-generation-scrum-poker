@@ -18,10 +18,12 @@ test('recovers after connection loss due to unexpected close', async ({ page }) 
 
   await closeSocket();
   await expect(cardPage.revealButton).toHaveText('Connecting…');
+  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', disconnected: true }]);
   await expect(cardPage.revealButton).toHaveText('Reveal Votes');
   await cardPage.selectCard('2');
   await closeSocket();
   await expect(cardPage.revealButton).toHaveText('Connecting…');
+  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', disconnected: true }]);
   await expect(cardPage.revealButton).toHaveText('Reveal Votes');
 
   await cardPage.revealButton.click();
@@ -38,6 +40,7 @@ test('recovers after connection loss due to error', async ({ page }) => {
 
   await emitError();
   await expect(cardPage.revealButton).toHaveText('Connecting…');
+  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', disconnected: true }]);
   await expect(cardPage.revealButton).toHaveText('Reveal Votes');
   await cardPage.assertSelectedCardIs('1');
 

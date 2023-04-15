@@ -1,25 +1,52 @@
-import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
+import { VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER, CardValue } from '../../../shared/cards';
 import { compareCardValues, compareVotes } from './compareVotes';
+import { UserState } from './getVotingState';
 
 describe('The compareVotes function', () => {
-  it.each<{ userAndVote1: [string, CardValue]; userAndVote2: [string, CardValue]; result: number }>(
-    [
-      { userAndVote1: ['user1', '100'], userAndVote2: ['user2', '5'], result: 1 },
-      { userAndVote1: ['user1', '0.5'], userAndVote2: ['user2', '5'], result: -1 },
-      { userAndVote1: ['user1', '5'], userAndVote2: ['user2', VOTE_COFFEE], result: -1 },
-      { userAndVote1: ['user1', VOTE_COFFEE], userAndVote2: ['user2', '5'], result: 1 },
-      { userAndVote1: ['user1', VOTE_COFFEE], userAndVote2: ['user2', VOTE_COFFEE], result: -1 },
-      {
-        userAndVote1: ['user1', VOTE_COFFEE],
-        userAndVote2: ['user2', VOTE_NOTE_VOTED],
-        result: -1,
-      },
-      { userAndVote1: ['user1', 'S'], userAndVote2: ['user2', VOTE_OBSERVER], result: -1 },
-    ]
-  )(
+  it.each<{
+    userState1: Pick<UserState, 'user' | 'vote'>;
+    userState2: Pick<UserState, 'user' | 'vote'>;
+    result: number;
+  }>([
+    {
+      userState1: { user: 'user1', vote: '100' },
+      userState2: { user: 'user2', vote: '5' },
+      result: 1,
+    },
+    {
+      userState1: { user: 'user1', vote: '0.5' },
+      userState2: { user: 'user2', vote: '5' },
+      result: -1,
+    },
+    {
+      userState1: { user: 'user1', vote: '5' },
+      userState2: { user: 'user2', vote: VOTE_COFFEE },
+      result: -1,
+    },
+    {
+      userState1: { user: 'user1', vote: VOTE_COFFEE },
+      userState2: { user: 'user2', vote: '5' },
+      result: 1,
+    },
+    {
+      userState1: { user: 'user1', vote: VOTE_COFFEE },
+      userState2: { user: 'user2', vote: VOTE_COFFEE },
+      result: -1,
+    },
+    {
+      userState1: { user: 'user1', vote: VOTE_COFFEE },
+      userState2: { user: 'user2', vote: VOTE_NOTE_VOTED },
+      result: -1,
+    },
+    {
+      userState1: { user: 'user1', vote: 'S' },
+      userState2: { user: 'user1', vote: VOTE_OBSERVER },
+      result: -1,
+    },
+  ])(
     'returns $result when $userAndVote1 and $userAndVote2 are passed',
-    ({ userAndVote1, userAndVote2, result }) => {
-      const sortedResults = compareVotes(userAndVote1, userAndVote2);
+    ({ userState1, userState2, result }) => {
+      const sortedResults = compareVotes(userState1, userState2);
       expect(sortedResults).toEqual(result);
     }
   );

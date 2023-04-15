@@ -1,10 +1,14 @@
-import { CARDS_ORDERED_BY_VALUE, CardValue } from '../../../../shared/cards';
+import { CARDS_ORDERED_BY_VALUE, CardValue } from '../../../shared/cards';
+import { UserState } from './getVotingState';
 
 export const compareVotes = (
-  [user1, value1]: [string, CardValue],
-  [user2, value2]: [string, CardValue]
+  userState1: Pick<UserState, 'user' | 'vote'>,
+  userState2: Pick<UserState, 'user' | 'vote'>
 ) => {
-  return compareCardValues(value1, value2) || (user1 > user2 ? 1 : -1);
+  return (
+    compareCardValues(userState1.vote, userState2.vote) ||
+    (userState1.user > userState2.user ? 1 : -1)
+  );
 };
 
 export const compareCardValues = (value1: CardValue, value2: CardValue) => {

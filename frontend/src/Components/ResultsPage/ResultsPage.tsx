@@ -1,5 +1,4 @@
 import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
-import { Votes } from '../../../../shared/serverMessages';
 import {
   COLUMN_NAME,
   COLUMN_VOTE,
@@ -7,18 +6,19 @@ import {
   TOOLTIP_PENDING_CONNECTION,
 } from '../../constants';
 import sharedClasses from '../../styles.module.css';
+import { WebSocketApi } from '../../types/WebSocket';
 import { IconCoffee } from '../IconCoffee/IconCoffee';
 import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
 import { IconObserver } from '../IconObserver/IconObserver';
 import { PieChart } from '../PieChart/PieChart';
 import { ResetButton } from '../ResetButton/ResetButton';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
-import { compareVotes } from './compareVotes';
+import { compareVotes } from '../../helpers/compareVotes';
+import { getVotingState, UserState } from '../../helpers/getVotingState';
 import classes from './ResultsPage.module.css';
 
-const getSortedResultsArray = (unsortedResults: Votes): [string, CardValue][] => {
-  const dataArray = Object.entries(unsortedResults);
-  return dataArray.sort(compareVotes);
+const getSortedResultsArray = (socket: WebSocketApi): UserState[] => {
+  return getVotingState(socket).sort(compareVotes);
 };
 
 const getVote = (vote: CardValue) => {
@@ -52,20 +52,17 @@ export const ResultsPage = connectToWebSocket(({ socket }) => (
           </tr>
         </thead>
         <tbody>
-          {getSortedResultsArray(socket.state.votes).map(([user, vote]) => {
-            const pendingConnection = socket.state.pendingConnections.includes(user);
-            return (
-              <tr key={user}>
-                <td
-                  class={pendingConnection ? classes.pendingConnection : undefined}
-                  title={pendingConnection ? TOOLTIP_PENDING_CONNECTION : undefined}
-                >
-                  {user}
-                </td>
-                <td class={getClassName(vote)}>{getVote(vote)}</td>
-              </tr>
-            );
-          })}
+          {getSortedResultsArray(socket).map(({ user, vote, pendingConnection }) => (
+            <tr key={user}>
+              <td
+                class={pendingConnection ? classes.pendingConnection : undefined}
+                title={pendingConnection ? TOOLTIP_PENDING_CONNECTION : undefined}
+              >
+                {user}
+              </td>
+              <td class={getClassName(vote)}>{getVote(vote)}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
