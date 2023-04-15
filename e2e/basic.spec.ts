@@ -9,7 +9,7 @@ test('syncs state between users', async ({ page, context }) => {
   const cardPage = await assertOnCardPage(page);
   await cardPage.assertUserNameIs('User 1');
   await cardPage.assertNoCardSelected();
-  await cardPage.assertVotingStateIs([{ name: 'User 1', state: 'Not voted' }]);
+  await cardPage.assertVotingStateIs([{ name: 'User 1', state: 'Not voted', disconnected: false }]);
 
   // Second login
   const secondPage = await context.newPage();
@@ -18,49 +18,49 @@ test('syncs state between users', async ({ page, context }) => {
   await secondCardPage.assertUserNameIs('User 2');
   await secondCardPage.assertNoCardSelected();
   await secondCardPage.assertVotingStateIs([
-    { name: 'User 1', state: 'Not voted' },
-    { name: 'User 2', state: 'Not voted' },
+    { name: 'User 1', state: 'Not voted', disconnected: false },
+    { name: 'User 2', state: 'Not voted', disconnected: false },
   ]);
   await cardPage.assertVotingStateIs([
-    { name: 'User 1', state: 'Not voted' },
-    { name: 'User 2', state: 'Not voted' },
+    { name: 'User 1', state: 'Not voted', disconnected: false },
+    { name: 'User 2', state: 'Not voted', disconnected: false },
   ]);
 
   // First vote
   await cardPage.selectCard('1');
   await cardPage.assertSelectedCardIs('1');
   await cardPage.assertVotingStateIs([
-    { name: 'User 2', state: 'Not voted' },
-    { name: 'User 1', state: 'Voted' },
+    { name: 'User 2', state: 'Not voted', disconnected: false },
+    { name: 'User 1', state: 'Voted', disconnected: false },
   ]);
   await secondCardPage.assertVotingStateIs([
-    { name: 'User 2', state: 'Not voted' },
-    { name: 'User 1', state: 'Voted' },
+    { name: 'User 2', state: 'Not voted', disconnected: false },
+    { name: 'User 1', state: 'Voted', disconnected: false },
   ]);
 
   // Second vote
   await secondCardPage.selectCard('40');
   await secondCardPage.assertSelectedCardIs('40');
   await secondCardPage.assertVotingStateIs([
-    { name: 'User 1', state: 'Voted' },
-    { name: 'User 2', state: 'Voted' },
+    { name: 'User 1', state: 'Voted', disconnected: false },
+    { name: 'User 2', state: 'Voted', disconnected: false },
   ]);
   await cardPage.assertVotingStateIs([
-    { name: 'User 1', state: 'Voted' },
-    { name: 'User 2', state: 'Voted' },
+    { name: 'User 1', state: 'Voted', disconnected: false },
+    { name: 'User 2', state: 'Voted', disconnected: false },
   ]);
 
   // Reveal
   await secondCardPage.revealButton.click();
   const secondResultsPage = await assertOnResultsPage(secondPage);
   await secondResultsPage.assertResultsAre([
-    { name: 'User 1', result: '1' },
-    { name: 'User 2', result: '40' },
+    { name: 'User 1', result: '1', disconnected: false },
+    { name: 'User 2', result: '40', disconnected: false },
   ]);
   const resultsPage = await assertOnResultsPage(page);
   await resultsPage.assertResultsAre([
-    { name: 'User 1', result: '1' },
-    { name: 'User 2', result: '40' },
+    { name: 'User 1', result: '1', disconnected: false },
+    { name: 'User 2', result: '40', disconnected: false },
   ]);
 
   // Reset
@@ -68,12 +68,12 @@ test('syncs state between users', async ({ page, context }) => {
   await resultsPage.resetButton.click();
   await cardPage.assertShown();
   await cardPage.assertVotingStateIs([
-    { name: 'User 1', state: 'Not voted' },
-    { name: 'User 2', state: 'Not voted' },
+    { name: 'User 1', state: 'Not voted', disconnected: false },
+    { name: 'User 2', state: 'Not voted', disconnected: false },
   ]);
   await secondCardPage.assertShown();
   await secondCardPage.assertVotingStateIs([
-    { name: 'User 1', state: 'Not voted' },
-    { name: 'User 2', state: 'Not voted' },
+    { name: 'User 1', state: 'Not voted', disconnected: false },
+    { name: 'User 2', state: 'Not voted', disconnected: false },
   ]);
 });

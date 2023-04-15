@@ -14,7 +14,7 @@ test('recovers after connection loss due to unexpected close', async ({ page }) 
   await login(page, 'User');
   const cardPage = await assertOnCardPage(page);
   await cardPage.selectCard('1');
-  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted' }]);
+  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', disconnected: false }]);
 
   await closeSocket();
   await expect(cardPage.revealButton).toHaveText('Connecting…');
@@ -26,7 +26,7 @@ test('recovers after connection loss due to unexpected close', async ({ page }) 
 
   await cardPage.revealButton.click();
   const resultsPage = await assertOnResultsPage(page);
-  await resultsPage.assertResultsAre([{ name: 'User', result: '2' }]);
+  await resultsPage.assertResultsAre([{ name: 'User', result: '2', disconnected: false }]);
 });
 
 test('recovers after connection loss due to error', async ({ page }) => {
@@ -34,7 +34,7 @@ test('recovers after connection loss due to error', async ({ page }) => {
   await login(page, 'User');
   const cardPage = await assertOnCardPage(page);
   await cardPage.selectCard('1');
-  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted' }]);
+  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', disconnected: false }]);
 
   await emitError();
   await expect(cardPage.revealButton).toHaveText('Connecting…');
@@ -43,7 +43,7 @@ test('recovers after connection loss due to error', async ({ page }) => {
 
   await cardPage.revealButton.click();
   const resultsPage = await assertOnResultsPage(page);
-  await resultsPage.assertResultsAre([{ name: 'User', result: '1' }]);
+  await resultsPage.assertResultsAre([{ name: 'User', result: '1', disconnected: false }]);
 });
 
 async function instrumentWebSocket(page: Page) {
