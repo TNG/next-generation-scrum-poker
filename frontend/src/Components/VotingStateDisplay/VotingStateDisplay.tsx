@@ -35,10 +35,7 @@ const getRank = ({ observer, voted }: UserState) => {
   return 1;
 };
 
-const getClassName = ({ voted, observer, pendingConnection }: UserState) => {
-  if (pendingConnection) {
-    return classes.pendingConnection;
-  }
+const getClassName = ({ voted, observer }: UserState) => {
   if (observer) {
     return classes.observer;
   }
@@ -72,7 +69,10 @@ export const VotingStateDisplay = connectToWebSocket(({ socket }) => (
         {getSortedVotingState(socket).map((userState) => {
           return (
             <tr key={userState.user} class={getClassName(userState)}>
-              <td title={userState.pendingConnection ? TOOLTIP_PENDING_CONNECTION : undefined}>
+              <td
+                class={userState.pendingConnection ? classes.pendingConnection : undefined}
+                title={userState.pendingConnection ? TOOLTIP_PENDING_CONNECTION : undefined}
+              >
                 {userState.user}
               </td>
               <td>{getIcon(userState)}</td>
