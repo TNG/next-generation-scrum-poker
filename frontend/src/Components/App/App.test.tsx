@@ -78,6 +78,7 @@ describe('The App component', () => {
   });
 
   it('displays the login screen with a login indicator initially', () => {
+    ConfigureMockWebSocket();
     const { container } = render(<App />);
     expect(document.activeElement).toBe(container.querySelector('input#user'));
     expect(container.querySelector('a#session')).toHaveTextContent(/^[a-zA-Z0-9]{16}$/i);
