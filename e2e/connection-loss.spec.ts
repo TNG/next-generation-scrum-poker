@@ -14,21 +14,21 @@ test('recovers after connection loss due to unexpected close', async ({ page }) 
   await login(page, 'User');
   const cardPage = await assertOnCardPage(page);
   await cardPage.selectCard('1');
-  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', disconnected: false }]);
+  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', pending: false }]);
 
   await closeSocket();
   await expect(cardPage.revealButton).toHaveText('Connecting…');
-  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', disconnected: true }]);
+  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', pending: true }]);
   await expect(cardPage.revealButton).toHaveText('Reveal Votes');
   await cardPage.selectCard('2');
   await closeSocket();
   await expect(cardPage.revealButton).toHaveText('Connecting…');
-  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', disconnected: true }]);
+  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', pending: true }]);
   await expect(cardPage.revealButton).toHaveText('Reveal Votes');
 
   await cardPage.revealButton.click();
   const resultsPage = await assertOnResultsPage(page);
-  await resultsPage.assertResultsAre([{ name: 'User', result: '2', disconnected: false }]);
+  await resultsPage.assertResultsAre([{ name: 'User', result: '2', pending: false }]);
 });
 
 test('recovers after connection loss due to error', async ({ page }) => {
@@ -36,17 +36,17 @@ test('recovers after connection loss due to error', async ({ page }) => {
   await login(page, 'User');
   const cardPage = await assertOnCardPage(page);
   await cardPage.selectCard('1');
-  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', disconnected: false }]);
+  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', pending: false }]);
 
   await emitError();
   await expect(cardPage.revealButton).toHaveText('Connecting…');
-  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', disconnected: true }]);
+  await cardPage.assertVotingStateIs([{ name: 'User', state: 'Voted', pending: true }]);
   await expect(cardPage.revealButton).toHaveText('Reveal Votes');
   await cardPage.assertSelectedCardIs('1');
 
   await cardPage.revealButton.click();
   const resultsPage = await assertOnResultsPage(page);
-  await resultsPage.assertResultsAre([{ name: 'User', result: '1', disconnected: false }]);
+  await resultsPage.assertResultsAre([{ name: 'User', result: '1', pending: false }]);
 });
 
 async function instrumentWebSocket(page: Page) {

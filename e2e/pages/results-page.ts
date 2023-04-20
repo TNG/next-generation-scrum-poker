@@ -7,13 +7,13 @@ export class ResultsPage {
 
   constructor(readonly page: Page) {}
 
-  async assertResultsAre(results: { name: string; result: string; disconnected: boolean }[]) {
+  async assertResultsAre(results: { name: string; result: string; pending: boolean }[]) {
     await Promise.all(
-      results.map(async ({ name, result, disconnected }, index) => {
+      results.map(async ({ name, result, pending }, index) => {
         const element = this.results.nth(index);
         const expectName = expect(element.locator('td:nth-child(1)'), `Name of row ${index}`);
         await expect(element.locator('td:nth-child(1)'), `Name of row ${index}`).toHaveText(name);
-        if (disconnected) {
+        if (pending) {
           await expectName.toHaveAttribute('title', 'Pending connection');
         } else {
           await expectName.not.toHaveAttribute('title', 'Pending connection');

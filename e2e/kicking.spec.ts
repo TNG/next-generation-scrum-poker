@@ -9,7 +9,7 @@ test('allows to kick users', async ({ page, context }) => {
 
   const cardPage = await assertOnCardPage(page);
   await cardPage.kickUser('User 2');
-  await cardPage.assertVotingStateIs([{ name: 'User 1', state: 'Not voted', disconnected: false }]);
+  await cardPage.assertVotingStateIs([{ name: 'User 1', state: 'Not voted', pending: false }]);
 
   const secondLoginPage = await assertOnLoginPage(secondPage);
   await secondLoginPage.assertKickedBy('User 1');

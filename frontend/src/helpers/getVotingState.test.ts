@@ -54,7 +54,7 @@ describe('The getVotingState function', () => {
     ]);
   });
 
-  it('extracts disconnected users', () => {
+  it('extracts users with pending connections', () => {
     const result = getVotingState({
       connected: false,
       loginData: { user: 'User 1', session: '1234' },

@@ -43,13 +43,13 @@ export class CardPage {
     await expect(this.userName).toHaveText(`Name: ${name}`);
   }
 
-  async assertVotingStateIs(states: { name: string; state: string; disconnected: boolean }[]) {
+  async assertVotingStateIs(states: { name: string; state: string; pending: boolean }[]) {
     await Promise.all(
-      states.map(async ({ name, state, disconnected }, index) => {
+      states.map(async ({ name, state, pending }, index) => {
         const element = this.votes.nth(index);
         const expectName = expect(element.locator('td:nth-child(1)'), `Name of row ${index}`);
         await expectName.toHaveText(name);
-        if (disconnected) {
+        if (pending) {
           await expectName.toHaveAttribute('title', 'Pending connection');
         } else {
           await expectName.not.toHaveAttribute('title', 'Pending connection');
