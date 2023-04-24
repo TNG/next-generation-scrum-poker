@@ -1,7 +1,7 @@
 import { getConnection } from '../../shared/database/getConnection';
 import { revealGroupVotes } from '../../shared/database/revealGroupVotes';
 import { ConfigWithHandler } from '../../shared/types';
-import { broadcastState } from '../../shared/broadcast-state';
+import { broadcastState } from '../../shared/actions';
 
 export const revealVotes = async (config: ConfigWithHandler) => {
   const connectionItem = await getConnection(config);

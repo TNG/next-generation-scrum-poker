@@ -1,9 +1,8 @@
-import { broadcastState } from '../../shared/broadcast-state';
+import { broadcastState, sendMessageToConnection } from '../../shared/actions';
 import { getConnection } from '../../shared/database/getConnection';
 import { getGroup } from '../../shared/database/getGroup';
 import { removeConnectionsFromGroup } from '../../shared/database/removeConnectionsFromGroup';
 import { removeGroupFromConnection } from '../../shared/database/removeGroupFromConnection';
-import { sendMessageToConnection } from '../../shared/send-message-to-connection';
 import { ConfigWithHandler } from '../../shared/types';
 
 export const removeUser = async (user: string, config: ConfigWithHandler): Promise<void> => {

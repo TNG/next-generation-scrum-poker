@@ -1,11 +1,10 @@
 import { VOTE_NOTE_VOTED } from '../../../shared/cards';
-import { broadcastState } from '../../shared/broadcast-state';
+import { broadcastState, sendMessageToConnection } from '../../shared/actions';
 import { addConnectionToGroup } from '../../shared/database/addConnectionToGroup';
 import { addUserAndGroupToConnection } from '../../shared/database/addUserAndGroupToConnection';
 import { createGroupWithConnection } from '../../shared/database/createGroupWithConnection';
 import { getGroup } from '../../shared/database/getGroup';
 import { getTtl } from '../../shared/getTtl';
-import { sendMessageToConnection } from '../../shared/send-message-to-connection';
 import { ConfigWithHandler } from '../../shared/types';
 import { EXPIRY_TIME_IN_HOUR } from './const';
 

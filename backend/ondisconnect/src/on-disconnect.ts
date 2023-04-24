@@ -1,4 +1,4 @@
-import { removeConnection } from '../../shared/removeConnection';
+import { removeConnection } from '../../shared/actions';
 import { ConfigWithHandler } from '../../shared/types';
 
 export const onDisconnect = async (config: ConfigWithHandler) => {
