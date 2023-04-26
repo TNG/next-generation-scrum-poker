@@ -8,20 +8,18 @@ export const setGroupConnectionVote = async (
   { ddb, tableName }: Config
 ): Promise<GroupItem> =>
   (
-    await ddb
-      .update({
-        TableName: tableName,
-        Key: {
-          primaryKey: `groupId:${groupId}`,
-        },
-        UpdateExpression: `SET connections.#userId.vote = :vote`,
-        ExpressionAttributeNames: {
-          '#userId': userId,
-        },
-        ExpressionAttributeValues: {
-          ':vote': vote,
-        },
-        ReturnValues: 'ALL_NEW',
-      })
-      .promise()
+    await ddb.update({
+      TableName: tableName,
+      Key: {
+        primaryKey: `groupId:${groupId}`,
+      },
+      UpdateExpression: `SET connections.#userId.vote = :vote`,
+      ExpressionAttributeNames: {
+        '#userId': userId,
+      },
+      ExpressionAttributeValues: {
+        ':vote': vote,
+      },
+      ReturnValues: 'ALL_NEW',
+    })
   ).Attributes as GroupItem;

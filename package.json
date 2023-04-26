@@ -30,6 +30,9 @@
   },
   "homepage": "https://github.com/tng/next-generation-scrum-poker#readme",
   "dependencies": {
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.319.0",
+    "@aws-sdk/client-dynamodb": "^3.319.0",
+    "@aws-sdk/lib-dynamodb": "^3.319.0",
     "@playwright/test": "^1.32.3",
     "@preact/preset-vite": "^2.5.0",
     "@rollup/plugin-replace": "^5.0.2",
@@ -41,7 +44,6 @@
     "@types/ws": "^8.5.4",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "@typescript-eslint/parser": "^5.59.1",
-    "aws-sdk": "^2.1365.0",
     "chart.js": "^4.2.1",
     "classnames": "^2.3.2",
     "dequal": "^2.0.3",

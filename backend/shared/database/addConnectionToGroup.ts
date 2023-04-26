@@ -8,23 +8,21 @@ export const addConnectionToGroup = async (
   { ddb, tableName, connectionId }: Config
 ): Promise<GroupItem> =>
   (
-    await ddb
-      .update({
-        TableName: tableName,
-        Key: {
-          primaryKey: `groupId:${groupId}`,
+    await ddb.update({
+      TableName: tableName,
+      Key: {
+        primaryKey: `groupId:${groupId}`,
+      },
+      UpdateExpression: `SET connections.#userId = :connection`,
+      ExpressionAttributeNames: {
+        '#userId': userId,
+      },
+      ExpressionAttributeValues: {
+        ':connection': {
+          connectionId,
+          vote,
         },
-        UpdateExpression: `SET connections.#userId = :connection`,
-        ExpressionAttributeNames: {
-          '#userId': userId,
-        },
-        ExpressionAttributeValues: {
-          ':connection': {
-            connectionId,
-            vote,
-          },
-        },
-        ReturnValues: 'ALL_NEW',
-      })
-      .promise()
+      },
+      ReturnValues: 'ALL_NEW',
+    })
   ).Attributes as GroupItem;

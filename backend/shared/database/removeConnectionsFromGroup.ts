@@ -9,18 +9,16 @@ export const removeConnectionsFromGroup = async (
     removedUserIds.map((userId, index) => [`#${index}`, userId])
   );
   return (
-    await ddb
-      .update({
-        TableName: tableName,
-        Key: {
-          primaryKey: `groupId:${groupId}`,
-        },
-        UpdateExpression: `REMOVE ${Object.keys(userIdAttributeNames)
-          .map((attributeName) => `connections.${attributeName}`)
-          .join(',')}`,
-        ExpressionAttributeNames: userIdAttributeNames,
-        ReturnValues: 'ALL_NEW',
-      })
-      .promise()
+    await ddb.update({
+      TableName: tableName,
+      Key: {
+        primaryKey: `groupId:${groupId}`,
+      },
+      UpdateExpression: `REMOVE ${Object.keys(userIdAttributeNames)
+        .map((attributeName) => `connections.${attributeName}`)
+        .join(',')}`,
+      ExpressionAttributeNames: userIdAttributeNames,
+      ReturnValues: 'ALL_NEW',
+    })
   ).Attributes as GroupItem;
 };

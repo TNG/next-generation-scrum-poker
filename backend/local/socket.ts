@@ -26,19 +26,20 @@ export const startWebSocketServer = () => {
       ddb,
       handler: {
         postToConnection: ({ ConnectionId, Data }) => {
+          // $metadata is required in the return type
+          if (!Data) return Promise.resolve({ $metadata: {} });
           const client = [...wss.clients].find(
             (client) => ConnectionId === (client as WebsocketWithId).id
           );
-          const resultPromise = client
-            ? new Promise<void>((resolve, reject) =>
-                client.send(Data as string, (error) => (error ? reject(error) : resolve()))
+          return client
+            ? new Promise((resolve, reject) =>
+                client.send(Data, (error) => (error ? reject(error) : resolve({ $metadata: {} })))
               )
             : Promise.reject(
                 Object.assign(new Error(`Could not find client with id ${ConnectionId}`), {
                   statusCode: 410,
                 })
               );
-          return { promise: () => resultPromise };
         },
       },
     };

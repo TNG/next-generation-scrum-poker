@@ -160,6 +160,6 @@ const unsignedModulo = (dividend: number, divisor: number) =>
 
 const getScaleMatcher =
   (currentScale: CardValue[]) =>
-  ([, { values }]: typeof availableScales[number]) =>
+  ([, { values }]: (typeof availableScales)[number]) =>
     values.length === currentScale.length &&
     values.every((value, index) => value === currentScale[index]);

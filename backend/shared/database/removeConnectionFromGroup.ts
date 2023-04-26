@@ -6,17 +6,15 @@ export const removeConnectionFromGroup = async (
   { tableName, ddb }: Config
 ): Promise<GroupItem> =>
   (
-    await ddb
-      .update({
-        TableName: tableName,
-        Key: {
-          primaryKey: `groupId:${groupId}`,
-        },
-        UpdateExpression: 'REMOVE connections.#1.connectionId',
-        ExpressionAttributeNames: {
-          '#1': userId,
-        },
-        ReturnValues: 'ALL_NEW',
-      })
-      .promise()
+    await ddb.update({
+      TableName: tableName,
+      Key: {
+        primaryKey: `groupId:${groupId}`,
+      },
+      UpdateExpression: 'REMOVE connections.#1.connectionId',
+      ExpressionAttributeNames: {
+        '#1': userId,
+      },
+      ReturnValues: 'ALL_NEW',
+    })
   ).Attributes as GroupItem;

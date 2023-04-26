@@ -21,21 +21,19 @@ export const resetGroupVotes = async (
     ),
   ];
   return (
-    await ddb
-      .update({
-        TableName: tableName,
-        Key: {
-          primaryKey: `groupId:${groupId}`,
-        },
-        UpdateExpression: `SET ${updates.join(',')}`,
-        ExpressionAttributeValues: {
-          ':visible': false,
-          ...(userIds.length ? { ':notVoted': VOTE_NOTE_VOTED } : {}),
-          ...(updateScale ? { ':scale': updateScale } : {}),
-        },
-        ...(userIds.length ? { ExpressionAttributeNames: userIdAttributeNames } : {}),
-        ReturnValues: 'ALL_NEW',
-      })
-      .promise()
+    await ddb.update({
+      TableName: tableName,
+      Key: {
+        primaryKey: `groupId:${groupId}`,
+      },
+      UpdateExpression: `SET ${updates.join(',')}`,
+      ExpressionAttributeValues: {
+        ':visible': false,
+        ...(userIds.length ? { ':notVoted': VOTE_NOTE_VOTED } : {}),
+        ...(updateScale ? { ':scale': updateScale } : {}),
+      },
+      ...(userIds.length ? { ExpressionAttributeNames: userIdAttributeNames } : {}),
+      ReturnValues: 'ALL_NEW',
+    })
   ).Attributes as GroupItem;
 };

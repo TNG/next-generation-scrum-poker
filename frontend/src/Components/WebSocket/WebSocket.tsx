@@ -76,8 +76,18 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
       setSocket(webSocket);
     };
 
-    webSocket.onmessage = (event: MessageEvent) => {
-      const message: ServerMessage = JSON.parse(event.data);
+    // This basically implements blob.text() for browsers that don't support it like JSDOM
+    const readBlob = (data: Blob): Promise<string> =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsText(data);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = () => reject(reader.error);
+      });
+
+    webSocket.onmessage = async (event: MessageEvent) => {
+      // When we send a Buffer in the backend, the frontend receives a Blob
+      const message: ServerMessage = JSON.parse(await readBlob(event.data));
       switch (message.type) {
         case 'state':
           setIsProcessing(false);

@@ -1,21 +1,15 @@
-import { AWSError, config, DynamoDB } from 'aws-sdk';
-import { CreateTableOutput } from 'aws-sdk/clients/dynamodb';
+import { DynamoDB } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
+import { AWSError } from '../shared/types';
 
-config.update(
-  {
-    region: 'local',
-    endpoint: 'http://localhost:8000',
-    credentials: { accessKeyId: 'accessKeyId', secretAccessKey: 'secretAccessKey' },
-  },
-  true
-);
-const dynamodb = new DynamoDB();
-
-export const ddb = new DynamoDB.DocumentClient({
+const dynamodb = new DynamoDB({
   apiVersion: '2012-08-10',
   region: 'local',
   endpoint: 'http://localhost:8000',
+  credentials: { accessKeyId: 'accessKeyId', secretAccessKey: 'secretAccessKey' },
 });
+
+export const ddb = DynamoDBDocument.from(dynamodb);
 
 const TableName = 'scrum-poker-local';
 
@@ -29,16 +23,18 @@ const params = {
   },
 };
 
-const createTable = () =>
-  new Promise((resolve, reject) =>
-    dynamodb.createTable(params, (error: AWSError, data: CreateTableOutput) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(data);
-      }
-    })
-  );
+const createTable = async () => {
+  try {
+    const tableData = await dynamodb.createTable(params);
+    console.log('Created table:', JSON.stringify(tableData, null, 2));
+  } catch (err) {
+    if (err && (err as AWSError).name === 'ResourceInUseException') {
+      console.log('Table already exists');
+      return;
+    }
+    throw err;
+  }
+};
 
 const DATABASE_WAIT_SECONDS = 60;
 
@@ -47,8 +43,7 @@ export const prepareTable = async () => {
   const timeout = Date.now() + DATABASE_WAIT_SECONDS * 1000;
   while (Date.now() < timeout) {
     try {
-      const data = await createTable();
-      console.log('Created table:', JSON.stringify(data, null, 2));
+      await createTable();
       return;
     } catch (err) {
       if (!(err instanceof Error)) {

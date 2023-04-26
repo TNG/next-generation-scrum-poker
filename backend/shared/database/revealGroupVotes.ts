@@ -5,17 +5,15 @@ export const revealGroupVotes = async (
   { tableName, ddb }: Config
 ): Promise<GroupItem> =>
   (
-    await ddb
-      .update({
-        TableName: tableName,
-        Key: {
-          primaryKey: `groupId:${groupId}`,
-        },
-        UpdateExpression: 'SET visible = :visibility',
-        ExpressionAttributeValues: {
-          ':visibility': true,
-        },
-        ReturnValues: 'ALL_NEW',
-      })
-      .promise()
+    await ddb.update({
+      TableName: tableName,
+      Key: {
+        primaryKey: `groupId:${groupId}`,
+      },
+      UpdateExpression: 'SET visible = :visibility',
+      ExpressionAttributeValues: {
+        ':visibility': true,
+      },
+      ReturnValues: 'ALL_NEW',
+    })
   ).Attributes as GroupItem;
