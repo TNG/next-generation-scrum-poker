@@ -3,6 +3,7 @@ import { generateId } from '../../shared/generateId';
 import { onConnect } from '../onconnect/src/on-connect';
 import { onDisconnect } from '../ondisconnect/src/on-disconnect';
 import { onMessage } from '../sendmessage/src/on-message';
+import { ConfigWithHandler } from '../shared/types';
 import { ddb } from './dynamo';
 
 interface WebsocketWithId extends WebSocket {
@@ -19,18 +20,18 @@ export const startWebSocketServer = () => {
     const socketId = generateId(16);
     (ws as WebsocketWithId).id = socketId;
 
-    const config = {
+    const config: ConfigWithHandler = {
       connectionId: socketId,
       tableName: 'scrum-poker-local',
       ddb,
       handler: {
-        postToConnection: ({ ConnectionId, Data }: { ConnectionId: string; Data: unknown }) => {
+        postToConnection: ({ ConnectionId, Data }) => {
           const client = [...wss.clients].find(
             (client) => ConnectionId === (client as WebsocketWithId).id
           );
           const resultPromise = client
             ? new Promise<void>((resolve, reject) =>
-                client.send(Data, (error) => (error ? reject(error) : resolve()))
+                client.send(Data as string, (error) => (error ? reject(error) : resolve()))
               )
             : Promise.reject(
                 Object.assign(new Error(`Could not find client with id ${ConnectionId}`), {
