@@ -35,12 +35,15 @@ const getRank = ({ observer, voted }: UserState) => {
   return 1;
 };
 
-const getClassName = ({ voted, observer }: UserState) => {
-  if (observer) {
-    return classes.observer;
-  }
+const getClassName = ({ voted, observer, pendingConnection }: UserState) => {
   if (voted) {
     return classes.voted;
+  }
+  if (pendingConnection) {
+    return classes.pendingConnection;
+  }
+  if (observer) {
+    return classes.observer;
   }
   return classes.notVoted;
 };
