@@ -55,6 +55,7 @@ export const LoginPage = connectToWebSocket(({ socket }) => {
       <input
         id="user"
         type="text"
+        autocomplete="nickname"
         value={user}
         ref={firstInputRef}
         class={classes.userInput}
