@@ -10,7 +10,7 @@ import { WebSocketApi } from '../../types/WebSocket';
 import { IconCoffee } from '../IconCoffee/IconCoffee';
 import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
 import { IconObserver } from '../IconObserver/IconObserver';
-import { PieChart } from '../PieChart/PieChart';
+import { BarChart } from '../BarChart/BarChart';
 import { ResetButton } from '../ResetButton/ResetButton';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import { compareVotes } from '../../helpers/compareVotes';
@@ -40,9 +40,7 @@ const getClassName = (vote: CardValue) =>
 export const ResultsPage = connectToWebSocket(({ socket }) => (
   <div class={classes.resultsPage}>
     <h1 class={sharedClasses.heading}>{HEADING_RESULTS}</h1>
-    <div>
-      <PieChart />
-    </div>
+    <BarChart />
     <div class={sharedClasses.blueBorder}>
       <table class={sharedClasses.table}>
         <thead>
