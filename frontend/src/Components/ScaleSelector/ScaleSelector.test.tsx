@@ -43,6 +43,7 @@ describe('The ScaleSelector', () => {
       'Fibonacci',
       'Cohen',
       'Fixed Ratio',
+      'Linear',
       'Sizes',
     ]);
     expect(getSelectedOptions(dropdown)).toEqual(['Cohen']);
@@ -122,6 +123,9 @@ describe('The ScaleSelector', () => {
     expect(getSelectedOptions(dropdown)).toEqual(['Fixed Ratio']);
 
     fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
+    expect(getSelectedOptions(dropdown)).toEqual(['Linear']);
+
+    fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
     fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
@@ -129,6 +133,9 @@ describe('The ScaleSelector', () => {
 
     fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
+
+    fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
+    expect(getSelectedOptions(dropdown)).toEqual(['Linear']);
 
     fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fixed Ratio']);
@@ -186,7 +193,7 @@ describe('The ScaleSelector', () => {
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
     fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
-    expect(getSelectedOptions(dropdown)).toEqual(['Fixed Ratio']);
+    expect(getSelectedOptions(dropdown)).toEqual(['Linear']);
 
     fireEvent.mouseMove(getByText('Sizes'));
     fireEvent.mouseLeave(getByText('Sizes'));
