@@ -1,13 +1,12 @@
-import { AWSError } from 'aws-sdk';
 import { ServerMessage, Votes } from '../../shared/serverMessages';
 import { deleteConnection } from './database/deleteConnection';
 import { getConnection } from './database/getConnection';
 import { removeConnectionFromGroup } from './database/removeConnectionFromGroup';
-import { ConfigWithHandler, GroupItem } from './types';
+import { AWSError, ConfigWithHandler, GroupItem } from './types';
 
 export const broadcastState = async (
   { connections, visible, scale }: GroupItem,
-  config: ConfigWithHandler
+  config: ConfigWithHandler,
 ): Promise<unknown> => {
   const connectionEntries = Object.entries(connections);
   const votes: Votes = {};
@@ -35,24 +34,22 @@ export const broadcastState = async (
           {
             ...config,
             connectionId,
-          }
-        )
-    )
+          },
+        ),
+    ),
   );
 };
 
 export const sendMessageToConnection = async (
   message: ServerMessage,
-  config: ConfigWithHandler
+  config: ConfigWithHandler,
 ): Promise<unknown> => {
   const { handler, connectionId } = config;
   try {
-    await handler
-      .postToConnection({
-        ConnectionId: connectionId,
-        Data: JSON.stringify(message),
-      })
-      .promise();
+    await handler.postToConnection({
+      ConnectionId: connectionId,
+      Data: Buffer.from(JSON.stringify(message)),
+    });
   } catch (e) {
     if (e && (e as AWSError).statusCode === 410) {
       return removeConnection(config);

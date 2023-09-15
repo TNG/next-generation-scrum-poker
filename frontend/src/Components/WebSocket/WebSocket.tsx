@@ -45,7 +45,7 @@ function getInitialVotes(votes: Votes): Votes {
     Object.keys(votes).map((user) => [
       user,
       votes[user] === VOTE_OBSERVER ? VOTE_OBSERVER : VOTE_NOTE_VOTED,
-    ])
+    ]),
   );
 }
 
@@ -76,8 +76,21 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
       setSocket(webSocket);
     };
 
-    webSocket.onmessage = (event: MessageEvent) => {
-      const message: ServerMessage = JSON.parse(event.data);
+    // This basically implements blob.text() for browsers that don't support it like JSDOM
+    const readBlob = (data: Blob | string): Promise<string> =>
+      new Promise((resolve, reject) => {
+        if (typeof data == 'string') {
+          return resolve(data);
+        }
+        const reader = new FileReader();
+        reader.readAsText(data);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = () => reject(reader.error);
+      });
+
+    webSocket.onmessage = async (event: MessageEvent) => {
+      // When we send a Buffer in the backend, the frontend receives a Blob
+      const message: ServerMessage = JSON.parse(await readBlob(event.data));
       switch (message.type) {
         case 'state':
           setIsProcessing(false);
@@ -94,7 +107,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
       setSocket(null);
       const timeout = setTimeout(
         () => connect(),
-        Math.min(BASE_RETRY_WAIT * 2 ** (reconnectRetries.current++ / 2), MAX_RETRY_WAIT)
+        Math.min(BASE_RETRY_WAIT * 2 ** (reconnectRetries.current++ / 2), MAX_RETRY_WAIT),
       );
       clearReconnectTimeout.current = () => clearTimeout(timeout);
     };
@@ -192,9 +205,8 @@ export const WebSocketConsumer = WebSocketContext.Consumer;
 
 export const connectToWebSocket =
   <Props extends object>(Component: ComponentType<{ socket: WebSocketApi } & Props>) =>
-  (props: Props) =>
-    (
-      <WebSocketConsumer>
-        {(socket: WebSocketApi) => <Component {...props} socket={socket} />}
-      </WebSocketConsumer>
-    );
+  (props: Props) => (
+    <WebSocketConsumer>
+      {(socket: WebSocketApi) => <Component {...props} socket={socket} />}
+    </WebSocketConsumer>
+  );

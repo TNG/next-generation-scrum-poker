@@ -18,7 +18,7 @@ const getNumberOfVotes = (votes: Votes): NumberOfVotes =>
     {
       missing: 0,
       voted: 0,
-    }
+    },
   );
 
 export const RevealButton = connectToWebSocket(
@@ -41,7 +41,7 @@ export const RevealButton = connectToWebSocket(
         {getButtonText({ connected, missing, voted })}
       </button>
     );
-  }
+  },
 );
 
 function getButtonText({ connected, missing, voted }: { connected: boolean } & NumberOfVotes) {

@@ -1,19 +1,17 @@
-import { DynamoDB } from 'aws-sdk';
+import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
 
 export const getItem = async <T>(
   itemKey: string,
   itemId: string,
   tableName: string,
-  ddb: DynamoDB.DocumentClient
+  ddb: DynamoDBDocument,
 ): Promise<T | undefined> =>
   (
-    await ddb
-      .get({
-        TableName: tableName,
-        ConsistentRead: true,
-        Key: {
-          primaryKey: `${itemKey}:${itemId}`,
-        },
-      })
-      .promise()
+    await ddb.get({
+      TableName: tableName,
+      ConsistentRead: true,
+      Key: {
+        primaryKey: `${itemKey}:${itemId}`,
+      },
+    })
   ).Item as T | undefined;

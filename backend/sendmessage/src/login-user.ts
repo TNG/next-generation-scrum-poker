@@ -15,7 +15,7 @@ export const loginUser = async (userId: string, groupId: string, config: ConfigW
         groupId,
         userId,
         groupItem.connections[userId]?.vote || VOTE_NOTE_VOTED,
-        config
+        config,
       )
     : createGroupWithConnection(groupId, userId, getTtl(EXPIRY_TIME_IN_HOUR), config);
 
@@ -29,7 +29,7 @@ export const loginUser = async (userId: string, groupId: string, config: ConfigW
         type: 'not-logged-in',
         payload: { reason: 'Your session was taken over by another user with the same name.' },
       },
-      { ...config, connectionId: userConnectionId }
+      { ...config, connectionId: userConnectionId },
     );
   }
 

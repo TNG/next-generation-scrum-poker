@@ -17,9 +17,9 @@ export class CardPage {
       cards.map(async (card, index) => {
         await expect(
           this.cards.getByRole('option').nth(index),
-          `Label of card ${index}`
+          `Label of card ${index}`,
         ).toHaveAttribute('aria-label', card);
-      })
+      }),
     );
     await expect(this.cards.getByRole('option')).toHaveCount(cards.length);
   }
@@ -31,7 +31,7 @@ export class CardPage {
   async assertSelectedCardIs(card: CardValue) {
     await expect(this.cards.locator(`[aria-label="${card}"]`)).toHaveAttribute(
       'aria-selected',
-      'true'
+      'true',
     );
   }
 
@@ -56,9 +56,9 @@ export class CardPage {
         }
         await expect(
           element.locator('td:nth-child(2) div'),
-          `State of row ${index}`
+          `State of row ${index}`,
         ).toHaveAttribute('title', state);
-      })
+      }),
     );
     await expect(this.votes).toHaveCount(states.length);
   }

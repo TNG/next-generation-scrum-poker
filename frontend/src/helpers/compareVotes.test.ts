@@ -48,7 +48,7 @@ describe('The compareVotes function', () => {
     ({ userState1, userState2, result }) => {
       const sortedResults = compareVotes(userState1, userState2);
       expect(sortedResults).toEqual(result);
-    }
+    },
   );
 });
 
@@ -79,6 +79,6 @@ describe('The compareCardValues function', () => {
     ({ value1, value2, result }) => {
       const sortedResults = compareCardValues(value1, value2);
       expect(sortedResults).toEqual(result);
-    }
+    },
   );
 });

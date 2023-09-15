@@ -18,7 +18,7 @@ const getCard = (
   cardValue: CardValue,
   isSelected: boolean,
   setVote: WebSocketApi['setVote'],
-  enabled: boolean
+  enabled: boolean,
 ) => {
   const isObserver = cardValue === VOTE_OBSERVER;
 
@@ -48,7 +48,7 @@ export const CardSelector = connectToWebSocket(
 
     const onKeyDown = ({ key }: KeyboardEvent) => {
       const matchingCards = state.scale.filter(
-        (card) => card[0].toLowerCase() === key.toLowerCase()
+        (card) => card[0].toLowerCase() === key.toLowerCase(),
       );
 
       if (matchingCards.length) {
@@ -69,11 +69,11 @@ export const CardSelector = connectToWebSocket(
       <div class={classes.cardCollectionWrapper} role="listbox" aria-label="selectable cards">
         <div class={classes.cardCollection}>
           {state.scale.map((cardValue) =>
-            getCard(cardValue, selectedCard === cardValue, setVote, connected)
+            getCard(cardValue, selectedCard === cardValue, setVote, connected),
           )}
         </div>
         {getCard(VOTE_OBSERVER, selectedCard === VOTE_OBSERVER, setVote, connected)}
       </div>
     );
-  }
+  },
 );

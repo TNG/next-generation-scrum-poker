@@ -11,7 +11,7 @@ type PartialWebsocketApi = {
 
 const getApi = (
   defaultContext: PartialWebsocketApi,
-  context: PartialWebsocketApi
+  context: PartialWebsocketApi,
 ): WebSocketApi => ({
   connected: false,
   login: doNothing,
@@ -41,7 +41,7 @@ export const getRenderWithWebSocket =
     const rendered = render(
       <WebSocketContext.Provider value={getApi(defaultApi, api)}>
         {children}
-      </WebSocketContext.Provider>
+      </WebSocketContext.Provider>,
     );
     return {
       ...rendered,
@@ -49,7 +49,7 @@ export const getRenderWithWebSocket =
         rendered.rerender(
           <WebSocketContext.Provider value={getApi(defaultApi, apiUpdate)}>
             {children}
-          </WebSocketContext.Provider>
+          </WebSocketContext.Provider>,
         );
       },
     };

@@ -24,7 +24,7 @@ export const ColorModeProvider = ({ children }: { children: JSXInternal.Element 
   // useState would cause additional unnecessary rerendering
   const didMount = useRef(false);
   const [isDark, setIsDark] = useState<boolean>(() =>
-    isSSR ? false : window.matchMedia('(prefers-color-scheme: dark)').matches
+    isSSR ? false : window.matchMedia('(prefers-color-scheme: dark)').matches,
   );
 
   useLayoutEffect(() => {
@@ -36,7 +36,7 @@ export const ColorModeProvider = ({ children }: { children: JSXInternal.Element 
     document.body.setAttribute('data-color-mode', isDark ? 'dark' : 'light');
     const timeout = setTimeout(
       () => document.body.removeAttribute('data-changing-color-mode'),
-      COLOR_SWITCH_TIME_MS
+      COLOR_SWITCH_TIME_MS,
     );
     return () => clearTimeout(timeout);
   }, [isDark]);
