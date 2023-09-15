@@ -1,16 +1,16 @@
-import { BUTTON_KICK } from '../../constants';
+import { BUTTON_REMOVE_USER } from '../../constants';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
-import classes from './KickButton.module.css';
+import classes from './RemoveUserButton.module.css';
 
 interface Props {
   user: string;
 }
 
-export const KickButton = connectToWebSocket<Props>(
+export const RemoveUserButton = connectToWebSocket<Props>(
   ({ socket: { connected, removeUser }, user }) => (
     <button
       class={classes.root}
-      title={BUTTON_KICK(user)}
+      title={BUTTON_REMOVE_USER(user)}
       disabled={!connected}
       onClick={() => removeUser(user)}
     >

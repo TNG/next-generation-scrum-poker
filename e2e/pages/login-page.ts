@@ -25,8 +25,8 @@ export class LoginPage {
     await this.loginButton.click();
   }
 
-  async assertKickedBy(name: string) {
-    await expect(this.alertText).toHaveText(`You have been kicked out by ${name}.`);
+  async assertRemovedBy(name: string) {
+    await expect(this.alertText).toHaveText(`You have been removed by ${name}.`);
   }
 
   async assertSessionTakeover() {

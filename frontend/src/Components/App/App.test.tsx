@@ -107,7 +107,7 @@ describe('The App component', () => {
     expect(container.querySelector('input[type=submit]')).not.toBeDisabled();
   });
 
-  it('logs the user in and displays the voting page, then displays the login page if the user is kicked out', async () => {
+  it('logs the user in and displays the voting page, then displays the login page if the user is removed', async () => {
     // given
     const logoutReason = 'You were removed!';
     const { socket, container, getByText } = await loginUser();
@@ -132,7 +132,7 @@ describe('The App component', () => {
     expect(container.querySelector('input[type=submit]')).toBeVisible();
   });
 
-  it('updates, reveals and resets votes and kicks optimistically once the first state message arrived', async () => {
+  it('updates, reveals and resets votes and removes users optimistically once the first state message arrived', async () => {
     // given
     const { socket, container, getByRole, getAllByTitle } = await loginUser();
 
@@ -140,7 +140,7 @@ describe('The App component', () => {
     const revealButton = getByRole('button', { name: 'reveal votes' });
     expect(revealButton).toBeDisabled();
     container.querySelectorAll('button.largeCard').forEach((card) => expect(card).toBeDisabled());
-    getAllByTitle(/^Kick/).forEach((button) => expect(button).toBeDisabled());
+    getAllByTitle(/^Remove/).forEach((button) => expect(button).toBeDisabled());
     const changeScaleButton = getByRole('button', { name: 'Change Scale' });
     expect(changeScaleButton).toBeDisabled();
 
@@ -166,7 +166,7 @@ describe('The App component', () => {
     // then
     expect(revealButton).toBeEnabled();
     container.querySelectorAll('button.largeCard').forEach((card) => expect(card).toBeEnabled());
-    getAllByTitle(/^Kick/).forEach((button) => expect(button).toBeEnabled());
+    getAllByTitle(/^Remove/).forEach((button) => expect(button).toBeEnabled());
     expect(changeScaleButton).toBeEnabled();
 
     // when
@@ -193,7 +193,7 @@ describe('The App component', () => {
     socket.test_messages = [];
 
     // when
-    fireEvent.click(getByRole('button', { name: 'Kick Non-voting User out' }));
+    fireEvent.click(getByRole('button', { name: 'Remove Non-voting User' }));
 
     // then
     expect(container.querySelector('tbody')).toHaveTextContent('Happy UserVoting User');
