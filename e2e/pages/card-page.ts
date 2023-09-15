@@ -64,7 +64,7 @@ export class CardPage {
   }
 
   async kickUser(name: string) {
-    await this.votes.getByTitle(`Kick ${name}`).click();
+    await this.votes.getByTitle(`Kick ${name} out`).click();
   }
 
   async selectCard(value: CardValue) {

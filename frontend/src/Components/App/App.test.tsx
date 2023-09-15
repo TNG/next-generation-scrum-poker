@@ -193,7 +193,7 @@ describe('The App component', () => {
     socket.test_messages = [];
 
     // when
-    fireEvent.click(getByRole('button', { name: 'Kick Non-voting User' }));
+    fireEvent.click(getByRole('button', { name: 'Kick Non-voting User out' }));
 
     // then
     expect(container.querySelector('tbody')).toHaveTextContent('Happy UserVoting User');

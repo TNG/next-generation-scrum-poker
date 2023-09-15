@@ -11,7 +11,7 @@ export const LABEL_SESSION = 'Session:';
 
 export const BUTTON_CONNECTING = 'Connecting…';
 export const BUTTON_COPY_TO_CLIPBOARD = 'Copy Link to Clipboard';
-export const BUTTON_KICK = (user: string) => `Kick ${user}`;
+export const BUTTON_KICK = (user: string) => `Kick ${user} out`;
 export const BUTTON_LOGIN = 'Login';
 export const BUTTON_OBSERVER = 'Observer';
 export const BUTTON_REFRESH_SESSION = 'Refresh Session';
