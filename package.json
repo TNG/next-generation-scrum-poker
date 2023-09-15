@@ -17,7 +17,7 @@
     "start:local-backend:gateway": "nodemon --watch backend backend/local/main.ts",
     "start:local-backend:gateway:ci": "ts-node backend/local/main.ts",
     "preview:frontend": "npm run build:frontend && cd frontend && vite preview",
-    "build:backend": "rollup -c backend/rollup.config.ts --configPlugin 'typescript={include:\"backend/rollup.config.ts\"}'",
+    "build:backend": "rollup -c backend/rollup.config.ts --bundleConfigAsCjs --configPlugin 'typescript={include:\"backend/rollup.config.ts\"}'",
     "build:frontend": "run-p build:frontend:vite build:frontend:typecheck",
     "build:frontend:vite": "cd frontend && rimraf dist && rimraf dist-ssr && vite build && vite build --ssr src/index-ssr.tsx --outDir dist-ssr && node prerenderHtml.js",
     "build:frontend:typecheck": "tsc -p frontend --noEmit"
