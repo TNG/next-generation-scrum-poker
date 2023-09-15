@@ -28,7 +28,7 @@ export const removeUser = async (user: string, config: ConfigWithHandler): Promi
       userConnectionId &&
         sendMessageToConnection(
           { type: 'not-logged-in', payload: { reason: `You have been removed by ${userId}.` } },
-          { ...config, connectionId: userConnectionId }
+          { ...config, connectionId: userConnectionId },
         ),
     ]);
   }
