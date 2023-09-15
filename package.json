@@ -10,6 +10,7 @@
     "e2e:ui": "playwright test --ui",
     "build": "run-p build:backend build:frontend",
     "lint": "eslint --cache --fix --ext .js,.ts,.tsx .",
+    "format": "prettier . --write",
     "prepare": "husky install",
     "start:frontend": "cd frontend && vite",
     "start:local-backend": "run-p start:local-backend:db start:local-backend:gateway",
