@@ -77,8 +77,11 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
     };
 
     // This basically implements blob.text() for browsers that don't support it like JSDOM
-    const readBlob = (data: Blob): Promise<string> =>
+    const readBlob = (data: Blob | string): Promise<string> =>
       new Promise((resolve, reject) => {
+        if (typeof data == 'string') {
+          return resolve(data);
+        }
         const reader = new FileReader();
         reader.readAsText(data);
         reader.onload = () => resolve(reader.result as string);
