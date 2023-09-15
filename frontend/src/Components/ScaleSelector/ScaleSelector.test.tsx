@@ -19,7 +19,7 @@ const render = getRenderWithWebSocket(<ScaleSelector />, {
 
 describe('The ScaleSelector', () => {
   beforeEach(() => {
-    HTMLUListElement.prototype.scrollIntoView = jest.fn();
+    HTMLUListElement.prototype.scrollIntoView = vi.fn();
   });
 
   it('can be opened to display the list of available scales', () => {
@@ -32,7 +32,7 @@ describe('The ScaleSelector', () => {
     changeScaleButton.getBoundingClientRect = () =>
       ({
         bottom: window.innerHeight - 500,
-      } as DOMRect);
+      }) as DOMRect;
     fireEvent.click(changeScaleButton);
 
     // then
@@ -58,7 +58,7 @@ describe('The ScaleSelector', () => {
     changeScaleButton.getBoundingClientRect = () =>
       ({
         bottom: window.innerHeight,
-      } as DOMRect);
+      }) as DOMRect;
     fireEvent.click(changeScaleButton);
 
     // then
@@ -93,7 +93,7 @@ describe('The ScaleSelector', () => {
 
   it('allows to select a scale', () => {
     // given
-    const setScale = jest.fn();
+    const setScale = vi.fn();
     const { getByRole, getByText } = render({ setScale });
 
     // when
@@ -107,7 +107,7 @@ describe('The ScaleSelector', () => {
 
   it('supports keyboard navigation', () => {
     // given
-    const setScale = jest.fn();
+    const setScale = vi.fn();
     const { getByRole } = render({ setScale });
 
     // when
@@ -163,7 +163,7 @@ describe('The ScaleSelector', () => {
 
   it('supports selecting an element via space key', () => {
     // given
-    const setScale = jest.fn();
+    const setScale = vi.fn();
     const { getByRole } = render({ setScale });
 
     // when
@@ -180,7 +180,7 @@ describe('The ScaleSelector', () => {
 
   it('combines mouse and keyboard selection', () => {
     // given
-    const setScale = jest.fn();
+    const setScale = vi.fn();
     const { getByRole, getByText } = render({ setScale });
 
     // when
@@ -210,7 +210,7 @@ describe('The ScaleSelector', () => {
 
   it('closes the popup without selection when enter is pressed without a selected item', () => {
     // given
-    const setScale = jest.fn();
+    const setScale = vi.fn();
     const { getByRole, getByText } = render({ setScale });
 
     // when
@@ -229,7 +229,7 @@ describe('The ScaleSelector', () => {
 
   it('closes the popup without selection when escape is pressed', () => {
     // given
-    const setScale = jest.fn();
+    const setScale = vi.fn();
     const { getByRole } = render({ setScale });
 
     // when
