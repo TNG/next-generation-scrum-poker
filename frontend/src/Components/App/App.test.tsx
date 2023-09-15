@@ -119,8 +119,8 @@ describe('The App component', () => {
     // when
     await act(() =>
       socket.onmessage!(
-        buildEventMessage({ type: 'not-logged-in', payload: { reason: logoutReason } })
-      )
+        buildEventMessage({ type: 'not-logged-in', payload: { reason: logoutReason } }),
+      ),
     );
 
     // then
@@ -159,8 +159,8 @@ describe('The App component', () => {
             scale: SCALES.COHEN_SCALE.values,
             pendingConnections: [],
           },
-        })
-      )
+        }),
+      ),
     );
 
     // then
@@ -176,7 +176,7 @@ describe('The App component', () => {
     expect(selectedCard).toHaveTextContent('2');
     expect(selectedCard).not.toHaveClass('selectedCard');
     expect(container.querySelector('tbody')).toHaveTextContent(
-      'Happy UserNon-voting UserVoting User'
+      'Happy UserNon-voting UserVoting User',
     );
 
     // when
@@ -185,7 +185,7 @@ describe('The App component', () => {
     // then
     expect(selectedCard).toHaveClass('selected');
     expect(container.querySelector('tbody')).toHaveTextContent(
-      'Non-voting UserHappy UserVoting User'
+      'Non-voting UserHappy UserVoting User',
     );
     expect(socket.test_messages).toEqual([
       '{"message":"sendmessage","data":{"type":"set-vote","payload":{"vote":"2"}}}',

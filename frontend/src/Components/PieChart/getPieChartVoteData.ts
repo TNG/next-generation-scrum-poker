@@ -4,7 +4,7 @@ import { Votes } from '../../../../shared/serverMessages';
 import { compareCardValues } from '../../helpers/compareVotes';
 
 export const getPieChartVoteData = (
-  votes: Votes
+  votes: Votes,
 ): { labels: CardValue[]; datasets: ChartDataset<'pie', number[]>[] } => {
   const votesByValue: Partial<Record<CardValue, number>> = {};
   for (const value of Object.values(votes)) {

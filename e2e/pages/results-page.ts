@@ -22,10 +22,10 @@ export class ResultsPage {
           expect(
             (await element.locator('td:nth-child(2)').textContent()) ||
               (await element.locator('td:nth-child(2) div').getAttribute('title')),
-            `Result of row ${index}`
-          ).toBe(result)
+            `Result of row ${index}`,
+          ).toBe(result),
         ).toPass();
-      })
+      }),
     );
     await expect(this.results).toHaveCount(results.length);
   }

@@ -5,7 +5,7 @@ export const addConnectionToGroup = async (
   groupId: string,
   userId: string,
   vote: CardValue,
-  { ddb, tableName, connectionId }: Config
+  { ddb, tableName, connectionId }: Config,
 ): Promise<GroupItem> =>
   (
     await ddb.update({

@@ -6,7 +6,7 @@ export const createGroupWithConnection = async (
   groupId: string,
   userId: string,
   ttl: number,
-  { ddb, tableName, connectionId }: Config
+  { ddb, tableName, connectionId }: Config,
 ): Promise<GroupItem> => {
   const groupItem: GroupItem & { primaryKey: string } = {
     primaryKey: `groupId:${groupId}`,

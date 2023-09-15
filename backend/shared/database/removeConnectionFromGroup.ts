@@ -3,7 +3,7 @@ import { Config, GroupItem } from '../types';
 export const removeConnectionFromGroup = async (
   userId: string,
   groupId: string,
-  { tableName, ddb }: Config
+  { tableName, ddb }: Config,
 ): Promise<GroupItem> =>
   (
     await ddb.update({

@@ -31,7 +31,7 @@ export class LoginPage {
 
   async assertSessionTakeover() {
     await expect(this.alertText).toHaveText(
-      'Your session was taken over by another user with the same name.'
+      'Your session was taken over by another user with the same name.',
     );
   }
 }

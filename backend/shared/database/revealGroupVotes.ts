@@ -2,7 +2,7 @@ import { Config, GroupItem } from '../types';
 
 export const revealGroupVotes = async (
   groupId: string,
-  { tableName, ddb }: Config
+  { tableName, ddb }: Config,
 ): Promise<GroupItem> =>
   (
     await ddb.update({

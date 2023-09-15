@@ -3,7 +3,7 @@ import { UserState } from './getVotingState';
 
 export const compareVotes = (
   userState1: Pick<UserState, 'user' | 'vote'>,
-  userState2: Pick<UserState, 'user' | 'vote'>
+  userState2: Pick<UserState, 'user' | 'vote'>,
 ) => {
   return (
     compareCardValues(userState1.vote, userState2.vote) ||

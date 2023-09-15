@@ -42,5 +42,5 @@ const ALL_VALUES_ORDERED = [
 export type CardValue = (typeof ALL_VALUES_ORDERED)[number];
 
 export const CARDS_ORDERED_BY_VALUE = new Map(
-  ALL_VALUES_ORDERED.map((value, index) => [value, index])
+  ALL_VALUES_ORDERED.map((value, index) => [value, index]),
 );

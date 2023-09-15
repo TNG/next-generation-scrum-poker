@@ -3,7 +3,7 @@ import { Config } from '../types';
 export const addUserAndGroupToConnection = (
   groupId: string,
   userId: string,
-  { ddb, tableName, connectionId }: Config
+  { ddb, tableName, connectionId }: Config,
 ) =>
   ddb.update({
     TableName: tableName,

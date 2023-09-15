@@ -31,7 +31,7 @@ export const ScaleSelector = connectToWebSocket(
       if (selectionButtonRef.current) {
         setDropdownOnTop(
           selectionButtonRef.current.getBoundingClientRect().bottom + DROPDOWN_HEIGHT >
-            window.innerHeight
+            window.innerHeight,
         );
       }
     };
@@ -65,7 +65,7 @@ export const ScaleSelector = connectToWebSocket(
           break;
         case 'ArrowUp':
           setSelected((selected) =>
-            unsignedModulo(Math.max(selected, 0) - 1, availableScales.length)
+            unsignedModulo(Math.max(selected, 0) - 1, availableScales.length),
           );
           event.preventDefault();
           break;
@@ -150,7 +150,7 @@ export const ScaleSelector = connectToWebSocket(
         ) : null}
       </div>
     );
-  }
+  },
 );
 
 // Unfortunately, the % operator in JavaScript is not a true modulo operator.

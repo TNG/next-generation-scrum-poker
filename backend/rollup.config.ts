@@ -15,5 +15,5 @@ export default defineConfig(
         interop: 'default' as const,
       },
     };
-  })
+  }),
 );

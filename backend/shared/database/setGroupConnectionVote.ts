@@ -5,7 +5,7 @@ export const setGroupConnectionVote = async (
   groupId: string,
   userId: string,
   vote: CardValue,
-  { ddb, tableName }: Config
+  { ddb, tableName }: Config,
 ): Promise<GroupItem> =>
   (
     await ddb.update({

@@ -45,7 +45,7 @@ function getInitialVotes(votes: Votes): Votes {
     Object.keys(votes).map((user) => [
       user,
       votes[user] === VOTE_OBSERVER ? VOTE_OBSERVER : VOTE_NOTE_VOTED,
-    ])
+    ]),
   );
 }
 
@@ -104,7 +104,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
       setSocket(null);
       const timeout = setTimeout(
         () => connect(),
-        Math.min(BASE_RETRY_WAIT * 2 ** (reconnectRetries.current++ / 2), MAX_RETRY_WAIT)
+        Math.min(BASE_RETRY_WAIT * 2 ** (reconnectRetries.current++ / 2), MAX_RETRY_WAIT),
       );
       clearReconnectTimeout.current = () => clearTimeout(timeout);
     };
@@ -202,9 +202,8 @@ export const WebSocketConsumer = WebSocketContext.Consumer;
 
 export const connectToWebSocket =
   <Props extends object>(Component: ComponentType<{ socket: WebSocketApi } & Props>) =>
-  (props: Props) =>
-    (
-      <WebSocketConsumer>
-        {(socket: WebSocketApi) => <Component {...props} socket={socket} />}
-      </WebSocketConsumer>
-    );
+  (props: Props) => (
+    <WebSocketConsumer>
+      {(socket: WebSocketApi) => <Component {...props} socket={socket} />}
+    </WebSocketConsumer>
+  );

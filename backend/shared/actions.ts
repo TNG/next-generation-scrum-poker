@@ -6,7 +6,7 @@ import { AWSError, ConfigWithHandler, GroupItem } from './types';
 
 export const broadcastState = async (
   { connections, visible, scale }: GroupItem,
-  config: ConfigWithHandler
+  config: ConfigWithHandler,
 ): Promise<unknown> => {
   const connectionEntries = Object.entries(connections);
   const votes: Votes = {};
@@ -34,15 +34,15 @@ export const broadcastState = async (
           {
             ...config,
             connectionId,
-          }
-        )
-    )
+          },
+        ),
+    ),
   );
 };
 
 export const sendMessageToConnection = async (
   message: ServerMessage,
-  config: ConfigWithHandler
+  config: ConfigWithHandler,
 ): Promise<unknown> => {
   const { handler, connectionId } = config;
   try {

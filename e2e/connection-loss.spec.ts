@@ -72,7 +72,7 @@ async function instrumentWebSocket(page: Page) {
             socket.close();
           }
           return window.currentSockets.size;
-        })
+        }),
       ).toBe(1);
     },
     async emitError() {
@@ -83,7 +83,7 @@ async function instrumentWebSocket(page: Page) {
             socket.dispatchEvent(new Event('error'));
           }
           return window.currentSockets.size;
-        })
+        }),
       ).toBe(1);
     },
   };

@@ -4,7 +4,7 @@ export const getItem = async <T>(
   itemKey: string,
   itemId: string,
   tableName: string,
-  ddb: DynamoDBDocument
+  ddb: DynamoDBDocument,
 ): Promise<T | undefined> =>
   (
     await ddb.get({
