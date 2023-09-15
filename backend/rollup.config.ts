@@ -7,7 +7,11 @@ export default defineConfig(
     const lambdaPath = join(__dirname, lambdaName);
     return {
       input: join(lambdaPath, 'src/app.ts'),
-      external: ['aws-sdk'],
+      external: [
+        '@aws-sdk/client-apigatewaymanagementapi',
+        '@aws-sdk/client-dynamodb',
+        '@aws-sdk/lib-dynamodb',
+      ],
       plugins: [typescript({ tsconfig: join(lambdaPath, 'tsconfig.json') })],
       output: {
         file: join(lambdaPath, 'build/app.js'),
