@@ -25,7 +25,7 @@ export const handler: APIGatewayProxyHandler = ({
     tableName: TABLE_NAME,
     handler: new ApiGatewayManagementApi({
       apiVersion: '2018-11-29',
-      endpoint: domainName,
+      endpoint: `https://${domainName}`,
     }),
   });
 };

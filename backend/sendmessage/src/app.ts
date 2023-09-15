@@ -27,7 +27,7 @@ export const handler: APIGatewayProxyHandler = ({
     ddb,
     handler: new ApiGatewayManagementApi({
       apiVersion: '2018-11-29',
-      endpoint: domainName,
+      endpoint: `https://${domainName}`,
     }),
   });
 };
