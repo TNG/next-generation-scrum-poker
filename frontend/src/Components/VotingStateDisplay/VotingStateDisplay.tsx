@@ -1,16 +1,16 @@
 import {
-  COLUMN_KICK,
   COLUMN_NAME,
+  COLUMN_REMOVE,
   COLUMN_VOTED,
   TOOLTIP_PENDING_CONNECTION,
 } from '../../constants';
+import { UserState, getVotingState } from '../../helpers/getVotingState';
 import sharedClasses from '../../styles.module.css';
 import { WebSocketApi } from '../../types/WebSocket';
 import { IconNotVoted } from '../IconNotVoted/IconNotVoted';
 import { IconObserver } from '../IconObserver/IconObserver';
 import { IconVoted } from '../IconVoted/IconVoted';
-import { KickButton } from '../KickButton/KickButton';
-import { UserState, getVotingState } from '../../helpers/getVotingState';
+import { RemoveUserButton } from '../RemoveUserButton/RemoveUserButton';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './VotingStateDisplay.module.css';
 
@@ -65,7 +65,7 @@ export const VotingStateDisplay = connectToWebSocket(({ socket }) => (
         <tr class={sharedClasses.headerRow}>
           <th>{COLUMN_NAME}</th>
           <th>{COLUMN_VOTED}</th>
-          <th>{COLUMN_KICK}</th>
+          <th>{COLUMN_REMOVE}</th>
         </tr>
       </thead>
       <tbody>
@@ -80,7 +80,7 @@ export const VotingStateDisplay = connectToWebSocket(({ socket }) => (
               </td>
               <td>{getIcon(userState)}</td>
               <td>
-                <KickButton user={userState.user} />
+                <RemoveUserButton user={userState.user} />
               </td>
             </tr>
           );

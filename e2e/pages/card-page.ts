@@ -63,8 +63,8 @@ export class CardPage {
     await expect(this.votes).toHaveCount(states.length);
   }
 
-  async kickUser(name: string) {
-    await this.votes.getByTitle(`Kick ${name}`).click();
+  async removeUser(name: string) {
+    await this.votes.getByTitle(`Remove ${name}`).click();
   }
 
   async selectCard(value: CardValue) {
