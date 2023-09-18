@@ -3,7 +3,7 @@ import { getChartVoteData } from './getChartVoteData';
 
 describe('The getChartVoteData function', () => {
   it('accumulates votes correctly', () => {
-    const { datasets, labels } = getChartVoteData({
+    const { data, high } = getChartVoteData({
       votes: {
         user1: '2',
         user2: '2',
@@ -15,12 +15,13 @@ describe('The getChartVoteData function', () => {
       },
       scale: ['0', '0.5', '1', '2', '3', '4', '5'],
     });
-    expect(datasets[0].data).toEqual([1, 2, 3, 0, 1]);
-    expect(labels).toEqual(['0.5', '1', '2', '3', '4']);
+    expect(data.series).toEqual([[1, 2, 3, 0, 1]]);
+    expect(data.labels).toEqual(['0.5', '1', '2', '3', '4']);
+    expect(high).toBe(3);
   });
 
   it.each<CardValue>([VOTE_COFFEE, VOTE_OBSERVER, VOTE_NOTE_VOTED])('ignores %j votes', (vote) => {
-    const { datasets, labels } = getChartVoteData({
+    const { data, high } = getChartVoteData({
       votes: {
         user1: '1',
         user2: vote,
@@ -28,18 +29,20 @@ describe('The getChartVoteData function', () => {
       },
       scale: ['0', '0.5', '1', '2', '3'],
     });
-    expect(datasets[0].data).toEqual([1, 1]);
-    expect(labels).toEqual(['1', '?']);
+    expect(data.series).toEqual([[1, 1]]);
+    expect(data.labels).toEqual(['1', '?']);
+    expect(high).toBe(1);
   });
 
   it('returns full scale when no valid vote was given', () => {
-    const { datasets, labels } = getChartVoteData({
+    const { data, high } = getChartVoteData({
       votes: {
         user1: VOTE_COFFEE,
       },
       scale: ['0', '0.5', '1', '2', '3', '4', '5'],
     });
-    expect(datasets[0].data).toEqual([]);
-    expect(labels).toEqual(['0', '0.5', '1', '2', '3', '4', '5']);
+    expect(data.series).toEqual([[]]);
+    expect(data.labels).toEqual(['0', '0.5', '1', '2', '3', '4', '5']);
+    expect(high).toBe(1);
   });
 });

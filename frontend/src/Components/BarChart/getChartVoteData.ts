@@ -1,4 +1,3 @@
-import { ChartDataset } from 'chart.js';
 import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { WebSocketState } from '../../../../shared/serverMessages';
 
@@ -6,8 +5,8 @@ export const getChartVoteData = ({
   votes,
   scale,
 }: Pick<WebSocketState, 'votes' | 'scale'>): {
-  labels: CardValue[];
-  datasets: ChartDataset<'bar', number[]>[];
+  data: { labels: CardValue[]; series: [number[]] };
+  high: number;
 } => {
   const labels = scale.filter(
     (value) => ![VOTE_OBSERVER, VOTE_NOTE_VOTED, VOTE_COFFEE, '?'].includes(value),
@@ -35,16 +34,14 @@ export const getChartVoteData = ({
   const slicedLabels = slicedAccumulatedVotes.length
     ? [...labels.slice(firstVoteIndex, lastVoteIndex + 1), ...otherVotesByValue.keys()]
     : [...labels, ...otherVotesByValue.keys()];
-  const datasets: ChartDataset<'bar', number[]>[] = [
-    {
-      data: slicedAccumulatedVotes.map(([, numberOfVotes]) => numberOfVotes),
-      backgroundColor: [getComputedStyle(document.body).getPropertyValue('--primary')],
-      borderColor: getComputedStyle(document.body).getPropertyValue('--background'),
-    },
-  ];
+
+  const data = slicedAccumulatedVotes.map(([, numberOfVotes]) => numberOfVotes);
 
   return {
-    labels: slicedLabels,
-    datasets,
+    data: {
+      labels: slicedLabels,
+      series: [data],
+    },
+    high: Math.max(1, ...data),
   };
 };
