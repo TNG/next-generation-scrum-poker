@@ -20,3 +20,7 @@
   color: var(--text-tertiary);
   fill: var(--text-tertiary);
 }
+
+.loading {
+  line-height: 320px;
+}
