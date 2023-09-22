@@ -1,8 +1,8 @@
+import 'chartist/dist/index.css';
 import { ChartistBarChart } from 'preact-chartist';
 import { useDeepCompareMemoize } from '../../helpers/helpers';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import './BarChart.css';
-import './chartist.css';
 import classes from './BarChart.module.css';
 import { getChartVoteData } from './getChartVoteData';
 
