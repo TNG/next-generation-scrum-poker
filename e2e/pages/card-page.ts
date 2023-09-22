@@ -17,9 +17,9 @@ export class CardPage {
       cards.map(async (card, index) => {
         await expect(
           this.cards.getByRole('option').nth(index),
-          `Label of card ${index}`
+          `Label of card ${index}`,
         ).toHaveAttribute('aria-label', card);
-      })
+      }),
     );
     await expect(this.cards.getByRole('option')).toHaveCount(cards.length);
   }
@@ -31,7 +31,7 @@ export class CardPage {
   async assertSelectedCardIs(card: CardValue) {
     await expect(this.cards.locator(`[aria-label="${card}"]`)).toHaveAttribute(
       'aria-selected',
-      'true'
+      'true',
     );
   }
 
@@ -43,22 +43,28 @@ export class CardPage {
     await expect(this.userName).toHaveText(`Name: ${name}`);
   }
 
-  async assertVotingStateIs(states: { name: string; state: string }[]) {
+  async assertVotingStateIs(states: { name: string; state: string; pending: boolean }[]) {
     await Promise.all(
-      states.map(async ({ name, state }, index) => {
+      states.map(async ({ name, state, pending }, index) => {
         const element = this.votes.nth(index);
-        await expect(element.locator('td:nth-child(1)'), `Name of row ${index}`).toHaveText(name);
+        const expectName = expect(element.locator('td:nth-child(1)'), `Name of row ${index}`);
+        await expectName.toHaveText(name);
+        if (pending) {
+          await expectName.toHaveAttribute('title', 'Pending connection');
+        } else {
+          await expectName.not.toHaveAttribute('title', 'Pending connection');
+        }
         await expect(
           element.locator('td:nth-child(2) div'),
-          `State of row ${index}`
+          `State of row ${index}`,
         ).toHaveAttribute('title', state);
-      })
+      }),
     );
     await expect(this.votes).toHaveCount(states.length);
   }
 
-  async kickUser(name: string) {
-    await this.votes.getByTitle(`Kick ${name}`).click();
+  async removeUser(name: string) {
+    await this.votes.getByTitle(`Remove ${name}`).click();
   }
 
   async selectCard(value: CardValue) {

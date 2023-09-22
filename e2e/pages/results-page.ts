@@ -7,19 +7,25 @@ export class ResultsPage {
 
   constructor(readonly page: Page) {}
 
-  async assertResultsAre(results: { name: string; result: string }[]) {
+  async assertResultsAre(results: { name: string; result: string; pending: boolean }[]) {
     await Promise.all(
-      results.map(async ({ name, result }, index) => {
+      results.map(async ({ name, result, pending }, index) => {
         const element = this.results.nth(index);
+        const expectName = expect(element.locator('td:nth-child(1)'), `Name of row ${index}`);
         await expect(element.locator('td:nth-child(1)'), `Name of row ${index}`).toHaveText(name);
+        if (pending) {
+          await expectName.toHaveAttribute('title', 'Pending connection');
+        } else {
+          await expectName.not.toHaveAttribute('title', 'Pending connection');
+        }
         await expect(async () =>
           expect(
             (await element.locator('td:nth-child(2)').textContent()) ||
               (await element.locator('td:nth-child(2) div').getAttribute('title')),
-            `Result of row ${index}`
-          ).toBe(result)
+            `Result of row ${index}`,
+          ).toBe(result),
         ).toPass();
-      })
+      }),
     );
     await expect(this.results).toHaveCount(results.length);
   }

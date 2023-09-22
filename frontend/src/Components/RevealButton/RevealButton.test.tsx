@@ -113,7 +113,7 @@ describe('The RevealButton', () => {
         },
       },
     });
-    expect(getByText(BUTTON_REVEAL_NOW)).toHaveTextContent('1 missing votes');
+    expect(getByText(BUTTON_REVEAL_NOW)).toHaveTextContent('1 missing vote');
 
     rerender({
       revealVotes,

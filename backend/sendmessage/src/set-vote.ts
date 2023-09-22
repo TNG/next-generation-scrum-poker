@@ -2,7 +2,7 @@ import { CardValue } from '../../../shared/cards';
 import { getConnection } from '../../shared/database/getConnection';
 import { setGroupConnectionVote } from '../../shared/database/setGroupConnectionVote';
 import { ConfigWithHandler } from '../../shared/types';
-import { broadcastState } from './broadcast-state';
+import { broadcastState } from '../../shared/actions';
 
 export const setVote = async (vote: CardValue, config: ConfigWithHandler) => {
   const connectionItem = await getConnection(config);

@@ -25,9 +25,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    deps: {
-      inline: ['vitest-canvas-mock'],
-    },
     setupFiles: ['@testing-library/jest-dom', 'vitest-setup.ts'],
     css: { modules: { classNameStrategy: 'non-scoped' } },
     environmentOptions: {

@@ -1,6 +1,11 @@
 import { CardValue, SIZES_ORDERED, SPECIAL_VALUES_ORDERED } from './cards';
 
-export type ScaleName = 'FIBONACCI_SCALE' | 'COHEN_SCALE' | 'FIXED_RATIO_SCALE' | 'LINEAR_SCALE' | 'SIZES_SCALE';
+export type ScaleName =
+  | 'FIBONACCI_SCALE'
+  | 'COHEN_SCALE'
+  | 'FIXED_RATIO_SCALE'
+  | 'LINEAR_SCALE'
+  | 'SIZES_SCALE';
 
 export const SCALES: { [id in ScaleName]: { name: string; values: Array<CardValue> } } = {
   FIBONACCI_SCALE: {
@@ -29,8 +34,8 @@ export const SCALES: { [id in ScaleName]: { name: string; values: Array<CardValu
     values: ['1', '2', '4', '8', '16', '32', '64', '128', ...SPECIAL_VALUES_ORDERED],
   },
   LINEAR_SCALE: {
-      name: 'Linear',
-      values: ['0', '1', '2', '3', '4', '5', ...SPECIAL_VALUES_ORDERED],
-    },
+    name: 'Linear',
+    values: ['0', '1', '2', '3', '4', '5', ...SPECIAL_VALUES_ORDERED],
+  },
   SIZES_SCALE: { name: 'Sizes', values: [...SIZES_ORDERED, ...SPECIAL_VALUES_ORDERED] },
 };

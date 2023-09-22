@@ -21,7 +21,7 @@
   --background: hsl(0, 0%, 12%);
   --text-primary: hsl(240, 13%, 92%);
   --text-secondary: hsl(240, 13%, 100%);
-  --text-tertiary: hsl(240, 0%, 66%);
+  --text-tertiary: hsl(240, 0%, 40%);
   --warning: hsl(3, 75%, 55%);
   --success: hsl(122, 33%, 51%);
 }

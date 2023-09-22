@@ -1,13 +1,12 @@
 import { VOTE_NOTE_VOTED } from '../../../shared/cards';
+import { broadcastState, sendMessageToConnection } from '../../shared/actions';
 import { addConnectionToGroup } from '../../shared/database/addConnectionToGroup';
 import { addUserAndGroupToConnection } from '../../shared/database/addUserAndGroupToConnection';
 import { createGroupWithConnection } from '../../shared/database/createGroupWithConnection';
 import { getGroup } from '../../shared/database/getGroup';
 import { getTtl } from '../../shared/getTtl';
 import { ConfigWithHandler } from '../../shared/types';
-import { broadcastState } from './broadcast-state';
 import { EXPIRY_TIME_IN_HOUR } from './const';
-import { sendMessageToConnection } from './send-message-to-connection';
 
 export const loginUser = async (userId: string, groupId: string, config: ConfigWithHandler) => {
   const groupItem = await getGroup(groupId, config);
@@ -16,7 +15,7 @@ export const loginUser = async (userId: string, groupId: string, config: ConfigW
         groupId,
         userId,
         groupItem.connections[userId]?.vote || VOTE_NOTE_VOTED,
-        config
+        config,
       )
     : createGroupWithConnection(groupId, userId, getTtl(EXPIRY_TIME_IN_HOUR), config);
 
@@ -30,7 +29,7 @@ export const loginUser = async (userId: string, groupId: string, config: ConfigW
         type: 'not-logged-in',
         payload: { reason: 'Your session was taken over by another user with the same name.' },
       },
-      { ...config, connectionId: userConnectionId }
+      { ...config, connectionId: userConnectionId },
     );
   }
 

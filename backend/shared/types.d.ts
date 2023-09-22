@@ -1,17 +1,15 @@
-import { DynamoDB } from 'aws-sdk';
-import { PostToConnectionRequest } from 'aws-sdk/clients/apigatewaymanagementapi';
+import { ApiGatewayManagementApi } from '@aws-sdk/client-apigatewaymanagementapi';
+import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
 import { CardValue } from '../../shared/cards';
 
 export interface Config {
   connectionId: string;
   tableName: string;
-  ddb: DynamoDB.DocumentClient;
+  ddb: DynamoDBDocument;
 }
 
 export interface ConfigWithHandler extends Config {
-  handler: {
-    postToConnection: (arg: PostToConnectionRequest) => { promise(): Promise<unknown> };
-  };
+  handler: Pick<ApiGatewayManagementApi, 'postToConnection'>;
 }
 
 export interface ConnectionItem {
@@ -32,4 +30,9 @@ export interface GroupItem {
   groupId: string;
   visible: boolean;
   connections: GroupConnections;
+}
+
+export interface AWSError extends Error {
+  code?: string;
+  statusCode?: number;
 }

@@ -1,10 +1,9 @@
+import { broadcastState, sendMessageToConnection } from '../../shared/actions';
 import { getConnection } from '../../shared/database/getConnection';
 import { getGroup } from '../../shared/database/getGroup';
 import { removeConnectionsFromGroup } from '../../shared/database/removeConnectionsFromGroup';
 import { removeGroupFromConnection } from '../../shared/database/removeGroupFromConnection';
 import { ConfigWithHandler } from '../../shared/types';
-import { broadcastState } from './broadcast-state';
-import { sendMessageToConnection } from './send-message-to-connection';
 
 export const removeUser = async (user: string, config: ConfigWithHandler): Promise<void> => {
   const connectionItem = await getConnection(config);
@@ -28,8 +27,8 @@ export const removeUser = async (user: string, config: ConfigWithHandler): Promi
       broadcastState(updatedGroupItem, config),
       userConnectionId &&
         sendMessageToConnection(
-          { type: 'not-logged-in', payload: { reason: `You have been kicked by ${userId}.` } },
-          { ...config, connectionId: userConnectionId }
+          { type: 'not-logged-in', payload: { reason: `You have been removed by ${userId}.` } },
+          { ...config, connectionId: userConnectionId },
         ),
     ]);
   }

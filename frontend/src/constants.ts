@@ -11,7 +11,7 @@ export const LABEL_SESSION = 'Session:';
 
 export const BUTTON_CONNECTING = 'Connecting…';
 export const BUTTON_COPY_TO_CLIPBOARD = 'Copy Link to Clipboard';
-export const BUTTON_KICK = (user: string) => `Kick ${user}`;
+export const BUTTON_REMOVE_USER = (user: string) => `Remove ${user}`;
 export const BUTTON_LOGIN = 'Login';
 export const BUTTON_OBSERVER = 'Observer';
 export const BUTTON_REFRESH_SESSION = 'Refresh Session';
@@ -26,11 +26,12 @@ export const TOOLTIP_COFFEE = 'Need a break';
 export const TOOLTIP_NOT_VOTED = 'Not voted';
 export const TOOLTIP_OBSERVER = 'Observer';
 export const TOOLTIP_VOTED = 'Voted';
+export const TOOLTIP_PENDING_CONNECTION = 'Pending connection';
 
 export const COLUMN_NAME = 'Name';
 export const COLUMN_VOTE = 'Vote';
 export const COLUMN_VOTED = 'Voted';
-export const COLUMN_KICK = 'Kick';
+export const COLUMN_REMOVE = 'Remove';
 
 export const SWITCH_TO_DARK = 'Switch to dark color mode';
 export const SWITCH_TO_LIGHT = 'Switch to light color mode';

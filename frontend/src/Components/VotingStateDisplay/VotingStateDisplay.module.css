@@ -12,3 +12,8 @@
   color: var(--primary);
   fill: var(--primary);
 }
+
+.pendingConnection {
+  color: var(--text-tertiary);
+  fill: var(--text-tertiary);
+}
