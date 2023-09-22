@@ -1,8 +1,9 @@
 import { ChartistBarChart } from 'preact-chartist';
-import { connectToWebSocket } from '../WebSocket/WebSocket';
-import chartStyles from './BarChart.css?inline';
-import classes from './BarChart.module.css';
 import { useDeepCompareMemoize } from '../../helpers/helpers';
+import { connectToWebSocket } from '../WebSocket/WebSocket';
+import './BarChart.css';
+import './chartist.css';
+import classes from './BarChart.module.css';
 import { getChartVoteData } from './getChartVoteData';
 
 export const BarChart = connectToWebSocket(({ socket }) => {
@@ -10,7 +11,6 @@ export const BarChart = connectToWebSocket(({ socket }) => {
 
   return (
     <>
-      <style>{chartStyles}</style>
       <ChartistBarChart
         data={data}
         options={{
