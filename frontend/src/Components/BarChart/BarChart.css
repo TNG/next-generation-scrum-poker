@@ -1,0 +1,18 @@
+.ct-label {
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.ct-grid {
+  stroke: var(--text-primary);
+  opacity: 50%;
+}
+
+.ct-horizontal {
+  display: none;
+}
+
+.ct-bar {
+  stroke: var(--primary) !important;
+  stroke-width: 48px;
+}
