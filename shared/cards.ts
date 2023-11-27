@@ -7,7 +7,7 @@ export const SPECIAL_VALUES_ORDERED = ['∞', '?', VOTE_COFFEE] as const;
 
 const ABSTAINING_VOTES_ORDERED = [VOTE_NOTE_VOTED, VOTE_OBSERVER] as const;
 
-export const SIZES_ORDERED = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
+export const SIZES_ORDERED = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
 
 const NUMERIC_VALUES_ORDERED = [
   '0',
