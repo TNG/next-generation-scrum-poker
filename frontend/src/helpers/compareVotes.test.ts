@@ -71,6 +71,8 @@ describe('The compareCardValues function', () => {
     { value1: 'S', value2: 'M', result: -1 },
     { value1: 'XL', value2: VOTE_OBSERVER, result: -1 },
     { value1: 'XS', value2: 'M', result: -1 },
+    { value1: 'XXS', value2: 'XS', result: -1 },
+    { value1: 'XXS', value2: 'L', result: -1 },
     { value1: 'XXL', value2: 'XS', result: 1 },
     { value1: VOTE_OBSERVER, value2: 'S', result: 1 },
     { value1: VOTE_COFFEE, value2: 'XL', result: 1 },
