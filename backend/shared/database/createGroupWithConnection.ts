@@ -6,7 +6,7 @@ export const createGroupWithConnection = async (
   groupId: string,
   userId: string,
   ttl: number,
-  { ddb, tableName, connectionId }: Config,
+  { aws, tableName, connectionId }: Config,
 ): Promise<GroupItem> => {
   const groupItem: GroupItem & { primaryKey: string } = {
     primaryKey: `groupId:${groupId}`,
@@ -18,7 +18,7 @@ export const createGroupWithConnection = async (
     scale: SCALES.COHEN_SCALE.values,
     visible: false,
   };
-  await ddb.put({
+  await aws.DynamoDB.PutItem({
     TableName: tableName,
     Item: groupItem,
   });

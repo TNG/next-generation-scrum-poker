@@ -1,15 +1,15 @@
-import { ApiGatewayManagementApi } from '@aws-sdk/client-apigatewaymanagementapi';
-import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
+import { AwsLiteApiGatewayManagementApi } from '@aws-lite/apigatewaymanagementapi-types';
+import { AwsLiteClient } from '@aws-lite/client';
 import { CardValue } from '../../shared/cards';
 
 export interface Config {
   connectionId: string;
   tableName: string;
-  ddb: DynamoDBDocument;
+  aws: AwsLiteClient;
 }
 
 export interface ConfigWithHandler extends Config {
-  handler: Pick<ApiGatewayManagementApi, 'postToConnection'>;
+  handler: Pick<AwsLiteApiGatewayManagementApi, 'PostToConnection'>;
 }
 
 export interface ConnectionItem {
@@ -33,6 +33,6 @@ export interface GroupItem {
 }
 
 export interface AWSError extends Error {
-  code?: string;
   statusCode?: number;
+  Message: string;
 }

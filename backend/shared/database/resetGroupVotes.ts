@@ -5,7 +5,7 @@ export const resetGroupVotes = async (
   groupId: string,
   connections: GroupConnections,
   updateScale: string[] | false,
-  { tableName, ddb }: Config,
+  { tableName, aws }: Config,
 ): Promise<GroupItem> => {
   const userIds = Object.keys(connections).filter(
     (userId) => connections[userId].vote !== VOTE_OBSERVER,
@@ -21,7 +21,7 @@ export const resetGroupVotes = async (
     ),
   ];
   return (
-    await ddb.update({
+    await aws.DynamoDB.UpdateItem({
       TableName: tableName,
       Key: {
         primaryKey: `groupId:${groupId}`,
@@ -35,5 +35,5 @@ export const resetGroupVotes = async (
       ...(userIds.length ? { ExpressionAttributeNames: userIdAttributeNames } : {}),
       ReturnValues: 'ALL_NEW',
     })
-  ).Attributes as GroupItem;
+  ).Attributes as unknown as GroupItem;
 };

@@ -5,7 +5,9 @@
     "moduleResolution": "Node",
     "sourceMap": false,
     "strict": true,
-    "target": "es2019"
+    "target": "es2019",
+    "esModuleInterop": true,
+    "types": ["@aws-lite/dynamodb-types"]
   },
   "include": ["src/**/*", "../shared/**/*"],
   "exclude": ["src/**/*.test.ts"]

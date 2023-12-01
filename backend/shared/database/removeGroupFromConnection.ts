@@ -1,7 +1,7 @@
 import { Config } from '../types';
 
-export const removeGroupFromConnection = ({ ddb, tableName, connectionId }: Config) =>
-  ddb.update({
+export const removeGroupFromConnection = ({ aws, tableName, connectionId }: Config) =>
+  aws.DynamoDB.UpdateItem({
     TableName: tableName,
     Key: {
       primaryKey: `connectionId:${connectionId}`,

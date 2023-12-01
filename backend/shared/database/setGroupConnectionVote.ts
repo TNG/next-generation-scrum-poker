@@ -5,10 +5,10 @@ export const setGroupConnectionVote = async (
   groupId: string,
   userId: string,
   vote: CardValue,
-  { ddb, tableName }: Config,
+  { aws, tableName }: Config,
 ): Promise<GroupItem> =>
   (
-    await ddb.update({
+    await aws.DynamoDB.UpdateItem({
       TableName: tableName,
       Key: {
         primaryKey: `groupId:${groupId}`,
@@ -22,4 +22,4 @@ export const setGroupConnectionVote = async (
       },
       ReturnValues: 'ALL_NEW',
     })
-  ).Attributes as GroupItem;
+  ).Attributes as unknown as GroupItem;

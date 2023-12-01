@@ -3,9 +3,9 @@ import { Config } from '../types';
 export const addUserAndGroupToConnection = (
   groupId: string,
   userId: string,
-  { ddb, tableName, connectionId }: Config,
+  { aws, tableName, connectionId }: Config,
 ) =>
-  ddb.update({
+  aws.DynamoDB.UpdateItem({
     TableName: tableName,
     Key: {
       primaryKey: `connectionId:${connectionId}`,

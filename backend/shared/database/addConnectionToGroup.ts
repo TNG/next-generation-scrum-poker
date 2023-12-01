@@ -5,10 +5,10 @@ export const addConnectionToGroup = async (
   groupId: string,
   userId: string,
   vote: CardValue,
-  { ddb, tableName, connectionId }: Config,
+  { aws, tableName, connectionId }: Config,
 ): Promise<GroupItem> =>
   (
-    await ddb.update({
+    await aws.DynamoDB.UpdateItem({
       TableName: tableName,
       Key: {
         primaryKey: `groupId:${groupId}`,
@@ -25,4 +25,4 @@ export const addConnectionToGroup = async (
       },
       ReturnValues: 'ALL_NEW',
     })
-  ).Attributes as GroupItem;
+  ).Attributes as unknown as GroupItem;

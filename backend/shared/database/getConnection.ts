@@ -4,9 +4,9 @@ import { getItem } from './getItem';
 export const getConnection = ({
   connectionId,
   tableName,
-  ddb,
+  aws,
 }: Config): Promise<ConnectionItem | undefined> => {
-  const connection = getItem<ConnectionItem>('connectionId', connectionId, tableName, ddb);
+  const connection = getItem<ConnectionItem>('connectionId', connectionId, tableName, aws);
   if (!connection) {
     console.error('No connection found for connectionId', connectionId);
   }

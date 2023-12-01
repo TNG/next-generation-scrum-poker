@@ -3,10 +3,10 @@ import { Config, GroupItem } from '../types';
 export const removeConnectionFromGroup = async (
   userId: string,
   groupId: string,
-  { tableName, ddb }: Config,
+  { tableName, aws }: Config,
 ): Promise<GroupItem> =>
   (
-    await ddb.update({
+    await aws.DynamoDB.UpdateItem({
       TableName: tableName,
       Key: {
         primaryKey: `groupId:${groupId}`,
@@ -17,4 +17,4 @@ export const removeConnectionFromGroup = async (
       },
       ReturnValues: 'ALL_NEW',
     })
-  ).Attributes as GroupItem;
+  ).Attributes as unknown as GroupItem;

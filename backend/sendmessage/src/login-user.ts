@@ -5,12 +5,12 @@ import { addUserAndGroupToConnection } from '../../shared/database/addUserAndGro
 import { createGroupWithConnection } from '../../shared/database/createGroupWithConnection';
 import { getGroup } from '../../shared/database/getGroup';
 import { getTtl } from '../../shared/getTtl';
-import { ConfigWithHandler } from '../../shared/types';
+import { ConfigWithHandler, GroupItem } from '../../shared/types';
 import { EXPIRY_TIME_IN_HOUR } from './const';
 
 export const loginUser = async (userId: string, groupId: string, config: ConfigWithHandler) => {
   const groupItem = await getGroup(groupId, config);
-  const groupUpdate = groupItem
+  const groupUpdate: Promise<GroupItem> = groupItem
     ? addConnectionToGroup(
         groupId,
         userId,

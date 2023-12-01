@@ -1,13 +1,13 @@
-import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
+import { AwsLiteClient } from '@aws-lite/client';
 
 export const getItem = async <T>(
   itemKey: string,
   itemId: string,
   tableName: string,
-  ddb: DynamoDBDocument,
+  aws: AwsLiteClient,
 ): Promise<T | undefined> =>
   (
-    await ddb.get({
+    await aws.DynamoDB.GetItem({
       TableName: tableName,
       ConsistentRead: true,
       Key: {

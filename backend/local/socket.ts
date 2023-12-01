@@ -4,8 +4,8 @@ import { onConnect } from '../onconnect/src/on-connect';
 import { onDisconnect } from '../ondisconnect/src/on-disconnect';
 import { onMessage } from '../sendmessage/src/on-message';
 import { ConfigWithHandler } from '../shared/types';
-import { ddb } from './dynamo';
 import { Readable } from 'stream';
+import { awsPromise } from './aws';
 
 interface WebsocketWithId extends WebSocket {
   id: string;
@@ -17,16 +17,17 @@ export const startWebSocketServer = () => {
     host: 'localhost',
   });
 
-  wss.on('connection', (ws) => {
+  wss.on('connection', async (ws) => {
+    const aws = await awsPromise;
     const socketId = generateId(16);
     (ws as WebsocketWithId).id = socketId;
 
     const config: ConfigWithHandler = {
       connectionId: socketId,
       tableName: 'scrum-poker-local',
-      ddb,
+      aws,
       handler: {
-        postToConnection: ({ ConnectionId, Data }) => {
+        PostToConnection: ({ ConnectionId, Data }) => {
           // $metadata is required in the return type
           if (!Data) return Promise.resolve({ $metadata: {} });
           const client = [...wss.clients].find(

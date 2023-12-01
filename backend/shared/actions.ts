@@ -46,9 +46,10 @@ export const sendMessageToConnection = async (
 ): Promise<unknown> => {
   const { handler, connectionId } = config;
   try {
-    await handler.postToConnection({
+    await handler.PostToConnection({
       ConnectionId: connectionId,
-      Data: Buffer.from(JSON.stringify(message)),
+      Data: JSON.stringify(message),
+      object: undefined, // This appears to be a weird issue with the types
     });
   } catch (e) {
     if (e && (e as AWSError).statusCode === 410) {
