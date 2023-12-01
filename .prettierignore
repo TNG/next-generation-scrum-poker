@@ -4,3 +4,5 @@ backend/sendmessage/build
 frontend/dist
 frontend/dist-ssr
 backend/packaged.yaml
+.tool-versions
+.prettierignore

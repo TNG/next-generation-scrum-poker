@@ -1,2 +1,1 @@
-nodejs lts-gallium
-# Gallium = Node v16
+nodejs 20.10.0
