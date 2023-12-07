@@ -1,4 +1,5 @@
 import { DynamoDB } from '@aws-sdk/client-dynamodb';
+import { CreateTableCommandInput } from '@aws-sdk/client-dynamodb/dist-types/commands/CreateTableCommand';
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
 import { AWSError } from '../shared/types';
 
@@ -13,7 +14,7 @@ export const ddb = DynamoDBDocument.from(dynamodb);
 
 const TableName = 'scrum-poker-local';
 
-const params = {
+const params: CreateTableCommandInput = {
   TableName,
   KeySchema: [{ AttributeName: 'primaryKey', KeyType: 'HASH' }],
   AttributeDefinitions: [{ AttributeName: 'primaryKey', AttributeType: 'S' }],
