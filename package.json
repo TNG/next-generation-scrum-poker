@@ -61,7 +61,7 @@
     "preact-render-to-string": "^6.3.1",
     "prettier": "^3.1.0",
     "rimraf": "^5.0.5",
-    "rollup": "^3.29.4",
+    "rollup": "^4.6.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.2",
     "vite": "^4.5.1",
