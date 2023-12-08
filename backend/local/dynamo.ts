@@ -53,7 +53,7 @@ export const prepareTable = async () => {
       if ((err as AWSError).code === 'ResourceInUseException') {
         console.log(`Table "${TableName}" already exists`);
         return;
-      } else if ((err as AWSError).code === 'UnknownEndpoint') {
+      } else if (['UnknownEndpoint', 'ECONNRESET'].includes((err as AWSError).code!)) {
         console.log('Database not found, retrying...');
       } else {
         console.error('Error creating table:', JSON.stringify(err, null, 2));

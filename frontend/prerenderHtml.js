@@ -1,14 +1,13 @@
-const path = require('path');
-const fs = require('fs');
-const { render } = require('./dist-ssr/index-ssr');
-const { minify } = require('html-minifier-terser');
+import fs from 'fs';
+import { render } from './dist-ssr/index-ssr.js';
+import { minify } from 'html-minifier-terser';
 
-const htmlPath = path.join(__dirname, 'dist/index.html');
+const htmlUrl = new URL('dist/index.html', import.meta.url);
 const ssrMarker = '<!--ssr-outlet-->';
 
 console.log('\npre-rendering HTML...');
 const appHtml = render();
-const html = fs.readFileSync(htmlPath, 'utf8');
+const html = fs.readFileSync(htmlUrl, 'utf8');
 const prerenderedHtml = html.replace(ssrMarker, appHtml);
 if (prerenderedHtml === html) {
   throw new Error(`Could not find ${ssrMarker} marker in HTML.`);
@@ -23,4 +22,4 @@ minify(prerenderedHtml, {
   minifyURLs: true,
   removeAttributeQuotes: true,
   removeComments: true,
-}).then((minifiedHtml) => fs.writeFileSync(htmlPath, minifiedHtml));
+}).then((minifiedHtml) => fs.writeFileSync(htmlUrl, minifiedHtml));

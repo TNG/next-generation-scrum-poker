@@ -11,9 +11,6 @@ export default defineConfig({
       preventAssignment: true,
     }),
   ],
-  ssr: {
-    format: 'cjs',
-  },
   server: {
     port: frontendPort,
     strictPort: true,
