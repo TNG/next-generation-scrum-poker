@@ -11,7 +11,7 @@
     "build": "run-p build:backend build:frontend",
     "lint": "eslint --cache --fix --ext .js,.ts,.tsx .",
     "format": "prettier . --write",
-    "prepare": "husky install",
+    "prepare": "husky",
     "start:frontend": "cd frontend && vite",
     "start:local-backend": "run-p start:local-backend:db start:local-backend:gateway",
     "start:local-backend:db": "docker start scrumpoker-db || docker run --name scrumpoker-db --rm -p 8000:8000 amazon/dynamodb-local",
