@@ -46,7 +46,12 @@ export const CardSelector = connectToWebSocket(
   ({ socket: { connected, loginData, setVote, state } }) => {
     const selectedCard = state.votes[loginData.user];
 
-    const onKeyDown = ({ key }: KeyboardEvent) => {
+    const onKeyDown = ({ key, ctrlKey, altKey, metaKey }: KeyboardEvent) => {
+      // We don't check for 'shiftKey' because it is used for the question mark
+      if (ctrlKey || altKey || metaKey) {
+        return;
+      }
+
       const matchingCards = state.scale.filter(
         (card) => card[0].toLowerCase() === key.toLowerCase(),
       );
