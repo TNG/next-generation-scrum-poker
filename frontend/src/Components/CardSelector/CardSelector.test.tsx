@@ -231,4 +231,23 @@ describe('The CardSelector', () => {
     // then
     expect(setVote).toHaveBeenNthCalledWith(2, 'S');
   });
+
+  it.each`
+    description | event
+    ${'Ctrl'}   | ${{ key: '1', ctrlKey: true }}
+    ${'Alt'}    | ${{ key: '1', altKey: true }}
+    ${'Meta'}   | ${{ key: '1', metaKey: true }}
+  `('ignores "$description" events', ({ event }) => {
+    const setVote = vi.fn();
+    render({
+      setVote,
+      state: { votes: { TheUser: VOTE_NOTE_VOTED, OtherUser: '5' } },
+    });
+
+    // when
+    fireEvent.keyDown(window, event);
+
+    // then
+    expect(setVote).not.toHaveBeenCalled();
+  });
 });
