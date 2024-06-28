@@ -2,116 +2,190 @@ import classes from './LegalNotice.module.css';
 
 export const LegalNotice = () => (
   <div class={classes.legalNotice}>
-    <h1>Impressum</h1>
+    <h1>Company and Contact Information</h1>
     <p>
-      Unsere Kontaktdaten finden sie{' '}
-      <a href="https://www.tngtech.com/kontakt-und-impressum.html">hier</a>.
+      Our Company and Contact Information can be found{' '}
+      <a href="https://www.tngtech.com/en/company-and-contact-information.html">here</a>.
     </p>
-    <h1>Datenschutzerklärung</h1>
-    <h2>Allgemeiner Hinweis und Pflichtinformationen</h2>
-    <h2>Benennung der verantwortlichen Stelle</h2>
-    <p>Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:</p>
+    <h1>Privacy Policy</h1>
+    <p>
+      TNG Technology Consulting GmbH (hereinafter referred to as TNG / We) welcomes your visit to
+      our website and your interest in our company. We take the protection of your personal data
+      seriously and want you to feel safe and comfortable when visiting our website.
+      <br />
+      <br />
+      TNG aims to minimize the use of personal data in the internet services for which we are
+      responsible. All personal data accumulated within the framework of the internet services
+      provided by TNG will be processed and used in accordance with the applicable regulations for
+      the protection of personal data. Under no circumstances will TNG use your personal data for
+      other purposes.
+    </p>
+    <h2>1. Controller</h2>
+    <p>Data processing on this website is the responsibility of the controller, namely:</p>
+    <br />
     <p>
       <span id="s3-t-firma">TNG Technology Consulting GmbH</span>
       <br />
-      <span id="s3-t-strasse">Beta-Straße 13a</span>
+      <span id="s3-t-strasse">Beta-Straße 13</span>
       <br />
       <span id="s3-t-plz">85774</span> <span id="s3-t-ort">Unterföhring</span>
+      <br />
+      <span id="s3-t-country">Germany</span>
     </p>
+    <h2>2. Data security</h2>
     <p>
-      Die verantwortliche Stelle entscheidet allein oder gemeinsam mit anderen über die Zwecke und
-      Mittel der Verarbeitung von personenbezogenen Daten (z.B. Namen, Kontaktdaten o. Ä.).
+      TNG Technology Consulting GmbH uses technical and organizational security measures to protect
+      the data made available to TNG Technology Consulting GmbH from accidental or intentional
+      manipulation, loss, destruction or access by unauthorized persons.
+      <br />
+      <br />
+      Our security measures are continuously updated in line with technological developments.
     </p>
-
-    <h2>Widerruf Ihrer Einwilligung zur Datenverarbeitung</h2>
+    <h2>3. Data Processing</h2>
     <p>
-      Nur mit Ihrer ausdrücklichen Einwilligung sind einige Vorgänge der Datenverarbeitung möglich.
-      Ein Widerruf Ihrer bereits erteilten Einwilligung ist jederzeit möglich. Für den Widerruf
-      genügt eine formlose Mitteilung per E-Mail. Die Rechtmäßigkeit der bis zum Widerruf erfolgten
-      Datenverarbeitung bleibt vom Widerruf unberührt.
+      Here we inform you about how we process your personal data. "Personal data" in this context
+      includes all information relating to an identified or identifiable natural person.
+      "Processing" means all operations or series of operations relating to personal data, such as
+      the collection or storage of personal data.
     </p>
-
-    <h2>Recht auf Beschwerde bei der zuständigen Aufsichtsbehörde</h2>
+    <h3>3.1 Website hosting</h3>
     <p>
-      Als Betroffener steht Ihnen im Falle eines datenschutzrechtlichen Verstoßes ein
-      Beschwerderecht bei der zuständigen Aufsichtsbehörde zu. Zuständige Aufsichtsbehörde bezüglich
-      datenschutzrechtlicher Fragen ist das Bayerisches Landesamt für Datenschutzaufsicht:{' '}
-      <a href="https://www.lda.bayern.de/de/kontakt.html" target="_blank">
-        https://www.lda.bayern.de/de/kontakt.html
+      Each time you visit our website, we automatically collect and store the following data using
+      Amazon Web Services, Inc. (AWS):
+      <ul>
+        <li>IP address</li>
+        <li>Date and time of access</li>
+        <li>Information about your browser and operating system</li>
+      </ul>
+      This data will be automatically deleted after 7 days. Exceptions to this rule will only be
+      made in cases where there is a legitimate interest in its further storage, for example to
+      clarify security incidents. In these cases, the data will be deleted as soon as this process
+      is completed.
+      <br />
+      <br />
+      This data processing is based on our legitimate interest to make our website accessible to
+      users, to identify any functional problems or capacity deficits of our website and to verify
+      security in accordance with Art. 6 para. 1 lit. f DS-GVO/UK GDPR.
+    </p>
+    <h3>3.2 Login and Voting Results</h3>
+    The (freely chosen) Login Name and Your Voting Results are used to distribute them to the voting
+    attending persons. They are stored at AWS and will be deleted after 1 day.
+    <br />
+    <br />
+    This data processing is based on our legitimate interest to offer you our service, with Art. 6
+    para. 1 lit. f DS-GVO/UK GDPR.
+    <h2>4. Recipients of the data</h2>
+    <h3>Amazon Web Services, Inc.</h3>
+    <p>
+      In principle, all data is stored in the European Union (EU). In case the Content Delivery
+      Network (CDN) of AWS is being used in order to ensure optimal availability of the website, it
+      cannot be ruled out that the data held and processed by AWS will be provided from a server
+      outside the EU. AWS has committed itself in standard data protection clauses according to Art.
+      46 para. 2 lit c. (DS-GVO, UK GDPR) or Art. 16 para. 2 lit. d (DSG) to comply with data
+      protection standards also in these cases; more detailed information can be found{' '}
+      <a href="https://aws.amazon.com/service-terms/" rel="noopener noreferrer" target="_blank">
+        here.
+      </a>
+    </p>
+    <h2>5. Rights of Data Subjects</h2>
+    <h3>5.1 DS-GVO (EU) / Data Protection Act 2018 & UK GDPR (UK)</h3>
+    <p>
+      You have the right, in accordance with the laws applicable to you and to the extent provided
+      therein, to access your personal data and to require us to update, rectify or erase your
+      personal data. In addition, in accordance with applicable law, you may restrict TNG's
+      processing of your personal data, and you have the right to data portability. Your right to
+      access your personal data includes the right to obtain a copy of all or certain portions of
+      your personal data in our possession, as long as the provision of such data by TNG does not
+      adversely affect the rights and freedoms of other persons.
+      <br />
+      <br />
+      Right to object: you have the right to object to the processing of your personal data solely
+      on the basis of TNG's legitimate interest. If you exercise your right to object hereto, TNG
+      will no longer process your personal data unless there are compelling legitimate grounds for
+      further processing or the processing is necessary to establish, exercise or defend legal
+      claims.
+      <br />
+      <br />
+      If the processing is based on your consent, you can revoke this consent at any time. This
+      revocation only affects future processing.
+      <br />
+      <br />
+      You also have the right to lodge a complaint with the relevant data protection authority if
+      you believe that the processing of your personal data has violated applicable data protection
+      laws.
+    </p>
+    <h3>5.2 Privacy Act (Australia)</h3>
+    <p>
+      You have the right of access to your data and to request rectification of your data. You also
+      have the right to lodge a complaint if you believe that the processing of your personal data
+      has violated applicable data protection laws. In all such cases, please contact our data
+      protection officer.
+      <br />
+      <br />
+      If you wish to lodge a complaint about our handling of your personal information, you can
+      contact our data protection officer. We take all complaints seriously and will investigate
+      your concerns promptly and fairly. We will respond to your complaint within a reasonable
+      timeframe, usually within 30 days, and inform you of the steps we have taken or will take to
+      address your concerns. We may ask you to provide additional relevant details and may discuss
+      your complaint with our internal departments, our service providers, and others where
+      appropriate. If you are not satisfied with our response, you have the right to lodge a
+      complaint with your relevant data protection authority, e.g. the Office of the Australian
+      Information Commissioner at{' '}
+      <a
+        href="https://www.oaic.gov.au/about-us/contact-us/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        https://www.oaic.gov.au/about-us/contact-us/
       </a>
       .
     </p>
-
-    <h2>Recht auf Datenübertragbarkeit</h2>
+    <h3>5.3 Privacy Act (New Zealand)</h3>
     <p>
-      Ihnen steht das Recht zu, Daten, die wir auf Grundlage Ihrer Einwilligung oder in Erfüllung
-      eines Vertrags automatisiert verarbeiten, an sich oder an Dritte aushändigen zu lassen. Die
-      Bereitstellung erfolgt in einem maschinenlesbaren Format. Sofern Sie die direkte Übertragung
-      der Daten an einen anderen Verantwortlichen verlangen, erfolgt dies nur, soweit es technisch
-      machbar ist.
+      You have the right of access to your data and to request rectification of your data. In such
+      cases, please contact our data protection officer
     </p>
-
-    <h2>Recht auf Auskunft, Berichtigung, Sperrung, Löschung</h2>
+    <h3>5.4 California Consumer Privacy Act</h3>
     <p>
-      Sie haben jederzeit im Rahmen der geltenden gesetzlichen Bestimmungen das Recht auf
-      unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, Herkunft der Daten,
-      deren Empfänger und den Zweck der Datenverarbeitung und ggf. ein Recht auf Berichtigung,
-      Sperrung oder Löschung dieser Daten. Diesbezüglich und auch zu weiteren Fragen zum Thema
-      personenbezogene Daten können Sie sich jederzeit über die im Impressum aufgeführten
-      Kontaktmöglichkeiten an uns wenden.
+      You have the right of access to your personal data and to require us to rectify or erase your
+      personal data. You also have the right to data portability and to restrict the use of
+      sensitive personal data. Exercising these rights, such as the erasure of your data, may result
+      in TNG being unable to provide certain services you have requested or being unable to provide
+      them as desired. Exercising your rights does not carry any further negative consequences for
+      you; TNG will not discriminate against you in any way as a result of exercising your data
+      protection rights. To exercise your rights, please contact our data protection officer (see
+      section 6).
     </p>
-
-    <h2>SSL- bzw. TLS-Verschlüsselung</h2>
+    <h2>6. Data Protection Officer</h2>
     <p>
-      Aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher Inhalte, die Sie an uns
-      als Seitenbetreiber senden, nutzt unsere Website eine SSL-bzw. TLS-Verschlüsselung. Damit sind
-      Daten, die Sie über diese Website übermitteln, für Dritte nicht mitlesbar. Sie erkennen eine
-      verschlüsselte Verbindung an der „https://“ Adresszeile Ihres Browsers und am Schloss-Symbol
-      in der Browserzeile.
+      If you have any questions regarding the processing of your personal data, you can contact our
+      data protection officer directly, who is also available in case of requests for access,
+      inquiries or complaints:
+      <br />
+      <br />
+      <span>Data Protection Officer</span>
+      <br />
+      <span>Dr. Marcel Lippmann</span>
+      <br />
+      <span>TNG Technology Consulting GmbH</span>
+      <br />
+      <span>Beta-Straße 13</span>
+      <br />
+      <span>85774 Unterföhring</span>
+      <br />
+      <span>
+        <a href="mailto:datenschutz@tngtech.com">datenschutz@tngtech.com</a>
+      </span>
+      <br />
+      <br />
+      We can supply our GPG key on request, should you wish to send us your request in encrypted
+      form.
     </p>
-
-    <h2>Datenschutzbeauftragter</h2>
-    <p>Wir haben einen Datenschutzbeauftragten bestellt.</p>
+    <h2>7. Version</h2>
     <p>
-      E-Mail: <a href="mailto:datenschutz@tngtech.com">datenschutz@tngtech.com</a>
-    </p>
-
-    <h2>Server-Log-Dateien</h2>
-    <p>
-      In Server-Log-Dateien erhebt und speichert der Provider der Website automatisch Informationen,
-      die Ihr Browser automatisch an uns übermittelt. Dies sind:
-    </p>
-    <ul>
-      <li>Besuchte Seite auf unserer Domain</li>
-      <li>Datum und Uhrzeit der Serveranfrage</li>
-      <li>Browsertyp und Browserversion</li>
-      <li>Verwendetes Betriebssystem</li>
-      <li>Referrer URL</li>
-      <li>Hostname des zugreifenden Rechners</li>
-      <li>IP-Adresse</li>
-    </ul>
-    <p>Es findet keine Zusammenführung dieser Daten mit anderen Datenquellen statt.</p>
-    <h3>Vorhaltezeit</h3>
-    <p>
-      Wir halten keine Logs für Startseite vor. Alle anderen Logs werden nach spätestens 7 Tagen
-      gelöscht.
-    </p>
-    <h2>Session Daten</h2>
-    <p>
-      Sessions sind öffentlich. Jeder der Ihre SessionId kennt kann daran teilnehmen, behandeln sie
-      diese mit Vorsicht. Es ist jedoch nicht möglich Informationen über die Session zu bekommen
-      ohne daran teilzunehmen.
-    </p>
-    <h3>Vorhaltezeit</h3>
-    <p>Session-Daten werden maximal 16h gespeichert.</p>
-    <h2>AWS Services</h2>
-    <p>
-      Wir nutzen Amazon Web Services um Ihnen diesen Service anbieten zu können. Mit Ausnahme der
-      Startseite (via CDN), welche in den USA gehosted wird und die statischen Inhalte dieser Seite
-      ausliefert, laufen alle anderen Dienste in der EU. Die AWS Datenschutzhinweise finden Sie{' '}
-      <a href="https://aws.amazon.com/de/privacy/" target="_blank">
-        hier
-      </a>
+      This privacy policy was last modified on 2024/06/28. We reserve the right to amend this policy
+      from time to time to reflect changes in our data processing, for example. In the event of
+      changes, we will post the new privacy policy on this website.
     </p>
   </div>
 );

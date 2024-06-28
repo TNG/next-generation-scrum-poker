@@ -27,7 +27,7 @@ export const LegalNoticeContainer = () => {
       <a href="#" onClick={expand}>
         privacy&nbsp;notice&nbsp;&amp;&nbsp;imprint
       </a>
-      &nbsp;(German)
+      &nbsp;(English)
       {isExpanded ? <LegalNotice /> : null}
     </div>
   );
