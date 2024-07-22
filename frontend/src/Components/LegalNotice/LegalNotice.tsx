@@ -4,7 +4,7 @@ export const LegalNotice = () => (
   <div class={classes.legalNotice}>
     <h1>Company and Contact Information</h1>
     <p>
-      Our Company and Contact Information can be found{' '}
+      Our company and contact information can be found{' '}
       <a href="https://www.tngtech.com/en/company-and-contact-information.html">here</a>.
     </p>
     <h1>Privacy Policy</h1>
