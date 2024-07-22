@@ -68,8 +68,8 @@ export const LegalNotice = () => (
       security in accordance with Art. 6 para. 1 lit. f DS-GVO/UK GDPR.
     </p>
     <h3>3.2 Login and Voting Results</h3>
-    The (freely chosen) Login Name and Your Voting Results are used to distribute them to the voting
-    attending persons. They are stored at AWS and will be deleted after 1 day.
+    The (freely) chosen login name and votes are being distributed to other attendees of the same
+    voting session. attending persons. They are stored at AWS and will be deleted after 1 day.
     <br />
     <br />
     This data processing is based on our legitimate interest to offer you our service, with Art. 6
