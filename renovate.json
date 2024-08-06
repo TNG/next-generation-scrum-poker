@@ -21,7 +21,7 @@
     }
   ],
   "automergeType": "pr",
-  "platformCommit": true,
+  "platformCommit": "enabled",
   "internalChecksFilter": "strict",
   "lockFileMaintenance": {
     "enabled": true,
