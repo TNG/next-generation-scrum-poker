@@ -18,7 +18,7 @@ export const getSetVoteRequest = (vote: CardValue) =>
     },
   });
 
-export const getSetScaleRequest = (scale: Array<CardValue>) =>
+export const getSetScaleRequest = (scale: CardValue[]) =>
   buildRequest({
     type: 'set-scale',
     payload: {

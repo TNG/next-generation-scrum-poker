@@ -10,9 +10,12 @@ export interface WebSocketApi {
   removeUser(user: string): void;
   resetVotes(): void;
   revealVotes(): void;
-  setScale(scale: Array<CardValue>): void;
+  setScale(scale: CardValue[]): void;
   setVote(vote: CardValue): void;
   state: WebSocketState;
 }
 
-export type WebSocketLoginData = { user: string; session: string };
+export interface WebSocketLoginData {
+  user: string;
+  session: string;
+}

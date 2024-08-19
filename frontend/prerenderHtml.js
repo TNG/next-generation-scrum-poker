@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { render } from './dist-ssr/index-ssr.js';
 import { minify } from 'html-minifier-terser';
+import { render } from './dist-ssr/index-ssr.js';
 
 const htmlUrl = new URL('dist/index.html', import.meta.url);
 const ssrMarker = '<!--ssr-outlet-->';

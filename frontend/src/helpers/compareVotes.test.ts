@@ -1,4 +1,4 @@
-import { VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER, CardValue } from '../../../shared/cards';
+import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../shared/cards';
 import { compareCardValues, compareVotes } from './compareVotes';
 import { UserState } from './getVotingState';
 

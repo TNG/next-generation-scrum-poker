@@ -1,8 +1,8 @@
-import { CopyToClipboardButton } from '../CopyToClipboardButton/CopyToClipboardButton';
-import classes from './Footer.module.css';
-import { connectToWebSocket } from '../WebSocket/WebSocket';
 import { LABEL_SESSION, LABEL_USERNAME } from '../../constants';
+import { CopyToClipboardButton } from '../CopyToClipboardButton/CopyToClipboardButton';
 import { LegalNoticeContainer } from '../LegalNoticeContainer/LegalNoticeContainer';
+import { connectToWebSocket } from '../WebSocket/WebSocket';
+import classes from './Footer.module.css';
 
 export const Footer = connectToWebSocket(({ socket }) => (
   <footer class={classes.footer}>

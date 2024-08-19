@@ -1,5 +1,5 @@
-import sharedClasses from '../../styles.module.css';
 import { TOOLTIP_OBSERVER } from '../../constants';
+import sharedClasses from '../../styles.module.css';
 
 // taken from material icons
 export const IconObserver = () => (

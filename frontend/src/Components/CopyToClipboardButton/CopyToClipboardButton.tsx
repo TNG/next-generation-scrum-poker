@@ -1,5 +1,5 @@
-import sharedClasses from '../../styles.module.css';
 import { BUTTON_COPY_TO_CLIPBOARD } from '../../constants';
+import sharedClasses from '../../styles.module.css';
 
 export const CopyToClipboardButton = () => (
   <button

@@ -1,8 +1,8 @@
 import { createContext } from 'preact';
 import { useCallback, useLayoutEffect, useRef, useState } from 'preact/hooks';
 import { JSXInternal } from 'preact/src/jsx';
-import './ColorModeProvider.module.css';
 import { doNothing } from '../../helpers/helpers';
+import './ColorModeProvider.module.css';
 
 const COLOR_SWITCH_TIME_MS = 1000;
 
