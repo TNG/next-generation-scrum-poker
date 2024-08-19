@@ -1,8 +1,8 @@
-import classes from './App.module.css';
+import { ColorModeProvider } from '../ColorModeProvider/ColorModeProvider';
 import { PageSelector } from '../PageSelector/PageSelector';
 import { TouchDetector } from '../TouchDetector/TouchDetector';
 import { WebSocketProvider } from '../WebSocket/WebSocket';
-import { ColorModeProvider } from '../ColorModeProvider/ColorModeProvider';
+import classes from './App.module.css';
 
 export const App = () => (
   <div class={classes.app}>

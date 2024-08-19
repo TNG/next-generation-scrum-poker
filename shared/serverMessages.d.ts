@@ -1,13 +1,11 @@
 import { CardValue } from './cards';
 
-export interface Votes {
-  [userId: string]: CardValue;
-}
+export type Votes = Record<string, CardValue>;
 
 export interface WebSocketState {
   resultsVisible: boolean;
   votes: Votes;
-  scale: Array<CardValue>;
+  scale: CardValue[];
   pendingConnections: string[];
 }
 

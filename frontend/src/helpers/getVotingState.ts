@@ -1,13 +1,13 @@
 import { CardValue, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../shared/cards';
 import { WebSocketApi } from '../types/WebSocket';
 
-export type UserState = {
+export interface UserState {
   user: string;
   vote: CardValue;
   voted: boolean;
   observer: boolean;
   pendingConnection: boolean;
-};
+}
 
 export const getVotingState = ({
   connected,

@@ -154,7 +154,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
     setState({ ...state, votes: { ...state.votes, [loginData.user]: vote } });
   };
 
-  const setScale = (scale: Array<CardValue>) => {
+  const setScale = (scale: CardValue[]) => {
     socket?.send(getSetScaleRequest(scale));
     setState({ ...state, votes: getInitialVotes(state.votes), scale });
   };

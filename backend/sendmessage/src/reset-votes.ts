@@ -1,8 +1,8 @@
+import { broadcastState } from '../../shared/actions';
 import { getConnection } from '../../shared/database/getConnection';
 import { getGroup } from '../../shared/database/getGroup';
 import { resetGroupVotes } from '../../shared/database/resetGroupVotes';
 import { ConfigWithHandler } from '../../shared/types';
-import { broadcastState } from '../../shared/actions';
 
 export const resetVotes = async (config: ConfigWithHandler) => {
   const connectionItem = await getConnection(config);

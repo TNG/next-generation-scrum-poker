@@ -7,7 +7,7 @@ export type ScaleName =
   | 'LINEAR_SCALE'
   | 'SIZES_SCALE';
 
-export const SCALES: { [id in ScaleName]: { name: string; values: Array<CardValue> } } = {
+export const SCALES: { [id in ScaleName]: { name: string; values: CardValue[] } } = {
   FIBONACCI_SCALE: {
     name: 'Fibonacci',
     values: ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89', ...SPECIAL_VALUES_ORDERED],
