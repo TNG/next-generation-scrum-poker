@@ -18,7 +18,7 @@ interface SetVoteMessage {
 interface SetScaleMessage {
   type: 'set-scale';
   payload: {
-    scale: Array<CardValue>;
+    scale: CardValue[];
   };
 }
 

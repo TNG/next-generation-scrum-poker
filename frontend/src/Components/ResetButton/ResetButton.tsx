@@ -7,7 +7,9 @@ export const ResetButton = connectToWebSocket(({ socket }) => {
   const locked = useRef<boolean>(true);
 
   const handleClick = () => {
-    (!locked.current || window.confirm(RESET_VOTES_CONFIRMATION)) && socket.resetVotes();
+    if (!locked.current || window.confirm(RESET_VOTES_CONFIRMATION)) {
+      socket.resetVotes();
+    }
   };
 
   useEffect(() => {
