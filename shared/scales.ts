@@ -5,6 +5,7 @@ export type ScaleName =
   | 'COHEN_SCALE'
   | 'FIXED_RATIO_SCALE'
   | 'LINEAR_SCALE'
+  | 'LINEAR_EXTENDED_SCALE'
   | 'SIZES_SCALE';
 
 export const SCALES: { [id in ScaleName]: { name: string; values: CardValue[] } } = {
@@ -34,8 +35,12 @@ export const SCALES: { [id in ScaleName]: { name: string; values: CardValue[] } 
     values: ['1', '2', '4', '8', '16', '32', '64', '128', ...SPECIAL_VALUES_ORDERED],
   },
   LINEAR_SCALE: {
-    name: 'Linear',
-    values: ['0', '1', '2', '3', '4', '5', ...SPECIAL_VALUES_ORDERED],
+    name: 'Linear (0-6)',
+    values: ['0', '1', '2', '3', '4', '5', '6', ...SPECIAL_VALUES_ORDERED],
+  },
+  LINEAR_EXTENDED_SCALE: {
+    name: 'Linear (0-10)',
+    values: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', ...SPECIAL_VALUES_ORDERED],
   },
   SIZES_SCALE: { name: 'Sizes', values: [...SIZES_ORDERED, ...SPECIAL_VALUES_ORDERED] },
 };
