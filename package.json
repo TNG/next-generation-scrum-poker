@@ -55,7 +55,7 @@
     "jsdom": "^25.0.1",
     "lint-staged": "^15.2.10",
     "nodemon": "^3.1.7",
-    "npm-run-all2": "^6.2.3",
+    "npm-run-all2": "^7.0.1",
     "preact": "^10.24.2",
     "preact-chartist": "^0.15.3",
     "preact-render-to-string": "^6.5.11",
