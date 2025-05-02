@@ -1,3 +1,4 @@
+import { Readable } from 'stream';
 import * as WebSocket from 'ws';
 import { generateId } from '../../shared/generateId';
 import { onConnect } from '../onconnect/src/on-connect';
@@ -5,7 +6,6 @@ import { onDisconnect } from '../ondisconnect/src/on-disconnect';
 import { onMessage } from '../sendmessage/src/on-message';
 import { ConfigWithHandler } from '../shared/types';
 import { ddb } from './dynamo';
-import { Readable } from 'stream';
 
 interface WebsocketWithId extends WebSocket {
   id: string;

@@ -1,6 +1,4 @@
-import { VOTE_COFFEE } from '../../../shared/cards';
-import { VOTE_OBSERVER } from '../../../shared/cards';
-import { VOTE_NOTE_VOTED } from '../../../shared/cards';
+import { VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../shared/cards';
 import { SCALES } from '../../../shared/scales';
 import { UserState, getVotingState } from './getVotingState';
 

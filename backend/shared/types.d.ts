@@ -17,15 +17,16 @@ export interface ConnectionItem {
   userId?: string;
 }
 
-export interface GroupConnections {
-  [id: string]: {
+export type GroupConnections = Record<
+  string,
+  {
     connectionId?: string;
     vote: CardValue;
-  };
-}
+  }
+>;
 
 export interface GroupItem {
-  scale: Array<CardValue>;
+  scale: CardValue[];
   ttl: number;
   groupId: string;
   visible: boolean;
