@@ -42,7 +42,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/preact": "^3.2.4",
     "@types/aws-lambda": "^8.10.150",
-    "@types/node": "20.0.0",
+    "@types/node": "^22.16.0",
     "@types/ws": "^8.18.1",
     "chartist": "^1.4.0",
     "classnames": "^2.5.1",
