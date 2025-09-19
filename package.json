@@ -53,7 +53,7 @@
     "globals": "^16.3.0",
     "html-minifier-terser": "^7.2.0",
     "husky": "^9.1.7",
-    "jsdom": "^26.1.0",
+    "jsdom": "^27.0.0",
     "lint-staged": "^16.1.5",
     "nodemon": "^3.1.10",
     "npm-run-all2": "^8.0.4",
