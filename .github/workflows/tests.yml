@@ -13,7 +13,7 @@ jobs:
     name: Unit Tests
     steps:
       - name: Checkout Commit
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
@@ -30,7 +30,7 @@ jobs:
     name: E2E Tests
     steps:
       - name: Checkout Commit
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
