@@ -9,7 +9,7 @@ import { IconObserver } from '../IconObserver/IconObserver';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './CardSelector.module.css';
 
-const SPECIAL_ICONS: { [value in CardValue]?: JSX.Element } = {
+const SPECIAL_ICONS: Partial<Record<CardValue, JSX.Element>> = {
   [VOTE_OBSERVER]: <IconObserver />,
   [VOTE_COFFEE]: <IconCoffee />,
 };
