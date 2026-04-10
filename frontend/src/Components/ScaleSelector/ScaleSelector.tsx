@@ -4,12 +4,13 @@ import { CardValue } from '../../../../shared/cards';
 import { ScaleName, SCALES } from '../../../../shared/scales';
 import { SELECT_CHANGE_SCALE } from '../../constants';
 import sharedClasses from '../../styles.module.css';
+import { CustomScaleModal } from '../CustomScaleModal/CustomScaleModal';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './ScaleSelector.module.css';
 
 const availableScales = Object.entries(SCALES);
 const DROPDOWN_HEIGHT =
-  Object.keys(SCALES).length * (18.5 /*height*/ + /*padding*/ 8) +
+  (Object.keys(SCALES).length + 1) * (18.5 /*height*/ + /*padding*/ 8) +
   /*outer padding and border*/ 12 +
   /*distance to button*/ 4;
 
@@ -24,6 +25,7 @@ export const ScaleSelector = connectToWebSocket(
     const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState(-1);
     const [dropdownOnTop, setDropdownOnTop] = useState(false);
+    const [showCustomModal, setShowCustomModal] = useState(false);
     const selectionButtonRef = useRef<HTMLButtonElement>(null);
     const dropdownRef = useRef<HTMLUListElement>(null);
 
@@ -58,15 +60,15 @@ export const ScaleSelector = connectToWebSocket(
     };
 
     const handleKeyboardNavigation = (event: KeyboardEvent) => {
+      const totalOptions = availableScales.length + 1; // +1 for Custom option
+
       switch (event.code) {
         case 'ArrowDown':
-          setSelected((selected) => (selected + 1) % availableScales.length);
+          setSelected((selected) => (selected + 1) % totalOptions);
           event.preventDefault();
           break;
         case 'ArrowUp':
-          setSelected((selected) =>
-            unsignedModulo(Math.max(selected, 0) - 1, availableScales.length),
-          );
+          setSelected((selected) => unsignedModulo(Math.max(selected, 0) - 1, totalOptions));
           event.preventDefault();
           break;
         case 'Home':
@@ -75,7 +77,7 @@ export const ScaleSelector = connectToWebSocket(
           break;
         case 'End':
         case 'PageDown':
-          setSelected(availableScales.length - 1);
+          setSelected(totalOptions - 1);
           break;
         case 'Escape':
           close();
@@ -87,11 +89,19 @@ export const ScaleSelector = connectToWebSocket(
           event.preventDefault();
           close();
           selectionButtonRef.current?.focus();
-          if (selected >= 0) {
+          if (selected >= 0 && selected < availableScales.length) {
             setScale(availableScales[selected][1].values);
+          } else if (selected === availableScales.length) {
+            // Custom option selected
+            setShowCustomModal(true);
           }
           break;
       }
+    };
+
+    const handleCustomScaleSave = (customScale: CardValue[]) => {
+      setScale(customScale);
+      setShowCustomModal(false);
     };
 
     useEffect(() => {
@@ -146,8 +156,29 @@ export const ScaleSelector = connectToWebSocket(
                 {name}
               </li>
             ))}
+            <li
+              class={classes.dropDownItem}
+              key="custom"
+              role="option"
+              aria-selected={selected === availableScales.length}
+              onClick={() => {
+                close();
+                setShowCustomModal(true);
+              }}
+              onMouseMove={() =>
+                selected !== availableScales.length && setSelected(availableScales.length)
+              }
+              onMouseLeave={() => selected === availableScales.length && setSelected(-1)}
+            >
+              Custom
+            </li>
           </ul>
         ) : null}
+        <CustomScaleModal
+          isOpen={showCustomModal}
+          onClose={() => setShowCustomModal(false)}
+          onSave={handleCustomScaleSave}
+        />
       </div>
     );
   },

@@ -1,20 +1,17 @@
-import { CARDS_ORDERED_BY_VALUE, CardValue } from '../../../shared/cards';
+import { CardValue } from '../../../shared/cards';
 import { UserState } from './getVotingState';
 
-export const compareVotes = (
-  userState1: Pick<UserState, 'user' | 'vote'>,
-  userState2: Pick<UserState, 'user' | 'vote'>,
-) => {
-  return (
-    compareCardValues(userState1.vote, userState2.vote) ||
-    (userState1.user > userState2.user ? 1 : -1)
-  );
-};
+export const compareVotes =
+  (scale: CardValue[]) =>
+  (userState1: Pick<UserState, 'user' | 'vote'>, userState2: Pick<UserState, 'user' | 'vote'>) => {
+    const rankDifference =
+      getVoteRank(userState1.vote, scale) - getVoteRank(userState2.vote, scale);
+    return rankDifference !== 0 ? rankDifference : userState1.user > userState2.user ? 1 : -1;
+  };
 
-export const compareCardValues = (value1: CardValue, value2: CardValue) => {
-  const numericValue1 = CARDS_ORDERED_BY_VALUE.get(value1) ?? Infinity;
-  const numericValue2 = CARDS_ORDERED_BY_VALUE.get(value2) ?? Infinity;
-  if (numericValue1 > numericValue2) return 1;
-  if (numericValue1 < numericValue2) return -1;
-  return 0;
+// Votes are ranked by their position in the active scale. Values that are not part of the scale
+// (the appended observer card and not-voted) are ranked last, so they sort below the actual votes.
+const getVoteRank = (vote: CardValue, scale: CardValue[]) => {
+  const index = scale.indexOf(vote);
+  return index === -1 ? scale.length : index;
 };

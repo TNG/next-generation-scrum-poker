@@ -5,8 +5,6 @@ export const VOTE_NOTE_VOTED = 'not-voted';
 
 export const SPECIAL_VALUES_ORDERED = ['∞', '?', VOTE_COFFEE] as const;
 
-const ABSTAINING_VOTES_ORDERED = [VOTE_NOTE_VOTED, VOTE_OBSERVER] as const;
-
 export const SIZES_ORDERED = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
 
 const NUMERIC_VALUES_ORDERED = [
@@ -36,15 +34,25 @@ const NUMERIC_VALUES_ORDERED = [
   '128',
 ] as const;
 
-const ALL_VALUES_ORDERED = [
+// Predefined card values: every numeric value, size and special card, plus the abstaining votes
+export type PredefinedCardValue =
+  | (typeof NUMERIC_VALUES_ORDERED)[number]
+  | (typeof SIZES_ORDERED)[number]
+  | (typeof SPECIAL_VALUES_ORDERED)[number]
+  | typeof VOTE_NOTE_VOTED
+  | typeof VOTE_OBSERVER;
+
+// Allow custom string values for user-defined scales while keeping
+// autocomplete and literal inference for the predefined values
+export type CustomCardValue = string & {};
+
+// Union type supporting both predefined and custom card values
+export type CardValue = PredefinedCardValue | CustomCardValue;
+
+// Tokens that may legitimately appear in a scale: numeric values, sizes and special cards.
+// The abstaining values (observer, not-voted) are intentionally excluded.
+export const PREDEFINED_SCALE_VALUES: ReadonlySet<CardValue> = new Set<CardValue>([
   ...NUMERIC_VALUES_ORDERED,
   ...SIZES_ORDERED,
   ...SPECIAL_VALUES_ORDERED,
-  ...ABSTAINING_VOTES_ORDERED,
-] as const;
-
-export type CardValue = (typeof ALL_VALUES_ORDERED)[number];
-
-export const CARDS_ORDERED_BY_VALUE = new Map(
-  ALL_VALUES_ORDERED.map((value, index) => [value, index]),
-);
+]);

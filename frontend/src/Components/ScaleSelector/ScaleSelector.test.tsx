@@ -46,6 +46,7 @@ describe('The ScaleSelector', () => {
       'Linear (0-6)',
       'Linear (0-10)',
       'Sizes',
+      'Custom',
     ]);
     expect(getSelectedOptions(dropdown)).toEqual(['Cohen']);
   });
@@ -133,7 +134,13 @@ describe('The ScaleSelector', () => {
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
     fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
+
+    fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
+
+    fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
 
     fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
@@ -151,12 +158,16 @@ describe('The ScaleSelector', () => {
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
 
     fireEvent.keyDown(dropdown, { code: 'PageDown' });
-    expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
 
     fireEvent.keyDown(dropdown, { code: 'Home' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
 
     fireEvent.keyDown(dropdown, { code: 'End' });
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
+
+    // Navigate to a predefined scale before testing Enter key
+    fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
     expect(setScale).not.toHaveBeenCalled();
