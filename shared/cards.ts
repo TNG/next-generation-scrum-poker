@@ -2,6 +2,9 @@
 export const VOTE_COFFEE = 'coffee';
 export const VOTE_OBSERVER = 'observer';
 export const VOTE_NOTE_VOTED = 'not-voted';
+// Placeholder broadcast to other clients for a cast vote while results are
+// still hidden, so that real values are never transmitted before reveal.
+export const VOTE_HIDDEN = 'hidden';
 
 export const SPECIAL_VALUES_ORDERED = ['∞', '?', VOTE_COFFEE] as const;
 
@@ -41,6 +44,7 @@ const ALL_VALUES_ORDERED = [
   ...SIZES_ORDERED,
   ...SPECIAL_VALUES_ORDERED,
   ...ABSTAINING_VOTES_ORDERED,
+  VOTE_HIDDEN,
 ] as const;
 
 export type CardValue = (typeof ALL_VALUES_ORDERED)[number];
