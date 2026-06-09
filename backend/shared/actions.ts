@@ -1,4 +1,4 @@
-import { getVisibleVote } from '../../shared/getVisibleVote';
+import { VOTE_HIDDEN, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../shared/cards';
 import { ServerMessage, Votes } from '../../shared/serverMessages';
 import { deleteConnection } from './database/deleteConnection';
 import { getConnection } from './database/getConnection';
@@ -17,14 +17,13 @@ export const broadcastState = async (
   return Promise.all(
     connectionEntries.map(([recipientUserId, { connectionId }]) => {
       if (!connectionId) return undefined;
-      // Build a per-recipient view so that real vote values of other users are
-      // never sent before the votes are revealed.
       const votes: Votes = {};
       for (const [userId, { vote }] of connectionEntries) {
-        votes[userId] = getVisibleVote(vote, {
-          resultsVisible: visible,
-          ownVote: userId === recipientUserId,
-        });
+        const ownVote = userId === recipientUserId;
+        votes[userId] =
+          visible || ownVote || vote === VOTE_NOTE_VOTED || vote === VOTE_OBSERVER
+            ? vote
+            : VOTE_HIDDEN;
       }
       return sendMessageToConnection(
         {
