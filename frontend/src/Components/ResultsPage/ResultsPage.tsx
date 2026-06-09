@@ -1,9 +1,16 @@
 import { Suspense, lazy } from 'preact/compat';
-import { CardValue, VOTE_COFFEE, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
+import {
+  CardValue,
+  VOTE_COFFEE,
+  VOTE_HIDDEN,
+  VOTE_NOTE_VOTED,
+  VOTE_OBSERVER,
+} from '../../../../shared/cards';
 import {
   COLUMN_NAME,
   COLUMN_VOTE,
   HEADING_RESULTS,
+  TOOLTIP_LOST_CONNECTION,
   TOOLTIP_PENDING_CONNECTION,
 } from '../../constants';
 import { compareVotes } from '../../helpers/compareVotes';
@@ -25,6 +32,9 @@ const getVote = (vote: CardValue) => {
   if (vote === VOTE_COFFEE) {
     return <IconCoffee />;
   }
+  if (vote === VOTE_HIDDEN) {
+    return <IconNotVoted title={TOOLTIP_LOST_CONNECTION} />;
+  }
   if (vote === VOTE_NOTE_VOTED) {
     return <IconNotVoted />;
   }
@@ -35,7 +45,9 @@ const getVote = (vote: CardValue) => {
 };
 
 const getClassName = (vote: CardValue) =>
-  vote === VOTE_NOTE_VOTED || vote === VOTE_OBSERVER ? classes.notVotedEntry : classes.votedEntry;
+  vote === VOTE_NOTE_VOTED || vote === VOTE_OBSERVER || vote === VOTE_HIDDEN
+    ? classes.notVotedEntry
+    : classes.votedEntry;
 
 const BarChart = lazy(() => import('../BarChart/BarChart').then((value) => value.BarChart));
 
