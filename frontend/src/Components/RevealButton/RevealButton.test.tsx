@@ -1,7 +1,7 @@
 import { fireEvent } from '@testing-library/preact';
 import { VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { SCALES } from '../../../../shared/scales';
-import { BUTTON_REVEAL_NOW, BUTTON_REVEAL_VOTES } from '../../constants';
+import { BUTTON_REVEAL_NOW, BUTTON_REVEAL_VOTES, BUTTON_REVEALING } from '../../constants';
 import { getRenderWithWebSocket } from '../../test-helpers/renderWithWebSocket';
 import { RevealButton } from './RevealButton';
 
@@ -65,6 +65,24 @@ describe('The RevealButton', () => {
 
     expect(getByText(BUTTON_REVEAL_VOTES)).toHaveTextContent('Waiting for votes...');
     expect(getByText(BUTTON_REVEAL_VOTES)).toBeDisabled();
+  });
+
+  it('shows a revealing state and disables the button while a reveal is in progress', () => {
+    const revealVotes = vi.fn();
+    const { getByText } = render({
+      revealVotes,
+      isRevealing: true,
+      state: {
+        votes: {
+          TheUser: '3',
+          OtherUser: '5',
+        },
+      },
+    });
+
+    const button = getByText(BUTTON_REVEALING);
+    expect(button).toBeVisible();
+    expect(button).toBeDisabled();
   });
 
   it('disables button if not connected', () => {
