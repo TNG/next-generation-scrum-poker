@@ -18,6 +18,7 @@ export const BUTTON_REFRESH_SESSION = 'Refresh Session';
 export const BUTTON_RESET_VOTES = 'Reset votes';
 export const BUTTON_REVEAL_NOW = 'Reveal Now';
 export const BUTTON_REVEAL_VOTES = 'Reveal Votes';
+export const BUTTON_REVEALING = 'Revealing…';
 export const SELECT_CHANGE_SCALE = 'Change Scale';
 
 export const ALT_TNG_LOGO = 'TNG Logo';

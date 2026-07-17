@@ -3,6 +3,7 @@ import { WebSocketState } from '../../../shared/serverMessages';
 
 export interface WebSocketApi {
   connected: boolean;
+  isRevealing: boolean;
   loggedIn: boolean;
   login(user: string, session: string): void;
   loginData: WebSocketLoginData;

@@ -14,6 +14,7 @@ const getApi = (
   context: PartialWebsocketApi,
 ): WebSocketApi => ({
   connected: false,
+  isRevealing: false,
   login: doNothing,
   logoutReason: undefined,
   loginData: { user: '', session: '' },
