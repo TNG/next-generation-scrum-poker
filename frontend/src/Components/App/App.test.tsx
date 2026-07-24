@@ -206,12 +206,35 @@ describe('The App component', () => {
     expect(revealButton).toHaveTextContent('Reveal Votes');
     fireEvent.click(revealButton);
 
-    // then
-    expect(container.querySelector('tbody')).toHaveTextContent('Happy User2Voting User13');
+    // then: no optimistic switch to results; the button shows a pending state instead
+    expect(revealButton).toHaveTextContent('Revealing…');
+    expect(revealButton).toBeDisabled();
+    expect(container.querySelector('tbody')).not.toHaveTextContent('Happy User2Voting User13');
     expect(socket.test_messages).toEqual([
       '{"message":"sendmessage","data":{"type":"reveal-votes"}}',
     ]);
     socket.test_messages = [];
+
+    // when: the server broadcasts the revealed state with the real votes
+    await act(() =>
+      socket.onmessage!(
+        buildEventMessage({
+          type: 'state',
+          payload: {
+            votes: {
+              'Happy User': '2',
+              'Voting User': '13',
+            },
+            resultsVisible: true,
+            scale: SCALES.COHEN_SCALE.values,
+            pendingConnections: [],
+          },
+        }),
+      ),
+    );
+
+    // then: the results are now shown with the real votes
+    expect(container.querySelector('tbody')).toHaveTextContent('Happy User2Voting User13');
 
     // when
     fireEvent.click(getByRole('button', { name: 'Reset votes' }));
