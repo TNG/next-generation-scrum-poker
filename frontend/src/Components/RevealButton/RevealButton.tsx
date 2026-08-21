@@ -1,6 +1,11 @@
 import { VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../../../shared/cards';
 import { Votes } from '../../../../shared/serverMessages';
-import { BUTTON_CONNECTING, BUTTON_REVEAL_NOW, BUTTON_REVEAL_VOTES } from '../../constants';
+import {
+  BUTTON_CONNECTING,
+  BUTTON_REVEAL_NOW,
+  BUTTON_REVEAL_VOTES,
+  BUTTON_REVEALING,
+} from '../../constants';
 import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './RevealButton.module.css';
 
@@ -27,6 +32,7 @@ export const RevealButton = connectToWebSocket(
       revealVotes,
       state: { votes },
       connected,
+      isRevealing,
     },
   }) => {
     const { missing, voted } = getNumberOfVotes(votes);
@@ -36,17 +42,26 @@ export const RevealButton = connectToWebSocket(
         aria-label="reveal votes"
         class={classes.revealButton}
         onClick={revealVotes}
-        disabled={!connected || !voted}
+        disabled={!connected || !voted || isRevealing}
       >
-        {getButtonText({ connected, missing, voted })}
+        {getButtonText({ connected, missing, voted, isRevealing })}
       </button>
     );
   },
 );
 
-function getButtonText({ connected, missing, voted }: { connected: boolean } & NumberOfVotes) {
+function getButtonText({
+  connected,
+  missing,
+  voted,
+  isRevealing,
+}: { connected: boolean; isRevealing: boolean } & NumberOfVotes) {
   if (!connected) {
     return BUTTON_CONNECTING;
+  }
+
+  if (isRevealing) {
+    return BUTTON_REVEALING;
   }
 
   if (!voted) {

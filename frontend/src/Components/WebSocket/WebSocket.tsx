@@ -28,6 +28,7 @@ const MAX_RETRY_WAIT = 4000;
 
 export const WebSocketContext = createContext<WebSocketApi>({
   connected: false,
+  isRevealing: false,
   loggedIn: false,
   login: doNothing,
   loginData: initialLoginData,
@@ -55,6 +56,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
   const [loginData, setLoginData] = useState(initialLoginData);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isRevealing, setIsRevealing] = useState(false);
   const [logoutReason, setLogoutReason] = useState<string>();
   const loginDataRef = useRef(loginData);
   const clearReconnectTimeout = useRef<() => void>(doNothing);
@@ -94,6 +96,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
       switch (message.type) {
         case 'state':
           setIsProcessing(false);
+          setIsRevealing(false);
           return setState(message.payload);
         case 'not-logged-in':
           setLogoutReason(message.payload.reason);
@@ -161,10 +164,11 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
 
   const revealVotes = () => {
     socket?.send(getRevealVotesRequest());
-    setState({
-      ...state,
-      resultsVisible: true,
-    });
+    // Do not optimistically switch to the results view: other users' real votes
+    // are only sent by the server on reveal, so switching early would briefly show
+    // hidden-vote placeholders. Instead we wait for the broadcast and show a
+    // pending state on the button in the meantime.
+    setIsRevealing(true);
   };
 
   const removeUser = (user: string) => {
@@ -187,6 +191,7 @@ export const WebSocketProvider = ({ children }: { children: ComponentChildren })
 
   const value: WebSocketApi = {
     connected: Boolean(socket && !isProcessing),
+    isRevealing,
     loggedIn,
     login,
     loginData,
