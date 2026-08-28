@@ -1,3 +1,4 @@
+import { VOTE_HIDDEN, VOTE_NOTE_VOTED, VOTE_OBSERVER } from '../../shared/cards';
 import { ServerMessage, Votes } from '../../shared/serverMessages';
 import { deleteConnection } from './database/deleteConnection';
 import { getConnection } from './database/getConnection';
@@ -9,34 +10,37 @@ export const broadcastState = async (
   config: ConfigWithHandler,
 ): Promise<unknown> => {
   const connectionEntries = Object.entries(connections);
-  const votes: Votes = {};
-  for (const [userId, { vote }] of connectionEntries) {
-    votes[userId] = vote;
-  }
   const pendingConnections = connectionEntries
     .filter(([, { connectionId }]) => !connectionId)
     .map(([userId]) => userId);
 
   return Promise.all(
-    connectionEntries.map(
-      ([, { connectionId }]) =>
-        connectionId &&
-        sendMessageToConnection(
-          {
-            type: 'state',
-            payload: {
-              resultsVisible: visible,
-              votes,
-              scale,
-              pendingConnections,
-            },
+    connectionEntries.map(([recipientUserId, { connectionId }]) => {
+      if (!connectionId) return undefined;
+      const votes: Votes = {};
+      for (const [userId, { vote }] of connectionEntries) {
+        const ownVote = userId === recipientUserId;
+        votes[userId] =
+          visible || ownVote || vote === VOTE_NOTE_VOTED || vote === VOTE_OBSERVER
+            ? vote
+            : VOTE_HIDDEN;
+      }
+      return sendMessageToConnection(
+        {
+          type: 'state',
+          payload: {
+            resultsVisible: visible,
+            votes,
+            scale,
+            pendingConnections,
           },
-          {
-            ...config,
-            connectionId,
-          },
-        ),
-    ),
+        },
+        {
+          ...config,
+          connectionId,
+        },
+      );
+    }),
   );
 };
 

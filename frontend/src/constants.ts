@@ -18,6 +18,7 @@ export const BUTTON_REFRESH_SESSION = 'Refresh Session';
 export const BUTTON_RESET_VOTES = 'Reset votes';
 export const BUTTON_REVEAL_NOW = 'Reveal Now';
 export const BUTTON_REVEAL_VOTES = 'Reveal Votes';
+export const BUTTON_REVEALING = 'Revealing…';
 export const SELECT_CHANGE_SCALE = 'Change Scale';
 
 export const ALT_TNG_LOGO = 'TNG Logo';
@@ -27,6 +28,7 @@ export const TOOLTIP_NOT_VOTED = 'Not voted';
 export const TOOLTIP_OBSERVER = 'Observer';
 export const TOOLTIP_VOTED = 'Voted';
 export const TOOLTIP_PENDING_CONNECTION = 'Pending connection';
+export const TOOLTIP_LOST_CONNECTION = 'Lost connection';
 
 export const COLUMN_NAME = 'Name';
 export const COLUMN_VOTE = 'Vote';
