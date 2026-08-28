@@ -1,4 +1,5 @@
 import { CardValue } from '../../../shared/cards';
+import { isValidScale } from '../../../shared/customScale';
 import { broadcastState } from '../../shared/actions';
 import { getConnection } from '../../shared/database/getConnection';
 import { getGroup } from '../../shared/database/getGroup';
@@ -6,6 +7,11 @@ import { resetGroupVotes } from '../../shared/database/resetGroupVotes';
 import { ConfigWithHandler } from '../../shared/types';
 
 export const setScale = async (scale: CardValue[], config: ConfigWithHandler): Promise<void> => {
+  // Reject malformed or invalid scale payloads before touching the database.
+  // Predefined scales and validated custom scales both pass; anything else
+  // (arbitrary strings, oversized arrays, duplicates) is dropped silently.
+  if (!isValidScale(scale)) return;
+
   const connectionItem = await getConnection(config);
   if (!connectionItem) return;
   const { groupId } = connectionItem;

@@ -46,6 +46,7 @@ describe('The ScaleSelector', () => {
       'Linear (0-6)',
       'Linear (0-10)',
       'Sizes',
+      'Custom',
     ]);
     expect(getSelectedOptions(dropdown)).toEqual(['Cohen']);
   });
@@ -78,7 +79,7 @@ describe('The ScaleSelector', () => {
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
   });
 
-  it('does not preselect a scale if the current scale does not match', () => {
+  it('preselects the Custom option when the current scale does not match a predefined scale', () => {
     // given
     const { getByRole } = render({
       state: { scale: SCALES.SIZES_SCALE.values.slice(0, -1) },
@@ -89,7 +90,19 @@ describe('The ScaleSelector', () => {
 
     // then
     const dropdown = getDropdown();
-    expect(getSelectedOptions(dropdown)).toEqual([]);
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
+  });
+
+  it('preselects the Custom option when a custom scale is active', () => {
+    // given
+    const { getByRole } = render({ state: { scale: ['XS', 'S', 'M', 'L'] } });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+
+    // then
+    const dropdown = getDropdown();
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
   });
 
   it('allows to select a scale', () => {
@@ -133,7 +146,13 @@ describe('The ScaleSelector', () => {
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
     fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
+
+    fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
+
+    fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
 
     fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
@@ -151,12 +170,16 @@ describe('The ScaleSelector', () => {
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
 
     fireEvent.keyDown(dropdown, { code: 'PageDown' });
-    expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
 
     fireEvent.keyDown(dropdown, { code: 'Home' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
 
     fireEvent.keyDown(dropdown, { code: 'End' });
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
+
+    // Navigate to a predefined scale before testing Enter key
+    fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
     expect(setScale).not.toHaveBeenCalled();
