@@ -34,6 +34,28 @@ test('supports changing the scale', async ({ page, context }) => {
   await cardPage.assertNoCardSelected();
 });
 
+test('does not cast votes in the background while the custom scale modal is open', async ({
+  page,
+}) => {
+  await login(page, 'User 1');
+  const cardPage = await assertOnCardPage(page);
+
+  // Open the custom scale modal while the default (Cohen) scale with the
+  // cards "1" and "2" is visible in the background
+  await cardPage.scaleSelectorButton.click();
+  await cardPage.scaleSelectorDropdown.getByRole('option', { name: 'Custom' }).click();
+  const modal = page.getByRole('dialog');
+  await expect(modal).toBeVisible();
+
+  // Type a value that also matches a card in the background
+  const input = modal.getByRole('textbox', { name: /card value/i });
+  await input.pressSequentially('2');
+
+  // The key must be handled by the modal only - no background card is selected
+  await cardPage.assertNoCardSelected();
+  await expect(input).toHaveValue('2');
+});
+
 test('supports creating and using custom scales', async ({ page, context }) => {
   // User 1 logs in
   await login(page, 'User 1');

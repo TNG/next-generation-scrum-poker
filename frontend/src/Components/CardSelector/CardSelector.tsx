@@ -52,6 +52,12 @@ export const CardSelector = connectToWebSocket(
         return;
       }
 
+      // While a modal dialog (e.g. the custom scale modal) is open, all key
+      // events belong to the modal and must not be interpreted as votes.
+      if (document.querySelector('[aria-modal="true"]')) {
+        return;
+      }
+
       const matchingCards = state.scale.filter(
         (card) => card[0].toLowerCase() === key.toLowerCase(),
       );
