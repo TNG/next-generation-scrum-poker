@@ -132,11 +132,16 @@ export function isValidScale(scale: unknown): scale is CardValue[] {
   if (scale.some((value) => typeof value !== 'string' || value.length === 0)) {
     return false;
   }
-  // Accept any predefined scale by value-set equality
-  const scaleKey = (scale as string[]).slice().sort().join('|');
+  // Accept any predefined scale by value-set equality. Values must be
+  // compared element-wise: joining with a separator would let a single
+  // string containing the separator masquerade as a predefined scale.
+  const sortedScale = (scale as string[]).slice().sort();
   const matchedPredefined = Object.values(SCALES).some(({ values }) => {
-    const predefinedKey = (values as string[]).slice().sort().join('|');
-    return predefinedKey === scaleKey;
+    const sortedValues = [...values].sort();
+    return (
+      sortedValues.length === sortedScale.length &&
+      sortedValues.every((value, index) => value === sortedScale[index])
+    );
   });
   if (matchedPredefined) return true;
   // Otherwise it must be a valid custom scale: each entry is either a valid

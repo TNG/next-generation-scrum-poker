@@ -232,6 +232,11 @@ describe('customScale', () => {
       }
     });
 
+    it('should accept a predefined scale regardless of order', () => {
+      const reversed = [...SCALES.LINEAR_SCALE.values].reverse();
+      expect(isValidScale(reversed)).toBe(true);
+    });
+
     it('should accept a custom scale with only alphanumeric values', () => {
       expect(isValidScale(['XS', 'S', 'M', 'L'])).toBe(true);
     });
@@ -299,6 +304,30 @@ describe('customScale', () => {
     it('should reject a scale that is not a predefined scale and not a valid custom scale', () => {
       // 0.5 is valid in a predefined scale but not as a custom value
       expect(isValidScale(['0.5', '1'])).toBe(false);
+    });
+
+    it('should reject a single string masquerading as a predefined scale', () => {
+      const joinedKey = [...SCALES.COHEN_SCALE.values].sort().join('|');
+      expect(isValidScale([joinedKey])).toBe(false);
+    });
+
+    it('should reject pipe-merged values masquerading as a predefined scale', () => {
+      const spoofed = [
+        '0|0.5',
+        '1',
+        '2',
+        '3',
+        '5',
+        '8',
+        '13',
+        '20',
+        '40',
+        '100',
+        '∞',
+        '?',
+        'coffee',
+      ];
+      expect(isValidScale(spoofed)).toBe(false);
     });
   });
 });

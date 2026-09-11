@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/preact';
+import { createEvent, fireEvent, render, screen } from '@testing-library/preact';
 import { describe, expect, it, vi } from 'vitest';
 import { MAX_CUSTOM_CARDS } from '../../../../shared/customScale';
 import { CustomScaleModal } from './CustomScaleModal';
@@ -314,8 +314,167 @@ describe('CustomScaleModal', () => {
       expect(onClose).toHaveBeenCalled();
     });
 
-    // Note: Backdrop click functionality is difficult to test in jsdom
-    // The close functionality is already tested via close button and Escape key
+    it('should call onClose when the backdrop is clicked', () => {
+      const onClose = vi.fn();
+      render(<CustomScaleModal {...defaultProps} onClose={onClose} />);
+      const dialog = screen.getByRole('dialog');
+
+      fireEvent.click(dialog);
+
+      expect(onClose).toHaveBeenCalled();
+    });
+
+    it('should not call onClose when clicking inside the modal', () => {
+      const onClose = vi.fn();
+      render(<CustomScaleModal {...defaultProps} onClose={onClose} />);
+
+      fireEvent.click(screen.getByText('Custom Scale'));
+
+      expect(onClose).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Drag and Drop Reordering', () => {
+    const addCards = (values: string[]) => {
+      const input = screen.getByRole('textbox', { name: /card value/i });
+      const addButton = screen.getByRole('button', { name: /add card value/i });
+      for (const value of values) {
+        fireEvent.input(input, { target: { value } });
+        fireEvent.click(addButton);
+      }
+    };
+
+    const createDataTransfer = () => {
+      const store = new Map<string, string>();
+      return {
+        setData: vi.fn((format: string, value: string) => store.set(format, value)),
+        getData: (format: string) => store.get(format) ?? '',
+      };
+    };
+
+    it('should reorder cards when dragging a card onto another one', () => {
+      render(<CustomScaleModal {...defaultProps} />);
+      addCards(['A', 'B', 'C']);
+      const [firstCard, , lastCard] = screen.getAllByRole('listitem');
+
+      const dataTransfer = createDataTransfer();
+      fireEvent.dragStart(firstCard, { dataTransfer });
+      expect(dataTransfer.setData).toHaveBeenCalledWith('text/plain', '0');
+      fireEvent.dragOver(lastCard, { dataTransfer });
+      fireEvent.drop(lastCard, { dataTransfer });
+
+      const updatedItems = screen.getAllByRole('listitem');
+      expect(updatedItems[0].textContent).toContain('B');
+      expect(updatedItems[1].textContent).toContain('C');
+      expect(updatedItems[2].textContent).toContain('A');
+      expect(firstCard).not.toHaveClass('dragging');
+    });
+
+    it('should not reorder when a card is dropped onto itself', () => {
+      render(<CustomScaleModal {...defaultProps} />);
+      addCards(['A', 'B']);
+      const [firstCard] = screen.getAllByRole('listitem');
+
+      const dataTransfer = createDataTransfer();
+      fireEvent.dragStart(firstCard, { dataTransfer });
+      fireEvent.dragOver(firstCard, { dataTransfer });
+      fireEvent.drop(firstCard, { dataTransfer });
+
+      const updatedItems = screen.getAllByRole('listitem');
+      expect(updatedItems[0].textContent).toContain('A');
+      expect(updatedItems[1].textContent).toContain('B');
+    });
+
+    it('should ignore drops of content dragged from outside the card list', () => {
+      render(<CustomScaleModal {...defaultProps} />);
+      addCards(['A', 'B', 'C']);
+      const [, , lastCard] = screen.getAllByRole('listitem');
+
+      const dataTransfer = createDataTransfer();
+      dataTransfer.setData('text/plain', 'some external text');
+      fireEvent.drop(lastCard, { dataTransfer });
+
+      const updatedItems = screen.getAllByRole('listitem');
+      expect(updatedItems).toHaveLength(3);
+      expect(updatedItems[0].textContent).toContain('A');
+      expect(updatedItems[1].textContent).toContain('B');
+      expect(updatedItems[2].textContent).toContain('C');
+    });
+
+    it('should ignore a drop when the dragged card was removed mid-drag', () => {
+      render(<CustomScaleModal {...defaultProps} />);
+      addCards(['A', 'B', 'C']);
+
+      const dataTransfer = createDataTransfer();
+      fireEvent.dragStart(screen.getAllByRole('listitem')[2], { dataTransfer });
+      fireEvent.click(screen.getByRole('button', { name: 'Remove C' }));
+
+      const [remainingFirstCard] = screen.getAllByRole('listitem');
+      fireEvent.drop(remainingFirstCard, { dataTransfer });
+
+      const updatedItems = screen.getAllByRole('listitem');
+      expect(updatedItems).toHaveLength(2);
+      expect(updatedItems[0].textContent).toContain('A');
+      expect(updatedItems[1].textContent).toContain('B');
+    });
+
+    it('should mark the dragged card and reset the marker on drag end', () => {
+      render(<CustomScaleModal {...defaultProps} />);
+      addCards(['A', 'B']);
+      const [firstCard] = screen.getAllByRole('listitem');
+
+      fireEvent.dragStart(firstCard, { dataTransfer: createDataTransfer() });
+      expect(firstCard).toHaveClass('dragging');
+
+      fireEvent.dragEnd(firstCard);
+
+      expect(firstCard).not.toHaveClass('dragging');
+    });
+  });
+
+  describe('Focus Trap', () => {
+    // The Save button is disabled until a card is added, which would change
+    // which element is the last focusable one
+    const addCard = () => {
+      const input = screen.getByRole('textbox', { name: /card value/i });
+      fireEvent.input(input, { target: { value: 'A' } });
+      fireEvent.click(screen.getByRole('button', { name: /add card value/i }));
+    };
+
+    it('should move focus to the first element when Tab is pressed on the last element', () => {
+      render(<CustomScaleModal {...defaultProps} />);
+      addCard();
+      const saveButton = screen.getByRole('button', { name: /save scale/i });
+      saveButton.focus();
+
+      fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Tab' });
+
+      expect(screen.getByRole('button', { name: 'Close modal' })).toHaveFocus();
+    });
+
+    it('should move focus to the last element when Shift+Tab is pressed on the first element', () => {
+      render(<CustomScaleModal {...defaultProps} />);
+      addCard();
+      const closeButton = screen.getByRole('button', { name: 'Close modal' });
+      closeButton.focus();
+
+      fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Tab', shiftKey: true });
+
+      expect(screen.getByRole('button', { name: /save scale/i })).toHaveFocus();
+    });
+
+    it('should not intercept Tab while focus is on a middle element', () => {
+      render(<CustomScaleModal {...defaultProps} />);
+      const dialog = screen.getByRole('dialog');
+      const input = screen.getByRole('textbox', { name: /card value/i });
+      input.focus();
+
+      const tabEvent = createEvent.keyDown(dialog, { key: 'Tab' });
+      fireEvent(dialog, tabEvent);
+
+      expect(tabEvent.defaultPrevented).toBe(false);
+      expect(input).toHaveFocus();
+    });
   });
 
   describe('Keyboard Navigation', () => {
