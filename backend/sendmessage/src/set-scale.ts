@@ -7,9 +7,6 @@ import { resetGroupVotes } from '../../shared/database/resetGroupVotes';
 import { ConfigWithHandler } from '../../shared/types';
 
 export const setScale = async (scale: CardValue[], config: ConfigWithHandler): Promise<void> => {
-  // Reject malformed or invalid scale payloads before touching the database.
-  // Predefined scales and validated custom scales both pass; anything else
-  // (arbitrary strings, oversized arrays, duplicates) is dropped silently.
   if (!isValidScale(scale)) return;
 
   const connectionItem = await getConnection(config);

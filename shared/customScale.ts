@@ -2,12 +2,12 @@ import { CardValue, SPECIAL_VALUES_ORDERED } from './cards';
 import { SCALES } from './scales';
 
 // Maximum number of custom card values allowed
-export const MAX_CUSTOM_CARDS = 12;
+export const MAX_CUSTOM_CARDS = 25;
 
 // Maximum length for a single card value
 export const MAX_CARD_VALUE_LENGTH = 4;
 
-// Absolute upper bound for any accepted scale (custom 12 + 3 special cards)
+// Absolute upper bound for any accepted scale (custom 25 + 3 special cards)
 export const MAX_SCALE_SIZE = MAX_CUSTOM_CARDS + 3;
 
 // Special card values that may be appended to a custom scale

@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/preact';
 import { describe, expect, it, vi } from 'vitest';
+import { MAX_CUSTOM_CARDS } from '../../../../shared/customScale';
 import { CustomScaleModal } from './CustomScaleModal';
 
 describe('CustomScaleModal', () => {
@@ -76,7 +77,7 @@ describe('CustomScaleModal', () => {
       fireEvent.click(addButton);
 
       expect(screen.getByText('XS')).toBeInTheDocument();
-      expect(screen.getByText('Card Values (1/12)')).toBeInTheDocument();
+      expect(screen.getByText(`Card Values (1/${MAX_CUSTOM_CARDS})`)).toBeInTheDocument();
     });
 
     it('should add card when Enter is pressed', () => {
@@ -136,17 +137,21 @@ describe('CustomScaleModal', () => {
       const input = screen.getByRole('textbox', { name: /card value/i });
       const addButton = screen.getByRole('button', { name: /add card value/i });
 
-      // Add 12 cards
-      for (let i = 0; i < 12; i++) {
+      // Add maximum number of cards
+      for (let i = 0; i < MAX_CUSTOM_CARDS; i++) {
         fireEvent.input(input, { target: { value: `C${i}` } });
         fireEvent.click(addButton);
       }
 
-      expect(screen.getByText('Card Values (12/12)')).toBeInTheDocument();
+      expect(
+        screen.getByText(`Card Values (${MAX_CUSTOM_CARDS}/${MAX_CUSTOM_CARDS})`),
+      ).toBeInTheDocument();
 
       // Try to add one more
       fireEvent.input(input, { target: { value: 'NEW' } });
-      expect(screen.getByText(/maximum 12 cards allowed/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(new RegExp(`maximum ${MAX_CUSTOM_CARDS} cards allowed`, 'i')),
+      ).toBeInTheDocument();
       expect(addButton).toBeDisabled();
     });
   });
@@ -178,13 +183,13 @@ describe('CustomScaleModal', () => {
       fireEvent.input(input, { target: { value: 'M' } });
       fireEvent.click(addButton);
 
-      expect(screen.getByText('Card Values (2/12)')).toBeInTheDocument();
+      expect(screen.getByText(`Card Values (2/${MAX_CUSTOM_CARDS})`)).toBeInTheDocument();
 
       // Remove one
       const removeButton = screen.getByRole('button', { name: /remove xs/i });
       fireEvent.click(removeButton);
 
-      expect(screen.getByText('Card Values (1/12)')).toBeInTheDocument();
+      expect(screen.getByText(`Card Values (1/${MAX_CUSTOM_CARDS})`)).toBeInTheDocument();
     });
   });
 
