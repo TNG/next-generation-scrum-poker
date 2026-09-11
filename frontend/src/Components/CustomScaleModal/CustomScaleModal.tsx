@@ -135,16 +135,17 @@ export const CustomScaleModal: FunctionComponent<CustomScaleModalProps> = ({
   // Handle drop
   const handleDrop = (e: DragEvent, dropIndex: number) => {
     e.preventDefault();
-    if (!e.dataTransfer) return;
-    const dragIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
-
-    if (dragIndex === dropIndex) {
+    // The dragged index is tracked in state instead of read from the
+    // dataTransfer, so drops of external content are ignored. The dataTransfer
+    // payload set in handleDragStart only exists to keep browsers treating
+    // this as a valid drag.
+    if (draggedIndex === null || draggedIndex === dropIndex || draggedIndex >= cardValues.length) {
       setDraggedIndex(null);
       return;
     }
 
     const newValues = [...cardValues];
-    const [removed] = newValues.splice(dragIndex, 1);
+    const [removed] = newValues.splice(draggedIndex, 1);
     newValues.splice(dropIndex, 0, removed);
     setCardValues(newValues);
     setDraggedIndex(null);

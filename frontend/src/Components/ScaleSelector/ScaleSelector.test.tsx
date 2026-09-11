@@ -238,6 +238,93 @@ describe('The ScaleSelector', () => {
     expect(changeScaleButton).toHaveFocus();
   });
 
+  it('opens the custom scale modal when the Custom option is clicked', () => {
+    // given
+    const setScale = vi.fn();
+    const { getByRole, getByText } = render({ setScale });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    fireEvent.click(getByText('Custom'));
+
+    // then
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    assertDropdownIsClosed();
+    expect(setScale).not.toHaveBeenCalled();
+  });
+
+  it('opens the custom scale modal via keyboard selection', () => {
+    // given
+    const setScale = vi.fn();
+    const { getByRole } = render({ setScale });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    const dropdown = getDropdown();
+    fireEvent.keyDown(dropdown, { code: 'End' });
+    fireEvent.keyDown(dropdown, { code: 'Enter' });
+
+    // then
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    assertDropdownIsClosed();
+    expect(setScale).not.toHaveBeenCalled();
+  });
+
+  it('applies a saved custom scale and closes the modal', () => {
+    // given
+    const setScale = vi.fn();
+    const { getByRole } = render({ setScale });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    const dropdown = getDropdown();
+    fireEvent.keyDown(dropdown, { code: 'End' });
+    fireEvent.keyDown(dropdown, { code: 'Enter' });
+
+    const input = screen.getByRole('textbox', { name: /card value/i });
+    fireEvent.input(input, { target: { value: 'XS' } });
+    fireEvent.click(screen.getByRole('button', { name: /add card value/i }));
+    fireEvent.click(screen.getByRole('button', { name: /save scale/i }));
+
+    // then
+    expect(setScale).toHaveBeenCalledWith(['XS']);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('keeps the current scale when the custom scale modal is cancelled', () => {
+    // given
+    const setScale = vi.fn();
+    const { getByRole, getByText } = render({ setScale });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    fireEvent.click(getByText('Custom'));
+    fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
+
+    // then
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(setScale).not.toHaveBeenCalled();
+  });
+
+  it('highlights the Custom option on mouse-over', () => {
+    // given
+    const { getByRole, getByText } = render();
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    const dropdown = getDropdown();
+    fireEvent.mouseMove(getByText('Custom'));
+
+    // then
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
+
+    // when
+    fireEvent.mouseLeave(getByText('Custom'));
+
+    // then
+    expect(getSelectedOptions(dropdown)).toEqual([]);
+  });
+
   it('closes the popup without selection when enter is pressed without a selected item', () => {
     // given
     const setScale = vi.fn();
