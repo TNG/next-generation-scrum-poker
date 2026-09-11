@@ -46,6 +46,7 @@ describe('The ScaleSelector', () => {
       'Linear (0-6)',
       'Linear (0-10)',
       'Sizes',
+      'Custom',
     ]);
     expect(getSelectedOptions(dropdown)).toEqual(['Cohen']);
   });
@@ -78,7 +79,7 @@ describe('The ScaleSelector', () => {
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
   });
 
-  it('does not preselect a scale if the current scale does not match', () => {
+  it('preselects the Custom option when the current scale does not match a predefined scale', () => {
     // given
     const { getByRole } = render({
       state: { scale: SCALES.SIZES_SCALE.values.slice(0, -1) },
@@ -89,7 +90,19 @@ describe('The ScaleSelector', () => {
 
     // then
     const dropdown = getDropdown();
-    expect(getSelectedOptions(dropdown)).toEqual([]);
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
+  });
+
+  it('preselects the Custom option when a custom scale is active', () => {
+    // given
+    const { getByRole } = render({ state: { scale: ['XS', 'S', 'M', 'L'] } });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+
+    // then
+    const dropdown = getDropdown();
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
   });
 
   it('allows to select a scale', () => {
@@ -133,7 +146,13 @@ describe('The ScaleSelector', () => {
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
     fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
+
+    fireEvent.keyDown(dropdown, { code: 'ArrowDown' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
+
+    fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
 
     fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
@@ -151,12 +170,16 @@ describe('The ScaleSelector', () => {
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
 
     fireEvent.keyDown(dropdown, { code: 'PageDown' });
-    expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
 
     fireEvent.keyDown(dropdown, { code: 'Home' });
     expect(getSelectedOptions(dropdown)).toEqual(['Fibonacci']);
 
     fireEvent.keyDown(dropdown, { code: 'End' });
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
+
+    // Navigate to a predefined scale before testing Enter key
+    fireEvent.keyDown(dropdown, { code: 'ArrowUp' });
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
 
     expect(setScale).not.toHaveBeenCalled();
@@ -213,6 +236,93 @@ describe('The ScaleSelector', () => {
     expect(setScale).toHaveBeenCalledWith(SCALES.COHEN_SCALE.values);
     assertDropdownIsClosed();
     expect(changeScaleButton).toHaveFocus();
+  });
+
+  it('opens the custom scale modal when the Custom option is clicked', () => {
+    // given
+    const setScale = vi.fn();
+    const { getByRole, getByText } = render({ setScale });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    fireEvent.click(getByText('Custom'));
+
+    // then
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    assertDropdownIsClosed();
+    expect(setScale).not.toHaveBeenCalled();
+  });
+
+  it('opens the custom scale modal via keyboard selection', () => {
+    // given
+    const setScale = vi.fn();
+    const { getByRole } = render({ setScale });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    const dropdown = getDropdown();
+    fireEvent.keyDown(dropdown, { code: 'End' });
+    fireEvent.keyDown(dropdown, { code: 'Enter' });
+
+    // then
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    assertDropdownIsClosed();
+    expect(setScale).not.toHaveBeenCalled();
+  });
+
+  it('applies a saved custom scale and closes the modal', () => {
+    // given
+    const setScale = vi.fn();
+    const { getByRole } = render({ setScale });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    const dropdown = getDropdown();
+    fireEvent.keyDown(dropdown, { code: 'End' });
+    fireEvent.keyDown(dropdown, { code: 'Enter' });
+
+    const input = screen.getByRole('textbox', { name: /card value/i });
+    fireEvent.input(input, { target: { value: 'XS' } });
+    fireEvent.click(screen.getByRole('button', { name: /add card value/i }));
+    fireEvent.click(screen.getByRole('button', { name: /save scale/i }));
+
+    // then
+    expect(setScale).toHaveBeenCalledWith(['XS']);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('keeps the current scale when the custom scale modal is cancelled', () => {
+    // given
+    const setScale = vi.fn();
+    const { getByRole, getByText } = render({ setScale });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    fireEvent.click(getByText('Custom'));
+    fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
+
+    // then
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(setScale).not.toHaveBeenCalled();
+  });
+
+  it('highlights the Custom option on mouse-over', () => {
+    // given
+    const { getByRole, getByText } = render();
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    const dropdown = getDropdown();
+    fireEvent.mouseMove(getByText('Custom'));
+
+    // then
+    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
+
+    // when
+    fireEvent.mouseLeave(getByText('Custom'));
+
+    // then
+    expect(getSelectedOptions(dropdown)).toEqual([]);
   });
 
   it('closes the popup without selection when enter is pressed without a selected item', () => {
