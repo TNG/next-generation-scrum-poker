@@ -57,7 +57,7 @@
     "lint-staged": "^17.6.0",
     "nodemon": "^3.1.14",
     "npm-run-all2": "^9.0.3",
-    "preact": "^10.29.8",
+    "preact": "^11.0.0",
     "preact-chartist": "^0.15.3",
     "preact-render-to-string": "^6.8.0",
     "prettier": "^3.9.9",
