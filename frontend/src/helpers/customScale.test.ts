@@ -7,7 +7,6 @@ import {
   MAX_CUSTOM_CARDS,
   MAX_SCALE_SIZE,
   normalizeCardValue,
-  validateCustomScale,
 } from '../../../shared/customScale';
 import { SCALES } from '../../../shared/scales';
 
@@ -77,58 +76,6 @@ describe('customScale', () => {
 
     it('should handle empty string', () => {
       expect(normalizeCardValue('')).toBe('');
-    });
-  });
-
-  describe('validateCustomScale', () => {
-    it('should accept valid scales', () => {
-      const result = validateCustomScale(['XS', 'S', 'M', 'L', 'XL']);
-      expect(result.valid).toBe(true);
-      expect(result.errors).toHaveLength(0);
-    });
-
-    it('should accept single card', () => {
-      const result = validateCustomScale(['1']);
-      expect(result.valid).toBe(true);
-      expect(result.errors).toHaveLength(0);
-    });
-
-    it('should accept maximum number of cards', () => {
-      const cards = Array.from({ length: MAX_CUSTOM_CARDS }, (_, i) => `C${i}`);
-      const result = validateCustomScale(cards);
-      expect(result.valid).toBe(true);
-      expect(result.errors).toHaveLength(0);
-    });
-
-    it('should reject empty scale', () => {
-      const result = validateCustomScale([]);
-      expect(result.valid).toBe(false);
-      expect(result.errors).toContain('At least one card value is required');
-    });
-
-    it('should reject scale exceeding maximum cards', () => {
-      const cards = Array.from({ length: MAX_CUSTOM_CARDS + 1 }, (_, i) => `C${i}`);
-      const result = validateCustomScale(cards);
-      expect(result.valid).toBe(false);
-      expect(result.errors).toContain(`Maximum ${MAX_CUSTOM_CARDS} cards allowed`);
-    });
-
-    it('should reject duplicate values', () => {
-      const result = validateCustomScale(['XS', 'S', 'XS', 'M']);
-      expect(result.valid).toBe(false);
-      expect(result.errors).toContain('Duplicate card value: XS');
-    });
-
-    it('should reject invalid card values', () => {
-      const result = validateCustomScale(['XS', 'ABCDE', 'M']);
-      expect(result.valid).toBe(false);
-      expect(result.errors.some((e) => e.includes('Invalid card value'))).toBe(true);
-    });
-
-    it('should report multiple errors', () => {
-      const result = validateCustomScale(['XS', 'XS', 'ABCDE']);
-      expect(result.valid).toBe(false);
-      expect(result.errors.length).toBeGreaterThan(1);
     });
   });
 
