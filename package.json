@@ -44,7 +44,7 @@
     "@types/aws-lambda": "^8.10.164",
     "@types/node": "^22.20.5",
     "@types/ws": "^8.18.2",
-    "chartist": "^1.5.0",
+    "chartist": "^2.2.0",
     "classnames": "^2.5.1",
     "dequal": "^2.0.3",
     "eslint": "^10.13.0",
