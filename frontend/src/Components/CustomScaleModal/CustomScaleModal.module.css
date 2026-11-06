@@ -1,0 +1,344 @@
+/* Shared focus-ring outline for interactive elements that need to
+   restore the focus indicator removed by the global `*:focus { outline: none; }`. */
+.focusRing:focus {
+  outline: 0.125rem solid var(--primary-light);
+  outline-offset: 0.125rem;
+}
+
+/* Backdrop */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+/* Modal Dialog */
+.modal {
+  background: var(--background);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  max-width: 31.25rem;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow:
+    0 0.25rem 0.375rem rgba(0, 0, 0, 0.1),
+    0 0.125rem 0.25rem rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 0.125rem solid var(--tertiary);
+}
+
+.title {
+  composes: heading from '../../styles.module.css';
+  text-align: left;
+  margin: 0;
+}
+
+.closeButton {
+  composes: focusRing;
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text-primary);
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0.2rem;
+  transition: background-color 0.2s;
+}
+
+.closeButton:hover {
+  background-color: var(--secondary);
+}
+
+/* Content */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputSection,
+.cardListSection,
+.specialCardsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input {
+  flex: 1;
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--warning);
+}
+
+.addButton {
+  composes: button from '../../styles.module.css';
+  composes: focusRing;
+  padding: 0 0.75rem;
+  white-space: nowrap;
+}
+
+.inputHint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 1.25rem;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--tertiary);
+}
+
+.error {
+  font-size: 0.75rem;
+  color: var(--warning);
+  font-weight: 500;
+}
+
+/* Card List */
+.cardListHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardList {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-height: 12.5rem;
+  overflow-y: auto;
+}
+
+.cardItem {
+  composes: focusRing;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--background);
+  border: 0.125rem solid var(--primary);
+  border-radius: var(--border-radius);
+  cursor: move;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+}
+
+.cardItem:hover {
+  background: var(--secondary);
+}
+
+.cardItem.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+.dragHandle {
+  color: var(--primary);
+  font-size: 1.2rem;
+  cursor: grab;
+  user-select: none;
+}
+
+.cardItem:active .dragHandle {
+  cursor: grabbing;
+}
+
+.cardValue {
+  flex: 1;
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.removeButton {
+  composes: focusRing;
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--tertiary);
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0.2rem;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.removeButton:hover {
+  background-color: hsl(0, 100%, 94%);
+  color: var(--warning);
+}
+
+.emptyState {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--tertiary);
+  font-style: italic;
+}
+
+/* Special Cards */
+.specialCardButtons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.specialCardButton {
+  composes: focusRing;
+  flex: 1;
+  min-width: 6.25rem;
+  padding: 0.75rem 1rem;
+  border: 0.125rem solid var(--primary);
+  background: var(--background);
+  color: var(--primary);
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.specialCardButton:hover {
+  background: var(--secondary);
+  border-color: var(--primary-light);
+}
+
+.specialCardButton.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-secondary);
+}
+
+.specialCardIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.specialCardLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 0.125rem solid var(--tertiary);
+}
+
+.cancelButton,
+.saveButton {
+  padding: 0 1.25rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.cancelButton {
+  composes: focusRing;
+  background: transparent;
+  border: 0.125rem solid var(--primary);
+  color: var(--primary);
+}
+
+.cancelButton:hover {
+  background: var(--secondary);
+}
+
+.saveButton {
+  composes: button from '../../styles.module.css';
+  composes: focusRing;
+}
+
+/* Screen reader only */
+.srOnly {
+  composes: srOnly from '../../styles.module.css';
+}
+
+/* Responsive + touch-friendly mobile */
+@media (max-width: 600px) {
+  .modal {
+    width: 95%;
+    padding: 1rem;
+    max-height: 90vh;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .specialCardButtons {
+    flex-direction: column;
+  }
+
+  .specialCardButton {
+    flex-direction: row;
+    justify-content: flex-start;
+    min-width: auto;
+  }
+
+  .footer {
+    flex-direction: column-reverse;
+  }
+
+  .cancelButton,
+  .saveButton {
+    width: 100%;
+  }
+
+  .cardItem {
+    padding: 0.75rem;
+    touch-action: none;
+  }
+
+  .removeButton,
+  .closeButton {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+
+  .specialCardButton {
+    padding: 1rem;
+  }
+}
