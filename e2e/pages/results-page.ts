@@ -1,11 +1,15 @@
-import { expect, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 
 export class ResultsPage {
-  readonly results = this.page.getByRole('table').locator('tbody tr');
-  readonly resetButton = this.page.getByRole('button', { name: 'Reset votes' });
-  readonly heading = this.page.getByRole('heading');
+  readonly results: Locator;
+  readonly resetButton: Locator;
+  readonly heading: Locator;
 
-  constructor(readonly page: Page) {}
+  constructor(readonly page: Page) {
+    this.results = page.getByRole('table').locator('tbody tr');
+    this.resetButton = page.getByRole('button', { name: 'Reset votes' });
+    this.heading = page.getByRole('heading');
+  }
 
   async assertResultsAre(results: { name: string; result: string; pending: boolean }[]) {
     await Promise.all(

@@ -1,11 +1,15 @@
-import { expect, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 
 export class LoginPage {
-  readonly nameInput = this.page.getByLabel('Name:');
-  readonly loginButton = this.page.getByRole('button', { name: 'Login' });
-  readonly alertText = this.page.getByRole('alert');
+  readonly nameInput: Locator;
+  readonly loginButton: Locator;
+  readonly alertText: Locator;
 
-  constructor(readonly page: Page) {}
+  constructor(readonly page: Page) {
+    this.nameInput = page.getByLabel('Name:');
+    this.loginButton = page.getByRole('button', { name: 'Login' });
+    this.alertText = page.getByRole('alert');
+  }
 
   async goto() {
     await this.page.goto('/');
