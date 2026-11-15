@@ -14,6 +14,12 @@ This will spin up the database via `docker` and launch the local API gateway.
 
 In parallel, it will use [Vite](https://vitejs.dev) to serve your app on [http://localhost:5175](http://localhost:5175). Vite will automatically update the browser via hot module reloading on save while providing extremely fast rebuilds.
 
+### TypeScript
+
+There are two compilers installed. `npx tsc` runs TypeScript 7, while `node_modules/typescript` is an alias for `@typescript/typescript6`: TypeScript 7 ships no compiler API, and `typescript-eslint`, `@rollup/plugin-typescript` and `ts-node` all import it. Keep the `typescript` entry aliased to the 6.x package; the native compiler comes from `@typescript/native`.
+
+`npm run lint:ci` and `npm run typecheck` run the checks from CI without modifying files.
+
 ## Production Build
 
 To generate a production build for the frontend, run
