@@ -1,6 +1,5 @@
-import { createContext } from 'preact';
+import { createContext, JSX } from 'preact';
 import { useCallback, useLayoutEffect, useRef, useState } from 'preact/hooks';
-import { JSXInternal } from 'preact/src/jsx';
 import { doNothing } from '../../helpers/helpers';
 import './ColorModeProvider.module.css';
 
@@ -19,7 +18,7 @@ export const ColorMode = createContext<ColorModeContext>({
 // During server-side-rendering, window cannot be accessed
 const isSSR = typeof window === 'undefined';
 
-export const ColorModeProvider = ({ children }: { children: JSXInternal.Element }) => {
+export const ColorModeProvider = ({ children }: { children: JSX.Element }) => {
   // We use a ref to track the initial render to avoid a white flash when using dark mode;
   // useState would cause additional unnecessary rerendering
   const didMount = useRef(false);
