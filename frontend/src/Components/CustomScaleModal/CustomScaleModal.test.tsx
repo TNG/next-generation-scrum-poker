@@ -1,4 +1,4 @@
-import { createEvent, fireEvent, render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen } from '@testing-library/preact';
 import { describe, expect, it, vi } from 'vitest';
 import { MAX_CUSTOM_CARDS } from '../../../../shared/customScale';
 import { CustomScaleModal } from './CustomScaleModal';
@@ -330,45 +330,6 @@ describe('CustomScaleModal', () => {
 
       expect(onClose).toHaveBeenCalled();
     });
-
-    it('should call onClose when close button is clicked', () => {
-      const onClose = vi.fn();
-      render(<CustomScaleModal {...defaultProps} onClose={onClose} />);
-      const closeButton = screen.getByRole('button', { name: /close modal/i });
-
-      fireEvent.click(closeButton);
-
-      expect(onClose).toHaveBeenCalled();
-    });
-
-    it('should call onClose when Escape is pressed', () => {
-      const onClose = vi.fn();
-      render(<CustomScaleModal {...defaultProps} onClose={onClose} />);
-      const dialog = screen.getByRole('dialog');
-
-      fireEvent.keyDown(dialog, { key: 'Escape' });
-
-      expect(onClose).toHaveBeenCalled();
-    });
-
-    it('should call onClose when the backdrop is clicked', () => {
-      const onClose = vi.fn();
-      render(<CustomScaleModal {...defaultProps} onClose={onClose} />);
-      const dialog = screen.getByRole('dialog');
-
-      fireEvent.click(dialog);
-
-      expect(onClose).toHaveBeenCalled();
-    });
-
-    it('should not call onClose when clicking inside the modal', () => {
-      const onClose = vi.fn();
-      render(<CustomScaleModal {...defaultProps} onClose={onClose} />);
-
-      fireEvent.click(screen.getByText('Custom Scale'));
-
-      expect(onClose).not.toHaveBeenCalled();
-    });
   });
 
   describe('Drag and Drop Reordering', () => {
@@ -469,51 +430,6 @@ describe('CustomScaleModal', () => {
     });
   });
 
-  describe('Focus Trap', () => {
-    // The Save button is disabled until a card is added, which would change
-    // which element is the last focusable one
-    const addCard = () => {
-      const input = screen.getByRole('textbox', { name: /card value/i });
-      fireEvent.input(input, { target: { value: 'A' } });
-      fireEvent.click(screen.getByRole('button', { name: /add card value/i }));
-    };
-
-    it('should move focus to the first element when Tab is pressed on the last element', () => {
-      render(<CustomScaleModal {...defaultProps} />);
-      addCard();
-      const saveButton = screen.getByRole('button', { name: /save scale/i });
-      saveButton.focus();
-
-      fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Tab' });
-
-      expect(screen.getByRole('button', { name: 'Close modal' })).toHaveFocus();
-    });
-
-    it('should move focus to the last element when Shift+Tab is pressed on the first element', () => {
-      render(<CustomScaleModal {...defaultProps} />);
-      addCard();
-      const closeButton = screen.getByRole('button', { name: 'Close modal' });
-      closeButton.focus();
-
-      fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Tab', shiftKey: true });
-
-      expect(screen.getByRole('button', { name: /save scale/i })).toHaveFocus();
-    });
-
-    it('should not intercept Tab while focus is on a middle element', () => {
-      render(<CustomScaleModal {...defaultProps} />);
-      const dialog = screen.getByRole('dialog');
-      const input = screen.getByRole('textbox', { name: /card value/i });
-      input.focus();
-
-      const tabEvent = createEvent.keyDown(dialog, { key: 'Tab' });
-      fireEvent(dialog, tabEvent);
-
-      expect(tabEvent.defaultPrevented).toBe(false);
-      expect(input).toHaveFocus();
-    });
-  });
-
   describe('Keyboard Navigation', () => {
     it('should reorder cards with arrow keys', () => {
       render(<CustomScaleModal {...defaultProps} />);
@@ -558,6 +474,17 @@ describe('CustomScaleModal', () => {
       const updatedItems = screen.getAllByRole('listitem');
       expect(updatedItems[0].textContent).toContain('B');
       expect(updatedItems[1].textContent).toContain('A');
+    });
+
+    it('should keep focus on the moved card after reordering', async () => {
+      render(<CustomScaleModal {...defaultProps} initialScale={['A', 'B']} />);
+      const [firstCard] = screen.getAllByRole('listitem');
+      firstCard.focus();
+
+      fireEvent.keyDown(firstCard, { key: 'ArrowDown' });
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
+      expect(screen.getAllByRole('listitem')[1]).toHaveFocus();
     });
 
     it('should not move first card up', () => {
@@ -615,14 +542,6 @@ describe('CustomScaleModal', () => {
   });
 
   describe('Accessibility', () => {
-    it('should have proper ARIA attributes', () => {
-      render(<CustomScaleModal {...defaultProps} />);
-      const dialog = screen.getByRole('dialog');
-
-      expect(dialog).toHaveAttribute('aria-modal', 'true');
-      expect(dialog).toHaveAttribute('aria-labelledby', 'modal-title');
-    });
-
     it('should mark input as invalid when there is an error', () => {
       render(<CustomScaleModal {...defaultProps} />);
       const input = screen.getByRole('textbox', { name: /card value/i });
@@ -630,7 +549,7 @@ describe('CustomScaleModal', () => {
       fireEvent.input(input, { target: { value: 'A-B' } });
 
       expect(input).toHaveAttribute('aria-invalid', 'true');
-      expect(input).toHaveAttribute('aria-describedby', 'input-error');
+      expect(input).toHaveAccessibleDescription('Only alphanumeric characters allowed (A-Z, 0-9)');
     });
 
     it('should have proper labels for all interactive elements', () => {

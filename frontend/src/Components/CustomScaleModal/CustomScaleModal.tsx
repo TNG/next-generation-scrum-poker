@@ -1,14 +1,20 @@
 import { FunctionComponent } from 'preact';
-import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 import { CardValue, VOTE_COFFEE } from '../../../../shared/cards';
-import {
-  buildCustomScale,
-  getAddCardError,
-  isValidCustomCardValue,
-  MAX_CUSTOM_CARDS,
-  normalizeCardValue,
-} from '../../../../shared/customScale';
+import { buildCustomScale, isValidCustomCardValue } from '../../../../shared/customScale';
+import sharedClasses from '../../styles.module.css';
+import { Modal } from '../Modal/Modal';
+import { CardValueInput } from './CardValueInput';
+import { CardValueList } from './CardValueList';
 import classes from './CustomScaleModal.module.css';
+
+const SPECIAL_CARD_TOGGLES = [
+  { key: 'infinite', icon: '∞', label: 'Infinite' },
+  { key: 'question', icon: '?', label: 'Question' },
+  { key: 'coffee', icon: '☕', label: 'Coffee' },
+] as const;
+
+type SpecialCardKey = (typeof SPECIAL_CARD_TOGGLES)[number]['key'];
 
 interface CustomScaleModalProps {
   initialScale: CardValue[];
@@ -24,344 +30,59 @@ export const CustomScaleModal: FunctionComponent<CustomScaleModalProps> = ({
   const [cardValues, setCardValues] = useState<string[]>(() =>
     initialScale.filter(isValidCustomCardValue),
   );
-  const [inputValue, setInputValue] = useState('');
-  const [specialCards, setSpecialCards] = useState(() => ({
+  const [specialCards, setSpecialCards] = useState<Record<SpecialCardKey, boolean>>(() => ({
     infinite: initialScale.includes('∞'),
     question: initialScale.includes('?'),
     coffee: initialScale.includes(VOTE_COFFEE),
   }));
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
-  const modalRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const firstFocusableRef = useRef<HTMLButtonElement>(null);
-  const listRef = useRef<HTMLUListElement>(null);
-
-  // Calculate validation error for current input
-  const inputError = useMemo(() => {
-    return getAddCardError(inputValue, cardValues);
-  }, [inputValue, cardValues]);
-
-  // Build final scale including special cards
-  const finalScale = useMemo(() => {
-    return buildCustomScale(cardValues, specialCards);
-  }, [cardValues, specialCards]);
-
-  // Can save if we have at least one card value
   const canSave = cardValues.length > 0;
 
-  // Can add if input is valid
-  const canAdd = inputValue.length > 0 && !inputError;
-
-  useEffect(() => {
-    firstFocusableRef.current?.focus();
-  }, []);
-
-  // Handle keyboard events
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose();
-    } else if (e.key === 'Tab' && modalRef.current) {
-      const focusableElements = modalRef.current.querySelectorAll<HTMLElement>(
-        'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
-      );
-
-      if (focusableElements.length === 0) return;
-
-      const first = focusableElements[0];
-      const last = focusableElements[focusableElements.length - 1];
-
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-  };
-
-  // Handle input change with normalization
-  const handleInputChange = (e: Event) => {
-    const value = (e.target as HTMLInputElement).value;
-    const normalized = normalizeCardValue(value);
-    setInputValue(normalized);
-  };
-
-  // Handle adding a card
-  const handleAddCard = () => {
-    if (canAdd) {
-      setCardValues([...cardValues, inputValue]);
-      setInputValue('');
-      inputRef.current?.focus();
-    }
-  };
-
-  // Handle Enter key in input
-  const handleInputKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleAddCard();
-    }
-  };
-
-  // Handle removing a card
-  const handleRemoveCard = (index: number) => {
-    setCardValues(cardValues.filter((_, i) => i !== index));
-  };
-
-  // Handle drag start
-  const handleDragStart = (e: DragEvent, index: number) => {
-    setDraggedIndex(index);
-    if (e.dataTransfer) {
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', index.toString());
-    }
-  };
-
-  // Handle drag over
-  const handleDragOver = (e: DragEvent) => {
-    e.preventDefault();
-    if (e.dataTransfer) {
-      e.dataTransfer.dropEffect = 'move';
-    }
-  };
-
-  // Handle drop
-  const handleDrop = (e: DragEvent, dropIndex: number) => {
-    e.preventDefault();
-    // The dragged index is tracked in state instead of read from the
-    // dataTransfer, so drops of external content are ignored. The dataTransfer
-    // payload set in handleDragStart only exists to keep browsers treating
-    // this as a valid drag.
-    if (draggedIndex === null || draggedIndex === dropIndex || draggedIndex >= cardValues.length) {
-      setDraggedIndex(null);
-      return;
-    }
-
-    const newValues = [...cardValues];
-    const [removed] = newValues.splice(draggedIndex, 1);
-    newValues.splice(dropIndex, 0, removed);
-    setCardValues(newValues);
-    setDraggedIndex(null);
-  };
-
-  // Handle drag end
-  const handleDragEnd = () => {
-    setDraggedIndex(null);
-  };
-
-  // Handle keyboard reordering
-  const handleCardKeyDown = (e: KeyboardEvent, index: number) => {
-    // Ignore keys bubbling up from the nested remove button
-    if (e.target !== e.currentTarget) {
-      return;
-    }
-    if (e.key === 'ArrowUp' && index > 0) {
-      e.preventDefault();
-      const newValues = [...cardValues];
-      [newValues[index - 1], newValues[index]] = [newValues[index], newValues[index - 1]];
-      setCardValues(newValues);
-      refocusCard(index - 1);
-    } else if (e.key === 'ArrowDown' && index < cardValues.length - 1) {
-      e.preventDefault();
-      const newValues = [...cardValues];
-      [newValues[index], newValues[index + 1]] = [newValues[index + 1], newValues[index]];
-      setCardValues(newValues);
-      refocusCard(index + 1);
-    }
-  };
-
-  // Re-focus the moved card at its new position after the DOM updates.
-  // Reordering via key-based reconciliation can drop focus when a node is
-  // removed and reinserted rather than simply moved.
-  const refocusCard = (newIndex: number) => {
-    requestAnimationFrame(() => {
-      (listRef.current?.children[newIndex] as HTMLElement | undefined)?.focus();
-    });
-  };
-
-  // Handle special card toggle
-  const toggleSpecialCard = (card: 'infinite' | 'question' | 'coffee') => {
+  const toggleSpecialCard = (card: SpecialCardKey) => {
     setSpecialCards({ ...specialCards, [card]: !specialCards[card] });
   };
 
-  // Handle save
   const handleSave = () => {
     if (canSave) {
-      onSave(finalScale);
-    }
-  };
-
-  // Handle backdrop click
-  const handleBackdropClick = (e: MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
+      onSave(buildCustomScale(cardValues, specialCards));
     }
   };
 
   return (
-    <div
-      class={classes.backdrop}
-      onClick={handleBackdropClick}
-      onKeyDown={handleKeyDown}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
-      ref={modalRef}
-    >
-      <div class={classes.modal}>
-        <div class={classes.header}>
-          <h2 id="modal-title" class={classes.title}>
-            Custom Scale
-          </h2>
-          <button
-            class={classes.closeButton}
-            onClick={onClose}
-            aria-label="Close modal"
-            ref={firstFocusableRef}
-          >
-            ×
-          </button>
-        </div>
-
-        <div class={classes.content}>
-          {/* Input Section */}
-          <div class={classes.inputSection}>
-            <label htmlFor="card-input" class={classes.label}>
-              Card Value
-              <span class={classes.srOnly}>(Maximum 4 alphanumeric characters)</span>
-            </label>
-            <div class={classes.inputGroup}>
-              <input
-                id="card-input"
-                type="text"
-                class={classes.input}
-                value={inputValue}
-                onInput={handleInputChange}
-                onKeyDown={handleInputKeyDown}
-                aria-invalid={!!inputError}
-                aria-describedby={inputError ? 'input-error' : 'input-hint'}
-                maxLength={4}
-                placeholder="e.g., XS, M, 1"
-                ref={inputRef}
-              />
+    <Modal title="Custom Scale" onClose={onClose}>
+      <div class={classes.content}>
+        <CardValueInput
+          existingValues={cardValues}
+          onAdd={(value) => setCardValues([...cardValues, value])}
+        />
+        <CardValueList values={cardValues} onChange={setCardValues} />
+        <div class={classes.specialCardsSection}>
+          <span class={sharedClasses.label}>Special Cards</span>
+          <div class={classes.specialCardButtons}>
+            {SPECIAL_CARD_TOGGLES.map(({ key, icon, label }) => (
               <button
-                class={classes.addButton}
-                onClick={handleAddCard}
-                disabled={!canAdd}
-                aria-label="Add card value"
+                key={key}
+                class={`${classes.specialCardButton} ${specialCards[key] ? classes.active : ''}`}
+                onClick={() => toggleSpecialCard(key)}
+                aria-pressed={specialCards[key]}
+                aria-label={`Toggle ${label.toLowerCase()} card`}
               >
-                Add
+                <span class={classes.specialCardIcon}>{icon}</span>
+                <span class={classes.specialCardLabel}>{label}</span>
               </button>
-            </div>
-            <div class={classes.inputHint}>
-              <span id="input-hint" class={classes.hint}>
-                {inputValue.length}/4 characters
-              </span>
-              {inputError && (
-                <span id="input-error" role="alert" class={classes.error}>
-                  {inputError}
-                </span>
-              )}
-            </div>
+            ))}
           </div>
-
-          {/* Card List Section */}
-          <div class={classes.cardListSection}>
-            <div class={classes.cardListHeader}>
-              <span class={classes.label}>
-                Card Values ({cardValues.length}/{MAX_CUSTOM_CARDS})
-              </span>
-              {cardValues.length > 0 && (
-                <span class={classes.hint}>Drag to reorder or use arrow keys</span>
-              )}
-            </div>
-            {cardValues.length === 0 ? (
-              <div class={classes.emptyState}>No cards added yet</div>
-            ) : (
-              <ul
-                class={classes.cardList}
-                role="list"
-                aria-label="Custom card values"
-                ref={listRef}
-              >
-                {cardValues.map((value, index) => (
-                  <li
-                    key={value}
-                    class={`${classes.cardItem} ${draggedIndex === index ? classes.dragging : ''}`}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, index)}
-                    onDragOver={handleDragOver}
-                    onDrop={(e) => handleDrop(e, index)}
-                    onDragEnd={handleDragEnd}
-                    onKeyDown={(e) => handleCardKeyDown(e, index)}
-                    tabIndex={0}
-                    role="listitem"
-                    aria-label={`Card value ${value}, position ${index + 1} of ${cardValues.length}. Press arrow keys to reorder.`}
-                  >
-                    <span class={classes.dragHandle} aria-hidden="true">
-                      ☰
-                    </span>
-                    <span class={classes.cardValue}>{value}</span>
-                    <button
-                      class={classes.removeButton}
-                      onClick={() => handleRemoveCard(index)}
-                      aria-label={`Remove ${value}`}
-                    >
-                      ×
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* Special Cards Section */}
-          <div class={classes.specialCardsSection}>
-            <span class={classes.label}>Special Cards</span>
-            <div class={classes.specialCardButtons}>
-              <button
-                class={`${classes.specialCardButton} ${specialCards.infinite ? classes.active : ''}`}
-                onClick={() => toggleSpecialCard('infinite')}
-                aria-pressed={specialCards.infinite}
-                aria-label="Toggle infinite card"
-              >
-                <span class={classes.specialCardIcon}>∞</span>
-                <span class={classes.specialCardLabel}>Infinite</span>
-              </button>
-              <button
-                class={`${classes.specialCardButton} ${specialCards.question ? classes.active : ''}`}
-                onClick={() => toggleSpecialCard('question')}
-                aria-pressed={specialCards.question}
-                aria-label="Toggle question card"
-              >
-                <span class={classes.specialCardIcon}>?</span>
-                <span class={classes.specialCardLabel}>Question</span>
-              </button>
-              <button
-                class={`${classes.specialCardButton} ${specialCards.coffee ? classes.active : ''}`}
-                onClick={() => toggleSpecialCard('coffee')}
-                aria-pressed={specialCards.coffee}
-                aria-label="Toggle coffee card"
-              >
-                <span class={classes.specialCardIcon}>☕</span>
-                <span class={classes.specialCardLabel}>Coffee</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div class={classes.footer}>
-          <button class={classes.cancelButton} onClick={onClose}>
-            Cancel
-          </button>
-          <button class={classes.saveButton} onClick={handleSave} disabled={!canSave}>
-            Save Scale
-          </button>
         </div>
       </div>
-    </div>
+
+      <div class={classes.footer}>
+        <button class={classes.cancelButton} onClick={onClose}>
+          Cancel
+        </button>
+        <button class={classes.saveButton} onClick={handleSave} disabled={!canSave}>
+          Save Scale
+        </button>
+      </div>
+    </Modal>
   );
 };

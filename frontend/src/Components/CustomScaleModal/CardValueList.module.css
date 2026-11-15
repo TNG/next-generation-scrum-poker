@@ -1,0 +1,104 @@
+.cardListSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cardListHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardList {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-height: 12.5rem;
+  overflow-y: auto;
+}
+
+.cardItem {
+  composes: focusRing from '../../styles.module.css';
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--background);
+  border: 0.125rem solid var(--primary);
+  border-radius: var(--border-radius);
+  cursor: move;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+}
+
+.cardItem:hover {
+  background: var(--secondary);
+}
+
+.cardItem.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+.dragHandle {
+  color: var(--primary);
+  font-size: 1.2rem;
+  cursor: grab;
+  user-select: none;
+}
+
+.cardItem:active .dragHandle {
+  cursor: grabbing;
+}
+
+.cardValue {
+  flex: 1;
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.removeButton {
+  composes: focusRing from '../../styles.module.css';
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--tertiary);
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0.2rem;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.removeButton:hover {
+  background-color: hsl(0, 100%, 94%);
+  color: var(--warning);
+}
+
+.emptyState {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--tertiary);
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .cardItem {
+    padding: 0.75rem;
+  }
+
+  .removeButton {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+}

@@ -69,3 +69,19 @@
   white-space: nowrap;
   border-width: 0;
 }
+
+.focusRing:focus {
+  outline: 0.125rem solid var(--primary-light);
+  outline-offset: 0.125rem;
+}
+
+.label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--tertiary);
+}
