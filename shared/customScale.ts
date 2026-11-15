@@ -102,7 +102,8 @@ export function isValidScale(scale: unknown): scale is CardValue[] {
   // Accept any predefined scale by value-set equality. Values must be
   // compared element-wise: joining with a separator would let a single
   // string containing the separator masquerade as a predefined scale.
-  const sortedScale = (scale as string[]).slice().sort();
+  const scaleValues = scale as string[];
+  const sortedScale = scaleValues.slice().sort();
   const matchedPredefined = Object.values(SCALES).some(({ values }) => {
     const sortedValues = [...values].sort();
     return (
@@ -113,12 +114,13 @@ export function isValidScale(scale: unknown): scale is CardValue[] {
   if (matchedPredefined) return true;
   // Otherwise it must be a valid custom scale: each entry is either a valid
   // custom card value (alphanumeric, 1-4 chars) or one of the special cards
-  // (∞, ?, coffee), with no duplicates.
+  // (∞, ?, coffee), with no duplicates and at most MAX_CUSTOM_CARDS custom
+  // values, which is the limit the editor enforces.
   const seen = new Set<string>();
-  for (const value of scale as string[]) {
+  for (const value of scaleValues) {
     if (!isValidCustomCardValue(value) && !SPECIAL_CARDS.has(value)) return false;
     if (seen.has(value)) return false;
     seen.add(value);
   }
-  return true;
+  return scaleValues.filter((value) => !SPECIAL_CARDS.has(value)).length <= MAX_CUSTOM_CARDS;
 }

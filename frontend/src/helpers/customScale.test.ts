@@ -218,6 +218,11 @@ describe('customScale', () => {
       expect(isValidScale([])).toBe(false);
     });
 
+    it('should reject more custom cards than the limit allows', () => {
+      const scale = Array.from({ length: MAX_CUSTOM_CARDS + 1 }, (_, i) => `C${i}`);
+      expect(isValidScale(scale)).toBe(false);
+    });
+
     it('should reject a scale exceeding the maximum size', () => {
       const scale = Array.from({ length: MAX_SCALE_SIZE + 1 }, (_, i) => `C${i}`);
       expect(isValidScale(scale)).toBe(false);
