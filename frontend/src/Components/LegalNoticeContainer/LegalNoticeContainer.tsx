@@ -1,5 +1,5 @@
+import { TargetedMouseEvent } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { JSXInternal } from 'preact/src/jsx';
 import { LegalNotice } from '../LegalNotice/LegalNotice';
 import classes from './LegalNoticeContainer.module.css';
 
@@ -8,7 +8,7 @@ const MIN_VISIBLE_INITIAL_HEIGHT = 250;
 export const LegalNoticeContainer = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
-  const expand = (event: JSXInternal.TargetedMouseEvent<HTMLAnchorElement>) => {
+  const expand = (event: TargetedMouseEvent<HTMLAnchorElement>) => {
     setIsExpanded(!isExpanded);
     event.preventDefault();
   };

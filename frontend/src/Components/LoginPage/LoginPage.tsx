@@ -1,4 +1,3 @@
-import { RefObject } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { generateId } from '../../../../shared/generateId';
 import {
@@ -21,7 +20,7 @@ import classes from './LoginPage.module.css';
 const isSSR = typeof window === 'undefined';
 
 export const LoginPage = connectToWebSocket(({ socket }) => {
-  const firstInputRef: RefObject<HTMLInputElement> = useRef(null);
+  const firstInputRef = useRef<HTMLInputElement>(null);
   const [user, setUser] = useState(socket.loginData.user);
   const [sessionId, setSessionId] = useState(getInitialSessionId);
 
