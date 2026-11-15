@@ -597,6 +597,21 @@ describe('CustomScaleModal', () => {
       const updatedItems = screen.getAllByRole('listitem');
       expect(updatedItems[1].textContent).toContain('B');
     });
+    it('should not reorder or steal focus when arrow keys are pressed on the remove button', async () => {
+      render(<CustomScaleModal {...defaultProps} initialScale={['A', 'B']} />);
+      const removeButton = screen.getByRole('button', { name: 'Remove A' });
+      removeButton.focus();
+
+      fireEvent.keyDown(removeButton, { key: 'ArrowDown' });
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
+      expect(
+        screen
+          .getAllByRole('button', { name: /^Remove / })
+          .map((button) => button.getAttribute('aria-label')),
+      ).toEqual(['Remove A', 'Remove B']);
+      expect(removeButton).toHaveFocus();
+    });
   });
 
   describe('Accessibility', () => {

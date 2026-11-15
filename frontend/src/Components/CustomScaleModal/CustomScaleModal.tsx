@@ -153,6 +153,10 @@ export const CustomScaleModal: FunctionComponent<CustomScaleModalProps> = ({
 
   // Handle keyboard reordering
   const handleCardKeyDown = (e: KeyboardEvent, index: number) => {
+    // Ignore keys bubbling up from the nested remove button
+    if (e.target !== e.currentTarget) {
+      return;
+    }
     if (e.key === 'ArrowUp' && index > 0) {
       e.preventDefault();
       const newValues = [...cardValues];
