@@ -23,6 +23,11 @@
       "matchPackageNames": ["@types/node"],
       "matchUpdateTypes": ["major", "minor"],
       "enabled": false
+    },
+    {
+      "matchDepNames": ["typescript"],
+      "allowedVersions": "<7",
+      "description": "This entry is an npm alias for @typescript/typescript6: TypeScript 7 ships no compiler API, and typescript-eslint, @rollup/plugin-typescript and ts-node all need the 6.x API in node_modules/typescript. The TypeScript 7 compiler is installed as @typescript/native instead, so this entry must never move to 7.x."
     }
   ],
   "automergeType": "pr",

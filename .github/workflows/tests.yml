@@ -24,6 +24,25 @@ jobs:
         run: npm test
         env:
           CI: true
+  checks:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    name: Lint, Typecheck & Build
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v7
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26.13.1
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint:ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
   e2e:
     timeout-minutes: 30
     runs-on: ubuntu-latest
