@@ -1,16 +1,24 @@
-import { expect, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { CardValue } from '../../shared/cards';
 
 export class CardPage {
-  readonly revealButton = this.page.getByLabel('reveal votes');
-  readonly userName = this.page.getByText(/^Name: .*/);
-  readonly votes = this.page.getByRole('table').locator('tbody tr');
-  readonly heading = this.page.getByRole('heading');
-  readonly cards = this.page.getByLabel('selectable cards');
-  readonly scaleSelectorButton = this.page.getByRole('button', { name: 'Change Scale' });
-  readonly scaleSelectorDropdown = this.page.getByRole('listbox', { name: 'scales' });
+  readonly revealButton: Locator;
+  readonly userName: Locator;
+  readonly votes: Locator;
+  readonly heading: Locator;
+  readonly cards: Locator;
+  readonly scaleSelectorButton: Locator;
+  readonly scaleSelectorDropdown: Locator;
 
-  constructor(readonly page: Page) {}
+  constructor(readonly page: Page) {
+    this.revealButton = page.getByLabel('reveal votes');
+    this.userName = page.getByText(/^Name: .*/);
+    this.votes = page.getByRole('table').locator('tbody tr');
+    this.heading = page.getByRole('heading');
+    this.cards = page.getByLabel('selectable cards');
+    this.scaleSelectorButton = page.getByRole('button', { name: 'Change Scale' });
+    this.scaleSelectorDropdown = page.getByRole('listbox', { name: 'scales' });
+  }
 
   async assertCardsAre(cards: CardValue[]) {
     await Promise.all(
