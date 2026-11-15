@@ -329,7 +329,6 @@
 
   .cardItem {
     padding: 0.75rem;
-    touch-action: none;
   }
 
   .removeButton,
