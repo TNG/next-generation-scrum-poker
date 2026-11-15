@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "module": "commonjs",
-    "moduleResolution": "Node",
+    "module": "node16",
+    "moduleResolution": "node16",
     "outDir": "build",
+    "rootDir": "../..",
     "sourceMap": false,
     "strict": true,
-    "target": "es2019"
+    "target": "es2019",
+    "types": ["node"]
   },
   "include": ["**/*", "../../shared/**/*"],
   "exclude": ["**/*.test.ts"]
