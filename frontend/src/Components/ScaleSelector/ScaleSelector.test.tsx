@@ -1,5 +1,6 @@
 import { createEvent, fireEvent, queryAllByRole, screen } from '@testing-library/preact';
 import { VOTE_NOTE_VOTED } from '../../../../shared/cards';
+import { MAX_CUSTOM_CARDS } from '../../../../shared/customScale';
 import { SCALES } from '../../../../shared/scales';
 import { getRenderWithWebSocket } from '../../test-helpers/renderWithWebSocket';
 import { ScaleSelector } from './ScaleSelector';
@@ -77,20 +78,6 @@ describe('The ScaleSelector', () => {
     // then
     const dropdown = getDropdown();
     expect(getSelectedOptions(dropdown)).toEqual(['Sizes']);
-  });
-
-  it('preselects the Custom option when the current scale does not match a predefined scale', () => {
-    // given
-    const { getByRole } = render({
-      state: { scale: SCALES.SIZES_SCALE.values.slice(0, -1) },
-    });
-
-    // when
-    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
-
-    // then
-    const dropdown = getDropdown();
-    expect(getSelectedOptions(dropdown)).toEqual(['Custom']);
   });
 
   it('preselects the Custom option when a custom scale is active', () => {
@@ -304,6 +291,85 @@ describe('The ScaleSelector', () => {
     // then
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(setScale).not.toHaveBeenCalled();
+  });
+
+  it('prefills the custom scale modal with the active custom scale', () => {
+    // given
+    const { getByRole, getByText } = render({ state: { scale: ['M', 'S', '∞'] } });
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    fireEvent.click(getByText('Custom'));
+
+    // then
+    expect(screen.getByText(`Card Values (2/${MAX_CUSTOM_CARDS})`)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /toggle infinite card/i })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+  });
+
+  it('starts the custom scale modal empty when a predefined scale is active', () => {
+    // given
+    const { getByRole, getByText } = render();
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    fireEvent.click(getByText('Custom'));
+
+    // then
+    expect(screen.getByText('No cards added yet')).toBeInTheDocument();
+  });
+
+  it('discards a cancelled custom scale draft when the modal is reopened', () => {
+    // given
+    const { getByRole, getByText } = render();
+
+    // when
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    fireEvent.click(getByText('Custom'));
+    fireEvent.input(screen.getByRole('textbox', { name: /card value/i }), {
+      target: { value: 'XS' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /add card value/i }));
+    expect(screen.getByText(`Card Values (1/${MAX_CUSTOM_CARDS})`)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
+    fireEvent.click(getByRole('button', { name: 'Change Scale' }));
+    fireEvent.click(getByText('Custom'));
+
+    // then
+    expect(screen.getByText('No cards added yet')).toBeInTheDocument();
+  });
+
+  it('returns focus to the scale button when the custom scale modal is cancelled', () => {
+    // given
+    const { getByRole, getByText } = render();
+    const changeScaleButton = getByRole('button', { name: 'Change Scale' });
+
+    // when
+    fireEvent.click(changeScaleButton);
+    fireEvent.click(getByText('Custom'));
+    fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
+
+    // then
+    expect(changeScaleButton).toHaveFocus();
+  });
+
+  it('returns focus to the scale button after saving a custom scale', () => {
+    // given
+    const { getByRole, getByText } = render();
+    const changeScaleButton = getByRole('button', { name: 'Change Scale' });
+
+    // when
+    fireEvent.click(changeScaleButton);
+    fireEvent.click(getByText('Custom'));
+    const input = screen.getByRole('textbox', { name: /card value/i });
+    fireEvent.input(input, { target: { value: 'XS' } });
+    fireEvent.click(screen.getByRole('button', { name: /add card value/i }));
+    fireEvent.click(screen.getByRole('button', { name: /save scale/i }));
+
+    // then
+    expect(changeScaleButton).toHaveFocus();
   });
 
   it('highlights the Custom option on mouse-over', () => {

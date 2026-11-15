@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import { CardValue } from '../../../../shared/cards';
-import { ScaleName, SCALES } from '../../../../shared/scales';
+import { SCALES } from '../../../../shared/scales';
 import { SELECT_CHANGE_SCALE } from '../../constants';
 import sharedClasses from '../../styles.module.css';
 import { CustomScaleModal } from '../CustomScaleModal/CustomScaleModal';
@@ -30,17 +30,7 @@ export const ScaleSelector = connectToWebSocket(
     const selectionButtonRef = useRef<HTMLButtonElement>(null);
     const dropdownRef = useRef<HTMLUListElement>(null);
 
-    // True when the active scale is not one of the predefined scales, i.e. a
-    // user-defined custom scale. Used to preselect the "Custom" option on open.
-    const isCustomScale = useMemo(
-      () =>
-        !availableScales.some(
-          ([, { values }]) =>
-            values.length === scale.length &&
-            values.every((value, index) => value === scale[index]),
-        ),
-      [scale],
-    );
+    const predefinedIndex = availableScales.findIndex(getScaleMatcher(scale));
 
     const updateDropdownPosition = () => {
       if (selectionButtonRef.current) {
@@ -60,10 +50,7 @@ export const ScaleSelector = connectToWebSocket(
       if (open) {
         close();
       } else {
-        const predefinedIndex = availableScales.findIndex(getScaleMatcher(scale));
-        setSelected(
-          predefinedIndex >= 0 ? predefinedIndex : isCustomScale ? CUSTOM_OPTION_INDEX : -1,
-        );
+        setSelected(predefinedIndex >= 0 ? predefinedIndex : CUSTOM_OPTION_INDEX);
         updateDropdownPosition();
         setOpen(true);
       }
@@ -115,9 +102,14 @@ export const ScaleSelector = connectToWebSocket(
       }
     };
 
+    const closeCustomModal = () => {
+      setShowCustomModal(false);
+      selectionButtonRef.current?.focus();
+    };
+
     const handleCustomScaleSave = (customScale: CardValue[]) => {
       setScale(customScale);
-      setShowCustomModal(false);
+      closeCustomModal();
     };
 
     useEffect(() => {
@@ -156,7 +148,7 @@ export const ScaleSelector = connectToWebSocket(
             onBlur={handleBlur}
             onKeyDown={handleKeyboardNavigation}
           >
-            {availableScales.map(([id, { name }], index) => (
+            {availableScales.map(([id, { name, values }], index) => (
               <li
                 class={classes.dropDownItem}
                 key={id}
@@ -164,7 +156,7 @@ export const ScaleSelector = connectToWebSocket(
                 aria-selected={selected === index}
                 onClick={() => {
                   close();
-                  setScale(SCALES[id as ScaleName].values);
+                  setScale(values);
                 }}
                 onMouseMove={() => selected !== index && setSelected(index)}
                 onMouseLeave={() => selected === index && setSelected(-1)}
@@ -190,11 +182,13 @@ export const ScaleSelector = connectToWebSocket(
             </li>
           </ul>
         ) : null}
-        <CustomScaleModal
-          isOpen={showCustomModal}
-          onClose={() => setShowCustomModal(false)}
-          onSave={handleCustomScaleSave}
-        />
+        {showCustomModal && (
+          <CustomScaleModal
+            initialScale={predefinedIndex < 0 ? scale : []}
+            onClose={closeCustomModal}
+            onSave={handleCustomScaleSave}
+          />
+        )}
       </div>
     );
   },

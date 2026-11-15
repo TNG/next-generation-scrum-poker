@@ -1,32 +1,35 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { CardValue } from '../../../../shared/cards';
+import { CardValue, VOTE_COFFEE } from '../../../../shared/cards';
 import {
   buildCustomScale,
   getAddCardError,
+  isValidCustomCardValue,
   MAX_CUSTOM_CARDS,
   normalizeCardValue,
 } from '../../../../shared/customScale';
 import classes from './CustomScaleModal.module.css';
 
 interface CustomScaleModalProps {
-  isOpen: boolean;
+  initialScale: CardValue[];
   onClose: () => void;
   onSave: (scale: CardValue[]) => void;
 }
 
 export const CustomScaleModal: FunctionComponent<CustomScaleModalProps> = ({
-  isOpen,
+  initialScale,
   onClose,
   onSave,
 }) => {
-  const [cardValues, setCardValues] = useState<string[]>([]);
+  const [cardValues, setCardValues] = useState<string[]>(() =>
+    initialScale.filter(isValidCustomCardValue),
+  );
   const [inputValue, setInputValue] = useState('');
-  const [specialCards, setSpecialCards] = useState({
-    infinite: false,
-    question: false,
-    coffee: false,
-  });
+  const [specialCards, setSpecialCards] = useState(() => ({
+    infinite: initialScale.includes('∞'),
+    question: initialScale.includes('?'),
+    coffee: initialScale.includes(VOTE_COFFEE),
+  }));
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
   const modalRef = useRef<HTMLDivElement>(null);
@@ -50,17 +53,9 @@ export const CustomScaleModal: FunctionComponent<CustomScaleModalProps> = ({
   // Can add if input is valid
   const canAdd = inputValue.length > 0 && !inputError;
 
-  // Focus management
   useEffect(() => {
-    if (isOpen) {
-      const previouslyFocused = document.activeElement as HTMLElement;
-      firstFocusableRef.current?.focus();
-
-      return () => {
-        previouslyFocused?.focus();
-      };
-    }
-  }, [isOpen]);
+    firstFocusableRef.current?.focus();
+  }, []);
 
   // Handle keyboard events
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -200,8 +195,6 @@ export const CustomScaleModal: FunctionComponent<CustomScaleModalProps> = ({
       onClose();
     }
   };
-
-  if (!isOpen) return null;
 
   return (
     <div

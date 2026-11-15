@@ -5,18 +5,13 @@ import { CustomScaleModal } from './CustomScaleModal';
 
 describe('CustomScaleModal', () => {
   const defaultProps = {
-    isOpen: true,
+    initialScale: [],
     onClose: vi.fn(),
     onSave: vi.fn(),
   };
 
   describe('Rendering', () => {
-    it('should not render when isOpen is false', () => {
-      render(<CustomScaleModal {...defaultProps} isOpen={false} />);
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    });
-
-    it('should render when isOpen is true', () => {
+    it('should render the dialog', () => {
       render(<CustomScaleModal {...defaultProps} />);
       expect(screen.getByRole('dialog')).toBeInTheDocument();
       expect(screen.getByText('Custom Scale')).toBeInTheDocument();
@@ -28,6 +23,48 @@ describe('CustomScaleModal', () => {
       expect(screen.getByText(/special cards/i)).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /save scale/i })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
+    });
+  });
+
+  describe('Initial Values', () => {
+    it('should start without cards', () => {
+      render(<CustomScaleModal {...defaultProps} />);
+      expect(screen.getByText('No cards added yet')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /save scale/i })).toBeDisabled();
+    });
+
+    it('should prefill the card values of the active scale in their order', () => {
+      render(<CustomScaleModal {...defaultProps} initialScale={['M', 'S', 'L']} />);
+      expect(screen.getByText(`Card Values (3/${MAX_CUSTOM_CARDS})`)).toBeInTheDocument();
+      expect(
+        screen
+          .getAllByRole('button', { name: /^Remove / })
+          .map((button) => button.getAttribute('aria-label')?.replace('Remove ', '')),
+      ).toEqual(['M', 'S', 'L']);
+    });
+
+    it('should prefill the special cards of the active scale', () => {
+      render(<CustomScaleModal {...defaultProps} initialScale={['S', '∞', 'coffee']} />);
+      expect(screen.getByRole('button', { name: /toggle infinite card/i })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      );
+      expect(screen.getByRole('button', { name: /toggle question card/i })).toHaveAttribute(
+        'aria-pressed',
+        'false',
+      );
+      expect(screen.getByRole('button', { name: /toggle coffee card/i })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      );
+      expect(screen.getByText(`Card Values (1/${MAX_CUSTOM_CARDS})`)).toBeInTheDocument();
+    });
+
+    it('should save the prefilled scale unchanged when nothing is edited', () => {
+      const onSave = vi.fn();
+      render(<CustomScaleModal {...defaultProps} onSave={onSave} initialScale={['M', 'S', '∞']} />);
+      fireEvent.click(screen.getByRole('button', { name: /save scale/i }));
+      expect(onSave).toHaveBeenCalledWith(['M', 'S', '∞']);
     });
   });
 
