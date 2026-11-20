@@ -25,7 +25,8 @@ import { connectToWebSocket } from '../WebSocket/WebSocket';
 import classes from './ResultsPage.module.css';
 
 const getSortedResultsArray = (socket: WebSocketApi): UserState[] => {
-  return getVotingState(socket).sort(compareVotes);
+  const { scale } = socket.state;
+  return getVotingState(socket).sort((state1, state2) => compareVotes(scale, state1, state2));
 };
 
 const getVote = (vote: CardValue) => {

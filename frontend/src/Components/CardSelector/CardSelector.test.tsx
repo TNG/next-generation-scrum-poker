@@ -232,6 +232,36 @@ describe('The CardSelector', () => {
     expect(setVote).toHaveBeenNthCalledWith(2, 'S');
   });
 
+  it('ignores keyboard events while a modal is open', () => {
+    // given
+    const setVote = vi.fn();
+    render({
+      setVote,
+      state: { votes: { TheUser: VOTE_NOTE_VOTED, OtherUser: '5' } },
+    });
+
+    // given the custom scale modal is open (an aria-modal dialog in the DOM)
+    const modal = document.createElement('div');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    document.body.appendChild(modal);
+
+    // when
+    fireEvent.keyDown(window, { key: '1' });
+
+    // then
+    expect(setVote).not.toHaveBeenCalled();
+
+    // when the modal is closed again
+    modal.remove();
+
+    // when
+    fireEvent.keyDown(window, { key: '1' });
+
+    // then
+    expect(setVote).toHaveBeenCalledWith('1');
+  });
+
   it.each`
     description | event
     ${'Ctrl'}   | ${{ key: '1', ctrlKey: true }}

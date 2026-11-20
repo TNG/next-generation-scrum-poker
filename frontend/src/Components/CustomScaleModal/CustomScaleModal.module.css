@@ -1,0 +1,106 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.specialCardsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.specialCardButtons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.specialCardButton {
+  composes: focusRing from '../../styles.module.css';
+  flex: 1;
+  min-width: 6.25rem;
+  padding: 0.75rem 1rem;
+  border: 0.125rem solid var(--primary);
+  background: var(--background);
+  color: var(--primary);
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.specialCardButton:hover {
+  background: var(--secondary);
+  border-color: var(--primary-light);
+}
+
+.specialCardButton.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-secondary);
+}
+
+.specialCardIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.specialCardLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 0.125rem solid var(--tertiary);
+}
+
+.cancelButton,
+.saveButton {
+  padding: 0 1.25rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.cancelButton {
+  composes: focusRing from '../../styles.module.css';
+  background: transparent;
+  border: 0.125rem solid var(--primary);
+  color: var(--primary);
+}
+
+.cancelButton:hover {
+  background: var(--secondary);
+}
+
+.saveButton {
+  composes: button from '../../styles.module.css';
+  composes: focusRing from '../../styles.module.css';
+}
+
+@media (max-width: 600px) {
+  .specialCardButtons {
+    flex-direction: column;
+  }
+
+  .specialCardButton {
+    flex-direction: row;
+    justify-content: flex-start;
+    min-width: auto;
+    padding: 1rem;
+  }
+
+  .footer {
+    flex-direction: column-reverse;
+  }
+
+  .cancelButton,
+  .saveButton {
+    width: 100%;
+  }
+}

@@ -1,0 +1,38 @@
+.inputSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input {
+  flex: 1;
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--warning);
+}
+
+.addButton {
+  composes: button from '../../styles.module.css';
+  composes: focusRing from '../../styles.module.css';
+  padding: 0 0.75rem;
+  white-space: nowrap;
+}
+
+.inputHint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 1.25rem;
+}
+
+.error {
+  font-size: 0.75rem;
+  color: var(--warning);
+  font-weight: 500;
+}
