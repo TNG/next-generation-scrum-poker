@@ -45,8 +45,11 @@ const ALL_VALUES_ORDERED = [
   VOTE_HIDDEN,
 ] as const;
 
-export type CardValue = (typeof ALL_VALUES_ORDERED)[number];
+// Predefined card values from the ordered list
+export type PredefinedCardValue = (typeof ALL_VALUES_ORDERED)[number];
 
-export const CARDS_ORDERED_BY_VALUE = new Map(
-  ALL_VALUES_ORDERED.map((value, index) => [value, index]),
+export type CardValue = string;
+
+export const CARDS_ORDERED_BY_VALUE = new Map<CardValue, number>(
+  ALL_VALUES_ORDERED.map((value, index) => [value, index] as [CardValue, number]),
 );
